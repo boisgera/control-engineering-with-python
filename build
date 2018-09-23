@@ -1,0 +1,4 @@
+#!/bin/bash
+
+pandoc -o stability.pdf stability.txt
+
