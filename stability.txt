@@ -38,11 +38,33 @@ Examples in each case ...)
 
 Attractivity & Stability.
 
+  - Assume that we have already handled equilibrium concept, 
+    explain why having set the right equilibrium is not good enough.
+    We search for some "robustness".
+
   - Focus on global concepts first (local later)
 
   - Focus on asymptotic stability
 
-  - Attempt to present it as a "stronger version" of attractvity.
+  - Start with attractivity (the "natural" definition)
+  
+  - Show its shortcoming: given a target precision, we can't tell
+    how much time is needed to get it "convergence speed"
+
+  - Example
+
+  - Small progress: we cannot expect a complete uniformity of the
+    convergence: consider IV farther away, that makes sense that
+    such trajectories cannot meet the same objective in the same
+    amount of time; consider IV near the boundary as a more subtle
+    example of the same case.
+
+  - Define (G)AS as the uniform convergence towards the equiibrium 
+    wrt any set of initial condition far from infinity and the
+    boundary.
+
+  - Extra (optional): we only need to require a "local" uniformity
+    around any IV point to make it work.
 
 
 (Global) attractivity (0 being an equilibrium):
@@ -131,6 +153,9 @@ all $t$, all thus $\dot{V}(x(t, x_0)) \leq -\alpha(v_1)$ for all $t$,
 which would yield a contradiction.
 
 
+**Example streamplot:**
+
+![Streamplot](images/streamplot.pdf)
 
 
 
