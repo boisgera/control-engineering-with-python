@@ -13,7 +13,7 @@ before_install:
   - conda config --set always_yes yes --set changeps1 no
   - conda update  conda
   - conda info -a # debugging
-  - conda create -f environment.yml
+  - conda env create -f environment.yml
   - source activate control-engineering-with-python
 
 install:
