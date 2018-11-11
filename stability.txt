@@ -1,5 +1,33 @@
 % Stability
 
+**TODO.**
+
+  - initial focus on $\dot{x} = f(t,x)$, so that later we can consider
+    $\dot{x} = f(x, u), \; y = g(x, u)$: even if there is no explicit
+    $t$, there is a time-dependency through $u$. 
+    Work on the well-posedness stuff here.
+
+  - make a try at minimal differential geometry? Would be nice.
+    Example being the pendulum, better example is the evolution 
+    of rigid bodies. Approach through non-singular constraint 
+    functions and embedding in $\mathbb{R}^n$ ?
+    Need to 'extend' the rhs to some neighbourghood of the manifold
+    somehow, but the precise extension does not matter, this is nice.
+    And in the examples I have in mind, it's pretty easy to build that
+    extension ... The issue when talking about additional structure
+    is about compactness? Compact sets in the manifolds are NOT
+    traces of compact sets. Do they have an simple characterization
+    (beyond sequences ?)?
+
+  - try Laplace for rational "function" (or generalized) only ?
+    Dunno really. Dirac as the limit of short-time constant 
+    exponential? Does it make sense? Think of use cases.
+    At least I'd like to talk about impulse response.
+
+
+Initial-Value Problem
+--------------------------------------------------------------------------------
+
 Context:
 
 $$
@@ -36,7 +64,16 @@ say that it doesn't stay in any compact subset of $U$; subsequence
 such that $d(x_n, \partial U) \to 0$ or $|x_n| \to +\infty$ ?
 Examples in each case ...)
 
-Attractivity & Stability.
+Note: global existence first prerequisite for (global) attractivity.
+
+
+
+Equilibrium
+--------------------------------------------------------------------------------
+
+Stability
+--------------------------------------------------------------------------------
+
 
   - Assume that we have already handled equilibrium concept, 
     explain why having set the right equilibrium is not good enough.
@@ -157,5 +194,7 @@ which would yield a contradiction.
 
 ![Streamplot](images/streamplot.pdf)
 
+
+![Prey-predator. Test font size: $2.00$](images/prey-predator.pdf)
 
 
