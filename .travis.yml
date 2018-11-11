@@ -1,4 +1,4 @@
-sudo: required
+sudo: enabled
 dist: xenial
 language: bash
 
@@ -6,7 +6,7 @@ env:
   - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 before_install:
-  - sudo apt-get install texlive-full
+  - sudo apt-get --yes --force-yes install texlive-full
   - curl $CONDA > conda.sh
   - bash conda.sh -b -p $HOME/conda
   - export PATH=$HOME/conda/bin:$PATH
