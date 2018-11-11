@@ -1,11 +1,12 @@
-sudo: false
-dist: trusty
+sudo: required
+dist: xenial
 language: bash
 
 env:
   - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
 
 before_install:
+  - sudo apt-get install texlive-full
   - curl $CONDA > conda.sh
   - bash conda.sh -b -p $HOME/conda
   - export PATH=$HOME/conda/bin:$PATH
@@ -15,11 +16,6 @@ before_install:
   - conda info -a # debugging
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
-  - mkdir tl && cd tl
-  - curl -L http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz > tl.tgz
-  - tar zxvf tl.tgz
-  - cd *
-  - ./install-tl
 
 install:
   - true
