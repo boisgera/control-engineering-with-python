@@ -1,0 +1,18 @@
+sudo: false
+dist: trusty
+language: bash
+
+env:
+  - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+
+before_install:
+  - curl $CONDA > conda.sh
+  - bash conda.sh -b -p $HOME/conda
+  - export PATH=$HOME/conda/bin:$PATH
+
+install:
+  - conda env update -f environment.yml
+
+script: 
+  - ./build
+
