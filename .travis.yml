@@ -16,7 +16,7 @@ before_install:
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
   - mkdir tl && cd tl
-  - curl http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz > tl.tgz
+  - curl -L http://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz > tl.tgz
   - tar zxvf tl.tgz
   - cd *
   - ./install-tl
