@@ -8,4 +8,5 @@ dependencies:
   - matplotlib
   - jupyter
   - pandoc
+  - texlive-core
 

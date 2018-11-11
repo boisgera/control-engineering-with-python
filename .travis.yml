@@ -11,7 +11,7 @@ before_install:
   - export PATH=$HOME/conda/bin:$PATH
   - hash -r
   - conda config --set always_yes yes --set changeps1 no
-  - conda update  conda
+  - conda update conda
   - conda info -a # debugging
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
