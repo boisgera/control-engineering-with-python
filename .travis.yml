@@ -3,8 +3,7 @@ language: bash
 
 env:
   - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  - BINDER=https://github.com/boisgera/control-engineering-with-python
-
+  - MYBINDER=https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/master
 
 before_install:
   - sudo apt-get --yes --force-yes install texlive-full
@@ -24,5 +23,5 @@ install:
 
 script: 
   - ./build
-  - chrome --headless --disable-gpu $BINDER
+  - chrome --headless --disable-gpu $MYBINDER
 
