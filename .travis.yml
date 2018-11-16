@@ -23,5 +23,5 @@ install:
 
 script: 
   - ./build
-  - chrome --headless --disable-gpu $MYBINDER
+  - chromium-browser --headless --disable-gpu $MYBINDER
 
