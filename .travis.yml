@@ -2,8 +2,9 @@ dist: xenial
 language: bash
 
 env:
-  - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
-  - MYBINDER=https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/master
+  global:
+    - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    - MYBINDER=https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/master
 
 before_install:
   - sudo apt-get --yes --force-yes install texlive-full
