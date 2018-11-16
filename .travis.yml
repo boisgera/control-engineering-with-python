@@ -6,6 +6,7 @@ env:
 
 before_install:
   - sudo apt-get --yes --force-yes install texlive-full
+  - sudo apt-get install chromium-browser
   - curl $CONDA > conda.sh
   - bash conda.sh -b -p $HOME/conda
   - export PATH=$HOME/conda/bin:$PATH
@@ -21,4 +22,5 @@ install:
 
 script: 
   - ./build
+  - chrome --headless https://github.com/boisgera/control-engineering-with-python
 
