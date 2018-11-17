@@ -7,9 +7,7 @@ dependencies:
   - scipy
   - matplotlib
   - jupyter
+  - rise
   - pandoc
   - curl
-
-
-
 
