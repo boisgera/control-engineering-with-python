@@ -1,0 +1,1106 @@
+% Ordinary Differential Equations
+% Sébastien Boisgérault, Mines ParisTech
+
+Preamble
+--------------------------------------------------------------------------------
+
+    from numpy import array, linspace, exp, sqrt, meshgrid, vectorize, arange, shape
+    from matplotlib.pyplot import figure, plot, subplots, \
+         xlabel, ylabel, legend, tight_layout, quiver, grid, axis, arrow, \
+         streamplot
+
+**TODO:** do the opposite: import everything and REIMPORT from builtins
+stuff that's been overriden.
+
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import array, linspace, exp
+    import matplotlib; matplotlib.use("nbAgg")
+    from matplotlib.pyplot import *
+    %matplotlib notebook 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    # Python 3.x Standard Library
+    import gc
+    import os
+
+    # Third-Party Packages
+    import numpy as np; np.seterr(all="ignore")
+    import numpy.linalg as la
+    import scipy.misc
+    import matplotlib as mpl; mpl.use("Agg")
+    import matplotlib.pyplot as pp
+    import matplotlib.axes as ax
+    import matplotlib.patches as pa
+
+
+    #
+    # Matplotlib Configuration & Helper Functions
+    # --------------------------------------------------------------------------
+    
+    # TODO: also reconsider line width and markersize stuff "for the web
+    #       settings".
+    fontsize = 35
+
+    rc = {
+        "text.usetex": True,
+        "pgf.preamble": [r"\usepackage{amsmath,amsfonts,amssymb}"], 
+        #"font.family": "serif",
+        "font.serif": [],
+        #"font.sans-serif": [],
+        "legend.fontsize": fontsize, 
+        "axes.titlesize":  fontsize,
+        "axes.labelsize":  fontsize,
+        "xtick.labelsize": fontsize,
+        "ytick.labelsize": fontsize,
+        #"savefig.dpi": 300,
+        #"figure.dpi": 300,
+    }
+    mpl.rcParams.update(rc)
+
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
+    # (the "standard" dpi for Web computations) gives 1600 px.
+    width_in = 160 / 9 
+
+    def save(name):
+        cwd = os.getcwd()
+        root = os.path.dirname(os.path.realpath(__file__))
+        os.chdir(root)
+        pp.savefig(name + ".svg")
+        os.chdir(cwd)
+
+    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+        pp.gcf().set_size_inches((width_in, height_in))
+        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Initial Value Problem (Redux) {#IVP} 
+--------------------------------------------------------------------------------
+
+Let $n \in \mathbb{N}^*$ and $f:\mathbb{R}^n \to \mathbb{R}^n$. 
+
+The **initial-value problem** (IVP) with **right-hand side** 
+(or **vector field**) $f$ refers to:
+
+  $$
+  \dot{x} = f(x) \; \mbox{ and } \;  x(t_0) = x_0 
+  $$
+
+The **initial condition** $(t_0, x_0) \in \mathbb{R}^n$ is made of the 
+initial time $t_0$ and the initial value $x_0$.
+
+
+Solution of the IVP (Redux)
+--------------------------------------------------------------------------------
+
+Any differentiable function 
+
+  $$
+  x: t \in  \left[t_0, +\infty \right[ \mapsto x(t) \in \mathbb{R}^n,
+  $$ 
+
+such that:
+
+  - for every $t \geq t_0$, $\dot{x}(t) = f(x(t))$. 
+
+  - $x(t_0) = x_0$
+
+Numerical Solution (Redux)
+--------------------------------------------------------------------------------
+
+  $$
+  \begin{split}
+  x(t + \Delta t) 
+    & \simeq x(t) + \Delta t \times \dot{x}(t) \\
+    & = x(t) + \Delta(t) \times f(t, x(t)) \\
+  \end{split}
+  $$
+
+**TODO:** explain sequence, times + values.
+
+--------------------------------------------------------------------------------
+
+    def solve_ivp(f, t0, x0, dt, t_f):
+        ts, xs = [t0], [x0]
+        while ts[-1] <= t_f:
+            t, x = ts[-1], xs[-1]
+            t_next, x_next = t + dt, x + dt * f(x)
+            ts.append(t_next); xs.append(x_next)
+        return (array(ts), array(xs).T)
+
+
+Example
+--------------------------------------------------------------------------------
+
+  $$
+  \left|
+  \begin{split}
+  \dot{x} &= -y \\
+  \dot{y} &= +x
+  \end{split}
+  \right.,
+  \; \mbox{ with } \;
+  \left|
+  \begin{array}{l}
+  x(0) = 1\\
+  y(0) = 0
+  \end{array}
+  \right.
+  $$
+
+
+--------------------------------------------------------------------------------
+
+
+
+[Quiver](https://matplotlib.org/api/_as_gen/matplotlib.pyplot.streamplot.html) Helper
+--------------------------------------------------------------------------------
+
+    def Q(f, xs, ys):
+
+        #print("f", f)
+
+        X, Y = meshgrid(xs, ys)
+        fx = vectorize(lambda x, y: f([x, y])[0])
+        fy = vectorize(lambda x, y: f([x, y])[1])
+        return X, Y, fx(X, Y), fy(X, Y)
+
+--------------------------------------------------------------------------------
+
+    def f(xy):
+        return array([-xy[1], xy[0]])
+    figure()
+    x = arange(0.0, 2.0, 0.1)
+    y = arange(-1.0, 2.0, 0.1)
+    quiver(*Q(f, x, y)) 
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/test_Q")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Result
+--------------------------------------------------------------------------------
+
+![](images/test_Q.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+State Space: Vector Field
+--------------------------------------------------------------------------------
+
+    def f(xy):
+        return array([-xy[1], xy[0]])
+
+    figure()
+    xs = arange(-1.0, 1.0, 0.1)
+    ys = arange(-1.0, 1.0, 0.1)
+    quiver(*Q(f, xs, ys))
+    grid(); axis("equal")
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/vector-field")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+State Space: Vector Field
+--------------------------------------------------------------------------------
+
+![](images/vector-field.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+    t0, x0 = 0.0, [-1.0, 0.0]
+    dt, tf = 0.01, 12.0
+    ts, xs = solve_ivp(f, t0, x0, dt, tf)
+
+--------------------------------------------------------------------------------
+
+**TODO:** simplify, get rid of subplots at this stage
+
+    figure()
+    _, (ax1, ax2) = subplots(2, 1)
+    ax1.plot(ts, xs[0], "k")
+    ax2.plot(ts, xs[1], "k")
+    ax1.set_title("$x(t)$")
+    ax2.set_title("$y(t)$")
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    #pp.gcf().subplots_adjust(bottom=0.25, top=0.75, left=0.1, right=0.9, 
+    #                         hspace=0.75)
+    tight_layout()
+    save("images/rotation")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Result
+--------------------------------------------------------------------------------
+
+![](images/rotation.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+**TODO:** arrow helper (use std & option markerwidth for integration)
+
+--------------------------------------------------------------------------------
+
+    figure()
+    quiver(*Q(f, arange(-1.5, 1.5, 0.1), arange(-1.5, 1.5, 0.1)), color="grey")
+    plot(xs[0], xs[1], "k")
+    plot(x0[0], x0[1], "ko")
+    dx = xs[0][-1] - xs[0][-2]
+    dy = xs[1][-1] - xs[1][-2]
+    arrow(xs[0][-1], xs[1][-1], dx, dy, width=0.02, color="k")
+    grid()
+    axis("equal")
+
+Note: `arrow` does not rescale like markers -- such as the initial point --
+      do :(
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/rotation2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Result
+--------------------------------------------------------------------------------
+
+![](images/rotation2.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+
+--------------------------------------------------------------------------------
+
+    def explicit_euler_step(fun, t, y, step):
+        return y + step * fun(t, y)
+
+Example
+--------------------------------------------------------------------------------
+
+
+----
+
+    class ODEScheme:
+        def __init__(self, fun, t0, y0, max_step, tf):
+            self.fun = fun
+            self.t = t0
+            self.y = y0
+            self.max_step = max_step
+            self.tf = tf
+
+----
+
+    class ExplicitEuler(ODEScheme):
+        def step(self):
+            t_next = min(self.tf, \
+                         self.t + self.max_step)
+            step = t_next - self.t
+            y_next = explicit_euler_step(self.fun, \
+                                         self.t,   \
+                                         self.y,   \
+                                         step      )
+            self.t = t_next
+            self.y = y_next
+
+
+Interpolation
+--------------------------------------------------------------------------------
+
+    from scipy.interpolate import interp1d
+    def interpolate(ti, yi):
+        def function(t):
+            options = {"axis": 0, \
+                       "fill_value": "extrapolate"}
+            return interp1d(ti, yi, **options)(t).T
+        return function
+
+Example
+--------------------------------------------------------------------------------
+
+    ti, yi = array([0, 1, 2]), array([1, 2, 1])
+    f = interpolate(ti, yi)
+    t = linspace(-1, 3, 100)
+    y = f(t)
+    figure()
+    plot(ti, yi, "ko")
+    plot(t, y, "k--")
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/interpolation")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Result
+--------------------------------------------------------------------------------
+
+![](images/interpolation.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+-----
+
+    def solve_ivp(fun, t_span, y0, \
+                  max_step=1e-5, \
+                  dense_output=False, \
+                  **options):
+        t0, tf = t_span
+        scheme = ExplicitEuler(fun, t0, y0, max_step, tf)
+
+        result = {}
+        t, y = [t0], [y0]
+        try:
+            while t[-1] < tf:
+                scheme.step()
+                t.append(scheme.t)
+                y.append(scheme.y)
+            result["success"] = True
+        except: # too wide. What can happen here ? nan stuff ?
+            result["success"] = False
+        result["t"] = t = array(t)
+        result["y"] = y = array(y)
+        if dense_output:
+            result["sol"] = interpolate(t, y)
+        else:
+            result["sol"] = None
+        return result  
+
+-----
+
+    def fun(t, y):
+        return y
+
+    t0, tf, y0 = 0.0, 5.0, array([1.0])
+    result = solve_ivp(fun, (t0, tf), y0, \
+                       max_step=0.25, \
+                       dense_output=True)
+
+------
+
+    td, yd = result["t"], result["y"]
+    t = linspace(t0, tf, 1000)
+    y = result["sol"](t)
+    figure()
+    plot(t, exp(t), "k")
+    plot(t, y.T, "k--")
+    plot(td, yd, "k+")
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/exp")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Results
+--------------------------------------------------------------------------------
+
+![](images/exp.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+-----
+
+**global solution:** a differentiable function 
+
+  $$
+  x: t\in  \left[t_0, +\infty \right[ \mapsto x(t) \in \mathbb{R}^n,
+  $$ 
+
+such that:
+
+ - $x(t_0) = x_0$ and 
+
+ - for every $t \geq 0$, $\dot{x}(t) = f(x(t))$. 
+
+The value $x(t_0)$ is the **initial value**, 
+the time $t_0$ is the **initial time** and 
+the pair $(x_0, t_0)$ is the **initial condition**.
+
+-----
+
+### Variants and Extensions 
+
+#### Initial Time {.note}
+
+We often let the initial time $t_0$ is unspecified. 
+In this case we will assume that it is zero.
+It makes sense since we can deduce the set of solutions in the general case
+of an initial condition $(x_0, t_0)$ from the set of solution with initial
+condition $(x_0, 0)$: the function $y:\left[t_0, +\infty\right[$ is a solution
+of the former if and only if 
+  $$
+  x: t \in \left[0, +\infty \right[ \to x(t) = y(t-t_0)
+  $$
+is a solution of the latter.
+
+-----
+
+#### Future and Past {.note}
+
+Some authors require a global solution to be defined for any time $t$
+in the future of the initial time $t_0$ but also for any value in its past,
+and thus for any $t \in \left]-\infty, +\infty \right[$. We don't abide to
+this definition by default since it makes the terminology of "initial time" 
+a bit confusing. 
+However, if the need arises, we may characterize such a solution
+$x: t \in \left]-\infty, +\infty \right[ \to \mathbb{R}^n$ by two classic 
+global solutions: $x^+(t)$, defined for $t \geq 0$ 
+as a solution of the IVP
+  $$
+  x^+(0) = x_0 \; \mbox{ and } \; \dot{x}^+ = f(x^+).
+  $$
+and the solution $x^-(t)$, also defined for $t \geq 0$ 
+but a solution of the IVP with a reverse right-hand side
+  $$
+  x^-(0) = x_0 \; \mbox{ and } \; \dot{x}^- = - f(x^-).
+  $$
+The complete solution is then given by
+  $$
+  x(t) 
+  = 
+  \left|
+  \begin{array}{ll}
+  x^+(t) & \mbox{if } \; t \geq 0 \\
+  x^-(-t) & \mbox{if } \; t < 0. \\
+  \end{array}
+  \right.
+  $$
+
+### Complex-Valued Differential Equations {.note}
+
+**TODO.**
+
+
+
+
+Local Solutions
+--------------------------------------------------------------------------------
+
+The concept of global solution is sometimes too stringent.
+
+Consider for example:
+
+  $$
+  \dot{x} = x^2 \; \mbox{ and } \; x(0)=1
+  $$
+
+-----
+
+    def fun(t, y):
+        return y * y
+    t0, tf, y0 = 0.0, 5.0, array([1.0])
+    result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
+    figure()
+    plot(result["t"], result["y"], "k")
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/finite-time-blowup")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/finite-time-blowup.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+Ouch.
+
+There is actually no **global** solution. 
+
+However ...
+
+-----
+
+There is **local** solution defined for $t \in \left[t_0, t_f\right[$  
+for some $t_f > t_0$.
+
+Indeed, let $t_f=1$; the function
+
+  $$
+  x(t) = \frac{1}{1 - t}, t \in \left[0, 1\right[ 
+  $$
+
+satisfies
+
+  - for every $t \in \left[t_0, t_f\right[$, $\dot{x}(t) = f(x(t))$,
+
+  - $x(t_0) = x_0$.
+
+-----
+
+**TODO:** another plot (different scale ?) ... or before ?
+Yup before. Makes sense to zoom when faced with the initial
+graph, not after.
+
+-----
+
+This solution is also **maximal**:
+
+You cannot extend this solution beyond $t_f=1.0$.
+
+You know that a local solution is **maximal** when 
+
+  $$
+  \lim_{t \to t_f} \|x(t)\| = +\infty.
+  $$
+
+-----
+
+The existence of a (at least one) maximal solution of the IVP
+
+  $$
+  \dot{x} = f(x) \; \mbox{ and } \;  x(t_0) = x_0 
+  $$
+
+is guaranteed when  $f$ is continuous.
+
+
+Uniqueness
+--------------------------------------------------------------------------------
+
+**TODO.**
+
+Continuity wrt the Initial Value
+--------------------------------------------------------------------------------
+
+(and concept of Well-Posedness)
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+#### Example -- Finite-Time Blow-Up
+
+Suppose that $x(t)$ is a global solution of the 
+scalar initial-value problem 
+
+  $$
+  x(0) = x_0 > 0 \; \mbox{ and } \; \dot{x} = x^2.
+  $$
+
+Since the initial value of $x(t)$ is positive and for any $t\geq 0$,
+$\dot{x}(t) = x(t)^2 \geq 0$, $x(t)$ is positive for any $t\geq 0$.
+Therefore, the expression $1/x(t)$ is defined and differentiable
+for any such $t$;
+its derivative satisfies
+  $$
+  \frac{d}{dt}\left[ \frac{1}{x(t)}\right]
+  = - \frac{\dot{x}(t)}{x(t)^2}
+  = -1
+  $$
+and thus by integration
+  $$
+  \frac{1}{x(t)} - \frac{1}{x_0} = -t
+  $$
+which leads to
+  $$
+  x(t) = \frac{x_0}{1 - t x_0}.
+  $$
+Thus, the existence of a global solution is impossible:
+such a solution would be undefined at time $t = 1/x_0$.
+
+--------------------------------------------------------------------------------
+
+The concept of local solution can be more appropriate. 
+It is a function $x(t)$ defined when $t$ belongs to 
+some interval $I$ of $\left[t_0, +\infty\right[$ 
+such that for some $\epsilon > 0$, 
+$[t_0, t_0 +\varepsilon] \subset I$
+and for any $t \in I$, 
+$\dot{x}(t) = f(x(t))$. 
+In particular if $x$ is a global solution of the IVP, 
+$I = \left[0, +\infty\right[ = \mathbb{R}$ is acceptable, 
+and thus every global solution is a a local solution.
+
+---------------------------------------------------------------------------------
+
+#### Example -- Finite-Time Blow-Up
+We now search for a local solution to the IVP 
+$x(0) = x_0 > 0$ and $\dot{x} = x^2$.
+Since $1 - t x_0 \neq 0$ when $t \neq 1/x_0$, 
+we could define a function
+  $$
+  x(t) = \frac{x_0}{1 - t x_0}
+  $$
+for any $t \in \left]-\infty, 1/x_0\right[ \cup \left]1/x_0, +\infty \right[$,
+but this domain of definition is not an appropriate interval. 
+So instead, we can use the largest subinterval of $\left[0, +\infty \right]$
+that contains $0$, which is $I = \left[0, 1/x_0\right[$. It always contains the
+interval $[0, \varepsilon]$ with $\varepsilon = 1/2x_0 > 0$ for example.
+Additionally, for any $t \in I$
+  $$
+  \dot{x}(t) = - \frac{x_0}{1 - t x_0} \times (-x_0) = 
+  \left( \frac{x_0}{1 - tx_0}\right)^2 = x(t)^2,
+  $$
+hence $x(t)$ is a local solution of the IVP.
+
+--------------------------------------------------------------------------------
+
+Existence
+--------------------------------------------------------------------------------
+
+### Local Existence
+
+While global solutions may not exist in many cases, 
+a mild condition ensures the existence of at least one local solution:
+that the right-hand side $f$ of the IVP is continuous. 
+Actually, it's pretty easy to design an IVP with discontinuous 
+right-hand side for which even no local solution exist:
+
+#### Example - Discontinuous Vector Field
+Consider the scalar IVP with initial value $x(0) = 0$ and right-hand side
+  $$
+  f(x) = 
+  \left|
+  \begin{array}{rl}
+  +1 & \mbox{if } \; x < 0 \\
+  -1 & \mbox{if } \; x > 0.
+  \end{array}
+  \right.
+  $$
+Assume that $x: I \to \mathbb{R}$ is a local solution of this IVP
+and left $\varepsilon > 0$ be such that $[0,\varepsilon] \subset I$. 
+Since $\dot{x}(0) = +1 > 0$,
+for some small enough $0 < \tau < \epsilon$ and any $t \in [0, \tau]$,
+we have $x(t) > 0$. 
+Consequently, $\dot{x}(t) = -1$ and thus by integration
+  $$
+  x(\tau) =  x(0) + \int_0^{\tau} \dot{x}(t) \, dt = 0 - t < 0,
+  $$
+which is a contradiction. Thus there is no local solution to this IVP.
+
+### Maximal Solutions
+
+**TODO**: existence and "out-of-any-compact" trick.
+
+Statement: ???
+
+### Global Existence
+
+**TODO:** explain contraposition trick / a priori estimate: 
+if we know a maximal solution
+cannot escape some bounded set in a given time range, we also know that
+its "escape time" is out of the range.
+
+### Example -- Global Existence
+Consider the scalar ODE
+  $$
+  \dot{x} = \frac{e^x}{e^x + 1} 
+  $$
+associated to the initial condition $(t_0=0, x_0=0)$.
+The right-hand side of this equation is continuous, 
+hence at least one maximal solution $x(t)$ defined for 
+$t \in \left[0, t_{\infty}\right[$ exists.
+We can show that $t_{\infty} = +\infty$, or in other words that
+this solution is global. Indeed, the vector field is bounded:
+for any $x \in \mathbb{R}$,
+  $$
+  \left| \frac{e^x}{e^x + 1} \right| \leq 1
+  $$
+and thus, for any finite $t \in \left[0,t_{\infty} \right[$, 
+  $$
+  |x(t)| \leq \int_{0}^ t 1 \, d\tau \leq t.  
+  $$
+Thus, if $t_{\infty}$ is finite, for any 
+$0 \leq t < t_{\infty}$, $x(t)$ belongs to the interval
+$[-t_{\infty}, t_{\infty}]$ which is bounded.
+
+**TODO** something lacks here and the formulation above should be clear
+before I polish the conclusion here.
+
+
+
+
+Prey-Predator 
+---------------------------------------------------------------------------------
+
+
+
+
+--------------------------------------------------------------------------------
+
+### Uniqueness
+
+Uniqueness is guaranteed if
+$f$ is continuous and $\partial f / \partial x$ exists and is 
+continuous.
+
+
+**TODO:** maximal solution (free), refer to example. Explain why that makes sense.
+Also explain why we always define such solution on open intervals
+(a closed one cannot be maximal). Carac des sols maximals (non-bornées) et par
+contraposition, sol max bornées donne global. Exemple ? (vectoriel, lin ou
+a sat avec sigmoide ?).
+
+
+
+**TODO:** Uniqueness
+
+**TODO:** Well-Posedness.
+
+
+\newpage
+
+-----
+
+We consider the initial-value problem (IVP)
+  $$
+  \dot{x} = f(t, x), \; x(t_0) = x_0
+  $$
+where $f: I \times U \to \mathbb{R}^n$, $I$ is an open interval of
+$\mathbb{R}$, $t_0 \in I$, $U$ is an open subset of $\mathbb{R}^n$
+and $x_0 \in U$.
+
+A classical solution of this problem is a function $x: J \to \mathbb{R}^n$,
+where $J$ is an open interval of $\mathbb{R}$ such that 
+
+Why open sets ? What do we do with $t$ ?
+
+Continuous right-hand side: delivers local existence. Local existence is
+itself equivalent to existence of maximal solution.
+
+Continuous $\partial f / \partial x$: delivers uniqueness
+(and well-posedness ?)
+
+### Well-Posedness
+
+Local Existence, Maximal Solutions, Uniqueness, Continuity wrt initial values.
+
+Explain why that stuff matters. Uniqueness and continuity is rather obvious,
+but not "robustness". Explain as "chaos", as unability to implement a proper
+numerical simulation ? Think of the pendulum and the initial angle of 
+$\pi/4$ that CANNOT be stored exactly on the computer. Same for the rhs.
+
+### Irregular Right-Hand Sides
+
+"Absolutely continuous" solutions:
+
+  $$
+  f(t) = \int_{t_0}^t g(s) \, ds
+  $$
+
+  $$
+  x(t) = x_0 + \int_{t_0}^t f(s, x(s))\, ds
+  $$
+
+Discont wrt $x$ and Filipov solutions.
+
+--------------------------------------------------------------------------------
+
+
+General "what can go wrong approach" for the existence and uniqueness of ODEs.
+
+Start with autonomous equations.
+
+Go for simple "really-differential-equations" with continuity of $f$ and
+$\partial f / \partial x$ stuff.
+
+Local existence and local uniqueness can be splitted.
+
+Deal with time-reversal somehow ?
+
+Consequence of uniqueness (combined with time-reversal): ex: show that you 
+cannot reach a boundary where the rhs is zero in finite time.
+
+Complete well-posedness to account for continuity wrt initial condition ?
+
+Show that local existence and uniqueness implies that NON-existence means
+getting out of every compact set (under the form of: either going to infinity
+or approaching the boundary arbitrarily close.)
+
+Application: linear equation $\dot{x} = A x$. Show that the derivative
+of $y = |x|^2$ is dominated by $2\|A\|y$ and thus with $a=\|A\|$
+that $|y|(t) \leq e^{at} |y|(0)$ (proof ?) which forbids $x$ 
+to go to $+\infty$.
+
+Same kind of stuff via invariant in the prey-predator model ? 
+Yes. The model $\dot{x} = \alpha x - \beta x y$ and 
+$\dot{y} = \delta xy - \gamma y$ has the invariant
+$\delta x - \gamma \ln x +\beta y - \alpha \ln y$,
+which is good enough to prove global existence.
+
+Flow notation.
+
+Trick to include the time in this framework and how to deal with
+$n$-th order equations.
+
+
+"Fix" this later to account for discontinuous stuff wrt $t$,
+if necessary.
+
+
+
+Prey-Predator Models
+--------------------------------------------------------------------------------
+
+    pp.figure()
+
+    Y, X = np.mgrid[0.0:2.0:200j, 0.0:4.0:200j]
+
+    alpha = 2 / 3
+    beta = 4 / 3
+    delta = gamma = 1.0
+    U = alpha * X - beta * X * Y
+    V = delta * X * Y - gamma * Y
+
+    pp.axes().set_aspect(1.0)
+    pp.axes().axis([0.0, 4.0, 0.0, 2.0])    
+
+    pp.streamplot(X, Y, U, V, color="k")
+
+
+## TODO: 
+
+  - split notebook and slides settings. Mmm how deal with styles ?
+    Have "standard options" for notebook and slides and use them
+    beforehand in some option stuff ? Or duplicate the plot code,
+    this is not such a big deal.
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    height_in = width_in / (16 / 9)
+    pp.gcf().set_size_inches((width_in, height_in)) # height_in ignored ?
+    # weight_in does not match ? dpi issue ? Prob. cause changing width_in 
+    # does have an influence.
+
+    # This is the bbox_in: tight options that is messing with us ...
+    # (width and height). Investigate what that stuff is doing.
+
+    save("images/prey-predator")     # TODO: use "savefig.dpi" param instead in rc.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+----
+
+![](images/prey-predator.svg)
+
+
+Equilibrium
+--------------------------------------------------------------------------------
+
+**TODO**
+
+Stability
+--------------------------------------------------------------------------------
+
+About the long-term behavior of solutions.
+
+  - "Stability" subtle concept,
+
+  - "Asymptotic Stability" simpler (and stronger),
+
+  - "Attractivity" simpler yet, (but often too weak).
+
+
+Attractivity
+--------------------------------------------------------------------------------
+
+Consider an ODE $\dot{x} = f(x)$ s.t. the associated IVP is well-posed for
+any initial condition.
+
+An equilibrium $x_e$ is **globally attractive** if
+the solution $x(t)$ of the IVP with $x(0)=x_0$ always 
+exists globally and
+  $$
+  \lim_{t \to +\infty} x(t) = x_e.
+  $$
+
+TODO
+--------------------------------------------------------------------------------
+
+Simple example "that works".
+
+TODO
+--------------------------------------------------------------------------------
+
+Explain uniformity wrt IV; how locally uniform actually means semi-globally
+uniform.
+
+Counter-Example
+--------------------------------------------------------------------------------
+
+  $$
+  \left|
+  \begin{array}{lll}
+  \dot{x} &=& x + xy - (x + y)\sqrt{x^2 + y^2} \\
+  \dot{y} &=& y - x^2 + (x - y) \sqrt{x^2 + y^2}
+  \end{array}
+  \right.
+  $$
+
+--------------------------------------------------------------------------------
+
+In polar coordinates, in the plane:
+
+  $$
+  \left|
+  \begin{array}{lll}
+  \dot{r} &=& r (1 - r) \\
+  \dot{\theta} &=& r (1 - \cos \theta)
+  \end{array}
+  \right.
+  $$
+
+Stream Plot
+--------------------------------------------------------------------------------
+
+    def f(xy):
+        x, y = xy[0], xy[1]
+        r = sqrt(x*x + y*y)
+        dx = x + x * y - (x + y) * r
+        dy = y - x * x + (x - y) * r
+        return array([dx, dy])
+
+--------------------------------------------------------------------------------
+
+    figure()
+    x = arange(-2.0, 2.0, 0.1)
+    y = arange(-2.0, 2.0, 0.1)
+    quiver(*Q(f, x, y)) 
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("equal")
+    tight_layout()
+    save("images/attractive2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/attractive2.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+    figure()
+    streamplot(*Q(f, x, y), color="k") 
+        
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("equal")
+    tight_layout()
+    save("images/attractive2b")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/attractive2b.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+

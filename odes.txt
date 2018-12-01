@@ -338,7 +338,15 @@ $n$-th order equations.
 if necessary.
 
 
+Equilibrium 
+--------------------------------------------------------------------------------
 
+**TODO.**
+
+Stability
+--------------------------------------------------------------------------------
+
+Characterization of the long-term behavior of solutions.
 
 
 
