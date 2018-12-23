@@ -2,6 +2,8 @@
 
 import copy
 import json
+import os.path
+import sys
 
 import pandoc
 from pandoc.types import *
@@ -14,14 +16,27 @@ flags:
 
   - target: hidden, slides, notebook or no flag (both targets)
 
+    'hidden' is "exec-only", the nitty-gritty stuff that won't appear anywhere,
+    but is necessary for some side effects such as generating images used by
+    the slides.
+
+    'slides' won't appear in the notebook, but in the slides, and it's
+    also executed
+
+    'notebook' is not executed and appears only in the notebook.
+
   - exec status: no-exec or no flag (exec by default in slides mode only)
+
+    NOTA: no-exec never used so far in the slides.
 
 """
 
 
 # Source Document
 # ------------------------------------------------------------------------------
-doc = pandoc.read(file="doc.txt")
+doc_file = sys.argv[1]
+doc_name = os.path.splitext(doc_file)[0]
+doc = pandoc.read(file=doc_file)
 # TODO: add python writer support in pandoc, add proper pdf quirk mangt
 # pandoc.write(doc, file="doc.py", format="python") # debug
 
@@ -134,7 +149,7 @@ slides_doc = make_slides_doc(doc)
 
 options = ["--standalone", "-V", "theme:white", "--mathjax"]
 
-pandoc.write(slides_doc, file="doc.html", format="revealjs", options=options)
+pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=options)
 
 # Notebook Generation
 # ------------------------------------------------------------------------------
@@ -265,7 +280,7 @@ def notebookify(doc):
     return notebook
 
 notebook = notebookify(notebook_doc)
-output = open("doc.ipynb", "w")
+output = open(doc_name + ".ipynb", "w")
 output.write(json.dumps(notebook, indent=2))
 output.close()
 

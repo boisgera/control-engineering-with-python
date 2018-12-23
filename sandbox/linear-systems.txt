@@ -1,0 +1,127 @@
+% Linear Systems
+
+
+Nonlinear to Linear: Done Before/Reminder
+--------------------------------------------------------------------------------
+
+Steps: (approx): equilibrium, error variables, etc.
+
+Here or in the previous slides ?
+
+Explain LTI concept, with emphasis on LTI ?
+
+
+Standard Form
+--------------------------------------------------------------------------------
+
+(explain Finite-Dim Hyp ?)
+
+  $$
+  \begin{array}{c}
+  \dot{x} &=& A x + B u \\
+  y       &=& C x + D u
+  \end{array}
+  $$
+
+TODO: check well-posedness.
+
+--------------------------------------------------------------------------------
+
+$x \in \mathbb{R}^n,$ $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$.
+
+$A \in \mathbb{R}^{n\times n}$, etc.
+
+
+
+--------------------------------------------------------------------------------
+
+Several "interpretations" of the system, where do we talk about this:
+
+  - "general case" classic IVP, $t \geq 0$, initial condition
+
+But the study can be split in two "extreme" modes (proof !):
+
+  - autonomous mode / internal dynamics: 
+    influence of $x_0$ only, without $u$ or $y$.
+    We can always pick $t_0 = 0$.
+
+  - $x_0 = 0$, input-to-state or input-to-output behavior.
+    Optionnaly, $t_0$ rejected to $-\infty$ (necessary ?).
+
+
+Stability
+--------------------------------------------------------------------------------
+
+Stability concepts simplify/"collapse" for LTI systems:
+
+  - A system is locally A.S. iff it is globally A.S.
+
+**TODO:** explain in two drawings here why.
+
+Therefore we just say "asymptotically stable"
+
+  - The origin is attractive iff it is asymptotically stable.
+
+
+(Q: A.S. qualifier applied to the equilibrium point or system ?)
+
+
+Explicit Solution
+--------------------------------------------------------------------------------
+
+Internal Dynamics:
+
+  $$
+  x(t) = e^{At} x_0
+  $$
+
+(need some details here on exponential, corresponding code with
+`expm`, etc.).
+
+--------------------------------------------------------------------------------
+
+External Dynamics: (variation of the constant):
+
+  $$
+  y(t) = C \int_0^t e^{A(t-s)}B u(s) \, ds + D u(t) 
+  $$
+
+
+Internal (Asymptotic) Stability
+--------------------------------------------------------------------------------
+
+Principles: start with scalar, spent some real time on this.
+
+Then diagonal/vectorial (or more general,
+decoupling), then Jordan block (oops, complex, difficult to motivate)?
+Start with the diagonalisable first (easier to explain), then general 
+case.
+
+--------------------------------------------------------------------------------
+
+Explain change of variable stuff, exponential of Jordan block, etc.
+
+**TODO:** code for that. Example with rooms & heat ? Can we display
+graphically the modes ?
+
+Reminder eigenvalue (and vector), etc.
+
+
+Stability Criteria
+--------------------------------------------------------------------------------
+
+$\dot{x} = A x$ is asymptotically stable iff   
+all eigenvalues of $A$ have a negative real part
+
+
+--------------------------------------------------------------------------------
+
+TODO: deal with eigenvectors too. Need to understand the "modes" associated
+to each eigenvalue/vectors, time constant, oscillatory dynamics, etc.
+
+
+Laplace & I/O Stability
+--------------------------------------------------------------------------------
+
+TODO. New document or not? What to put in this section?
+

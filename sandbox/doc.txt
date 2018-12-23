@@ -20,6 +20,11 @@ stuff that's been overriden.
     from matplotlib.pyplot import *
     %matplotlib notebook 
 
+TODO: 
+
+ - solve the "interactive widgets only appear when the notebook is run twice"
+   issue
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
