@@ -1,6 +1,75 @@
 % Linear Systems
 
 
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    # Python 3.x Standard Library
+    import gc
+    import os
+
+    # Third-Party Packages
+    from numpy import *
+    from matplotlib.pyplot import *
+    from mpl_toolkits.mplot3d import *
+    from scipy.linalg import *
+
+
+    import numpy as np; np.seterr(all="ignore")
+    import numpy.linalg as la
+    import scipy.misc
+    import matplotlib as mpl; mpl.use("Agg")
+    import matplotlib.pyplot as pp
+    import matplotlib.axes as ax
+    import matplotlib.patches as pa
+
+
+    #
+    # Matplotlib Configuration & Helper Functions
+    # --------------------------------------------------------------------------
+    
+    # TODO: also reconsider line width and markersize stuff "for the web
+    #       settings".
+    fontsize = 35
+
+    rc = {
+        "text.usetex": True,
+        "pgf.preamble": [r"\usepackage{amsmath,amsfonts,amssymb}"], 
+        #"font.family": "serif",
+        "font.serif": [],
+        #"font.sans-serif": [],
+        "legend.fontsize": fontsize, 
+        "axes.titlesize":  fontsize,
+        "axes.labelsize":  fontsize,
+        "xtick.labelsize": fontsize,
+        "ytick.labelsize": fontsize,
+        #"savefig.dpi": 300,
+        #"figure.dpi": 300,
+    }
+    mpl.rcParams.update(rc)
+
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
+    # (the "standard" dpi for Web computations) gives 1600 px.
+    width_in = 160 / 9 
+
+    def save(name):
+        cwd = os.getcwd()
+        root = os.path.dirname(os.path.realpath(__file__))
+        os.chdir(root)
+        pp.savefig(name + ".svg")
+        os.chdir(cwd)
+
+    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+        pp.gcf().set_size_inches((width_in, height_in))
+        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+Misc.
+================================================================================
+
 Nonlinear to Linear: Done Before/Reminder
 --------------------------------------------------------------------------------
 
@@ -87,8 +156,92 @@ External Dynamics: (variation of the constant):
   $$
 
 
-Internal (Asymptotic) Stability
+Internal Stability
+================================================================================
+
+Scalar Case
 --------------------------------------------------------------------------------
+
+Consider
+  $$
+  \dot{x} = a x
+  $$
+
+where $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0.0, 2.0, 1000)
+    for a in [-2.0, -1.0, 0.0, 1.0]:
+        A = array([[a]]); x0 = [1.0]
+        x = [expm(A*t_) @ x0 for t_ in t]
+        plot(t, x, label="$a={0}$".format(a))
+    legend(); xlabel("$t$"); grid(); ylim(top=3.0)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    #pp.gcf().subplots_adjust(bottom=0.25, top=0.75, left=0.1, right=0.9, 
+    #                         hspace=0.75)
+    tight_layout()
+    save("images/scalar-LTI")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI.svg)
+
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0.0, 20.0, 1000)
+    A = array([[1.0j]]); x0 = [1.0]
+    x = [expm(A*t_) @ x0 for t_ in t]
+    plot(t, real(x), label="$\mathrm{Re}(x(t))$")
+    plot(t, imag(x), label="$\mathrm{Im}(x(t))$")
+    xlabel("$t$")
+    legend(); grid()
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    #pp.gcf().subplots_adjust(bottom=0.25, top=0.75, left=0.1, right=0.9, 
+    #                         hspace=0.75)
+    tight_layout()
+    save("images/scalar-LTI-alt")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-alt.svg)
+
+--------------------------------------------------------------------------------
+
+    fig = figure()
+    ax = fig.add_subplot(111, projection="3d")
+    zticks = ax.set_zticks
+    x = squeeze(x)
+    ax.plot(t, real(x), imag(x))
+    xticks([0.0, 20.0]); yticks([]); zticks([])
+    ax.set_xlabel("$t$")
+    ax.set_ylabel("$\mathrm{Re}(x(t))$")
+    ax.set_zlabel("$\mathrm{Im}(x(t))$")
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-3d")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/scalar-LTI-3d.svg)
+
+--------------------------------------------------------------------------------
+
 
 Principles: start with scalar, spent some real time on this.
 
@@ -124,4 +277,50 @@ Laplace & I/O Stability
 --------------------------------------------------------------------------------
 
 TODO. New document or not? What to put in this section?
+
+
+
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+
 

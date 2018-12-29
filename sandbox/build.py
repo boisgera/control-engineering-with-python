@@ -86,7 +86,7 @@ for elt in pandoc.iter(code_doc):
             src += text + "\n"
 with open(".tmp.py", "w") as output:
     output.write(src)
-exec(src)
+exec(src, {"__file__": __file__})
 
 # Document Filter
 # ------------------------------------------------------------------------------
