@@ -18,6 +18,7 @@ before_install:
   - conda info -a # debugging
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
+  - ./install_pandoc
 
 install:
   - true
