@@ -4,18 +4,16 @@
 Preamble
 --------------------------------------------------------------------------------
 
-    from numpy import array, linspace, exp, sqrt, meshgrid, vectorize, arange, shape
-    from matplotlib.pyplot import figure, plot, subplots, \
-         xlabel, ylabel, legend, tight_layout, quiver, grid, axis, arrow, \
-         streamplot
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-**TODO:** do the opposite: import everything and REIMPORT from builtins
-stuff that's been overriden.
+    from numpy import *
+    from matplotlib.pyplot import *
 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    from numpy import array, linspace, exp
+    from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
     from matplotlib.pyplot import *
     %matplotlib notebook 
