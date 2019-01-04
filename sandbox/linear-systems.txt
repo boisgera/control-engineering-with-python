@@ -147,6 +147,19 @@ Internal Dynamics:
 (need some details here on exponential, corresponding code with
 `expm`, etc.).
 
+
+Solver
+--------------------------------------------------------------------------------
+
+    @vectorize
+    def x(t):
+        global A, x0
+        A_ = array(A)
+        return expm(A_*t) @ x0
+
+
+
+
 --------------------------------------------------------------------------------
 
 External Dynamics: (variation of the constant):
@@ -159,38 +172,128 @@ External Dynamics: (variation of the constant):
 Internal Stability
 ================================================================================
 
+
+
+
 Scalar Case
 --------------------------------------------------------------------------------
 
-Consider
+
   $$
   \dot{x} = a x
   $$
 
-where $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
+$a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 --------------------------------------------------------------------------------
+    
+    a = 2.0
 
+    A = [[a]]; x0 = [1.0]
     figure()
-    t = linspace(0.0, 2.0, 1000)
-    for a in [-2.0, -1.0, 0.0, 1.0]:
-        A = array([[a]]); x0 = [1.0]
-        x = [expm(A*t_) @ x0 for t_ in t]
-        plot(t, x, label="$a={0}$".format(a))
-    legend(); xlabel("$t$"); grid(); ylim(top=3.0)
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, x(t), "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
 
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    #pp.gcf().subplots_adjust(bottom=0.25, top=0.75, left=0.1, right=0.9, 
-    #                         hspace=0.75)
     tight_layout()
-    save("images/scalar-LTI")
+    save("images/scalar-LTI-2")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/scalar-LTI.svg)
+![](images/scalar-LTI-2.svg)
+
+--------------------------------------------------------------------------------
+    
+    a = 1.0
+
+    A = [[a]]; x0 = [1.0]
+    figure()
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, x(t), "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-1")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-1.svg)
+
+--------------------------------------------------------------------------------
+    
+    a = 0.0
+
+    A = [[a]]; x0 = [1.0]
+    figure()
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, x(t), "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-0")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-0.svg)
+
+--------------------------------------------------------------------------------
+    
+    a = -1.0
+
+    A = [[a]]; x0 = [1.0]
+    figure()
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, x(t), "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-m1")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m1.svg)
+
+--------------------------------------------------------------------------------
+    
+    a = -2.0
+
+    A = [[a]]; x0 = [1.0]
+    figure()
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, x(t), "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-m2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m2.svg)
 
 
 --------------------------------------------------------------------------------
@@ -198,9 +301,8 @@ where $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
     figure()
     t = linspace(0.0, 20.0, 1000)
     A = array([[1.0j]]); x0 = [1.0]
-    x = [expm(A*t_) @ x0 for t_ in t]
-    plot(t, real(x), label="$\mathrm{Re}(x(t))$")
-    plot(t, imag(x), label="$\mathrm{Im}(x(t))$")
+    plot(t, real(x(t)), label="$\mathrm{Re}(x(t))$")
+    plot(t, imag(x(t)), label="$\mathrm{Im}(x(t))$")
     xlabel("$t$")
     legend(); grid()
 
@@ -222,8 +324,8 @@ where $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
     fig = figure()
     ax = fig.add_subplot(111, projection="3d")
     zticks = ax.set_zticks
-    x = squeeze(x)
-    ax.plot(t, real(x), imag(x))
+    xt = squeeze(x(t))
+    ax.plot(t, real(xt), imag(xt))
     xticks([0.0, 20.0]); yticks([]); zticks([])
     ax.set_xlabel("$t$")
     ax.set_ylabel("$\mathrm{Re}(x(t))$")
@@ -274,6 +376,8 @@ to each eigenvalue/vectors, time constant, oscillatory dynamics, etc.
 
 
 Laplace & I/O Stability
+================================================================================
+
 --------------------------------------------------------------------------------
 
 TODO. New document or not? What to put in this section?
