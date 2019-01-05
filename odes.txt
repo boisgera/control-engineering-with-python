@@ -492,33 +492,16 @@ Results
 
 
 
-Well-Posed IVPs
+Well-Posedness
 ================================================================================
 
 --------------------------------------------------------------------------------
 
-**global solution:** a differentiable function 
+So far, we have only dealt with **global** solutions $x(t)$ of IVPs,
+defined for any $t \geq t_0$.
 
-  $$
-  x: t\in  \left[t_0, +\infty \right[ \mapsto x(t) \in \mathbb{R}^n,
-  $$ 
 
-such that:
-
- - $x(t_0) = x_0$ and 
-
- - for every $t \geq 0$, $\dot{x}(t) = f(x(t))$. 
-
-The value $x(t_0)$ is the **initial value**, 
-the time $t_0$ is the **initial time** and 
-the pair $(x_0, t_0)$ is the **initial condition**.
-
------
-
-Local Solutions
---------------------------------------------------------------------------------
-
-The concept of global solution is sometimes too stringent.
+This concept is sometimes too stringent.
 
 Consider for example:
 
@@ -530,14 +513,16 @@ Consider for example:
 
     def fun(t, y):
         return y * y
-    t0, tf, y0 = 0.0, 5.0, array([1.0])
+    t0, tf, y0 = 0.0, 3.0, array([1.0])
     result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
     figure()
     plot(result["t"], result["y"], "k")
+    xlim(t0, tf); xlabel("$t$"); ylabel("$x(t)$")
 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+    tight_layout()
     save("images/finite-time-blowup")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -556,12 +541,11 @@ Ouch.
 
 There is actually no **global** solution. 
 
-However ...
-
------
-
-There is **local** solution defined for $t \in \left[t_0, t_f\right[$  
+However there is **local** solution $x(t)$, 
+defined for $t \in \left[t_0, t_f\right[$
 for some $t_f > t_0$.
+
+--------------------------------------------------------------------------------
 
 Indeed, let $t_f=1$; the function
 
@@ -575,165 +559,51 @@ satisfies
 
   - $x(t_0) = x_0$.
 
------
+--------------------------------------------------------------------------------
 
-**TODO:** another plot (different scale ?) ... or before ?
-Yup before. Makes sense to zoom when faced with the initial
-graph, not after.
+    tf = 1.0
 
------
+    result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
+    figure()
+    plot(result["t"], result["y"], "k")
+    ylim(0.0, 10.0); grid(); xlabel("$t$"); ylabel("$x(t)$")
 
-This solution is also **maximal**:
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/finite-time-blowup-2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/finite-time-blowup-2.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+This local solution is also **maximal**:
 
 You cannot extend this solution beyond $t_f=1.0$.
 
 You know that a local solution is **maximal** when 
 
   $$
-  \lim_{t \to t_f} \|x(t)\| = +\infty.
+  \lim_{t \uparrow t_f} \|x(t)\| = +\infty.
   $$
-
------
-
-The existence of a (at least one) maximal solution of the IVP
-
-  $$
-  \dot{x} = f(x) \; \mbox{ and } \;  x(t_0) = x_0 
-  $$
-
-is guaranteed when  $f$ is continuous.
-
-
-Uniqueness
---------------------------------------------------------------------------------
-
-**TODO.**
-
-Continuity wrt the Initial Value
---------------------------------------------------------------------------------
-
-(and concept of Well-Posedness)
-
-
 
 
 
 --------------------------------------------------------------------------------
 
-#### Example -- Finite-Time Blow-Up
+**TODO:** explain the "out-of-compact" trick ?
 
-Suppose that $x(t)$ is a global solution of the 
-scalar initial-value problem 
-
-  $$
-  x(0) = x_0 > 0 \; \mbox{ and } \; \dot{x} = x^2.
-  $$
-
-Since the initial value of $x(t)$ is positive and for any $t\geq 0$,
-$\dot{x}(t) = x(t)^2 \geq 0$, $x(t)$ is positive for any $t\geq 0$.
-Therefore, the expression $1/x(t)$ is defined and differentiable
-for any such $t$;
-its derivative satisfies
-  $$
-  \frac{d}{dt}\left[ \frac{1}{x(t)}\right]
-  = - \frac{\dot{x}(t)}{x(t)^2}
-  = -1
-  $$
-and thus by integration
-  $$
-  \frac{1}{x(t)} - \frac{1}{x_0} = -t
-  $$
-which leads to
-  $$
-  x(t) = \frac{x_0}{1 - t x_0}.
-  $$
-Thus, the existence of a global solution is impossible:
-such a solution would be undefined at time $t = 1/x_0$.
-
+Exercice - Global Existence
 --------------------------------------------------------------------------------
 
-The concept of local solution can be more appropriate. 
-It is a function $x(t)$ defined when $t$ belongs to 
-some interval $I$ of $\left[t_0, +\infty\right[$ 
-such that for some $\epsilon > 0$, 
-$[t_0, t_0 +\varepsilon] \subset I$
-and for any $t \in I$, 
-$\dot{x}(t) = f(x(t))$. 
-In particular if $x$ is a global solution of the IVP, 
-$I = \left[0, +\infty\right[ = \mathbb{R}$ is acceptable, 
-and thus every global solution is a a local solution.
-
----------------------------------------------------------------------------------
-
-#### Example -- Finite-Time Blow-Up
-We now search for a local solution to the IVP 
-$x(0) = x_0 > 0$ and $\dot{x} = x^2$.
-Since $1 - t x_0 \neq 0$ when $t \neq 1/x_0$, 
-we could define a function
-  $$
-  x(t) = \frac{x_0}{1 - t x_0}
-  $$
-for any $t \in \left]-\infty, 1/x_0\right[ \cup \left]1/x_0, +\infty \right[$,
-but this domain of definition is not an appropriate interval. 
-So instead, we can use the largest subinterval of $\left[0, +\infty \right]$
-that contains $0$, which is $I = \left[0, 1/x_0\right[$. It always contains the
-interval $[0, \varepsilon]$ with $\varepsilon = 1/2x_0 > 0$ for example.
-Additionally, for any $t \in I$
-  $$
-  \dot{x}(t) = - \frac{x_0}{1 - t x_0} \times (-x_0) = 
-  \left( \frac{x_0}{1 - tx_0}\right)^2 = x(t)^2,
-  $$
-hence $x(t)$ is a local solution of the IVP.
-
---------------------------------------------------------------------------------
-
-Existence
---------------------------------------------------------------------------------
-
-### Local Existence
-
-While global solutions may not exist in many cases, 
-a mild condition ensures the existence of at least one local solution:
-that the right-hand side $f$ of the IVP is continuous. 
-Actually, it's pretty easy to design an IVP with discontinuous 
-right-hand side for which even no local solution exist:
-
-#### Example - Discontinuous Vector Field
-Consider the scalar IVP with initial value $x(0) = 0$ and right-hand side
-  $$
-  f(x) = 
-  \left|
-  \begin{array}{rl}
-  +1 & \mbox{if } \; x < 0 \\
-  -1 & \mbox{if } \; x > 0.
-  \end{array}
-  \right.
-  $$
-Assume that $x: I \to \mathbb{R}$ is a local solution of this IVP
-and left $\varepsilon > 0$ be such that $[0,\varepsilon] \subset I$. 
-Since $\dot{x}(0) = +1 > 0$,
-for some small enough $0 < \tau < \epsilon$ and any $t \in [0, \tau]$,
-we have $x(t) > 0$. 
-Consequently, $\dot{x}(t) = -1$ and thus by integration
-  $$
-  x(\tau) =  x(0) + \int_0^{\tau} \dot{x}(t) \, dt = 0 - t < 0,
-  $$
-which is a contradiction. Thus there is no local solution to this IVP.
-
-### Maximal Solutions
-
-**TODO**: existence and "out-of-any-compact" trick.
-
-Statement: ???
-
-### Global Existence
-
-**TODO:** explain contraposition trick / a priori estimate: 
-if we know a maximal solution
-cannot escape some bounded set in a given time range, we also know that
-its "escape time" is out of the range.
-
-### Example -- Global Existence
 Consider the scalar ODE
   $$
   \dot{x} = \frac{e^x}{e^x + 1} 
@@ -759,36 +629,118 @@ $[-t_{\infty}, t_{\infty}]$ which is bounded.
 **TODO** something lacks here and the formulation above should be clear
 before I polish the conclusion here.
 
+Existence
+--------------------------------------------------------------------------------
+
+If $f$ is continuous, there is at least one (local) maximal solution of the IVP
+
+  $$
+  \dot{x} = f(x) \; \mbox{ and } \;  x(t_0) = x_0 
+  $$
+
+(This solution is global iff $t_f = +\infty$.)
+
+Example - Discontinuous Vector Field
+--------------------------------------------------------------------------------
+
+Consider the scalar IVP with initial value $x(0) = 0$ and right-hand side
+  $$
+  f(x) = 
+  \left|
+  \begin{array}{rl}
+  +1 & \mbox{if } \; x < 0 \\
+  -1 & \mbox{if } \; x \geq 0.
+  \end{array}
+  \right.
+  $$
+Assume that $x: I \to \mathbb{R}$ is a local solution of this IVP
+and left $\varepsilon > 0$ be such that $[0,\varepsilon] \subset I$. 
+Since $\dot{x}(0) = +1 > 0$,
+for some small enough $0 < \tau < \epsilon$ and any $t \in [0, \tau]$,
+we have $x(t) > 0$. 
+Consequently, $\dot{x}(t) = -1$ and thus by integration
+  $$
+  x(\tau) =  x(0) + \int_0^{\tau} \dot{x}(t) \, dt = 0 - t < 0,
+  $$
+which is a contradiction. Thus there is no local solution to this IVP.
+
+Uniqueness
+--------------------------------------------------------------------------------
+
+If $\partial f/\partial x$ exists and is continuous,  
+the maximal solution is unique.
+
+--------------------------------------------------------------------------------
+
+### Non-Uniqueness -- <i class="fa fa-superscript"></i> 
+
+Explain why the IVP $\dot{x} = \sqrt{x}$, $x(0) = 0$ 
+may have several maximal solutions. 
+Then, investigate if multiple solutions 
+actually exist.
+
+**Hint.** Consider
+  $$
+  x(t) = 
+  \left| 
+  \begin{array}{ll}
+  0 & \mbox{if} \; t \leq \tau, \\
+  1/4 \times (t-\tau)^2 & \mbox{if} \; t > \tau.
+  \end{array}
+  \right.
+  $$
 
 
+Continuity w.r.t. the Initial State
+--------------------------------------------------------------------------------
 
+If $\partial f / \partial x$ exists and is continuous.  
+
+If $x(t, x_0)$ is defined on $[t_0, t_f[$ and $t\in \left[t_0, t_f\right[$:
+
+ $$
+ x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
+ $$
+
+For any $\tau \in \left[t_0, t_f\right[$,
+this convergence t is uniform w.r.t. $t \in [t_0, \tau]$ 
 
 
 --------------------------------------------------------------------------------
 
-### Uniqueness
+**TODO:** drawing, with circles ...
 
-Uniqueness is guaranteed if
-$f$ is continuous and $\partial f / \partial x$ exists and is 
-continuous.
+--------------------------------------------------------------------------------
+
+**TODO:** Explain that it says nothing about the long-term behavior of the
+error, or the quantitative speed at which two solution diverge.
+
+--------------------------------------------------------------------------------
+
+Well-Posedness
+--------------------------------------------------------------------------------
+
+Well-Posedness = Existence + Uniqueness + Continuity
+
+Necessary condition for the soundness of numerical scheme.
+
+--------------------------------------------------------------------------------
+
+### Exercise -- <i class="fa fa-flask"></i> <i class="fa fa-laptop"></i> <i class="fa fa-superscript"></i>
 
 
-**TODO:** maximal solution (free), refer to example. Explain why that makes sense.
-Also explain why we always define such solution on open intervals
-(a closed one cannot be maximal). Carac des sols maximals (non-bornées) et par
-contraposition, sol max bornées donne global. Exemple ? (vectoriel, lin ou
-a sat avec sigmoide ?).
+$\dot{x} = \sqrt{x}$ again, test numerically, try to make error go to zero,
+see that doesn't work, explain.
 
 
 
-**TODO:** Uniqueness
-
-**TODO:** Well-Posedness.
 
 
-\newpage
 
------
+ODEs: Extra Variants
+================================================================================
+
+--------------------------------------------------------------------------------
 
 We consider the initial-value problem (IVP)
   $$
@@ -797,29 +749,6 @@ We consider the initial-value problem (IVP)
 where $f: I \times U \to \mathbb{R}^n$, $I$ is an open interval of
 $\mathbb{R}$, $t_0 \in I$, $U$ is an open subset of $\mathbb{R}^n$
 and $x_0 \in U$.
-
-A classical solution of this problem is a function $x: J \to \mathbb{R}^n$,
-where $J$ is an open interval of $\mathbb{R}$ such that 
-
-Why open sets ? What do we do with $t$ ?
-
-Continuous right-hand side: delivers local existence. Local existence is
-itself equivalent to existence of maximal solution.
-
-Continuous $\partial f / \partial x$: delivers uniqueness
-(and well-posedness ?)
-
-### Well-Posedness
-
-Local Existence, Maximal Solutions, Uniqueness, Continuity wrt initial values.
-
-Explain why that stuff matters. Uniqueness and continuity is rather obvious,
-but not "robustness". Explain as "extreme chaos", as unability to implement a proper
-numerical simulation ? Think of the pendulum and the initial angle of 
-$\pi/4$ that CANNOT be stored exactly on the computer. Same for the rhs.
-
-ODEs: Extra Variants
-================================================================================
 
 --------------------------------------------------------------------------------
 
@@ -1201,4 +1130,4 @@ input {
 
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
 
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
