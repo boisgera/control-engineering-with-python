@@ -5,7 +5,7 @@ Control Engineering with Python
 
 Notebooks:
 
-[[Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages)
+![[Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages)
 
 
 Slides:
