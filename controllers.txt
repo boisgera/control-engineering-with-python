@@ -1,0 +1,279 @@
+% Controllers
+% Sébastien Boisgérault, Mines ParisTech
+
+Preamble
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    from matplotlib.pyplot import *
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    import matplotlib; matplotlib.use("nbAgg")
+    from matplotlib.pyplot import *
+    %matplotlib notebook 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    # Python 3.x Standard Library
+    import gc
+    import os
+
+    # Third-Party Packages
+    import numpy as np; np.seterr(all="ignore")
+    import numpy.linalg as la
+    import scipy.misc
+    import matplotlib as mpl; mpl.use("Agg")
+    import matplotlib.pyplot as pp
+    import matplotlib.axes as ax
+    import matplotlib.patches as pa
+
+
+    #
+    # Matplotlib Configuration & Helper Functions
+    # --------------------------------------------------------------------------
+    
+    # TODO: also reconsider line width and markersize stuff "for the web
+    #       settings".
+    fontsize = 35
+
+    rc = {
+        "text.usetex": True,
+        "pgf.preamble": [r"\usepackage{amsmath,amsfonts,amssymb}"], 
+        #"font.family": "serif",
+        "font.serif": [],
+        #"font.sans-serif": [],
+        "legend.fontsize": fontsize, 
+        "axes.titlesize":  fontsize,
+        "axes.labelsize":  fontsize,
+        "xtick.labelsize": fontsize,
+        "ytick.labelsize": fontsize,
+        #"savefig.dpi": 300,
+        #"figure.dpi": 300,
+    }
+    mpl.rcParams.update(rc)
+
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
+    # (the "standard" dpi for Web computations) gives 1600 px.
+    width_in = 160 / 9 
+
+    def save(name):
+        cwd = os.getcwd()
+        root = os.path.dirname(os.path.realpath(__file__))
+        os.chdir(root)
+        pp.savefig(name + ".svg")
+        os.chdir(cwd)
+
+    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+        pp.gcf().set_size_inches((width_in, height_in))
+        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+**NOPE, start with general non-linear dynamics** (pendulum example)
+
+  $$
+  \begin{array}{lll}
+  \dot{x} &=& A x + B u \\
+  \end{array}
+  $$
+
+$A \in \mathbb{R}^{n \times n}, B \in \mathbb{R}^{n \times m}$.
+
+
+Commandability
+================================================================================
+
+Definition
+--------------------------------------------------------------------------------
+
+The dynamical system is **commandable** if for any 
+
+  - $t_0 \in \mathbb{R}$, $x_0 \in \mathbb{R}^n$ and $x_f \in \mathbb{R}^n$, 
+
+there are
+
+   - $t_f > 0$ and $u: [t_0, t_f] \to \mathbb{R}^m$
+
+such that 
+
+  $$
+  x(t_f, x_0, t_0) = x_f.
+  $$
+
+Example, Phase plots
+--------------------------------------------------------------------------------
+
+**TODO**: the car, linear acceleration, finish line 100 m.
+
+--------------------------------------------------------------------------------
+
+### Exercise  
+
+The pendulum: 
+
+  - [<i class="fa fa-superscript"></i>]
+    go from stable equilibrium to unstable one in finite-time.
+
+
+  - [<i class="fa fa-laptop"></i>] Simulation.
+
+
+Concepts, Simplifications: LTI case.
+--------------------------------------------------------------------------------
+
+wrt $t_0$, $x_0$, $t_f$, etc.
+
+--------------------------------------------------------------------------------
+
+### Reachable States
+
+Definition: the states $x_f$ that may be reached from $t_0=0$, $x_0=0$ 
+when $t_f = 1$. 
+
+It's a vector space, denoted $\mathcal{R}$.
+
+--------------------------------------------------------------------------------
+
+### Exercise -- <i class="fa fa-superscript"></i>
+
+Car: reach a specific speed at a specific point. Can we maintain ?
+
+
+--------------------------------------------------------------------------------
+
+Kalman controllability matrix:
+
+  $$
+  \mathcal{C} := \left[B, AB, \dots, A^{n-1} B\right]
+  $$
+
+then
+
+  $$
+  \mathcal{R} = \mathrm{Im} \, \mathcal{C}
+  $$
+
+--------------------------------------------------------------------------------
+
+A computational solution would be nice ... try smthin with polynomials (???).
+
+Example
+--------------------------------------------------------------------------------
+
+**TODO**
+
+Kalman Criterion
+--------------------------------------------------------------------------------
+
+The system $\dot{x} = Ax+Bu$ is commandable iff:
+
+  $$
+  \mathrm{rank} \, \left[B, AB, \dots, A^{n-1} B\right] = n
+  $$
+
+
+--------------------------------------------------------------------------------
+
+### Exercise
+
+Show that the commandability has nothing to do with the size of the state vs
+the number of inputs. The nice example here is the chain of integrators of
+course ...
+
+### Exercise
+
+Heat in rooms: where to put the heater(s)/cooler(s) ?
+
+
+Asymptotic Stabilization
+================================================================================
+
+Explain that commandability can be leveraged to stabilize systems.
+
+--------------------------------------------------------------------------------
+
+Assume that $\dot{x} = A x + Bu$ is commandable.
+   
+Then, there is a gain matrix $K \in \mathbb{R}^{n \times m}$,   
+such that the closed-loop dynamics
+
+  $$
+  \begin{array}[ccc]
+  \dot{x} = Ax + B u \\
+  u = - K x
+  \end{array}
+  $$
+
+is asymptotically stable.
+
+
+Pole Placement
+================================================================================
+
+--------------------------------------------------------------------------------
+
+Optimal Control
+================================================================================
+
+--------------------------------------------------------------------------------
+
+
+
+
+
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
