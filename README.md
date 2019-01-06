@@ -3,7 +3,7 @@ Control Engineering with Python
 
 [![Build Status](https://travis-ci.org/boisgera/control-engineering-with-python.svg?branch=master)](https://travis-ci.org/boisgera/control-engineering-with-python)
 
-[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?urlpath=lab)
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages)
 
 <https://boisgera.github.io/control-engineering-with-python>
 
