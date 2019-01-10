@@ -751,8 +751,8 @@ Ouch.
 There is actually no **global** solution. 
 
 However there is **local** solution $x(t)$, 
-defined for $t \in \left[t_0, t_f\right[$
-for some $t_f > t_0$.
+defined for $t \in \left[t_0, \tau\right[$
+for some $\tau > t_0$.
 
 --------------------------------------------------------------------------------
 
@@ -796,13 +796,7 @@ satisfies
 
 This local solution is also **maximal**:
 
-You cannot extend this solution beyond $t_f=1.0$.
-
-You know that a local solution is **maximal** when 
-
-  $$
-  \lim_{t \uparrow t_f} \|x(t)\| = +\infty.
-  $$
+You cannot extend this solution beyond $\tau=1.0$.
 
 
 --------------------------------------------------------------------------------
@@ -812,49 +806,90 @@ Tirer ccl que sol pas maximale.
 
 Ex avec genre $\dot{x} = x^3$ ?
 
+
+
+
+
+
+Local Existence
 --------------------------------------------------------------------------------
 
-**TODO:** explain the "out-of-compact" trick ? Then two examples: bounded rhs
-and prey-predator invariant
+If $f$ is continuous, 
 
-Exercice - Global Existence
+  - There is a (at least one) local solution to the IVP
+
+      $$
+      \dot{x} = f(x) \; \mbox{ and } x(t_0) = x_0 
+      $$
+
+  - Any local solution on some $\left[t_0, \tau \right[$ 
+    can be extended to a (at least one) maximal one 
+    on some $\left[t_0, t_{\infty}\right[$.
+
+  - A maximal solution is global iff $t_{\infty} = +\infty$.
+
+
+Maximal Solutions
 --------------------------------------------------------------------------------
 
-Consider the scalar ODE
-  $$
-  \dot{x} = \frac{e^x}{e^x + 1} 
-  $$
-associated to the initial condition $(t_0=0, x_0=0)$.
-The right-hand side of this equation is continuous, 
-hence at least one maximal solution $x(t)$ defined for 
-$t \in \left[0, t_{\infty}\right[$ exists.
-We can show that $t_{\infty} = +\infty$, or in other words that
-this solution is global. Indeed, the vector field is bounded:
-for any $x \in \mathbb{R}$,
-  $$
-  \left| \frac{e^x}{e^x + 1} \right| \leq 1
-  $$
-and thus, for any finite $t \in \left[0,t_{\infty} \right[$, 
-  $$
-  |x(t)| \leq \int_{0}^ t 1 \, d\tau \leq t.  
-  $$
-Thus, if $t_{\infty}$ is finite, for any 
-$0 \leq t < t_{\infty}$, $x(t)$ belongs to the interval
-$[-t_{\infty}, t_{\infty}]$ which is bounded.
+A local solution on $\left[t_0, \tau \right[$ is maximal when 
 
-**TODO** something lacks here and the formulation above should be clear
-before I polish the conclusion here.
+  $$
+  \lim_{t \uparrow \tau} \|x(t)\| = +\infty.
+  $$
 
-Existence
+### Corollary
+
+If any *potential* local solution $x(t)$ defined on 
+$\left[t_0, \tau\right[$ is bounded on this interval,
+then such a solution exists.  
+It is not maximal (it can be extended).
+
+
 --------------------------------------------------------------------------------
 
-If $f$ is continuous, there is at least one (local) maximal solution of the IVP
+### <i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
+
+Consider
 
   $$
-  \dot{x} = f(x) \; \mbox{ and } \;  x(t_0) = x_0 
+  \dot{x} = \frac{1}{1 + e^{-x}} \mbox{ with } x(0) = x_0 \in \mathbb{R}
   $$
 
-(This solution is global iff $t_f = +\infty$.)
+
+  - [</i><i class="fa fa-superscript"></i>] 
+    Show that there is a (at least one) maximal solution.
+
+  - [<i class="fa fa-superscript"></i>] 
+    Show that any such solution is global.
+
+--------------------------------------------------------------------------------
+
+### <i class="fa fa-question-circle-o"></i> -- Existence / Linear Systems
+
+Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
+  $$
+  \dot{x} = A x \; \mbox{ and } \; x(0) = x_0
+  $$
+
+<i class="fa fa-bullseye"></i> **Aim.** Show that any maximal solution is global.
+
+**TODO:** there exist too ...
+
+--------------------------------------------------------------------------------
+
+  - [</i><i class="fa fa-superscript"></i>] 
+    Show that $y(t) = \|x(t)\|^2$ is differentiable and 
+    satisfies $y(t) \geq 0$ and 
+    $\dot{y}(t) \leq \alpha y(t)$ for some $\alpha \geq 0$.
+
+  - [</i><i class="fa fa-superscript"></i>]
+    Compute the derivative of $y(t) e^{-\alpha t}$ and conclude that
+    $0 \leq y(t) \leq y(0) e^{\alpha t}$.
+
+  - [</i><i class="fa fa-superscript"></i>]
+    Prove that any maximal solution $x(t)$ of the initial IVP is global.
+
 
 Example - Discontinuous Vector Field
 --------------------------------------------------------------------------------
