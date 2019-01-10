@@ -338,23 +338,230 @@ Result
 Numerical Solutions
 ================================================================================
 
+
+
 --------------------------------------------------------------------------------
 
+There are many issues that our basic solver doesn't address:
 
+  - non-autonomous systems
 
-TODO:
+  - error control,
 
-  - concepts (error control, dense output, method order, stiff equation, etc.)
+  - dense outputs,
 
-  - implementation ?
-
-  - use of `scipy.integrate`
+  - and more ...
 
 --------------------------------------------------------------------------------
+
+Instead, use:
 
     from scipy.integrate import solve_ivp
 
 Documentation: [`solve_ivp`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html) (Scipy)
+
+
+Example
+--------------------------------------------------------------------------------
+
+Compute the solution $x(t)$ for $t\in[0,2\pi]$ of the IVP:
+
+  $$
+  \left|
+  \begin{split}
+  \dot{x_1} &= -x_2 \\
+  \dot{x_2} &= +x_1
+  \end{split}
+  \right.
+  \; \mbox{ with } \;
+  \left|
+  \begin{array}{l}
+  x_1(0) = 1\\
+  x_2(0) = 0
+  \end{array}
+  \right.
+  $$
+
+
+Basic Interface
+--------------------------------------------------------------------------------
+
+    def fun(t, y):
+        x1, x2 = y
+        return [-x2, x1]
+    t_span = [0.0, 2*pi]
+    y0 = [1.0, 0.0]
+    result = solve_ivp(fun=fun, t_span=t_span, y0=y0)
+
+Non-Autonomous Systems
+--------------------------------------------------------------------------------
+
+<i class="fa fa-warning"></i> Since the solver is applicable to
+non-autonomous systems 
+
+  $$
+  \dot{y} = f(t, y)
+  $$ 
+the `t` argument in the definition of `fun` is mandatory, 
+even if the returned doesn't depend on it (autonomous system).
+
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0, 2*pi, 1000)
+    plot(t, cos(t), "k--")
+    plot(t, sin(t), "k--")
+    bold = {"lw": 2.0, "ms": 10.0}
+    plot(result["t"], result["y"][0], ".-", label="$x_1(t)$", **bold)
+    plot(result["t"], result["y"][1], ".-", label="$x_2(t)$", **bold)
+    xlabel("$t$"); grid(); legend()
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/solve_ivp_1")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+![](images/solve_ivp_1.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Variable Step Size
+--------------------------------------------------------------------------------
+
+The step size is:
+
+  - variable: $t_{n+1} - t_n$ may not be constant, 
+
+  - automatically selected by the algorithm,
+
+The solver shall meet the user specification,
+but should select the largest step size to do so 
+to minimize the number of computations.
+
+Optionally, you can specify a `max_step` (default: $+\infty$).
+
+
+Error Control
+--------------------------------------------------------------------------------
+
+We generally want to control the error $e(t)$:   
+the difference between the numerical solution and the exact one.
+
+  - `atol` is the **absolute tolerance** (default: $10^{-6}$),
+
+  - `rtol` is the **relative tolerance** (default: $10^{-3}$).
+
+The solver ensures (approximately) that:
+
+  $$
+  |e(t)| \leq \mathrm{atol} + \mathrm{rtol} \times |x(t)|
+  $$
+
+--------------------------------------------------------------------------------
+
+    options = {
+        # at least 20 data points
+        "max_step": 2*pi / 20, 
+        # standard absolute tolerance
+        "atol"    : 1e-6,        
+        # very large relative tolerance
+        "rtol"    : 1e9 
+    }
+    result = solve_ivp(
+        fun=fun, t_span=t_span, y0=y0, 
+        **options
+    )
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0, 2*pi, 20)
+    plot(t, cos(t), "k--")
+    plot(t, sin(t), "k--")
+    bold = {"lw": 2.0, "ms": 10.0}
+    plot(result["t"], result["y"][0], ".-", label="$x_1(t)$", **bold)
+    plot(result["t"], result["y"][1], ".-", label="$x_2(t)$", **bold)
+    xlabel("$t$"); grid(); legend()
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/solve_ivp_2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+![](images/solve_ivp_2.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Dense Output
+--------------------------------------------------------------------------------
+
+Using a small `max_step` is usually the wrong way to "get more data points" 
+since this will trigger many (potentially expensive) evaluations of `fun`.
+
+Instead, use dense outputs: the solver may return  
+the discrete data `result["t"]` and `result["y"]` 
+**and** an approximate 
+solution `result["sol"]` **as a function of `t`**
+with little extra computations.
+
+--------------------------------------------------------------------------------
+
+    options = {
+        "dense_output": True
+    }
+    result = solve_ivp(
+        fun=fun, t_span=t_span, y0=y0, 
+        **options
+    )
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0, 2*pi, 1000)
+    plot(t, cos(t), "k--")
+    plot(t, sin(t), "k--")
+    bold = {"lw": 2.0, "ms": 10.0}
+    y = result["sol"]
+    plot(t, y(t)[0], "-", label="$x_1(t)$", **bold)
+    plot(t, y(t)[1], "-", label="$x_2(t)$", **bold)
+    plot(result["t"], result["y"][0], ".", color="C0", **bold)
+    plot(result["t"], result["y"][1], ".", color="C1", **bold)
+    xlabel("$t$"); grid(); legend()
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/solve_ivp_3")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+![](images/solve_ivp_3.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+<!--
 
 --------------------------------------------------------------------------------
 
@@ -491,6 +698,8 @@ Results
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
+-->
+
 
 Well-Posedness
 ================================================================================
@@ -516,7 +725,7 @@ Consider for example:
     t0, tf, y0 = 0.0, 3.0, array([1.0])
     result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
     figure()
-    plot(result["t"], result["y"], "k")
+    plot(result["t"], result["y"][0], "k")
     xlim(t0, tf); xlabel("$t$"); ylabel("$x(t)$")
 
 
@@ -565,7 +774,7 @@ satisfies
 
     result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
     figure()
-    plot(result["t"], result["y"], "k")
+    plot(result["t"], result["y"][0], "k")
     ylim(0.0, 10.0); grid(); xlabel("$t$"); ylabel("$x(t)$")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -727,21 +936,21 @@ this convergence t is uniform w.r.t. $t \in [t_0, \tau]$
         return array([u, v])
 
     tf = 3.0
-    result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.5])
-    x = result["y"][:,0]
-    y = result["y"][:,1]
+    result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.5], max_step=0.01)
+    x = result["y"][0]
+    y = result["y"][1]
     figure(); ax = gca()
     streamplot(*Q(lambda y: f(0,y), linspace(0.0, 2.0, 1000), linspace(0.0, 2.0, 1000)), color="grey")
-    for xy in zip(x[::500], y[::500]):
+    for xy in zip(x, y):
         x_, y_ = xy
         ax.add_artist(Circle((x_, y_), 0.2, color="C1"))
     ax.add_artist(Circle((x[0], y[0]), 0.1, color="C2"))
 
     plot(x, y, "k")
 
-    result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575])
-    x = result["y"][:,0]
-    y = result["y"][:,1]
+    result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575], max_step=0.01)
+    x = result["y"][0]
+    y = result["y"][1]
     plot(x, y, "k--")
 
     axis([0,2,0,2]); axis("square")
