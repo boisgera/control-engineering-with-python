@@ -1386,6 +1386,68 @@ An equilibrium $x_e$ is:
 
 --------------------------------------------------------------------------------
 
+    def f(xy):
+        x, y = xy
+        dx = -2*x + y
+        dy = -2*y + x
+        return [dx, dy]
+    figure()
+    x = y = linspace(-5.0, 5.0, 1000)
+    streamplot(*Q(f, x, y), color="k") 
+    plot([0], [0], "k.", ms=10.0)
+        
+
+Globally Attractive
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("square")
+    tight_layout()
+    save("images/globally-attractive")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/globally-attractive.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+    def f(xy):
+        x, y = xy
+        dx = -2*x + y**3
+        dy = -2*y + x**3
+        return [dx, dy]
+    figure()
+    x = y = linspace(-5.0, 5.0, 1000)
+    streamplot(*Q(f, x, y), color="k") 
+    plot([0], [0], "k.", ms=10.0)
+        
+
+Locally Attractive
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("square")
+    tight_layout()
+    save("images/locally-attractive")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/locally-attractive.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+        
+
+--------------------------------------------------------------------------------
+
 ### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Stability
 
 Consider a pendulum with a coefficient of friction $k$.
@@ -1411,13 +1473,30 @@ Consider a pendulum with a coefficient of friction $k$.
     the total mechanical energy of the pendulum.
 
 
-TODO
+Attractivity
 --------------------------------------------------------------------------------
 
-Explain uniformity wrt IV; how locally uniform actually means semi-globally
-uniform.
+The equilibrium $x_e$ is globally attractive iff:
 
-Counter-Example
+  - for any $\epsilon > 0$ and for any $x_0$, 
+    there is a $\tau \geq 0$ such that the solution $x(t)$ 
+    with initial state $x(0) = x_0$ (is global and) satisfies:
+
+    $$
+    \|x(t)\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+    $$
+
+<i class="fa fa-warning"></i>
+--------------------------------------------------------------------------------
+
+  - Very close values of $x(0)$ could lead to very different 
+    "speed of convergence" towards the equilibrium.
+
+  - This is not contradictory with the well-posedness assumption:
+    continuity wrt the initial condition only works with finite time spans.
+
+
+Example
 --------------------------------------------------------------------------------
 
   $$
@@ -1446,24 +1525,24 @@ Stream Plot
 --------------------------------------------------------------------------------
 
     def f(xy):
-        x, y = xy[0], xy[1]
+        x, y = xy
         r = sqrt(x*x + y*y)
         dx = x + x * y - (x + y) * r
         dy = y - x * x + (x - y) * r
-        return array([dx, dy])
+        return [dx, dy]
 
 --------------------------------------------------------------------------------
 
     figure()
-    x = arange(-2.0, 2.0, 0.1)
-    y = arange(-2.0, 2.0, 0.1)
-    quiver(*Q(f, x, y)) 
+    x = y = linspace(-2.0, 2.0, 1000)
+    streamplot(*Q(f, x, y), color="k") 
+    plot([1], [0], "k.", ms=10.0)
 
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("equal")
+    axis("square")
     tight_layout()
     save("images/attractive2")
 
@@ -1475,31 +1554,41 @@ Stream Plot
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+--------------------------------------------------------------------------------        
+
+### Example -- Vinograd
+
+    def f(xy):
+        x, y = xy
+        q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
+        dx = (x**2 * (y - x) + y**5) / q
+        dy = y**2 * (y - 2*x) / q
+        return [dx, dy]
+
+
 --------------------------------------------------------------------------------
 
     figure()
+    x = y = linspace(-1.0, 1.0, 1000)
     streamplot(*Q(f, x, y), color="k") 
-        
+    xticks([-1, 0, 1])
+    plot([0], [0], "k.", ms=10.0)
+
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("equal")
+    axis("square")
     tight_layout()
-    save("images/attractive2b")
+    save("images/vinograd")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/attractive2b.svg)    
+![](images/vinograd.svg)    
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-        
-
-
-
 
 
 
