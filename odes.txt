@@ -112,6 +112,66 @@ The **initial condition** $(t_0, x_0)$ is made of
 The set $\mathbb{R}^n$ is the **state space**.
 
 
+Higher-Order ODEs
+--------------------------------------------------------------------------------
+
+Scalar differential equations structured as
+
+  $$
+  x^{(n)}(t) = f(x, \dot{x}, \ddot{x}, \dots, x^{(n-1)})
+  $$
+
+can be converted to the standard form with the state
+ 
+  $$
+  y = (x, \dot{x}, \ddot{x}, \dots, x^{(n-1)}) \in \mathbb{R^n}
+  $$
+
+  $$
+  \begin{array}{lll}
+  \dot{y}_1 &=& y_2 \\
+  \dot{y}_2 &=& y_3 \\
+  \vdots &\vdots& \vdots \\
+  \dot{y}_n = f(y_1, y_2, \dots, y_{n-1})
+  \end{array}
+  $$
+
+
+--------------------------------------------------------------------------------
+
+### Example -- Pendulum
+
+**TODO:** drawing, explain parameters, animation later maybe
+
+Consider
+
+  $$
+  m \ell^2 \ddot{\theta} + m g \ell \sin \theta = 0
+  $$
+
+Introduce the rotational frequency $\omega = \dot{\theta}$.  
+The equation above is equivalent to:
+
+  $$
+  \begin{array}{lll}
+  \dot{\theta} &=& \omega \\
+  \dot{\omega} &=& -(g /\ell) \sin \theta  
+  \end{array}
+  $$
+
+--------------------------------------------------------------------------------
+
+**NOTA:** too early, the `fun` signature is not known yet.
+
+    def pendulum(m=1.0, l=1.0, k=1.0, g=9.81):
+        def fun(t, y):
+            theta, d_theta = y
+            d2_theta = - k / (m * l * l) * d_theta - g / l * sin(theta)
+            return [d_theta, d2_theta]
+        return fun
+            
+
+
 Solution of the IVP 
 --------------------------------------------------------------------------------
 
@@ -162,6 +222,8 @@ Euler Scheme
             t_next, x_next = t + dt, x + dt * f(x)
             ts.append(t_next); xs.append(x_next)
         return (array(ts), array(xs).T)
+
+
 
 
 Visualization
@@ -333,6 +395,8 @@ Result
 ![](images/rotation2.svg)    
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 
 Numerical Solutions
@@ -1274,9 +1338,21 @@ is $x(t) = x_e$ for any $t > 0$.
 
 The state $x_e$ is an equilibrium if and only if $f(x_e) = 0$.
 
+
 --------------------------------------------------------------------------------
 
-### Pendulum
+### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Pendulum
+
+**Reminder:** the pendulum is governed by the equation
+
+  $$
+  m \ell^2 \ddot{\theta} + k \dot{\theta} + m g \ell \sin \theta = 0
+  $$
+
+  - [<i class="fa fa-superscript"></i>] 
+    Find the equilibriums of this dynamics.
+
+
 
 
 Stability
@@ -1294,20 +1370,46 @@ About the long-term behavior of solutions.
 Attractivity
 --------------------------------------------------------------------------------
 
-Consider an ODE $\dot{x} = f(x)$ s.t. the associated IVP is well-posed for
-any initial condition.
+Consider a well-posed ODE $\dot{x} = f(x)$.
 
-An equilibrium $x_e$ is **globally attractive** if
-the solution $x(t)$ of the IVP with $x(0)=x_0$ always 
-exists globally and
-  $$
-  \lim_{t \to +\infty} x(t) = x_e.
-  $$
+An equilibrium $x_e$ is: 
 
-TODO
+  - **globally attractive** if
+    the solution $x(t)$ of the IVP with $x(0)=x_0$ 
+    exists globally for every $x_0$ and
+      $$
+      \lim_{t \to +\infty} x(t) = x_e.
+      $$
+
+  - **locally attractive** if this property holds when $x_0$ 
+    is sufficiently close to the equilibrium $x_e$.
+
 --------------------------------------------------------------------------------
 
-Simple example "that works".
+### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Stability
+
+Consider a pendulum with a coefficient of friction $k$.
+
+  - [<i class="fa fa-gears"></i>] 
+    Is any equilibrium globally attractive?
+
+  - [<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>] 
+    
+    - Assume that $k>0$.
+      Determine graphically the equilibriums which are locally attractive.
+
+    - What happens when $k=0$?
+
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
+    Prove that no equilibrium is locally attractive when $k=0$.  
+    <i class="fa fa-key"></i> **Hint:** study the evolution of 
+      $$
+      E = m (\ell \dot{\theta})^2 / 2 - m g\ell \cos \theta,
+      $$
+    the total mechanical energy of the pendulum.
+
 
 TODO
 --------------------------------------------------------------------------------
