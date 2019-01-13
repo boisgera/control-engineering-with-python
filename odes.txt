@@ -1268,7 +1268,15 @@ Visualized with [Fibre](https://github.com/portsmouth/fibre)
 Equilibrium
 --------------------------------------------------------------------------------
 
-**TODO**
+An **equilibrium** of system $\dot{x} = f(x)$ is a state $x_e$
+such that the maximal solution of this system such that $x(0) = x_e$ 
+is $x(t) = x_e$ for any $t > 0$.
+
+The state $x_e$ is an equilibrium if and only if $f(x_e) = 0$.
+
+--------------------------------------------------------------------------------
+
+### Pendulum
 
 
 Stability
