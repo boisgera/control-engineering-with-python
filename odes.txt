@@ -7,6 +7,7 @@ Preamble
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     from numpy import *
+    from numpy.linalg import *
     from matplotlib.pyplot import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -231,6 +232,8 @@ Visualization
 
 **TODO:** 2D vs 3D, paths vs trajectories in state-space, etc.
 quivers, stream plots, etc.
+
+**TODO:** animations ? (simple, in the phase space, with trailing stuff?)
 
 
 Example
@@ -1374,9 +1377,9 @@ Consider a well-posed ODE $\dot{x} = f(x)$.
 
 An equilibrium $x_e$ is: 
 
-  - **globally attractive** if
-    the solution $x(t)$ of the IVP with $x(0)=x_0$ 
-    exists globally for every $x_0$ and
+  - **globally attractive** if for every $x_0$,
+    the maximal solution $x(t)$ of the IVP with $x(0)=x_0$ 
+    exists for any $t\geq 0$ and
       $$
       \lim_{t \to +\infty} x(t) = x_e.
       $$
@@ -1466,7 +1469,7 @@ Consider a pendulum with a coefficient of friction $k$.
 
   - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
     Prove that no equilibrium is locally attractive when $k=0$.  
-    <i class="fa fa-key"></i> **Hint:** study the evolution of 
+    <i class="fa fa-key"></i> **Hint:** study the evolution in time
       $$
       E = m (\ell \dot{\theta})^2 / 2 - m g\ell \cos \theta,
       $$
@@ -1478,12 +1481,13 @@ Attractivity
 
 The equilibrium $x_e$ is globally attractive iff:
 
-  - for any $\epsilon > 0$ and for any $x_0$, 
-    there is a $\tau \geq 0$ such that the solution $x(t)$ 
-    with initial state $x(0) = x_0$ (is global and) satisfies:
+  - for any $x_0$ and for any $\epsilon > 0$, 
+    there is a $\tau \geq 0$ such that the maximal solution $x(t)$ 
+    such that $x(0) = x_0$ exists for all $t \geq 0$ and 
+    satisfies:
 
     $$
-    \|x(t)\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
     $$
 
 <i class="fa fa-warning"></i>
@@ -1493,7 +1497,7 @@ The equilibrium $x_e$ is globally attractive iff:
     "speed of convergence" towards the equilibrium.
 
   - This is not contradictory with the well-posedness assumption:
-    continuity wrt the initial condition only works with finite time spans.
+    continuity w.r.t. the initial condition only works with finite time spans.
 
 
 Example
@@ -1510,7 +1514,7 @@ Example
 
 --------------------------------------------------------------------------------
 
-In polar coordinates, in the plane:
+Equivalently, in polar coordinates:
 
   $$
   \left|
@@ -1554,6 +1558,48 @@ Stream Plot
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+--------------------------------------------------------------------------------
+
+Make sure that the rhs is time-dependent:
+
+    def fun(t, y):
+        return f(y)
+
+Pick a large time span and an initial state 
+just above the equilibrium $(1.0, 0.0)$:
+
+    t_span = (0.0, 500.0)
+    theta_0 = 2 * pi / 1000
+    y0 = [cos(theta_0), sin(theta_0)]
+
+--------------------------------------------------------------------------------
+
+    y = solve_ivp(fun, t_span, y0=y0, dense_output=True).sol
+    t = linspace(t_span[0], t_span[-1], 1000)
+    figure()
+    x1, x2 = y(t)[0], y(t)[1]
+    plot(t, x1, "C0")
+    plot(t, x2, "C1")
+    grid()
+    xlabel("$t$")
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    #axis("square")
+    tight_layout()
+    save("images/attractive-time")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/attractive-time.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 --------------------------------------------------------------------------------        
 
 ### Example -- Vinograd
@@ -1590,11 +1636,45 @@ Stream Plot
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+**TODO:** exo with Vinograd?
+--------------------------------------------------------------------------------
 
+### <i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
 
+Asymptotic Stability
+--------------------------------------------------------------------------------
 
+Asymptotic stability is a stronger version of attractivity 
+which is by definition robust with respect to the choice of
+the initial state.
 
+--------------------------------------------------------------------------------
 
+The equilibrium $x_e$ is **globally asymptotically stable** if:
+
+  - for any $x_0$ and for any $\epsilon > 0$, 
+    there is a $\tau \geq 0$ **and a $r > 0$
+    such that if $\|x_1 - x_0\| \leq r$**, 
+    the maximal solution $x(t)$ 
+    **such that $x(0) = x_1$** exists for all $t \geq 0$ and 
+    satisfies:
+
+    $$
+    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+    $$
+
+--------------------------------------------------------------------------------
+
+Equivalently (perhaps simpler): 
+
+  - **for any bounded set $B$**, for any $\epsilon > 0$, 
+    there is a $\tau \geq 0$ such that any maximal solution $x(t)$ 
+    **such that $x(0) \in B$** exists for all $t \geq 0$ and 
+    satisfies:
+
+    $$
+    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+    $$
 
 
 
