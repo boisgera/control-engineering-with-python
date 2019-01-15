@@ -67,23 +67,18 @@
 
 
 
-Misc.
+Introduction
 ================================================================================
 
-Nonlinear to Linear: Done Before/Reminder
+
+
+What Are Linear Systems?
 --------------------------------------------------------------------------------
 
-Steps: (approx): equilibrium, error variables, etc.
+**Standard Form:**
 
-Here or in the previous slides ?
-
-Explain LTI concept, with emphasis on LTI ?
-
-
-Standard Form
---------------------------------------------------------------------------------
-
-(explain Finite-Dim Hyp ?)
+input $u \in \mathbb{R}^m$, state $x \in \mathbb{R}^n$, 
+output $y \in \mathbb{R}^p$.
 
   $$
   \begin{array}{c}
@@ -92,15 +87,77 @@ Standard Form
   \end{array}
   $$
 
-TODO: check well-posedness.
+--------------------------------------------------------------------------------
+
+$A \in \mathbb{R}^{n \times n}$, $B \in \mathbb{R}^{n\times n}$,
+$C \in \mathbb{R}^{p \times n}$, $D \in \mathbb{R}^{p \times m}$.
+
+Nonlinear to Linear
+--------------------------------------------------------------------------------
+
+Consider $\dot{x} = f(x, u)$ (and $y = g(x, u)$). 
+
+Assume that $x_e$ is an equilibrium when $u=u_e$:
+
+  $$
+  f(x_e, u_e) = 0
+  $$
+
+(and let $u_e = g(x_e, u_e)$)
+
+Define $\Delta x = x - x_e$, $\Delta u = u - u_e$  
+(and $\Delta y = y - y_e$).
 
 --------------------------------------------------------------------------------
 
-$x \in \mathbb{R}^n,$ $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$.
+Then
 
-$A \in \mathbb{R}^{n\times n}$, etc.
+$$
+\frac{d\Delta x}{dt}
+\simeq 
+\frac{\partial f}{\partial x}(x_e, u_e) \Delta x
++ \frac{\partial f}{\partial x}(x_e, u_e) \Delta u
+$$
+
+$$
+\left(\Delta y 
+\simeq
+\frac{\partial g}{\partial x}(x_e, u_e) \Delta x
++ \frac{\partial g}{\partial x}(x_e, u_e) \Delta u 
+\right)
+$$
 
 
+--------------------------------------------------------------------------------
+
+The delta variables $\Delta x$ and $\Delta u$ satisfy *approximately*
+
+  $$
+  \begin{array}{c}
+  \frac{d \Delta x}{dt} &=& A \Delta x + B \Delta u \\
+  \Delta y       &=& C \Delta x + D \Delta u
+  \end{array}
+  $$
+
+with
+
+  $$
+  \left[
+  \begin{array}{c|c}
+  A &  B \\
+  \hline
+  C &  D
+  \end{array} 
+  \right]
+  = 
+  \left[
+  \begin{array}{c|c}
+  \frac{\partial f}{\partial x} &  \frac{\partial f}{\partial u} \\
+  \hline
+  \frac{\partial g}{\partial x} &  \frac{\partial g}{\partial u}
+  \end{array} 
+  \right](x_e, u_e)
+  $$
 
 --------------------------------------------------------------------------------
 
@@ -178,12 +235,17 @@ Internal Stability
 Scalar Case
 --------------------------------------------------------------------------------
 
-
   $$
   \dot{x} = a x
   $$
 
 $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
+
+**Solution:**
+
+  $$
+  x(t) = x_0 e^{a t}
+  $$
 
 --------------------------------------------------------------------------------
     
@@ -210,7 +272,6 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 --------------------------------------------------------------------------------
     
     a = 1.0
-
     A = [[a]]; x0 = [1.0]
     figure()
     t = linspace(0.0, 3.0, 1000)
@@ -232,7 +293,6 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 --------------------------------------------------------------------------------
     
     a = 0.0
-
     A = [[a]]; x0 = [1.0]
     figure()
     t = linspace(0.0, 3.0, 1000)
@@ -254,7 +314,6 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 --------------------------------------------------------------------------------
     
     a = -1.0
-
     A = [[a]]; x0 = [1.0]
     figure()
     t = linspace(0.0, 3.0, 1000)
@@ -276,7 +335,6 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 --------------------------------------------------------------------------------
     
     a = -2.0
-
     A = [[a]]; x0 = [1.0]
     figure()
     t = linspace(0.0, 3.0, 1000)
@@ -295,12 +353,27 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ![](images/scalar-LTI-m2.svg)
 
+Scalar Case ($\mathbb{C}$)
+--------------------------------------------------------------------------------
+
+  $$
+  \dot{x} = a x
+  $$
+
+$a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
+
+**Solution:** if $a = \sigma + i \omega$ and $x_0 = |x_0| e^{i \angle x_0}$
+
+  $$
+  x(t) = x_0 e^{a t} = (|x_0| e^{\sigma t}) e^{i (\angle x_0 + \omega t)}
+  $$
 
 --------------------------------------------------------------------------------
 
+    a = 1.0j
     figure()
     t = linspace(0.0, 20.0, 1000)
-    A = array([[1.0j]]); x0 = [1.0]
+    A = array([[a]]); x0 = [1.0]
     plot(t, real(x(t)), label="$\mathrm{Re}(x(t))$")
     plot(t, imag(x(t)), label="$\mathrm{Im}(x(t))$")
     xlabel("$t$")
@@ -310,10 +383,8 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    #pp.gcf().subplots_adjust(bottom=0.25, top=0.75, left=0.1, right=0.9, 
-    #                         hspace=0.75)
     tight_layout()
-    save("images/scalar-LTI-alt")
+    save("images/scalar-LTI-alt-1")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -344,30 +415,104 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 --------------------------------------------------------------------------------
 
-
-Principles: start with scalar, spent some real time on this.
-
-Then diagonal/vectorial (or more general,
-decoupling), then Jordan block (oops, complex, difficult to motivate)?
-Start with the diagonalisable first (easier to explain), then general 
-case.
+    a = -0.1 + 1.0j
+    figure()
+    t = linspace(0.0, 20.0, 1000)
+    A = array([[a]]); x0 = [1.0]
+    plot(t, real(x(t)), label="$\mathrm{Re}(x(t))$")
+    plot(t, imag(x(t)), label="$\mathrm{Im}(x(t))$")
+    xlabel("$t$")
+    legend(); grid()
 
 --------------------------------------------------------------------------------
 
-Explain change of variable stuff, exponential of Jordan block, etc.
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-**TODO:** code for that. Example with rooms & heat ? Can we display
-graphically the modes ?
+    tight_layout()
+    save("images/scalar-LTI-alt-2")
 
-Reminder eigenvalue (and vector), etc.
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-alt-2.svg)
+
+--------------------------------------------------------------------------------
+
+    fig = figure()
+    ax = fig.add_subplot(111, projection="3d")
+    zticks = ax.set_zticks
+    xt = squeeze(x(t))
+    ax.plot(t, real(xt), imag(xt))
+    xticks([0.0, 20.0]); yticks([]); zticks([])
+    ax.set_xlabel("$t$")
+    ax.set_ylabel("$\mathrm{Re}(x(t))$")
+    ax.set_zlabel("$\mathrm{Im}(x(t))$")
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-3d-2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/scalar-LTI-3d-2.svg)
+
+
+Scalar Case / Asymptotic Stability
+--------------------------------------------------------------------------------
+
+$\dot{x} = a x$ is asymptotically stable iff $\mathrm{Re} \, a < 0$.
+
+What about the general case?
 
 
 Stability Criteria
 --------------------------------------------------------------------------------
 
-$\dot{x} = A x$ is asymptotically stable iff   
-all eigenvalues of $A$ have a negative real part
+Let $A \in \mathbb{R}^{n \times n}$.
 
+The equilibrium $x_e=0$ of $\dot{x} = A x$ is asymptotically stable iff   
+all eigenvalues of $A$ have a negative real part.
+
+Why?
+--------------------------------------------------------------------------------
+
+If $A$ is diagonalizable with eigenvalues $\{\lambda_1, \dots, \lambda_n\}$,
+there is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
+
+  $$
+  P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
+  \left[
+  \begin{array}{cccc}
+  \lambda_1 & 0         & \cdots & 0 \\
+  0         & \lambda_2 & \cdots & 0 \\
+  \vdots    & \vdots    & \vdots & \vdots \\
+  0         & \cdots    & \cdots & \lambda_n
+  \end{array}
+  \right] 
+  $$
+
+--------------------------------------------------------------------------------
+
+Thus, if $y = P x$, $\dot{x} = A x$ is equivalent to
+
+  $$
+  \left|
+  \begin{array}{ccc}
+  \dot{y}_1 &=& \lambda_1 y_1 \\
+  \dot{y}_2 &=& \lambda_2 y_2 \\
+  \vdots &=& \vdots \\
+  \dot{y}_n &=& \lambda_n y_n \\
+  \end{array}
+  \right.
+  $$
+
+--------------------------------------------------------------------------------
+
+  $$
+  y_i(t) = y_i(0) e^{\lambda_i t}
+  $$
 
 --------------------------------------------------------------------------------
 
