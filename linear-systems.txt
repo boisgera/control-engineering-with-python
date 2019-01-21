@@ -77,7 +77,7 @@ What Are Linear Systems?
 
 **Standard Form:**
 
-input $u \in \mathbb{R}^m$, state $x \in \mathbb{R}^n$, 
+Input $u \in \mathbb{R}^m$, state $x \in \mathbb{R}^n$, 
 output $y \in \mathbb{R}^p$.
 
   $$
@@ -87,54 +87,96 @@ output $y \in \mathbb{R}^p$.
   \end{array}
   $$
 
+Actually, **linear time-invariant (LTI)** systems.
+
 --------------------------------------------------------------------------------
 
-$A \in \mathbb{R}^{n \times n}$, $B \in \mathbb{R}^{n\times n}$,
+$A \in \mathbb{R}^{n \times n}$, $B \in \mathbb{R}^{n\times m}$,
 $C \in \mathbb{R}^{p \times n}$, $D \in \mathbb{R}^{p \times m}$.
+
+
+  $$
+  \left[
+  \begin{array}{c|c}
+  A &  B \\
+  \hline
+  C &  D
+  \end{array} 
+  \right]
+  $$
+
+
+Inputs & Outputs
+--------------------------------------------------------------------------------
+
+  - A system is autonomous (without input) when $m = 0$.
+
+  - When the full state can be measured ($y=x$), $C = I$ and $D=0$.
+
+   
+
 
 Nonlinear to Linear
 --------------------------------------------------------------------------------
 
-Consider $\dot{x} = f(x, u)$ (and $y = g(x, u)$). 
+Consider the nonlinear system
 
-Assume that $x_e$ is an equilibrium when $u=u_e$:
+  $$
+  \begin{array}{ccc}
+  \dot{x} &=& f(x, u) \\
+        y &=& g(x, u)
+  \end{array}
+  $$ 
+
+Assume that $x_e$ is an equilibrium when $u=u_e$ (cst):
 
   $$
   f(x_e, u_e) = 0
   $$
 
-(and let $u_e = g(x_e, u_e)$)
-
-Define $\Delta x = x - x_e$, $\Delta u = u - u_e$  
-(and $\Delta y = y - y_e$).
-
---------------------------------------------------------------------------------
-
-Then
-
-$$
-\frac{d\Delta x}{dt}
-\simeq 
-\frac{\partial f}{\partial x}(x_e, u_e) \Delta x
-+ \frac{\partial f}{\partial x}(x_e, u_e) \Delta u
-$$
-
-$$
-\left(\Delta y 
-\simeq
-\frac{\partial g}{\partial x}(x_e, u_e) \Delta x
-+ \frac{\partial g}{\partial x}(x_e, u_e) \Delta u 
-\right)
-$$
-
+and let 
+  
+  $$
+  y_e = g(x_e, u_e)
+  $$
 
 --------------------------------------------------------------------------------
 
-The delta variables $\Delta x$ and $\Delta u$ satisfy *approximately*
+Define the error variables 
+
+  - $\Delta x = x - x_e$, 
+  
+  - $\Delta u = u - u_e$ and
+
+  - $\Delta y = y - y_e$.
+
+--------------------------------------------------------------------------------
+
+As long as the error variables stay small
+
+  $$
+  f(x, u) 
+  \simeq
+  \overbrace{f(x_e, u_e)}^0 + 
+  \frac{\partial f}{\partial x}(x_e, u_e) \Delta x
+  + \frac{\partial f}{\partial u}(x_e, u_e) \Delta u
+  $$
+
+  $$
+  g(x, u) 
+  \simeq
+  \overbrace{g(x_e, u_e)}^{y_e} + 
+  \frac{\partial g}{\partial x}(x_e, u_e) \Delta x
+  + \frac{\partial g}{\partial u}(x_e, u_e) \Delta u
+  $$
+
+--------------------------------------------------------------------------------
+
+Hence, the error variables satisfy *approximately*
 
   $$
   \begin{array}{c}
-  \frac{d \Delta x}{dt} &=& A \Delta x + B \Delta u \\
+  d(\Delta x)/dt &=& A \Delta x + B \Delta u \\
   \Delta y       &=& C \Delta x + D \Delta u
   \end{array}
   $$
@@ -159,77 +201,108 @@ with
   \right](x_e, u_e)
   $$
 
+
+Asymptotic Stability
 --------------------------------------------------------------------------------
 
-Several "interpretations" of the system, where do we talk about this:
+The equilibrium $x_e$ is locally asymptotically 
+stable for 
 
-  - "general case" classic IVP, $t \geq 0$, initial condition
+ $$\dot{x} = f(x, u_e)$$
 
-But the study can be split in two "extreme" modes (proof !):
+$\Longleftrightarrow$
 
-  - autonomous mode / internal dynamics: 
-    influence of $x_0$ only, without $u$ or $y$.
-    We can always pick $t_0 = 0$.
+The equilibrium $0$ is locally 
+asymptotically stable for 
 
-  - $x_0 = 0$, input-to-state or input-to-output behavior.
-    Optionnaly, $t_0$ rejected to $-\infty$ (necessary ?).
+$$
+\frac{d \Delta x}{dt} = A \Delta x
+$$ 
 
+where $A = \partial f (x_e, u_e) / \partial x.$
 
-Stability
+Solutions of LTI Systems
+================================================================================
+
 --------------------------------------------------------------------------------
 
-Stability concepts simplify/"collapse" for LTI systems:
-
-  - A system is locally A.S. iff it is globally A.S.
-
-**TODO:** explain in two drawings here why.
-
-Therefore we just say "asymptotically stable"
-
-  - The origin is attractive iff it is asymptotically stable.
-
-
-(Q: A.S. qualifier applied to the equilibrium point or system ?)
-
-
-Explicit Solution
---------------------------------------------------------------------------------
-
-Internal Dynamics:
+When we search for the solution of the system
 
   $$
-  x(t) = e^{At} x_0
+  \left|
+  \begin{array}{lll}
+  \dot{x} &=& A x + B u \\
+  y &=& Cx + Du
+  \end{array}
+  \right. \; \mbox{ with } \; x(0) = x_0
   $$
 
-(need some details here on exponential, corresponding code with
-`expm`, etc.).
+we can leverage the linearity of the system.
 
 
-Solver
+Step 1 -- Autonomous system
 --------------------------------------------------------------------------------
 
-    @vectorize
-    def x(t):
-        global A, x0
-        A_ = array(A)
-        return expm(A_*t) @ x0
+### Internal Behavior
 
-
-
-
---------------------------------------------------------------------------------
-
-External Dynamics: (variation of the constant):
+Set $u(t) \equiv 0$; the solution of 
 
   $$
-  y(t) = C \int_0^t e^{A(t-s)}B u(s) \, ds + D u(t) 
+  \dot{x} = A x\; \mbox{ and } \; x(0) = x_0
+  $$
+
+is
+
+  $$
+  x(t) = e^{A t} x_0.
+  $$
+
+
+Step 2 -- Input-Output (I/O) System
+--------------------------------------------------------------------------------
+
+### External Behavior
+
+Set $x_0 = 0$; the solution of
+
+  $$
+  \dot{x} = A x + B u \; \mbox{ and } \; x(0) = 0
+  $$
+
+is
+
+  $$
+  x(t) = \int_{0}^t e^{A(t-s) } B u(s) \, dt
+  $$
+
+Step 3
+--------------------------------------------------------------------------------
+
+In general,
+
+  $$
+  x(t) = e^{A t} x_0 + \int_{0}^t e^{A(t-s) } B u(s) \, dt
+  $$
+
+and thus
+
+  $$
+  y(t) = C e^{A t} x_0 + \int_{0}^t C e^{A(t-s) } B u(s) \, dt + Du(t)
   $$
 
 
 Internal Stability
 ================================================================================
 
+--------------------------------------------------------------------------------
 
+Here **TODO**: local = global, attractivity = G.A.S
+
+    @vectorize
+    def x(t):
+        global A, x0
+        A_ = array(A)
+        return expm(A_*t) @ x0
 
 
 Scalar Case
@@ -388,7 +461,7 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/scalar-LTI-alt.svg)
+![](images/scalar-LTI-alt-1.svg)
 
 --------------------------------------------------------------------------------
 
