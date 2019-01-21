@@ -1247,7 +1247,7 @@ if necessary.
 Prey-Predator Models
 --------------------------------------------------------------------------------
 
-    pp.figure()
+    figure()
 
     Y, X = np.mgrid[0.0:2.0:200j, 0.0:4.0:200j]
 
@@ -1257,10 +1257,10 @@ Prey-Predator Models
     U = alpha * X - beta * X * Y
     V = delta * X * Y - gamma * Y
 
-    pp.axes().set_aspect(1.0)
-    pp.axes().axis([0.0, 4.0, 0.0, 2.0])    
+    axes().set_aspect(1.0)
+    axes().axis([0.0, 4.0, 0.0, 2.0])    
 
-    pp.streamplot(X, Y, U, V, color="k")
+    streamplot(X, Y, U, V, color="k")
 
 
 ## TODO: 
