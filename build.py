@@ -258,6 +258,7 @@ def notebookify(doc):
     blocks = doc[1]
     #print(blocks)
     execution_count = 1
+
     for block in blocks:
         if isinstance(block, CodeBlock):
             source = block[1]
@@ -268,16 +269,20 @@ def notebookify(doc):
             cells.append(code_cell)
         else:
             wrapper = Pandoc(Meta({}), [block])
-            #print(wrapper)
             options = ['-t', 'markdown-smart'] # needed for en-dashes for
             # example: we don't expect Jupyter cells to be smart, so we
             # *disable* the smart output so that '–' won't get represented
             # as '--'.
             source = pandoc.write(wrapper, options=options)
-            markdown_cell = MarkdownCell()
-            markdown_cell['source'] = source
-            cells.append(markdown_cell)
+            if len(cells) >= 1 and cells[-1]["cell_type"] == "markdown":
+                cells[-1]['source'] += "\n" + source
+            else:
+                markdown_cell = MarkdownCell()
+                markdown_cell['source'] = source
+                cells.append(markdown_cell)
     return notebook
+
+
 
 notebook = notebookify(notebook_doc)
 output = open(doc_name + ".ipynb", "w")
