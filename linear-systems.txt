@@ -208,7 +208,9 @@ Asymptotic Stability
 The equilibrium $x_e$ is locally asymptotically 
 stable for 
 
- $$\dot{x} = f(x, u_e)$$
+  $$
+  \dot{x} = f(x, u_e)
+  $$
 
 $\Longleftrightarrow$
 
@@ -245,16 +247,10 @@ Step 1 -- Autonomous system
 
 ### Internal Behavior
 
-Set $u(t) \equiv 0$; the solution of 
+Set $u(t) \equiv 0$; search for the solution of 
 
   $$
   \dot{x} = A x\; \mbox{ and } \; x(0) = x_0
-  $$
-
-is
-
-  $$
-  x(t) = e^{A t} x_0.
   $$
 
 
@@ -263,46 +259,33 @@ Step 2 -- Input-Output (I/O) System
 
 ### External Behavior
 
-Set $x_0 = 0$; the solution of
+Set $x_0 = 0$; search for the solution of
 
   $$
   \dot{x} = A x + B u \; \mbox{ and } \; x(0) = 0
   $$
 
-is
-
-  $$
-  x(t) = \int_{0}^t e^{A(t-s) } B u(s) \, dt
-  $$
-
 Step 3
 --------------------------------------------------------------------------------
 
-In general,
-
-  $$
-  x(t) = e^{A t} x_0 + \int_{0}^t e^{A(t-s) } B u(s) \, dt
-  $$
-
-and thus
-
-  $$
-  y(t) = C e^{A t} x_0 + \int_{0}^t C e^{A(t-s) } B u(s) \, dt + Du(t)
-  $$
+The general solution $x(t)$ is the sum of the internal and external solutions.
 
 
-Internal Stability
+
+Internal Dynamics
 ================================================================================
 
---------------------------------------------------------------------------------
 
-Here **TODO**: local = global, attractivity = G.A.S
+
+
+--------------------------------------------------------------------------------
 
     @vectorize
     def x(t):
         global A, x0
         A_ = array(A)
         return expm(A_*t) @ x0
+
 
 
 Scalar Case
@@ -532,6 +515,98 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 ![](images/scalar-LTI-3d-2.svg)
 
 
+
+--------------------------------------------------------------------------------
+
+### Preamble
+
+If $M \in \mathbb{C}^{n \times n}$,
+the **exponential** is defined as:
+
+  $$
+  e^{M} = \sum_{i=0}^{+\infty} \frac{M^n}{n !} \in \mathbb{C}^{n \times n}
+  $$
+
+--------------------------------------------------------------------------------
+
+
+### <i class="fa fa-warning"></i>
+
+The exponential of a matrix $M$ is *not* 
+the matrix with elements $e^{M_{ij}}$ (the elementwise exponential).
+
+  - elementwise exponential: **`exp`** (`numpy` module),
+
+  - exponential: **`expm`** (`scipy.linalg` module).
+
+
+<i class="fa fa-question-circle-o"></i> Exponential Matrix
+--------------------------------------------------------------------------------
+
+Let 
+  
+  $$
+  M = 
+  \left[
+  \begin{array}{cc}
+  0 & 1 \\
+  1 & 0
+  \end{array}
+  \right]
+  $$
+
+  - [<i class="fa fa-superscript"></i>] Compute the exponential of $M$.
+
+    <i class="fa fa-key"></i> **Hint:**
+    $\cosh x = \frac{e^x + e^{-x}}{2},$
+    $\sinh x = \frac{e^x - e^{-x}}{2}.$
+
+  - [<i class="fa fa-flask"></i>] Check the results with `expm`.
+
+
+--------------------------------------------------------------------------------
+
+Note that
+
+  $$
+  \begin{align}
+  \frac{d}{dt} e^{A t} &= \frac{d}{dt} \sum_{n=0}^{+\infty} \frac{A^n}{n!} t^n \\ 
+  &= \sum_{n=1}^{+\infty} \frac{A^{n}}{(n-1)!} t^{n-1} \\
+  &= A \sum_{n=1}^{+\infty} \frac{A^{n-1}}{(n-1)!} t^{n-1} 
+  = A e^{A t}
+  \end{align}
+  $$
+
+--------------------------------------------------------------------------------
+
+Thus, for any $A \in \mathbb{C}^{n\times n}$ and $x_0 \in \mathbb{C}^n$, 
+
+  $$
+  \frac{d}{dt} (e^{A t} x_0) 
+  = A (e^{At} x_0)
+  $$
+
+
+Internal Dynamics
+--------------------------------------------------------------------------------
+
+The solution of
+
+  $$
+  \dot{x} = A x\; \mbox{ and } \; x(0) = x_0
+  $$
+
+is
+
+  $$
+  x(t) = e^{A t} x_0.
+  $$
+
+--------------------------------------------------------------------------------
+
+Here **TODO** : local = global, attractivity = G.A.S
+
+
 Scalar Case / Asymptotic Stability
 --------------------------------------------------------------------------------
 
@@ -543,10 +618,14 @@ What about the general case?
 Stability Criteria
 --------------------------------------------------------------------------------
 
-Let $A \in \mathbb{R}^{n \times n}$.
+Let $A \in \mathbb{C}^{n \times n}$.
 
-The equilibrium $x_e=0$ of $\dot{x} = A x$ is asymptotically stable iff   
+The origin of $\dot{x} = A x$ is asymptotically stable 
+
+$\Longleftrightarrow$
+   
 all eigenvalues of $A$ have a negative real part.
+
 
 Why?
 --------------------------------------------------------------------------------
@@ -593,14 +672,81 @@ TODO: deal with eigenvectors too. Need to understand the "modes" associated
 to each eigenvalue/vectors, time constant, oscillatory dynamics, etc.
 
 
-Laplace & I/O Stability
+<i class="fa fa-question-circle-o"></i> Stability / 2nd-order system
+--------------------------------------------------------------------------------
+
+Consider the scalar ODE 
+
+  $$
+  \ddot{x} = x
+  $$
+
+  - [<i class="fa fa-superscript"></i>] 
+    Determine the representation of this system 
+    as a first-order ODE with state $(x, \dot{x})$.
+
+  - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
+    Is this system asymptotically stable?
+
+<i class="fa fa-question-circle-o"></i> Stability / Integrators
+--------------------------------------------------------------------------------
+
+Consider the system
+
+  $$
+  \dot{x} = J x 
+  \; \mbox{ with } \; 
+  J = 
+  \left[
+  \begin{array}{cccc}
+  0 & 1 & 0 & \dots & 0 \\
+  0 & 0 & 1 & \dots & 0 \\
+  \vdots & \vdots & \vdots & \vdots & \vdots \\
+  0 & 0 & 0 & \dots & 1 \\
+  0 & 0 & 0 & \dots & 0
+  \end{array}
+  \right]
+  $$
+
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
+    Compute the solution when 
+
+      $$
+      x(0) =
+      \left[
+      \begin{array}{c}
+      0 \\
+      \vdots \\
+      0 \\
+      1
+      \end{array}
+      \right]
+      .$$
+
+  - [<i class="fa fa-gears"></i>] Is the system asymptotically stable ? 
+
+
+
+I/O Behavior
 ================================================================================
 
 --------------------------------------------------------------------------------
 
 TODO. New document or not? What to put in this section?
 
+In general,
 
+  $$
+  x(t) = e^{A t} x_0 + \int_{0}^t e^{A(t-s) } B u(s) \, dt
+  $$
+
+and thus
+
+  $$
+  y(t) = C e^{A t} x_0 + \int_{0}^t C e^{A(t-s) } B u(s) \, dt + Du(t)
+  $$
 
 <style>
 
