@@ -734,19 +734,156 @@ I/O Behavior
 
 --------------------------------------------------------------------------------
 
-TODO. New document or not? What to put in this section?
 
-In general,
+  - Assume that the system is "initially at rest":
+
+    $$
+    x(0) = 0
+    $$
+
+  - Forget about the state $x(t)$ (may be unknown)
+
+  - Study the input/output I/O relationship:
+
+    $$
+    u \to y
+    $$
+
+--------------------------------------------------------------------------------
+
+In this context, we have:
 
   $$
-  x(t) = e^{A t} x_0 + \int_{0}^t e^{A(t-s) } B u(s) \, dt
+  y(t) = \int_0^{t} C e^{A(s-t)} u(s) \, ds + D u(t)
   $$
 
-and thus
+--------------------------------------------------------------------------------
+
+Now, 
+
+   - extend $u(t)$ and $y(t)$ by $0$ when $t<0$ (as **causal signals**).
+
+   - introduce the **Heaviside function** defined by
+
+     $$
+     e(t) = \left|
+     \begin{array}{c}
+     1 & \mbox{if } \; t\geq 0, \\
+     0 & \mbox{if } \; t < 0.
+     \end{array}
+     \right.
+     $$
+
+Impulse Response
+--------------------------------------------------------------------------------
+
+  - define the **impulse response** by:
+
+    $$
+    H(t) = (C e^{At} B) \times e(t) + D \in \mathbb{R}^{p \times m}
+    $$
+
+  - when $p = m = 1$ (single-input & single-output or **SISO** systems),
+    the $1 \times 1$ matrix $H(t)$ is identified to the scalar $h(t)$
+    that is contains:
+
+    $$
+    H(t) = [h(t)]
+    $$
+
+--------------------------------------------------------------------------------
+
+Then, we have:
 
   $$
-  y(t) = C e^{A t} x_0 + \int_{0}^t C e^{A(t-s) } B u(s) \, dt + Du(t)
+  y(t) = \int_{-\infty}^{+\infty} H(t - s) u(s) \, ds 
   $$
+
+and denote $\ast$ this operation
+between $H$ and $u$:
+
+  $$
+  y(t) = (H \ast u) (t)
+  $$
+
+It's called a **convolution**.
+
+
+<i class="fa fa-question-circle-o"></i> Impulse Response / Integrator
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-superscript"></i>] Compute the impulse response of the 
+    system
+  
+    $$
+    \left| 
+    \begin{array}{ccc}
+    \dot{x} &=& u \\
+    y &=& x \\
+    \end{array}
+    \right.
+    $$
+
+    where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
+
+
+<i class="fa fa-question-circle-o"></i> Impulse Response / Double Integrator
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-superscript"></i>] Compute the impulse response of the 
+    system
+  
+    $$
+    \left| 
+    \begin{array}{ccc}
+    \dot{x}_1 &=& x_2 \\
+    \dot{x}_2 &=& u \\
+    y &=& x_1 \\
+    \end{array}
+    \right.
+    $$
+
+    where $u \in \mathbb{R}$, $x=(x_1, x_2)^2 \in \mathbb{R}$ and $y \in \mathbb{R}$.
+
+
+
+<i class="fa fa-question-circle-o"></i> Impulse Response / Gain
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-superscript"></i>] Compute the impulse response of the 
+    system
+  
+    $$
+    y = K u
+    $$
+
+    where $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$ and 
+    $K \in \mathbb{R}^{p \times m}$.
+
+
+
+<i class="fa fa-question-circle-o"></i> Impulse Response / MIMO System
+--------------------------------------------------------------------------------
+
+ -  [<i class="fa fa-superscript"></i>] 
+    Find a linear system with matrices $A$, $B$, $C$, $D$ 
+    whose impulse response is
+
+  $$
+  H(t) = 
+  \left[
+  \begin{array}{cc}
+  e^{t} e(t) & e^{-t} e(t)
+  \end{array}
+  \right]
+  $$
+
+ -  [<i class="fa fa-superscript"></i>] 
+    Is there another set of matrices $A$, $B$, $C$, $D$ with the same
+    impulse response? With a matrix $A$ of a different size?
+
+
+
 
 <style>
 
