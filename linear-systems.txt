@@ -791,6 +791,9 @@ Impulse Response
     H(t) = [h(t)]
     $$
 
+    <i class="fa fa-sticky-note"></i> 
+    **MIMO** refers to multiple-input & multiple-output systems.
+
 --------------------------------------------------------------------------------
 
 Then, we have:
@@ -881,6 +884,206 @@ It's called a **convolution**.
  -  [<i class="fa fa-superscript"></i>] 
     Is there another set of matrices $A$, $B$, $C$, $D$ with the same
     impulse response? With a matrix $A$ of a different size?
+
+
+Laplace Transform
+--------------------------------------------------------------------------------
+
+Associate to a scalar signal $x(t) \in \mathbb{R}$, 
+$t\in \mathbb{R}$,
+the function of a complex argument $s \in \mathbb{C}$:
+
+  $$
+  x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
+  $$
+
+
+<i class="fa fa-warning"></i> Notation
+--------------------------------------------------------------------------------
+
+We use the same symbol (here "$x$") to denote: 
+
+  - a signal $x(t)$ and
+
+  - and its Laplace transform $x(s)$
+ 
+They are two equivalent representations of the same "object", 
+but different mathematical "functions". 
+
+If you fear some ambiguity, use named variables, e.g.:
+
+  $$
+  x(t=1) \, \mbox{ or } \, x(s=1) \, \mbox{ instead of } \, x(1).
+  $$
+
+Vector/Matrix-Valued Signals
+--------------------------------------------------------------------------------
+
+The Laplace transform of a vector-valued signal $x(t) \in \mathbb{R}^n$
+or matrix-valued signals $X(t) \in \mathbb{R}^{m \times n}$ are computed
+elementwise.
+
+  $$
+  x_{i}(s) = \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
+  $$
+
+  $$
+  X_{ij}(s) = \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
+  $$
+
+Rational & Causal Signals
+--------------------------------------------------------------------------------
+
+We will only deal with **rational & causal** signals:
+
+  $$
+  x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda} t\right) e(t)
+  $$
+
+where: 
+
+  - $\Lambda$ is a finite subset of $\mathbb{C}$,
+
+  - for every $\lambda \in \Lambda$, $p_{\lambda}(t)$ is a polynomial in $t$.
+
+--------------------------------------------------------------------------------
+
+  - Such signals are **causal** since $x(t) = 0$ when $t < 0$. 
+
+  - They are **rational** since
+
+      $$
+      x(s) = \frac{n(s)}{d(s)}
+      $$
+
+    where $n(s)$ and $d(s)$ are polynomials.
+
+    <i class="fa fa-sticky-note"></i> Causality $\Leftrightarrow$ $\deg n(s) \leq \deg d(s)$.
+
+
+<i class="fa fa-eye"></i> "Impulses"
+--------------------------------------------------------------------------------
+
+Pick a time constant $\epsilon > 0$ and define
+
+  $$
+  \delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
+  $$
+
+
+--------------------------------------------------------------------------------
+
+    def delta(t, eps=1.0):
+        return exp(-t / eps) / eps * (t >= 0)
+    figure()
+    t = linspace(-1,4,1000)
+    plot(t, delta(t, eps=1.0), label="$\epsilon=1.0$")
+    plot(t, delta(t, eps=0.5), label="$\epsilon=0.5$")
+    plot(t, delta(t, eps=0.25), label="$\epsilon=0.25$")
+    xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
+    legend()
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/impulses")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/impulses.svg)
+
+--------------------------------------------------------------------------------
+
+  $$
+  \begin{split}
+  \delta_{\epsilon}(s) 
+    &= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
+    &= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
+    &= \frac{1}{\epsilon} 
+       \left[ 
+       \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
+       \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
+  \end{split}
+  $$
+
+(assuming that $\mathrm{Re}(s) > -1/\epsilon$)
+
+
+<i class="fa fa-question-circle-o"></i> Laplace Transform / ???
+--------------------------------------------------------------------------------
+
+
+**TODO**
+
+<i class="fa fa-star-o"></i> Convolution & Laplace 
+--------------------------------------------------------------------------------
+
+The Laplace transform simplifies convolution calculus:
+
+  $$
+  y(t) = (h \ast u)(t)
+  \; \Longleftrightarrow \;
+  y(s) = h(s) \times u(s)
+  $$
+
+  $$
+  y(t) = (H \ast u)(t)
+  \; \Longleftrightarrow \;
+  y(s) = H(s) \times u(s)
+  $$
+
+The function $h(s)$ (or $H(s)$) is the **transfer function** of the system
+
+TODO: explain / show block-diagram
+--------------------------------------------------------------------------------
+
+(and associated exercice?)
+
+<i class="fa fa-question-circle-o"></i> Conv + Laplace Transform / ???
+--------------------------------------------------------------------------------
+
+
+**TODO**
+
+
+Impulse Response
+--------------------------------------------------------------------------------
+
+What is the meaning of the signal $h(t)$ ?
+
+--------------------------------------------------------------------------------
+
+  - The "limit" of the signal $\delta_{\epsilon}(t)$ when $\epsilon \to 0$
+    is not defined *as a function* (issue for $t=0$) but as a *generalized
+    function* $\delta(t)$, the **unit impulse**. 
+
+  - This technicality can be avoided in the Laplace domain since
+      $$
+      \delta(s) = \lim_{\epsilon \to 0} \delta_{\epsilon}(s)
+      =
+      \lim_{\epsilon \to 0} \frac{1}{1 + \epsilon s} = 1.
+      $$
+
+--------------------------------------------------------------------------------
+
+Thus, 
+
+ 1. if $u(t) = \delta(t)$ then
+
+ 2. $y(s) = h(s) \times \delta(s) = h(s) \times 1 = h(s)$
+
+ 3. and $y(t) = h(t)$.
+
+**Conclusion:**
+the impulse response $h(t)$ is the output of the system when
+the input is the unit impulse $\delta(t)$.
+
+TODO: UBIBO Stability?
+--------------------------------------------------------------------------------
+
+
 
 
 
