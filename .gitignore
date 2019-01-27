@@ -1,6 +1,9 @@
 # Conda environment
 env
 
+# VS Code
+.vscode
+
 # Misc.
 misc 
 sandbox
