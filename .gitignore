@@ -1,16 +1,14 @@
-
-# conda environment
+# Conda environment
 env
-
-# generated images
-images/*.svg
-
-# Outputs
-*.html
-*.pdf
-*.ipynb
 
 # Misc.
 misc 
 sandbox
 .tmp.py
+
+# Outputs
+images/*.svg
+*.html
+*.pdf
+*.ipynb
+
