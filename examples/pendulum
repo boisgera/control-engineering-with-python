@@ -1,0 +1,25 @@
+
+import numpy as np
+
+_options = {
+  "m": 1.0,
+  "alpha": 0.0,
+  "l": 1.0,
+  "g": 9.81,
+}
+
+def configure(**options):
+    _options.update(options)
+    globals().update(_options)
+    return _options
+
+y0 = [0.0, np.pi/2]
+
+def u(t):
+    return 0.0
+
+def fun(t, y):
+    theta, dtheta = y
+    J = m * l * l
+    d2theta = - g / l * sin(theta) - alpha / J * dtheta + u(t) / J
+    return [dtheta, d2theta]
