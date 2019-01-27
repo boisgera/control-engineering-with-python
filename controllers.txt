@@ -100,28 +100,96 @@ Commandability
 Definition
 --------------------------------------------------------------------------------
 
-The dynamical system is **commandable** if for any 
+The dynamical system $\dot{x} = f(x,u)$ is **commandable** if 
 
-  - $t_0 \in \mathbb{R}$, $x_0 \in \mathbb{R}^n$ and $x_f \in \mathbb{R}^n$, 
+  - for any $t_0 \in \mathbb{R}$, $x_0 \in \mathbb{R}^n$ and $x_f \in \mathbb{R}^n$, 
 
-there are
+  - there are $t_f > 0$ and $u: [t_0, t_f] \to \mathbb{R}^m$ such that
 
-   - $t_f > 0$ and $u: [t_0, t_f] \to \mathbb{R}^m$
+  - the solution such that $x(t_0)=x_0$ satisfies
 
-such that 
+    $$
+    x(t_f) = x_f.
+    $$
 
-  $$
-  x(t_f, x_0, t_0) = x_f.
-  $$
-
-Example, Phase plots
---------------------------------------------------------------------------------
-
-**TODO**: the car, linear acceleration, finish line 100 m.
 
 --------------------------------------------------------------------------------
 
-### Exercise  
+**TODO:**
+
+  - accelerating car as example
+
+  - pendulum movie as demo
+
+  - resolution as exercise
+
+<i class="fa fa-eye"></i> Pendulum
+--------------------------------------------------------------------------------
+
+  $$
+  m \ell^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = u
+  $$
+
+--------------------------------------------------------------------------------
+
+
+    T = 10.0
+    def theta(t):
+        return -2*pi*(t/T)**3 + 3*pi*(t/T)**2
+
+    figure()
+    t = linspace(0.0, T, 1000)
+    grid(True); xlabel("$t$"); title(r"$\theta(t)$")
+    plot(t, theta(t))
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-theta")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/pendulum-theta.svg)
+
+--------------------------------------------------------------------------------
+
+    from autograd import elementwise_grad as d
+    dtheta = d(theta)
+    d2theta = d(dtheta)
+
+--------------------------------------------------------------------------------
+
+    from examples.pendulum import *
+    def u(t):
+        return m * l**2 * d2theta(t) + \
+               b * dtheta(t) + \
+               m * g * sin(theta(t))
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0.0, T, 1000)
+    grid(True); xlabel("$t$"); title("$u(t)$")
+    plot(t, u(t))
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-u")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+--------------------------------------------------------------------------------
+
+![](images/pendulum-u.svg)
+
+
+--------------------------------------------------------------------------------
 
 The pendulum: 
 
@@ -131,6 +199,14 @@ The pendulum:
 
   - [<i class="fa fa-laptop"></i>] Simulation.
 
+
+
+Example, Phase plots
+--------------------------------------------------------------------------------
+
+**TODO**: the car, linear acceleration, finish line 100 m.
+
+--------------------------------------------------------------------------------
 
 Concepts, Simplifications: LTI case.
 --------------------------------------------------------------------------------
