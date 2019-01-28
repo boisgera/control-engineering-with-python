@@ -1,4 +1,4 @@
-import numpy as np
+from numpy import sin
 
 _options = {
   "m": 1.0,
@@ -20,7 +20,7 @@ def u(t):
     return 0.0
 
 def fun(t, y):
-    theta, dtheta = y
+    theta, d_theta = y
     J = m * l * l
-    d2theta = - g / l * sin(theta) - b / J * dtheta + u(t) / J
-    return [dtheta, d2theta]
+    d2_theta = - g / l * sin(theta) - b / J * d_theta + u(t) / J
+    return [d_theta, d2_theta]

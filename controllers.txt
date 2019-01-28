@@ -10,6 +10,7 @@ Preamble
 
     from numpy import *
     from matplotlib.pyplot import *
+    from scipy.integrate import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -100,7 +101,7 @@ Commandability
 Definition
 --------------------------------------------------------------------------------
 
-The dynamical system $\dot{x} = f(x,u)$ is **commandable** if 
+The system $\dot{x} = f(x,u)$ is **commandable** if 
 
   - for any $t_0 \in \mathbb{R}$, $x_0 \in \mathbb{R}^n$ and $x_f \in \mathbb{R}^n$, 
 
@@ -157,21 +158,65 @@ The dynamical system $\dot{x} = f(x,u)$ is **commandable** if
 --------------------------------------------------------------------------------
 
     from autograd import elementwise_grad as d
-    dtheta = d(theta)
-    d2theta = d(dtheta)
+    d_theta = d(theta)
+    d2_theta = d(d_theta)
 
---------------------------------------------------------------------------------
+    def d_theta(t):
+        return 6*pi *(-t**2/T**3 + t/T**2)
 
-    from examples.pendulum import *
-    def u(t):
-        return m * l**2 * d2theta(t) + \
-               b * dtheta(t) + \
-               m * g * sin(theta(t))
+    def d2_theta(t):
+        return -12*pi*t/T**3 + 6*pi/T**2
+
 
 --------------------------------------------------------------------------------
 
     figure()
     t = linspace(0.0, T, 1000)
+    grid(True); xlabel("$t$"); title(r"$\dot{\theta}(t)$")
+    plot(t, d_theta(t))
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-d_theta")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/pendulum-d_theta.svg)
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0.0, T, 1000)
+    grid(True); xlabel("$t$"); title(r"$\ddot{\theta}(t)$")
+    plot(t, d2_theta(t))
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-d2_theta")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/pendulum-d2_theta.svg)
+
+--------------------------------------------------------------------------------
+
+    m = 1.0; l = 1.0; b = 0.1; g = 9.81
+    def u(t):
+        return (m * l**2 * d2_theta(t) + \
+               b * d_theta(t) + \
+               m * g * l * sin(theta(t))) * (t <= T)
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0.0, 2 * T, 1000)
     grid(True); xlabel("$t$"); title("$u(t)$")
     plot(t, u(t))
 
@@ -188,6 +233,43 @@ The dynamical system $\dot{x} = f(x,u)$ is **commandable** if
 
 ![](images/pendulum-u.svg)
 
+--------------------------------------------------------------------------------
+
+    def fun(t, y):
+        theta, d_theta = y
+        J = m * l**2
+        d2_theta = - g / l * sin(theta) \
+                   - b / J * d_theta \
+                   + u(t) / J
+        return [d_theta, d2_theta]
+
+--------------------------------------------------------------------------------
+
+    y0 = [0.0, 0.0]
+    t_span = [0.0, 2*T]
+    result = solve_ivp(fun, t_span, y0, atol=1e-10, dense_output=True)
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(0.0, T, 1000)
+    plot(t, result["sol"](t)[0])
+    grid(True)
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-sol")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+--------------------------------------------------------------------------------
+
+Something wrong here ...
+
+
+![](images/pendulum-sol.svg)
 
 --------------------------------------------------------------------------------
 

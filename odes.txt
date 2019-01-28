@@ -147,7 +147,7 @@ can be converted to the standard form with the state
 Consider
 
   $$
-  m \ell^2 \ddot{\theta} + m g \ell \sin \theta = 0
+  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
   $$
 
 Introduce the rotational frequency $\omega = \dot{\theta}$.  
@@ -156,7 +156,7 @@ The equation above is equivalent to:
   $$
   \begin{array}{lll}
   \dot{\theta} &=& \omega \\
-  \dot{\omega} &=& -(g /\ell) \sin \theta  
+  \dot{\omega} &=& - b \omega -(g /\ell) \sin \theta  
   \end{array}
   $$
 
@@ -167,7 +167,8 @@ The equation above is equivalent to:
     def pendulum(m=1.0, l=1.0, k=1.0, g=9.81):
         def fun(t, y):
             theta, d_theta = y
-            d2_theta = - k / (m * l * l) * d_theta - g / l * sin(theta)
+            J = m * l * l
+            d2_theta = - b / J * d_theta - g / l * sin(theta)
             return [d_theta, d2_theta]
         return fun
             
@@ -1349,7 +1350,7 @@ The state $x_e$ is an equilibrium if and only if $f(x_e) = 0$.
 **Reminder:** the pendulum is governed by the equation
 
   $$
-  m \ell^2 \ddot{\theta} + k \dot{\theta} + m g \ell \sin \theta = 0
+  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
   $$
 
   - [<i class="fa fa-superscript"></i>] 
@@ -1453,17 +1454,17 @@ Locally Attractive
 
 ### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Stability
 
-Consider a pendulum with a coefficient of friction $k$.
+Consider a pendulum with a coefficient of friction $b$.
 
   - [<i class="fa fa-gears"></i>] 
     Is any equilibrium globally attractive?
 
   - [<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>] 
     
-    - Assume that $k>0$.
+    - Assume that $b>0$.
       Determine graphically the equilibriums which are locally attractive.
 
-    - What happens when $k=0$?
+    - What happens when $b=0$?
 
 --------------------------------------------------------------------------------
 
@@ -1471,9 +1472,9 @@ Consider a pendulum with a coefficient of friction $k$.
     Prove that no equilibrium is locally attractive when $k=0$.  
     <i class="fa fa-key"></i> **Hint:** study the evolution in time
       $$
-      E = m (\ell \dot{\theta})^2 / 2 - m g\ell \cos \theta,
+      E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta,
       $$
-    the total mechanical energy of the pendulum.
+    with $J = m\ell^2$, the total mechanical energy of the pendulum.
 
 
 Attractivity
