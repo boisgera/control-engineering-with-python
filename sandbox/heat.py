@@ -5,13 +5,6 @@ from scipy.integrate import *
 from matplotlib.pyplot import *
 from matplotlib.animation import *
 
-
-# TODO: think of the API: one function to generate the config
-# Index / location stuff too complex ?
-# Internalise the ODEs solution in this module or export coeffs ?
-# Movie API ...
-
-
 def make_config(free, sources, initial_temp):
     free = array(free, dtype=bool)
     sources = array(sources, dtype=bool)
@@ -23,11 +16,9 @@ def make_config(free, sources, initial_temp):
     locations = [ij for ij in zip(*locations)]
     n = len(locations)
 
-    #print(locations)
     M = zeros(grid_size)
     for k, ij in enumerate(locations):
         M[ij] = k+1
-    #print(M)
 
     def find(ij):
         return locations.index(ij)
@@ -49,20 +40,15 @@ def make_config(free, sources, initial_temp):
             A[k, l] += 1.0
         if free[ij]:
             A[k, k] -= sum(A[k,:])
- 
-    #print("sources:", sources)
     B = []
     for i in range(n_rows):
         for j in range(n_cols):
-            #print("s:", sources[i, j])
             if sources[i, j] != 0:
                 k = find((i,j))
                 column = zeros(n, dtype=float)
                 column[k] = 1
                 B.append(column)
     B = array(B).T          
-
-    #print("B:", B)
 
 
     x0 = zeros(n)
@@ -140,6 +126,8 @@ def movie(t, x):
     cmap.set_bad("grey",1.0)
 
     image = imshow(to_image(x[0]), interpolation="nearest", animated=True)
+    gca().set_xticks([])
+    gca().set_yticks([])
     clim(0, 100)
     colorbar()
 
@@ -153,6 +141,13 @@ def movie(t, x):
     anim = FuncAnimation(fig, update, frames=zip(t, x), interval=int(1000 / fps), 
                          repeat=False, blit=False)
     show()
+
+C_K = [array(B, dtype=int64)]
+Ai = array(A, dtype=int8)
+for i in range(1, len(y0)):
+    C_K += [Ai @ C_K[-1]]
+C_K = concatenate(C_K, axis=1)
+ 
 
 plot(t, x.T)
 movie(t, x.T) 

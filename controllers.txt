@@ -9,6 +9,8 @@ Preamble
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     from numpy import *
+    from numpy.linalg import *
+    from numpy.testing import *
     from matplotlib.pyplot import *
     from scipy.integrate import *
 
@@ -376,20 +378,63 @@ course ...
 
 Heat in rooms: where to put the heater(s)/cooler(s) ?
 
+--------------------------------------------------------------------------------
+
+### Exercise:
+
+Change of variable when commandability matrix is full rank
+
+--------------------------------------------------------------------------------
+
+### Exercise
+
+Interpret rank default in the commandability matrix as a space that
+can't be reach (make the computations)
+
 
 Asymptotic Stabilization
 ================================================================================
 
+Stabilization
+--------------------------------------------------------------------------------
+When the system 
+
+$$
+\dot{x} = A x, \; x \in \mathbb{R}^n
+$$ 
+
+is not asymptotically stable,
+
+maybe there are some inputs $u \in \mathbb{R}^m$ such that
+
+$$
+\dot{x} = A x + Bu
+$$
+
+that we can use to stabilize asymptotically the system?
+
+
+Linear Feedback
 --------------------------------------------------------------------------------
 
-Explain that commandability can be leveraged to stabilize systems.
+We can try to compute $u$ as 
 
+$$
+u = -K x
+$$ 
+
+fro some $K \in \mathbb{R}^{m \times n}$
+
+
+Closed-Loop Diagram
 --------------------------------------------------------------------------------
 
-Assume that $\dot{x} = A x + Bu$ is commandable.
-   
-Then, there is a gain matrix $K \in \mathbb{R}^{n \times m}$,   
-such that the closed-loop dynamics
+![](images/static/feedback.svg)
+
+Closed-Loop Dynamics
+--------------------------------------------------------------------------------
+
+When
 
   $$
   \begin{array}[ccc]
@@ -398,16 +443,87 @@ such that the closed-loop dynamics
   \end{array}
   $$
 
-is asymptotically stable.
+the state $x \in \mathbb{R}^n$ evolves according to:
+
+  $$
+  \dot{x} = (A - B K) x
+  $$
+
+
+--------------------------------------------------------------------------------
+
+The closed-loop system is asymptotically stable iff every eigenvalue of the
+matrix
+
+$$
+A - B K
+$$
+
+is in the open left-hand plane.
+
+
+Pole Assignment
+--------------------------------------------------------------------------------
+
+  - Assume that $\dot{x} = A x + Bu$ is commandable.
+
+  - Let $\Lambda = \{\lambda_1, \dots, \lambda_n\} \in \mathbb{C}^n$.
+
+Then there is a matrix $K$ such that the set of eigenvalues of $A - B K$ is
+$\Lambda$.
+
+<i class="fa fa-eye"></i> Stabilization/Pole Assignment
+--------------------------------------------------------------------------------
+
+Consider the double integrator $\ddot{x} = u$ 
+
+  $$
+  \frac{d}{dt}
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  =
+  \left[\begin{array}{cx} 0 & 1 \\ 0 & 0\end{array}\right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  +
+  \left[\begin{array}{c} 0 \\ 1 \end{array}\right]
+  u
+  $$
+
+(in standard form)
+
+--------------------------------------------------------------------------------
+
+    from scipy.signal import place_poles
+    A = array([[0, 1], [0, 0]])
+    B = array([[0], [1]])
+    poles = [-1, -2]
+    K = place_poles(A, B, poles).gain_matrix
+
+--------------------------------------------------------------------------------
+
+    assert_almost_equal(K, [[2.0, 3.0]])
+    eigenvalues, _ = eig(A - B @ K)
+    assert_almost_equal(eigenvalue, [-1, -2])
+
+--------------------------------------------------------------------------------
+
+### Exercise
+
+Show on a simple example (block-diagram) how some poles can't be moved if
+the system is not controllable.
+
+--------------------------------------------------------------------------------
+
+**TODO:** redo the pendulum, see how that's better than the open-loop.
 
 
 Pole Placement
-================================================================================
+--------------------------------------------------------------------------------
 
 --------------------------------------------------------------------------------
 
 Optimal Control
-================================================================================
+--------------------------------------------------------------------------------
+
 
 --------------------------------------------------------------------------------
 
