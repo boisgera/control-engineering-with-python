@@ -502,7 +502,7 @@ Consider the double integrator $\ddot{x} = u$
 
     assert_almost_equal(K, [[2.0, 3.0]])
     eigenvalues, _ = eig(A - B @ K)
-    assert_almost_equal(eigenvalue, [-1, -2])
+    assert_almost_equal(eigenvalues, [-1, -2])
 
 --------------------------------------------------------------------------------
 
