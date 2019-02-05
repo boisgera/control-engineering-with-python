@@ -472,6 +472,9 @@ Pole Assignment
 Then there is a matrix $K$ such that the set of eigenvalues of $A - B K$ is
 $\Lambda$.
 
+**TODO:** mention what's going on if $\Lambda$ is not symmetric wrt the
+horizontal axis.
+
 <i class="fa fa-eye"></i> Stabilization/Pole Assignment
 --------------------------------------------------------------------------------
 
@@ -504,6 +507,35 @@ Consider the double integrator $\ddot{x} = u$
     eigenvalues, _ = eig(A - B @ K)
     assert_almost_equal(eigenvalues, [-1, -2])
 
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    x = [real(s) for s in eigenvalues]
+    y = [imag(s) for s in eigenvalues]
+    plot(x, y, "kx", ms=12.0)
+    xticks([-3, -2,-1, 0,1, 2,3])
+    yticks([-3, -2,-1, 0,1, 2,3])
+    plot([0, 0], [-3, 3], "k")
+    plot([-3, 3], [0, 0], "k")   
+    title("Eigenvalues")
+    grid(True)
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("square")
+    axis([-3, 3, -3, 3])
+
+    #tight_layout()
+    save("images/poles-PA")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+--------------------------------------------------------------------------------
+
+![](images/poles-PA.svg)
+
 --------------------------------------------------------------------------------
 
 ### Exercise
@@ -516,18 +548,135 @@ the system is not controllable.
 **TODO:** redo the pendulum, see how that's better than the open-loop.
 
 
-Pole Placement
---------------------------------------------------------------------------------
 
---------------------------------------------------------------------------------
 
 Optimal Control
 --------------------------------------------------------------------------------
 
+Let 
+
+$$\dot{x} = A x + Bu$$
+
+where 
+
+  - $A \in \mathbb{R}^{n\times n}$, $B \in \mathbb{R}^{m\times n}$ and
+
+  - $x(0) = x_0 \in \mathbb{R}^n$ is given.
 
 --------------------------------------------------------------------------------
 
+Find $u(t)$ that minimizes
 
+  $$ 
+  J = \int_0^{+\infty} x(t)^t Q x(t) + u(t)^t R u(t) \, dt
+  $$
+
+where:
+
+  - $Q \in \mathbb{R}^{n \times n}$ and $R \in \mathbb{R}^{m\times m}$,
+
+  - (to be continued ...)
+
+--------------------------------------------------------------------------------
+
+  - $Q$ and $R$ are **symmetric** ($R^t = R$ and $Q^t = Q$),
+
+  - $Q$ and $R$ are **positive semidefinite** (denoted "$>0$")
+
+    $$x^t Q x \geq 0 \, \mbox{ and } \, x^t Q x = 0 \, \mbox{ iff }\, x=0$$
+
+    and
+    
+    $$u^t R u \geq 0 \, \mbox{ and } \, u^t R u = 0 \, \mbox{ iff }\, u=0.$$
+
+Optimal Solution
+--------------------------------------------------------------------------------
+
+Assume that $\dot{x} = A x + Bu$ is commandable.
+
+There is an optimal solution; it is a linear feedback
+
+$$u = - K x$$
+
+The corresponding closed-loop dynamics is asymptotically stable.
+
+Algebraic Riccati Equation
+--------------------------------------------------------------------------------
+
+The gain matrix $K$ is given by
+
+  $$
+  K = R^{-1} B^t \Pi,
+  $$
+  
+ where $\Pi \in \mathbb{R}^{n \times n}$ is the unique matrix such that
+ $\Pi^t = \Pi$, $\Pi > 0$ and
+
+   $$
+   \Pi B R^{-1} B^t \Pi - \Pi A - A^t \Pi - Q = 0.
+   $$
+
+<i class="fa fa-eye"></i> Stabilization/Pole Assignment
+--------------------------------------------------------------------------------
+
+Consider the double integrator $\ddot{x} = u$ 
+
+  $$
+  \frac{d}{dt}
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  =
+  \left[\begin{array}{cx} 0 & 1 \\ 0 & 0\end{array}\right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  +
+  \left[\begin{array}{c} 0 \\ 1 \end{array}\right]
+  u
+  $$
+
+(in standard form)
+
+--------------------------------------------------------------------------------
+
+    from scipy.linalg import solve_continuous_are
+    A = array([[0, 1], [0, 0]])
+    B = array([[0], [1]])
+    Q = array([[1, 0], [0, 1]]); R = array([[1]])
+    Pi = solve_continuous_are(A, B, Q, R)
+    K = inv(R) @ B.T @ Pi
+    eigenvalues, _ = eig(A - B @ K)
+    assert all([real(s) < 0 for s in eigenvalues])
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    x = [real(s) for s in eigenvalues]
+    y = [imag(s) for s in eigenvalues]
+    plot(x, y, "kx", ms=12.0)
+    xticks([-2, -1, 0, 1, 2])
+    yticks([-2, -1, 0, 1, 2])
+    plot([0, 0], [-2, 2], "k")
+    plot([-2, 2], [0, 0], "k")   
+    grid(True)
+    title("Eigenvalues")
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("square")
+    axis([-2, 2, -2, 2])
+    save("images/poles-LQ")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/poles-LQ.svg)
+
+--------------------------------------------------------------------------------
+
+<i class="fa fa-question-circle-o"></i> Optimal Control / Asymmetry
+--------------------------------------------------------------------------------
+
+ - [<i class='fa fa-gears'></i>] What can be done if $Q$ and/or $R$ is not symmetric?
 
 
 
