@@ -3,3 +3,4 @@
 ./build.py odes.txt
 ./build.py linear-systems.txt
 ./build.py controllers.txt
+./build.py observers.txt

@@ -1,0 +1,163 @@
+% Observers
+% Sébastien Boisgérault, Mines ParisTech
+
+Preamble
+================================================================================
+
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    from numpy.linalg import *
+    from numpy.testing import *
+    from matplotlib.pyplot import *
+    from scipy.integrate import *
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    import matplotlib; matplotlib.use("nbAgg")
+    from matplotlib.pyplot import *
+    %matplotlib notebook 
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    # Python 3.x Standard Library
+    import gc
+    import os
+
+    # Third-Party Packages
+    import numpy as np; np.seterr(all="ignore")
+    import numpy.linalg as la
+    import scipy.misc
+    import matplotlib as mpl; mpl.use("Agg")
+    import matplotlib.pyplot as pp
+    import matplotlib.axes as ax
+    import matplotlib.patches as pa
+
+
+    #
+    # Matplotlib Configuration & Helper Functions
+    # --------------------------------------------------------------------------
+    
+    # TODO: also reconsider line width and markersize stuff "for the web
+    #       settings".
+    fontsize = 35
+
+    rc = {
+        "text.usetex": True,
+        "pgf.preamble": [r"\usepackage{amsmath,amsfonts,amssymb}"], 
+        #"font.family": "serif",
+        "font.serif": [],
+        #"font.sans-serif": [],
+        "legend.fontsize": fontsize, 
+        "axes.titlesize":  fontsize,
+        "axes.labelsize":  fontsize,
+        "xtick.labelsize": fontsize,
+        "ytick.labelsize": fontsize,
+        #"savefig.dpi": 300,
+        #"figure.dpi": 300,
+    }
+    mpl.rcParams.update(rc)
+
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
+    # (the "standard" dpi for Web computations) gives 1600 px.
+    width_in = 160 / 9 
+
+    def save(name):
+        cwd = os.getcwd()
+        root = os.path.dirname(os.path.realpath(__file__))
+        os.chdir(root)
+        pp.savefig(name + ".svg")
+        os.chdir(cwd)
+
+    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+        pp.gcf().set_size_inches((width_in, height_in))
+        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Observability
+================================================================================
+
+Definition
+--------------------------------------------------------------------------------
+
+ TODO: find appropriate statement for nonlinear case.
+Do we talk about $u$ or have everything depend on $t$ or restrict the 
+definition to the (too limited) autonomous case?
+
+The system 
+
+$$
+\left|
+\begin{array}{rcl}
+\dot{x} &=& f(x,u) \\
+y &=& g(x,u)
+\end{array}
+\right.
+$$ 
+
+is **observable** if   
+
+....
+
+--------------------------------------------------------------------------------
+
+
+Observer Design
+================================================================================
+
+
+
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
