@@ -388,6 +388,24 @@ where:
 
   - $Q$ and $R$ are **positive semidefinite** (denoted "$>0$")
 
+Heuristics
+--------------------------------------------------------------------------------
+
+If it is known that there is a large state disturbance but small output
+disturbance, it makes sense to reduce the impact of the state disturbance
+in the composition of $J$, hence to select a small $Q$ wrt $R$.
+
+--------------------------------------------------------------------------------
+
+To balance the impact of the state disturbance and output disturbance error,
+one may set:
+
+$$
+Q^{-1} = \mathbb{E} v(t)^t v(t),
+R^{-1} = \mathbb{E} w(t)^t w(t).
+$$
+
+
 
 Optimal Solution
 --------------------------------------------------------------------------------
@@ -434,14 +452,118 @@ $$
 (A, B, Q, R) = (A^t, C^t, Q^{-1}, R^{-1})
 $$
 
-then define $\Sigma = \Pi^t$; the optimal observer gain is 
+then
 
-  $$
-  L = \Sigma C^t R.
-  $$
+$\Sigma = \Pi^t$ and $L = K^t.$
+
+<i class="fa fa-eye"></i> Kalman Filter
+--------------------------------------------------------------------------------
+
+Consider the system 
+$$
+\begin{split}
+\dot{x} &= v\\
+y &= x + w
+\end{split}
+$$
+
+If we believe that the state and output perturbation are of the same scale, 
+we may try
+
+$$
+Q=[1.0], R=[1.0]
+$$
+
+--------------------------------------------------------------------------------
+
+With $\Sigma = [\sigma]$, the filtering Ricatti equation becomes
+
+$$
+\sigma^2 - 2\sigma  - 1 = 0
+$$
+
+whose only positive solution is
+
+$$
+\sigma = \frac{2 + \sqrt{(-2)^2 - 4\times 1 \times (-1)}}{2} = 1+\sqrt{2}.
+$$
+
+--------------------------------------------------------------------------------
+
+With $L = [\ell]$, we end up with
+
+$\ell = \sigma = 1 + \sqrt{2}.$
+
+Thus, the optimal filter is
+
+$$
+\begin{split}
+d\hat{x}/dt &= - (1+\sqrt{2})(\hat{y} - y)\\
+\hat{y} &= \hat{x}
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+    def f(t, y):
+        return 2 * cos(t)
+    def g(y):
+        return round_(y)
+
+    y0 = [10.0]
+    tspan = [0.0, 20.0]
+    result = solve_ivp(f, tspan, y0, dense_output=True)
+    t = linspace(tspan[0], tspan[-1], 1000)
+    x = result["sol"](t)[0]
+
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(t, x, "k", label=r"$x(t)$")
+    output = lambda t: g(result["sol"](t)[0])
+    plot(t, output(t), "k--", label=r"$y(t)$")
+    grid(True)
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/K")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/K.svg)
 
 
 --------------------------------------------------------------------------------
+
+    def f(t, y):
+        return - (1+ sqrt(2)) * (y[0] - output(t))
+
+    y0 = [0.0]
+    result2 = solve_ivp(f, tspan, y0, dense_output=True)
+    t = linspace(tspan[0], tspan[-1], 1000)
+    x_hat = result2["sol"](t)[0]
+
+
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(t, x, "k", label=r"$x(t)$")
+    plot(t, output(t), "k--", label=r"$y(t)$")
+    plot(t, x_hat, "g")
+    grid(True)
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/K2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/K2.svg)
+
 
 TODO: Observer-Controller Design
 ================================================================================
