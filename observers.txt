@@ -335,6 +335,119 @@ Consider the double integrator $\ddot{y} = u$
 
 **TODO:** simulation (with $u=0$).
 
+Kalman Filtering
+================================================================================
+
+Setting
+--------------------------------------------------------------------------------
+
+Consider $\dot{x} = A x, \; y = Cx$ where: 
+
+  - the state $x(t)$ is unknown ($x(0)$ is unknown),
+  
+  - only (a noisy version of) $y(t)$ is available.
+
+We want a sensible estimation $\hat{x}(t)$ of $x(t)$.
+
+--------------------------------------------------------------------------------
+
+We now assume the existence of state and output disturbances 
+$v(t)$ and $w(t)$ (deviations from the exact dynamics)
+
+$$
+\left|
+\begin{split}
+\dot{x} &= A x + v \\
+y &= C x + w
+\end{split}
+\right.
+$$
+
+Thes disturbances (or "noises") are unknown; we are searching for the
+estimate $\hat{x}(t)$ of $x(t)$ that
+requires the smallest deviation from the exact dynamics to explain the data.
+
+--------------------------------------------------------------------------------
+
+For a known $y(t)$, among all possible trajectories $x(t)$ of the system,
+find the one that minimizes
+
+  $$ 
+  J = \int_0^{+\infty} v(t)^t Q v(t) + w(t)^t R w(t) \, dt
+  $$
+
+where:
+
+  - $Q \in \mathbb{R}^{n \times n}$ and $R \in \mathbb{R}^{p\times p}$,
+
+  - (to be continued ...)
+
+--------------------------------------------------------------------------------
+
+  - $Q$ and $R$ are **symmetric** ($R^t = R$ and $Q^t = Q$),
+
+  - $Q$ and $R$ are **positive semidefinite** (denoted "$>0$")
+
+
+Optimal Solution
+--------------------------------------------------------------------------------
+
+Assume that $\dot{x} = A x, \; y = Cx$ is observable.
+
+There is a state estimation $\hat{x}(t)$, 
+given for some $L \in \mathbb{R}^{n \times p}$ as the solution of
+
+$$
+\left|
+\begin{split}
+d\hat{x}/dt &= A \hat{x} - L (\hat{y} - y)\\
+\hat{y} &= C \hat{x}
+\end{split}
+\right.
+$$
+
+The dynamics of the corresponding estimation error 
+$e(t) = \hat{x}(t) - x(t)$ is asymptotically stable.
+
+Algebraic Riccati Equation
+--------------------------------------------------------------------------------
+
+The gain matrix $L$ is given by
+
+  $$
+  L = \Sigma C^t R,
+  $$
+  
+ where $\Sigma \in \mathbb{R}^{n \times n}$ is the unique matrix such that
+ $\Sigma^t = \Sigma$, $\Sigma > 0$ and
+
+   $$
+   \Sigma C^t R C \Sigma - \Sigma A^t - A \Sigma - Q^{-1} = 0.
+   $$
+
+Optimal Control $\leftrightarrow$ Filter
+--------------------------------------------------------------------------------
+
+Solve the Ricatti equation for optimal control with 
+
+$$
+(A, B, Q, R) = (A^t, C^t, Q^{-1}, R^{-1})
+$$
+
+then define $\Sigma = \Pi^t$; the optimal observer gain is 
+
+  $$
+  L = \Sigma C^t R.
+  $$
+
+
+--------------------------------------------------------------------------------
+
+TODO: Observer-Controller Design
+================================================================================
+
+--------------------------------------------------------------------------------
+
 <style>
 
 .reveal section img {
