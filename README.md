@@ -3,12 +3,12 @@
 Control Engineering with Python
 ================================================================================
 
-Notebooks:
+### Notebooks
 
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages)
 
 
-Program:
+### Program
 
  0. Introduction to Control Engineering (30 min)
 
