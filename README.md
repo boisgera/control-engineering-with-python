@@ -8,7 +8,7 @@ Control Engineering with Python
 [![Launch Binder][binder-badge]][CEIP-binder]
 
 [binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg?style=flat-square
-[CEIP]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
+[CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
 
 
 ### Program
