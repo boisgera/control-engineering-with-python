@@ -84,23 +84,108 @@ Preamble
 Introduction to ODEs
 ================================================================================
 
---------------------------------------------------------------------------------
-
-First pass, basic concepts, some visualisation tools
-
---------------------------------------------------------------------------------
-
-Initial Value Problem 
+Vector Field
 --------------------------------------------------------------------------------
 
 Let $n \in \mathbb{N}^*$ and $f:\mathbb{R}^n \to \mathbb{R}^n$. 
 
-The **initial-value problem** (IVP) with **right-hand side** 
-(or **vector field**) $f$ refers to:
+Visualize $f(x)$ as an arrow with origin the point $x$.
 
-  $$
-  \dot{x} = f(x) \; \mbox{ and } \;  x(t_0) = x_0 
-  $$
+In the plane ($n=2$), use [quiver](https://matplotlib.org/api/_as_gen/matplotlib.pyplot.streamplot.html) (Matplotlib).
+
+
+Q Helper
+--------------------------------------------------------------------------------
+
+    def Q(f, xs, ys):
+        X, Y = meshgrid(xs, ys)
+        fx = vectorize(lambda x, y: f([x, y])[0])
+        fy = vectorize(lambda x, y: f([x, y])[1])
+        return X, Y, fx(X, Y), fy(X, Y)
+
+Vector Field / Example
+--------------------------------------------------------------------------------
+
+Consider $f(x,y) = (-y, x).$
+
+    def f(xy):
+        x, y = xy
+        return array([-y, x])
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    x = y = linspace(-1.0, 1.0, 20)
+    gca().set_aspect(1.0); grid(True)
+    quiver(*Q(f, x, y)) 
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/test_Q")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/test_Q.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Ordinary Differential Equations (ODEs)
+--------------------------------------------------------------------------------
+
+A solution of $\dot{x} = f(x)$ is
+
+- a function $x:I \to \mathbb{R}^n$,
+
+- defined on a (possibly unbounded) interval $I$ of $\mathbb{R}$,
+
+- such that for every $t \in I,$
+
+  $$\dot{x}(t) = dx(t)/dt = f(x(t)).$$
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    x = y = linspace(-1.0, 1.0, 20)
+    gca().set_aspect(1.0); grid(True)
+    streamplot(*Q(f, x, y), color="k") 
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/test_Q2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/test_Q2.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+Initial Value Problem 
+--------------------------------------------------------------------------------
+
+Solutions $x(t)$, for $t\geq t_0$, of
+
+$$
+\dot{x} = f(x)
+$$
+
+such that
+
+$$
+x(t_0) = x_0 \in \mathbb{R}^n.
+$$
+
 
 --------------------------------------------------------------------------------
 
@@ -128,12 +213,14 @@ can be converted to the standard form with the state
   y = (x, \dot{x}, \ddot{x}, \dots, x^{(n-1)}) \in \mathbb{R^n}
   $$
 
+--------------------------------------------------------------------------------
+
   $$
-  \begin{array}{lll}
+  \begin{array}{ccl}
   \dot{y}_1 &=& y_2 \\
   \dot{y}_2 &=& y_3 \\
   \vdots &\vdots& \vdots \\
-  \dot{y}_n = f(y_1, y_2, \dots, y_{n-1})
+  \dot{y}_n &=& f(y_1, y_2, \dots, y_{n-1})
   \end{array}
   $$
 
@@ -142,16 +229,19 @@ can be converted to the standard form with the state
 
 ### Example -- Pendulum
 
-**TODO:** drawing, explain parameters, animation later maybe
-
 Consider
 
   $$
   m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
   $$
 
-Introduce the rotational frequency $\omega = \dot{\theta}$.  
-The equation above is equivalent to:
+**TODO:** drawing
+
+--------------------------------------------------------------------------------
+
+Introduce the rotational frequency $\omega = \dot{\theta}$. 
+
+The pendulum dynamics is equivalent to:
 
   $$
   \begin{array}{lll}
@@ -162,17 +252,38 @@ The equation above is equivalent to:
 
 --------------------------------------------------------------------------------
 
-**NOTA:** too early, the `fun` signature is not known yet.
-
-    def pendulum(m=1.0, l=1.0, k=1.0, g=9.81):
-        def fun(t, y):
-            theta, d_theta = y
-            J = m * l * l
-            d2_theta = - b / J * d_theta - g / l * sin(theta)
-            return [d_theta, d2_theta]
-        return fun
+    m=1.0; b=0.0; l=1.0; g=9.81
+    def f(theta_d_theta):
+        theta, d_theta = theta_d_theta
+        J = m * l * l
+        d2_theta = - b / J * d_theta - g / l * sin(theta)
+        return array([d_theta, d2_theta])
             
 
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    theta = linspace(-1.5 * pi, 1.5 * pi, 100)
+    d_theta = linspace(-5.0, 5.0, 100)
+    grid(True)
+    xticks([-pi, 0, pi], [r"$-\pi$", "$0$", r"$\pi$"])
+    streamplot(*Q(f, theta, d_theta), color="k") 
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/streamplot_pendulum")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/streamplot_pendulum.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Solution of the IVP 
 --------------------------------------------------------------------------------
@@ -260,42 +371,6 @@ Example
 --------------------------------------------------------------------------------
 
 
-
-[Quiver](https://matplotlib.org/api/_as_gen/matplotlib.pyplot.streamplot.html) Helper
---------------------------------------------------------------------------------
-
-    def Q(f, xs, ys):
-
-        #print("f", f)
-
-        X, Y = meshgrid(xs, ys)
-        fx = vectorize(lambda x, y: f([x, y])[0])
-        fy = vectorize(lambda x, y: f([x, y])[1])
-        return X, Y, fx(X, Y), fy(X, Y)
-
---------------------------------------------------------------------------------
-
-    def f(xy):
-        return array([-xy[1], xy[0]])
-    figure()
-    x = arange(0.0, 2.0, 0.1)
-    y = arange(-1.0, 2.0, 0.1)
-    quiver(*Q(f, x, y)) 
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    save("images/test_Q")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Result
---------------------------------------------------------------------------------
-
-![](images/test_Q.svg)    
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
