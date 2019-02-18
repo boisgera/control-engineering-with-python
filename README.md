@@ -14,7 +14,7 @@ Control Engineering with Python
 
  1. [Introduction to Dynamical Systems](https://boisgera.github.io/control-engineering-with-python/odes.html)
 
-      - Introduction to ODEs: definitions, numerical schemes, vizualisation (30 min). 
+      - ODEs: definitions, numerical schemes, vizualisation (30 min). 
 
       - Well-posedness of IVPs (30 min).
 
