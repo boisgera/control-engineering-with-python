@@ -43,7 +43,7 @@ Control Engineering with Python
 
       - Observer design: pole assignment & optimal filtering (1h)
 
- 5. Application to mobile robotics
+ 5. Application to mobile robotics (2 days)
 
       - Lagrangian mechanics
 
