@@ -81,7 +81,7 @@ Preamble
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-Introduction to ODEs
+Introduction
 ================================================================================
 
 Vector Field
@@ -171,7 +171,7 @@ A solution of $\dot{x} = f(x)$ is
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-Initial Value Problem 
+Initial Value Problem (IVP)
 --------------------------------------------------------------------------------
 
 Solutions $x(t)$, for $t\geq t_0$, of
@@ -195,7 +195,8 @@ The **initial condition** $(t_0, x_0)$ is made of
 
   - the **initial value** or **initial state** $x_0 \in \mathbb{R}^n$.
  
-The set $\mathbb{R}^n$ is the **state space**.
+The set $\mathbb{R}^n$ is the **state space**,  
+$x(t)$ the **state at time** $t$.
 
 
 Higher-Order ODEs
@@ -225,28 +226,29 @@ can be converted to the standard form with the state
   $$
 
 
+<i class="fa fa-eye"></i> Pendulum
 --------------------------------------------------------------------------------
 
-### Example -- Pendulum
+![](images/static/pendulum.svg)
 
-Consider
+--------------------------------------------------------------------------------
+
+If $b \geq 0$ is the friction coefficient, the dynamics is:
 
   $$
   m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
   $$
 
-**TODO:** drawing
-
 --------------------------------------------------------------------------------
 
-Introduce the rotational frequency $\omega = \dot{\theta}$. 
+Introduce the rotational frequency $\omega = \dot{\theta}$ in rad/sec. 
 
 The pendulum dynamics is equivalent to:
 
   $$
   \begin{array}{lll}
   \dot{\theta} &=& \omega \\
-  \dot{\omega} &=& - b \omega -(g /\ell) \sin \theta  
+  \dot{\omega} &=& - (b/m\ell^2) \omega -(g /\ell) \sin \theta  
   \end{array}
   $$
 
@@ -256,7 +258,8 @@ The pendulum dynamics is equivalent to:
     def f(theta_d_theta):
         theta, d_theta = theta_d_theta
         J = m * l * l
-        d2_theta = - b / J * d_theta - g / l * sin(theta)
+        d2_theta  = - b / J * d_theta 
+        d2_theta += - g / l * sin(theta)
         return array([d_theta, d2_theta])
             
 
@@ -284,23 +287,6 @@ The pendulum dynamics is equivalent to:
 ![](images/streamplot_pendulum.svg)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Solution of the IVP 
---------------------------------------------------------------------------------
-
-A differentiable function 
-
-  $$
-  x: t \in  \left[t_0, +\infty \right[ \mapsto x(t) \in \mathbb{R}^n,
-  $$ 
-
-such that:
-
-  - for every $t \geq t_0$, $\dot{x}(t) = f(x(t))$. 
-
-  - $x(t_0) = x_0$
-
-The **state of the system** at time $t$ is $x(t)$.
 
 Numerical Solution 
 --------------------------------------------------------------------------------
@@ -336,19 +322,7 @@ Euler Scheme
             ts.append(t_next); xs.append(x_next)
         return (array(ts), array(xs).T)
 
-
-
-
-Visualization
---------------------------------------------------------------------------------
-
-**TODO:** 2D vs 3D, paths vs trajectories in state-space, etc.
-quivers, stream plots, etc.
-
-**TODO:** animations ? (simple, in the phase space, with trailing stuff?)
-
-
-Example
+<i class="fa fa-eye"></i> Example
 --------------------------------------------------------------------------------
 
   $$
@@ -374,27 +348,6 @@ Example
 
 
 
-State Space: Vector Field
---------------------------------------------------------------------------------
-
-    def f(xy):
-        return array([-xy[1], xy[0]])
-
-    figure()
-    xs = arange(-1.0, 1.0, 0.1)
-    ys = arange(-1.0, 1.0, 0.1)
-    quiver(*Q(f, xs, ys))
-    grid(); axis("equal")
-
---------------------------------------------------------------------------------
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    tight_layout()
-    save("images/vector-field")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 State Space: Vector Field
@@ -406,26 +359,24 @@ State Space: Vector Field
 
 --------------------------------------------------------------------------------
 
-    t0, x0 = 0.0, [-1.0, 0.0]
-    dt, tf = 0.01, 12.0
-    ts, xs = basic_solve_ivp(f, t0, x0, dt, tf)
+    def f(xy):
+        x, y = xy
+        return array([-y, x])
+    t0, x0 = 0.0, array([-1.0, 0.0])
+    dt, tf = 0.001, 5.0
+    t, x = basic_solve_ivp(f, t0, x0, dt, tf)
 
+<i class="fa fa-area-chart"></i> Trajectories
 --------------------------------------------------------------------------------
 
-**TODO:** simplify, get rid of subplots at this stage
-
     figure()
-    _, (ax1, ax2) = subplots(2, 1)
-    ax1.plot(ts, xs[0], "k")
-    ax2.plot(ts, xs[1], "k")
-    ax1.set_title("$x(t)$")
-    ax2.set_title("$y(t)$")
+    plot(t, x[0])
+    plot(t, x[1])
+    grid(True)
 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    #pp.gcf().subplots_adjust(bottom=0.25, top=0.75, left=0.1, right=0.9, 
-    #                         hspace=0.75)
     tight_layout()
     save("images/rotation")
 
@@ -433,31 +384,31 @@ State Space: Vector Field
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Result
 --------------------------------------------------------------------------------
 
 ![](images/rotation.svg)    
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+<i class="fa fa-area-chart"></i> Trajectories (State Space)
 --------------------------------------------------------------------------------
 
-**TODO:** arrow helper (use std & option markerwidth for integration)
-
---------------------------------------------------------------------------------
+Represent solutions fragments in the background
 
     figure()
-    quiver(*Q(f, arange(-1.5, 1.5, 0.1), arange(-1.5, 1.5, 0.1)), color="grey")
-    plot(xs[0], xs[1], "k")
+    xs = ys = linspace(-1.5, 1.5, 50)
+    streamplot(*Q(f, xs, ys), color="lightgrey")
+
+<i class="fa fa-area-chart"></i> ...
+--------------------------------------------------------------------------------
+
     plot(x0[0], x0[1], "ko")
-    dx = xs[0][-1] - xs[0][-2]
-    dy = xs[1][-1] - xs[1][-2]
-    arrow(xs[0][-1], xs[1][-1], dx, dy, width=0.02, color="k")
+    plot(x[0], x[1], "k")
+    dx = x[0][-1] - x[0][-2]
+    dy = x[1][-1] - x[1][-2]
+    arrow(x[0][-1], x[1][-1], dx, dy, width=0.02, color="k")
     grid()
     axis("equal")
-
-Note: `arrow` does not rescale like markers -- such as the initial point --
-      do :(
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -468,7 +419,6 @@ Note: `arrow` does not rescale like markers -- such as the initial point --
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Result
 --------------------------------------------------------------------------------
 
 ![](images/rotation2.svg)    
