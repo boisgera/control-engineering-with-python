@@ -103,7 +103,7 @@ Q Helper
         fy = vectorize(lambda x, y: f([x, y])[1])
         return X, Y, fx(X, Y), fy(X, Y)
 
-Vector Field / Example
+<i class="fa fa-eye"></i> Vector Field / Rotation
 --------------------------------------------------------------------------------
 
 Consider $f(x,y) = (-y, x).$
@@ -288,7 +288,7 @@ The pendulum dynamics is equivalent to:
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Numerical Solution 
+Numerical Solution (Basic)
 --------------------------------------------------------------------------------
 
 Given a finite **time span** $[t_0, t_f]$ and a small enough **time step**
@@ -305,7 +305,7 @@ $\Delta t > 0$, we can use the approximation:
 to compute a sequence of states $x_k \in \mathbb{R}^n$ such that:
 
   $$
-  x(t = k \Delta t) \simeq x_k.
+  x(t = t_0 + k \Delta t) \simeq x_k.
   $$
 
 
@@ -316,13 +316,27 @@ Euler Scheme
 
     def basic_solve_ivp(f, t0, x0, dt, t_f):
         ts, xs = [t0], [x0]
-        while ts[-1] <= t_f:
+        while ts[-1] < t_f:
             t, x = ts[-1], xs[-1]
             t_next, x_next = t + dt, x + dt * f(x)
             ts.append(t_next); xs.append(x_next)
         return (array(ts), array(xs).T)
 
-<i class="fa fa-eye"></i> Example
+--------------------------------------------------------------------------------
+
+Why the final transposition (`.T`)? 
+
+So that when
+
+`t, x = basic_solve_ivp(...)`,
+
+`x[i]` refers to the values of the `i`th component of `x`.
+
+(without the `.T`, it would be `x[:][i]`)
+
+
+
+<i class="fa fa-eye"></i> Rotation / Solution
 --------------------------------------------------------------------------------
 
   $$
@@ -341,21 +355,6 @@ Euler Scheme
   \right.
   $$
 
-
---------------------------------------------------------------------------------
-
-
-
-
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-State Space: Vector Field
---------------------------------------------------------------------------------
-
-![](images/vector-field.svg)    
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 --------------------------------------------------------------------------------
 
@@ -402,8 +401,8 @@ Represent solutions fragments in the background
 <i class="fa fa-area-chart"></i> ...
 --------------------------------------------------------------------------------
 
-    plot(x0[0], x0[1], "ko")
     plot(x[0], x[1], "k")
+    plot(x0[0], x0[1], "ko")
     dx = x[0][-1] - x[0][-2]
     dy = x[1][-1] - x[1][-2]
     arrow(x[0][-1], x[1][-1], dx, dy, width=0.02, color="k")
@@ -428,16 +427,12 @@ Represent solutions fragments in the background
 
 
 
-Numerical Solutions
-================================================================================
-
-
-
+Beyond the Basic Solver
 --------------------------------------------------------------------------------
 
-There are many issues that our basic solver doesn't address:
+Many issues that our basic solver doesn't address:
 
-  - non-autonomous systems
+  - non-autonomous systems,
 
   - error control,
 
@@ -454,7 +449,7 @@ Instead, use:
 Documentation: [`solve_ivp`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html) (Scipy)
 
 
-Example
+<i class="fa fa-eye"></i> IVP / Rotation
 --------------------------------------------------------------------------------
 
 Compute the solution $x(t)$ for $t\in[0,2\pi]$ of the IVP:
@@ -462,8 +457,8 @@ Compute the solution $x(t)$ for $t\in[0,2\pi]$ of the IVP:
   $$
   \left|
   \begin{split}
-  \dot{x_1} &= -x_2 \\
-  \dot{x_2} &= +x_1
+  \dot{x}_1 &= -x_2 \\
+  \dot{x}_2 &= +x_1
   \end{split}
   \right.
   \; \mbox{ with } \;
@@ -476,29 +471,52 @@ Compute the solution $x(t)$ for $t\in[0,2\pi]$ of the IVP:
   $$
 
 
-Basic Interface
+<i class="fa fa-eye"></i> Solver Interface / Rotation
 --------------------------------------------------------------------------------
 
     def fun(t, y):
         x1, x2 = y
-        return [-x2, x1]
+        return array([-x2, x1])
     t_span = [0.0, 2*pi]
     y0 = [1.0, 0.0]
     result = solve_ivp(fun=fun, t_span=t_span, y0=y0)
 
+Result Structure
+--------------------------------------------------------------------------------
+
+The `result` is a dictionary-like object (a "bunch").
+
+Its fields:
+
+  - `t` : array, time points, shape `(n_points,)`,
+
+  - `y` : array, values of the solution at t, shape `(n, n_points)`,
+
+  - ...
+
+  (See [`solve_ivp` documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html))
+
+
 Non-Autonomous Systems
 --------------------------------------------------------------------------------
 
-<i class="fa fa-warning"></i> Since the solver is applicable to
+<i class="fa fa-warning"></i> The solver may apply to
 non-autonomous systems 
 
   $$
   \dot{y} = f(t, y)
   $$ 
-the `t` argument in the definition of `fun` is mandatory, 
-even if the returned doesn't depend on it (autonomous system).
 
+The `t` argument in the definition of `fun` is mandatory, 
+even if the returned value doesn't depend on it (autonomous system).
 
+--------------------------------------------------------------------------------
+
+    r_t = result["t"]
+    x_1 = result["y"][0]
+    x_2 = result["y"][1]
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     figure()
@@ -506,8 +524,8 @@ even if the returned doesn't depend on it (autonomous system).
     plot(t, cos(t), "k--")
     plot(t, sin(t), "k--")
     bold = {"lw": 2.0, "ms": 10.0}
-    plot(result["t"], result["y"][0], ".-", label="$x_1(t)$", **bold)
-    plot(result["t"], result["y"][1], ".-", label="$x_2(t)$", **bold)
+    plot(r_t, x_1, ".-", label="$x_1(t)$", **bold)
+    plot(r_t, x_2, ".-", label="$x_2(t)$", **bold)
     xlabel("$t$"); grid(); legend()
 
 --------------------------------------------------------------------------------
@@ -546,14 +564,14 @@ Optionally, you can specify a `max_step` (default: $+\infty$).
 Error Control
 --------------------------------------------------------------------------------
 
-We generally want to control the error $e(t)$:   
+We generally want to control the (local) error $e(t)$:   
 the difference between the numerical solution and the exact one.
 
   - `atol` is the **absolute tolerance** (default: $10^{-6}$),
 
   - `rtol` is the **relative tolerance** (default: $10^{-3}$).
 
-The solver ensures (approximately) that:
+The solver ensures (approximately) that at each step:
 
   $$
   |e(t)| \leq \mathrm{atol} + \mathrm{rtol} \times |x(t)|
@@ -569,11 +587,18 @@ The solver ensures (approximately) that:
         # very large relative tolerance
         "rtol"    : 1e9 
     }
+
+--------------------------------------------------------------------------------
+
     result = solve_ivp(
         fun=fun, t_span=t_span, y0=y0, 
         **options
     )
+    r_t = result["t"]
+    x_1 = result["y"][0]
+    x_2 = result["y"][1]
 
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     figure()
@@ -581,8 +606,8 @@ The solver ensures (approximately) that:
     plot(t, cos(t), "k--")
     plot(t, sin(t), "k--")
     bold = {"lw": 2.0, "ms": 10.0}
-    plot(result["t"], result["y"][0], ".-", label="$x_1(t)$", **bold)
-    plot(result["t"], result["y"][1], ".-", label="$x_2(t)$", **bold)
+    plot(r_t, x_1, ".-", label="$x_1(t)$", **bold)
+    plot(r_t, x_2, ".-", label="$x_2(t)$", **bold)
     xlabel("$t$"); grid(); legend()
 
 --------------------------------------------------------------------------------
@@ -618,10 +643,17 @@ with little extra computations.
     options = {
         "dense_output": True
     }
+
+--------------------------------------------------------------------------------
+
     result = solve_ivp(
         fun=fun, t_span=t_span, y0=y0, 
         **options
     )
+    r_t = result["t"]
+    x_1 = result["y"][0]
+    x_2 = result["y"][1]
+    sol = result["sol"]
 
 --------------------------------------------------------------------------------
 
@@ -630,11 +662,10 @@ with little extra computations.
     plot(t, cos(t), "k--")
     plot(t, sin(t), "k--")
     bold = {"lw": 2.0, "ms": 10.0}
-    y = result["sol"]
-    plot(t, y(t)[0], "-", label="$x_1(t)$", **bold)
-    plot(t, y(t)[1], "-", label="$x_2(t)$", **bold)
-    plot(result["t"], result["y"][0], ".", color="C0", **bold)
-    plot(result["t"], result["y"][1], ".", color="C1", **bold)
+    plot(t, sol(t)[0], "-", label="$x_1(t)$", **bold)
+    plot(t, sol(t)[1], "-", label="$x_2(t)$", **bold)
+    plot(r_t, x_1, ".", color="C0", **bold)
+    plot(r_t, x_2, ".", color="C1", **bold)
     xlabel("$t$"); grid(); legend()
 
 --------------------------------------------------------------------------------
