@@ -231,13 +231,22 @@ can be converted to the standard form with the state
 
 ![](images/static/pendulum.svg)
 
+<i class="fa fa-question-circle-o"></i> -- Model / Pendulum
 --------------------------------------------------------------------------------
 
-If $b \geq 0$ is the friction coefficient, the dynamics is:
+  - [</i><i class="fa fa-gear"></i>, </i><i class="fa fa-superscript"></i>] 
+    Establish the equations governing the pendulum dynamics 
+    when the mechanical energy of the system is constant.  
 
-  $$
-  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
-  $$
+  - [</i><i class="fa fa-gear"></i>, </i><i class="fa fa-superscript"></i>] 
+    Generalize the dynamics when there is a friction torque
+    $c = -b \dot{\theta}$ for some $b \geq 0$.
+
+### <i class="fa fa-key"></i> -- Result
+
+$$
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+$$
 
 --------------------------------------------------------------------------------
 
@@ -287,6 +296,18 @@ The pendulum dynamics is equivalent to:
 ![](images/streamplot_pendulum.svg)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+<i class="fa fa-question-circle-o"></i> -- Model / Pendulum
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-flask"></i>] 
+    Determine the least possible angular velocity 
+    $\omega_0 > 0$ such that when $\theta(0) = 0$ and 
+    $\dot{\theta}(0) = \omega_0$, the pendulum reaches (or overshoots)
+    $\theta(t) = \pi$ for some $t>0$.
+
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+    Answer the same question analytically.
 
 Numerical Solution (Basic)
 --------------------------------------------------------------------------------
