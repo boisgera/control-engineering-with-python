@@ -300,10 +300,8 @@ The pendulum dynamics is equivalent to:
 <i class="fa fa-question-circle-o"></i> -- Model / Pendulum
 --------------------------------------------------------------------------------
 
-**TODO: issue here, solve this**
-
-  - [<i class="fa fa-flask"></i>] 
-    Determine the least possible angular velocity 
+  - [<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>] 
+    Determine an approcimation of the least possible angular velocity 
     $\omega_0 > 0$ such that when $\theta(0) = 0$ and 
     $\dot{\theta}(0) = \omega_0$, the pendulum reaches (or overshoots)
     $\theta(t) = \pi$ for some $t>0$.
