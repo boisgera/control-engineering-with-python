@@ -859,9 +859,7 @@ This concept is sometimes too stringent.
 
 Consider for example:
 
-  $$
-  \dot{x} = x^2 \; \mbox{ and } \; x(0)=1
-  $$
+$\dot{x} = x^2$ and $x(0)=1.$
 
 -----
 
@@ -901,23 +899,27 @@ for some $\tau > t_0$.
 
 --------------------------------------------------------------------------------
 
-Indeed, let $t_f=1$; the function
+Indeed, the function
 
-  $$
-  x(t) = \frac{1}{1 - t}, t \in \left[0, 1\right[ 
-  $$
+$$
+x(t) = \frac{1}{1 - t}
+$$
 
 satisfies
 
-  - for every $t \in \left[t_0, t_f\right[$, $\dot{x}(t) = f(x(t))$,
+$$
+\dot{x}(t) = \frac{d}{dt} x(t) = -\frac{-1}{(1 - t)^2} 
+=  (x(t))^2.
+$$
 
-  - $x(t_0) = x_0$.
+But it's defined only for $t<1.$
 
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     tf = 1.0
-
-    result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
+    result = solve_ivp(fun, t_span=[t0, tf], y0=y0, max_step=0.01)
     figure()
     plot(result["t"], result["y"][0], "k")
     ylim(0.0, 10.0); grid(); xlabel("$t$"); ylabel("$x(t)$")
@@ -943,36 +945,110 @@ This local solution is also **maximal**:
 
 You cannot extend this solution beyond $\tau=1.0$.
 
+<i class="fa fa-question-circle-o"></i> -- Local/Maximal Solution
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-superscript"></i>] Find a local solution $x(t)$
+    of $\dot{x} = x^2$ such that $x(0) = x_0$ under the assumption
+    that $x(t) \neq 0$ when $t\geq 0$.
+
+    <i class="fa fa-key"></i> **Hint:** compute $d/dt(1/x(t)).$
+
+  - [<i class="fa fa-lightbulb-o"></i>] Find for every $x_0 \neq 0$
+    a maximal solution. When is it global?
+
+Bad News
+--------------------------------------------------------------------------------
+
+Sometimes things get worse than simply having no global solution.
+
+<i class="fa fa-eye"></i> -- No Local Solution
+--------------------------------------------------------------------------------
+
+Consider the scalar IVP with initial value $x(0) = (0,0)$ and right-hand side
+
+  $$
+  f(x_1,x_2) = 
+  \left|
+  \begin{array}{rl}
+  (+1,0) & \mbox{if } \; x_1< 0 \\
+  (-1,0) & \mbox{if } \; x_1 \geq 0.
+  \end{array}
+  \right.
+  $$
+
+<i class="fa fa-area-chart"></i> -- No Local Solution
+--------------------------------------------------------------------------------
+
+    def f(x1x2):
+        x1, x2 = x1x2
+        dx1 = 1.0 if x1 < 0.0 else -1.0
+        return array([dx1, 0.0])
+    figure()
+    x1 = x2 = linspace(-1.0, 1.0, 20)
+    gca().set_aspect(1.0); grid(True)
+    quiver(*Q(f, x1, x2), color="k") 
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/discont")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 --------------------------------------------------------------------------------
 
-**TODO:** Exo sim numerique avec sol bornée sur range initial. 
-Tirer ccl que sol pas maximale.
+![](images/discont.svg)    
 
-Ex avec genre $\dot{x} = x^3$ ?
-
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 
+<i class="fa fa-lightbulb-o"></i> -- No Local Solution
+--------------------------------------------------------------------------------
+
+This system has no solution, not even a local one, when $x(0) = (0,0)$.
+
+Proof
+--------------------------------------------------------------------------------
+
+  - Assume that $x: [0, \tau[ \to \mathbb{R}$ is a local solution.
+
+  - Since $\dot{x}(0) = -1 < 0$,
+    for some small enough $0 < \varepsilon < \tau$ and any 
+    $t \in \left]0, \varepsilon\right]$, we have $x(t) < 0$. 
+
+  - Consequently, $\dot{x}(t) = +1$ and thus by integration
+
+    $$
+    x(\varepsilon) =  x(0) + \int_0^{\varepsilon} \dot{x}(t) \, dt = \varepsilon > 0,
+    $$
+  
+    which is a contradiction.  
+    
+Good News
+--------------------------------------------------------------------------------
+
+However, a local solution exists under very mild assumptions.
 
 
-Local Existence
+Existence
 --------------------------------------------------------------------------------
 
 If $f$ is continuous, 
 
   - There is a (at least one) local solution to the IVP
 
-      $$
-      \dot{x} = f(x) \; \mbox{ and } x(t_0) = x_0 
-      $$
+    $\dot{x} = f(x)$ and $x(t_0) = x_0$.
 
   - Any local solution on some $\left[t_0, \tau \right[$ 
     can be extended to a (at least one) maximal one 
     on some $\left[t_0, t_{\infty}\right[$.
 
-  - A maximal solution is global iff $t_{\infty} = +\infty$.
-
+**Note.** A maximal solution is global iff $t_{\infty} = +\infty$.
 
 Maximal Solutions
 --------------------------------------------------------------------------------
@@ -980,20 +1056,22 @@ Maximal Solutions
 A local solution on $\left[t_0, \tau \right[$ is maximal when 
 
   $$
-  \lim_{t \uparrow \tau} \|x(t)\| = +\infty.
+  \lim_{t \to \tau} \|x(t)\| = +\infty.
   $$
 
-### Corollary
-
-If any *potential* local solution $x(t)$ defined on 
-$\left[t_0, \tau\right[$ is bounded on this interval,
-then such a solution exists.  
-It is not maximal (it can be extended).
-
-
+Corollary
 --------------------------------------------------------------------------------
 
-### <i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
+If any **potential** local solution $x(t)$ defined on 
+$\left[t_0, \tau\right[$ is **locally bounded** on this interval(*)
+then such a solution exists.  
+
+(*): bounded on any $[t_0, s] \subset \left[t_0, \tau \right[$.
+
+
+<i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
+--------------------------------------------------------------------------------
+
 
 Consider
 
@@ -1008,9 +1086,8 @@ Consider
   - [<i class="fa fa-superscript"></i>] 
     Show that any such solution is global.
 
+<i class="fa fa-question-circle-o"></i> -- Existence / Linear Systems
 --------------------------------------------------------------------------------
-
-### <i class="fa fa-question-circle-o"></i> -- Existence / Linear Systems
 
 Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
   $$
@@ -1019,7 +1096,6 @@ Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
 
 <i class="fa fa-bullseye"></i> **Aim.** Show that any maximal solution is global.
 
-**TODO:** there exist too ...
 
 --------------------------------------------------------------------------------
 
@@ -1035,57 +1111,46 @@ Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
   - [</i><i class="fa fa-superscript"></i>]
     Prove that any maximal solution $x(t)$ of the initial IVP is global.
 
-
-Example - Discontinuous Vector Field
+Bad News
 --------------------------------------------------------------------------------
 
-Consider the scalar IVP with initial value $x(0) = 0$ and right-hand side
-  $$
-  f(x) = 
-  \left|
-  \begin{array}{rl}
-  +1 & \mbox{if } \; x < 0 \\
-  -1 & \mbox{if } \; x \geq 0.
-  \end{array}
-  \right.
-  $$
-Assume that $x: I \to \mathbb{R}$ is a local solution of this IVP
-and left $\varepsilon > 0$ be such that $[0,\varepsilon] \subset I$. 
-Since $\dot{x}(0) = +1 > 0$,
-for some small enough $0 < \tau < \epsilon$ and any $t \in [0, \tau]$,
-we have $x(t) > 0$. 
-Consequently, $\dot{x}(t) = -1$ and thus by integration
-  $$
-  x(\tau) =  x(0) + \int_0^{\tau} \dot{x}(t) \, dt = 0 - t < 0,
-  $$
-which is a contradiction. Thus there is no local solution to this IVP.
+Uniqueness of solutions, even the maximal ones, is not granted either.
+
+<i class="fa fa-eye"></i> -- Non-Uniqueness
+--------------------------------------------------------------------------------
+
+The IVP 
+
+$\dot{x} = \sqrt{x}$, $x(0) = 0$ 
+
+has several maximal (global) solutions. 
+
+Proof
+--------------------------------------------------------------------------------
+
+For any $\tau \geq 0$, $x_{\tau}$ is a solution:
+
+$$
+x_{\tau}(t) = 
+\left| 
+\begin{array}{ll}
+0 & \mbox{if} \; t \leq \tau, \\
+1/4 \times (t-\tau)^2 & \mbox{if} \; t > \tau.
+\end{array}
+\right.
+$$
+
+Good News
+--------------------------------------------------------------------------------
+
+However, uniqueness of maximal solution holds under very mild assumptions.
+
 
 Uniqueness
 --------------------------------------------------------------------------------
 
 If $\partial f/\partial x$ exists and is continuous,  
 the maximal solution is unique.
-
---------------------------------------------------------------------------------
-
-### Non-Uniqueness -- <i class="fa fa-superscript"></i> 
-
-Explain why the IVP $\dot{x} = \sqrt{x}$, $x(0) = 0$ 
-may have several maximal solutions. 
-Then, investigate if multiple solutions 
-actually exist.
-
-**Hint.** Consider
-  $$
-  x(t) = 
-  \left| 
-  \begin{array}{ll}
-  0 & \mbox{if} \; t \leq \tau, \\
-  1/4 \times (t-\tau)^2 & \mbox{if} \; t > \tau.
-  \end{array}
-  \right.
-  $$
-
 
 Continuity w.r.t. the Initial State
 --------------------------------------------------------------------------------
@@ -1196,176 +1261,7 @@ Consider $\dot{x} = \sqrt{|x|}$, $x(0)=x_0$.
 
 
 
-ODEs: Extra Variants
-================================================================================
 
---------------------------------------------------------------------------------
-
-We consider the initial-value problem (IVP)
-  $$
-  \dot{x} = f(t, x), \; x(t_0) = x_0
-  $$
-where $f: I \times U \to \mathbb{R}^n$, $I$ is an open interval of
-$\mathbb{R}$, $t_0 \in I$, $U$ is an open subset of $\mathbb{R}^n$
-and $x_0 \in U$.
-
---------------------------------------------------------------------------------
-
-#### Initial Time {.note}
-
-We often let the initial time $t_0$ is unspecified. 
-In this case we will assume that it is zero.
-It makes sense since we can deduce the set of solutions in the general case
-of an initial condition $(x_0, t_0)$ from the set of solution with initial
-condition $(x_0, 0)$: the function $y:\left[t_0, +\infty\right[$ is a solution
-of the former if and only if 
-  $$
-  x: t \in \left[0, +\infty \right[ \to x(t) = y(t-t_0)
-  $$
-is a solution of the latter.
-
------
-
-#### Future and Past {.note}
-
-Some authors require a global solution to be defined for any time $t$
-in the future of the initial time $t_0$ but also for any value in its past,
-and thus for any $t \in \left]-\infty, +\infty \right[$. We don't abide to
-this definition by default since it makes the terminology of "initial time" 
-a bit confusing. 
-However, if the need arises, we may characterize such a solution
-$x: t \in \left]-\infty, +\infty \right[ \to \mathbb{R}^n$ by two classic 
-global solutions: $x^+(t)$, defined for $t \geq 0$ 
-as a solution of the IVP
-  $$
-  x^+(0) = x_0 \; \mbox{ and } \; \dot{x}^+ = f(x^+).
-  $$
-and the solution $x^-(t)$, also defined for $t \geq 0$ 
-but a solution of the IVP with a reverse right-hand side
-  $$
-  x^-(0) = x_0 \; \mbox{ and } \; \dot{x}^- = - f(x^-).
-  $$
-The complete solution is then given by
-  $$
-  x(t) 
-  = 
-  \left|
-  \begin{array}{ll}
-  x^+(t) & \mbox{if } \; t \geq 0 \\
-  x^-(-t) & \mbox{if } \; t < 0. \\
-  \end{array}
-  \right.
-  $$
-
-### Complex-Valued Differential Equations {.note}
-
-**TODO.**
-
-
-
-### Irregular Right-Hand Sides
-
-"Absolutely continuous" solutions:
-
-  $$
-  f(t) = \int_{t_0}^t g(s) \, ds
-  $$
-
-  $$
-  x(t) = x_0 + \int_{t_0}^t f(s, x(s))\, ds
-  $$
-
-Discont wrt $x$ and Filipov solutions.
-
---------------------------------------------------------------------------------
-
-
-General "what can go wrong approach" for the existence and uniqueness of ODEs.
-
-Start with autonomous equations.
-
-Go for simple "really-differential-equations" with continuity of $f$ and
-$\partial f / \partial x$ stuff.
-
-Local existence and local uniqueness can be splitted.
-
-Deal with time-reversal somehow ?
-
-Consequence of uniqueness (combined with time-reversal): ex: show that you 
-cannot reach a boundary where the rhs is zero in finite time.
-
-Complete well-posedness to account for continuity wrt initial condition ?
-
-Show that local existence and uniqueness implies that NON-existence means
-getting out of every compact set (under the form of: either going to infinity
-or approaching the boundary arbitrarily close.)
-
-Application: linear equation $\dot{x} = A x$. Show that the derivative
-of $y = |x|^2$ is dominated by $2\|A\|y$ and thus with $a=\|A\|$
-that $|y|(t) \leq e^{at} |y|(0)$ (proof ?) which forbids $x$ 
-to go to $+\infty$.
-
-Same kind of stuff via invariant in the prey-predator model ? 
-Yes. The model $\dot{x} = \alpha x - \beta x y$ and 
-$\dot{y} = \delta xy - \gamma y$ has the invariant
-$\delta x - \gamma \ln x +\beta y - \alpha \ln y$,
-which is good enough to prove global existence.
-
-Flow notation.
-
-Trick to include the time in this framework and how to deal with
-$n$-th order equations.
-
-
-"Fix" this later to account for discontinuous stuff wrt $t$,
-if necessary.
-
-
-
-Prey-Predator Models
---------------------------------------------------------------------------------
-
-    figure()
-
-    Y, X = np.mgrid[0.0:2.0:200j, 0.0:4.0:200j]
-
-    alpha = 2 / 3
-    beta = 4 / 3
-    delta = gamma = 1.0
-    U = alpha * X - beta * X * Y
-    V = delta * X * Y - gamma * Y
-
-    axes().set_aspect(1.0)
-    axes().axis([0.0, 4.0, 0.0, 2.0])    
-
-    streamplot(X, Y, U, V, color="k")
-
-
-## TODO: 
-
-  - split notebook and slides settings. Mmm how deal with styles ?
-    Have "standard options" for notebook and slides and use them
-    beforehand in some option stuff ? Or duplicate the plot code,
-    this is not such a big deal.
-
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    height_in = width_in / (16 / 9)
-    pp.gcf().set_size_inches((width_in, height_in)) # height_in ignored ?
-    # weight_in does not match ? dpi issue ? Prob. cause changing width_in 
-    # does have an influence.
-
-    # This is the bbox_in: tight options that is messing with us ...
-    # (width and height). Investigate what that stuff is doing.
-
-    save("images/prey-predator")     # TODO: use "savefig.dpi" param instead in rc.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-----
-
-![](images/prey-predator.svg)
 
 
 Asymptotic (Long-Term) Behavior
@@ -1757,11 +1653,60 @@ Equivalently (perhaps simpler):
 
 --------------------------------------------------------------------------------
 
-**TODO:** Systems with inputs and outputs.
+Misc.
+================================================================================
+
+Prey-Predator
+--------------------------------------------------------------------------------
 
 
 
+Prey-Predator Models
+--------------------------------------------------------------------------------
 
+    figure()
+
+    Y, X = np.mgrid[0.0:2.0:200j, 0.0:4.0:200j]
+
+    alpha = 2 / 3
+    beta = 4 / 3
+    delta = gamma = 1.0
+    U = alpha * X - beta * X * Y
+    V = delta * X * Y - gamma * Y
+
+    axes().set_aspect(1.0)
+    axes().axis([0.0, 4.0, 0.0, 2.0])    
+
+    streamplot(X, Y, U, V, color="k")
+
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    height_in = width_in / (16 / 9)
+    pp.gcf().set_size_inches((width_in, height_in)) # height_in ignored ?
+    # weight_in does not match ? dpi issue ? Prob. cause changing width_in 
+    # does have an influence.
+
+    # This is the bbox_in: tight options that is messing with us ...
+    # (width and height). Investigate what that stuff is doing.
+
+    save("images/prey-predator")     # TODO: use "savefig.dpi" param instead in rc.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+----
+
+![](images/prey-predator.svg)
+
+--------------------------------------------------------------------------------
+
+Same kind of stuff via invariant in the prey-predator model ? 
+Yes. The model $\dot{x} = \alpha x - \beta x y$ and 
+$\dot{y} = \delta xy - \gamma y$ has the invariant
+$\delta x - \gamma \ln x +\beta y - \alpha \ln y$,
+which is good enough to prove global existence.
 
 
 <style>
