@@ -9,6 +9,7 @@ Preamble
     from numpy import *
     from numpy.linalg import *
     from matplotlib.pyplot import *
+    from mpl_toolkits.mplot3d import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -849,6 +850,17 @@ Results
 Well-Posedness
 ================================================================================
 
+Well-Posedness of an IVP
+--------------------------------------------------------------------------------
+
+**Well-Posedness** = Existence + Uniqueness + Continuity
+
+A set of properties that ensures that common problems with IVPs cannot happen.
+
+We are going to detail each property
+
+
+Preamble: Local vs Global
 --------------------------------------------------------------------------------
 
 So far, we have only dealt with **global** solutions $x(t)$ of IVPs,
@@ -856,6 +868,8 @@ defined for any $t \geq t_0$.
 
 
 This concept is sometimes too stringent.
+
+--------------------------------------------------------------------------------
 
 Consider for example:
 
@@ -957,7 +971,7 @@ You cannot extend this solution beyond $\tau=1.0$.
   - [<i class="fa fa-lightbulb-o"></i>] Find for every $x_0 \neq 0$
     a maximal solution. When is it global?
 
-Bad News
+Bad News (1/3)
 --------------------------------------------------------------------------------
 
 Sometimes things get worse than simply having no global solution.
@@ -1018,18 +1032,18 @@ Proof
   - Assume that $x: [0, \tau[ \to \mathbb{R}$ is a local solution.
 
   - Since $\dot{x}(0) = -1 < 0$,
-    for some small enough $0 < \varepsilon < \tau$ and any 
-    $t \in \left]0, \varepsilon\right]$, we have $x(t) < 0$. 
+    for some small enough $0 < \epsilon < \tau$ and any 
+    $t \in \left]0, \epsilon\right]$, we have $x(t) < 0$. 
 
   - Consequently, $\dot{x}(t) = +1$ and thus by integration
 
     $$
-    x(\varepsilon) =  x(0) + \int_0^{\varepsilon} \dot{x}(t) \, dt = \varepsilon > 0,
+    x(\epsilon) =  x(0) + \int_0^{\epsilon} \dot{x}(t) \, dt = \epsilon > 0,
     $$
   
     which is a contradiction.  
     
-Good News
+Good News (1/3)
 --------------------------------------------------------------------------------
 
 However, a local solution exists under very mild assumptions.
@@ -1111,10 +1125,13 @@ Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
   - [</i><i class="fa fa-superscript"></i>]
     Prove that any maximal solution $x(t)$ of the initial IVP is global.
 
-Bad News
+Bad News (2/3)
 --------------------------------------------------------------------------------
 
 Uniqueness of solutions, even the maximal ones, is not granted either.
+
+(Note: why does uniqueness of local solution does not make sense?)
+
 
 <i class="fa fa-eye"></i> -- Non-Uniqueness
 --------------------------------------------------------------------------------
@@ -1140,10 +1157,10 @@ x_{\tau}(t) =
 \right.
 $$
 
-Good News
+Good News (2/3)
 --------------------------------------------------------------------------------
 
-However, uniqueness of maximal solution holds under very mild assumptions.
+However, uniqueness of maximal solution holds under mild assumptions.
 
 
 Uniqueness
@@ -1152,75 +1169,82 @@ Uniqueness
 If $\partial f/\partial x$ exists and is continuous,  
 the maximal solution is unique.
 
+Bad News (3/3)
+--------------------------------------------------------------------------------
+
+An infinitely small error in the initial value could result in a finite
+error in the solution, even in finite time.
+
+That would undermine the utility of any approximation method.
+
+Good News (3/3)
+--------------------------------------------------------------------------------
+
+However, continuity wrt the initial value holds under mild assumptions.
+
+
 Continuity w.r.t. the Initial State
 --------------------------------------------------------------------------------
 
 Assume that $\partial f / \partial x$ exists and is continuous.  
 
-If $x(t, x_0)$ is defined on $[t_0, t_f[$ and $t\in \left[t_0, t_f\right[$:
+If $x(t, x_0)$ is defined on $[t_0, \tau]$ and $t\in [t_0, \tau]$:
 
- $$
- x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
- $$
+$$
+x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
+$$
 
-For any $\tau \in \left[t_0, t_f\right[$,
-this convergence t is uniform w.r.t. $t \in [t_0, \tau]$ 
+This convergence t is uniform w.r.t. $t \in [t_0, \tau]$.
 
 
+<i class="fa fa-eye"></i> Continuity / Prey-Predator
 --------------------------------------------------------------------------------
 
-:::: hidden ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    alpha = 2 / 3
-    beta = 4 / 3
-    delta = gamma = 1.0
+    alpha = 2 / 3; beta = 4 / 3; delta = gamma = 1.0
     def f(t, y):
         x, y = y 
         u = alpha * x - beta * x * y
         v = delta * x * y - gamma * y
         return array([u, v])
 
+--------------------------------------------------------------------------------
+
     tf = 3.0
     result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.5], max_step=0.01)
     x = result["y"][0]
     y = result["y"][1]
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
     figure(); ax = gca()
-    streamplot(*Q(lambda y: f(0,y), linspace(0.0, 2.0, 1000), linspace(0.0, 2.0, 1000)), color="grey")
+    xr = yr = linspace(0.0, 2.0, 1000)
+    streamplot(*Q(lambda y: f(0,y), xr, yr), color="grey")
     for xy in zip(x, y):
         x_, y_ = xy
-        ax.add_artist(Circle((x_, y_), 0.2, color="C1"))
-    ax.add_artist(Circle((x[0], y[0]), 0.1, color="C2"))
-
+        ax.add_artist(Circle((x_, y_), 0.2, color="#d3d3d3"))
+    ax.add_artist(Circle((x[0], y[0]), 0.1, color="#808080"))
     plot(x, y, "k")
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
 
     result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575], max_step=0.01)
     x = result["y"][0]
     y = result["y"][1]
     plot(x, y, "k--")
-
     axis([0,2,0,2]); axis("square")
 
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     save("images/continuity")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+--------------------------------------------------------------------------------
+
 ![](images/continuity.svg)  
-
---------------------------------------------------------------------------------
-
-**TODO:** Explain that it says nothing about the long-term behavior of the
-error, or the quantitative speed at which two solution diverge.
-
---------------------------------------------------------------------------------
-
-Well-Posedness
---------------------------------------------------------------------------------
-
-Well-Posedness = Existence + Uniqueness + Continuity
-
-Necessary condition for the soundness of numerical scheme.
-
 
 --------------------------------------------------------------------------------
 
@@ -1232,19 +1256,16 @@ and $x^h(0) = 1+ h$.
   - [<i class="fa fa-superscript"></i>]. Let $\epsilon > 0$; 
     find the smallest  $\delta > 0$ such that 
     $|h| < \delta$ ensures that
-    $$\mbox{for any $t \in [t_0, t_f]$}, |x^{h}(t) - x^0(t)| < \epsilon$$
-
-
+    $$\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| < \epsilon$$
 
 --------------------------------------------------------------------------------
 
   - [<i class="fa fa-superscript"></i>]. What is the behavior of
-    $\delta$ when $t_f$ goes to infinity?
+    $\delta$ when $\tau$ goes to infinity?
 
 
+<i class="fa fa-question-circle-o"></i> -- Continuity / Initial Value
 --------------------------------------------------------------------------------
-
-### <i class="fa fa-question-circle-o"></i> -- Continuity / Initial Value
 
 Consider $\dot{x} = \sqrt{|x|}$, $x(0)=x_0$.
 
@@ -1255,19 +1276,42 @@ Consider $\dot{x} = \sqrt{|x|}$, $x(0)=x_0$.
   - [<i class="fa fa-flask"></i>]
     Does the solution seem to be continuous with respect to the initial value?
 
-  - [<i class="fa fa-cogs"></i>] 
+  - [<i class="fa fa-lightbulb-o"></i>] 
     Explain this experimental result.
 
 
+<i class="fa fa-question-circle-o"></i> -- Well-Posedness / Prey-Predator
+--------------------------------------------------------------------------------
 
+Let
 
+$$
+\begin{array}
+\dot{x} &=& \alpha x - \beta xy \\
+\dot{y} &=& \delta x y - \gamma y \\
+\end{array}
+$$
 
+with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
 
+--------------------------------------------------------------------------------
 
-Asymptotic (Long-Term) Behavior
+  - [<i class="fa fa-lightbulb-o"></i>] Show that the system is well-posed.
+
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>]
+    Show that if $x(0) > 0$ and $y(0) > 0$, the maximal solution is global.
+    
+    <i class="fa fa-key"></i> **Hint.** Compute
+    $$
+    d/dt(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
+    $$
+
+Asymptotic Behavior
 ================================================================================
 
+--------------------------------------------------------------------------------
 
+Asymptotic = Long-Term: when $t \to + \infty$
 
 Lorenz System
 --------------------------------------------------------------------------------
@@ -1367,12 +1411,15 @@ An equilibrium $x_e$ is:
         x, y = xy
         dx = -2*x + y
         dy = -2*y + x
-        return [dx, dy]
+        return array([dx, dy])
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
     figure()
     x = y = linspace(-5.0, 5.0, 1000)
     streamplot(*Q(f, x, y), color="k") 
     plot([0], [0], "k.", ms=10.0)
-        
 
 Globally Attractive
 --------------------------------------------------------------------------------
@@ -1397,12 +1444,16 @@ Globally Attractive
         x, y = xy
         dx = -2*x + y**3
         dy = -2*y + x**3
-        return [dx, dy]
+        return array([dx, dy])
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
     figure()
     x = y = linspace(-5.0, 5.0, 1000)
     streamplot(*Q(f, x, y), color="k") 
     plot([0], [0], "k.", ms=10.0)
-        
 
 Locally Attractive
 --------------------------------------------------------------------------------
@@ -1534,15 +1585,17 @@ Stream Plot
 
 --------------------------------------------------------------------------------
 
-Make sure that the rhs is time-dependent:
+First, make sure that the right-hand side is time-dependent:
 
     def fun(t, y):
         return f(y)
 
-Pick a large time span and an initial state 
+--------------------------------------------------------------------------------
+
+Then, pick a large time span and an initial state 
 just above the equilibrium $(1.0, 0.0)$:
 
-    t_span = (0.0, 500.0)
+    t_span = (0.0, 600.0)
     theta_0 = 2 * pi / 1000
     y0 = [cos(theta_0), sin(theta_0)]
 
@@ -1550,10 +1603,15 @@ just above the equilibrium $(1.0, 0.0)$:
 
     y = solve_ivp(fun, t_span, y0=y0, dense_output=True).sol
     t = linspace(t_span[0], t_span[-1], 1000)
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+Plot the distance to the equilibrium as a function of time.
+
     figure()
     x1, x2 = y(t)[0], y(t)[1]
-    plot(t, x1, "C0")
-    plot(t, x2, "C1")
+    plot(t, (sqrt((x1-1.0)**2 + x2**2)))
     grid()
     xlabel("$t$")
 
@@ -1574,46 +1632,6 @@ just above the equilibrium $(1.0, 0.0)$:
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
---------------------------------------------------------------------------------        
-
-### Example -- Vinograd
-
-    def f(xy):
-        x, y = xy
-        q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
-        dx = (x**2 * (y - x) + y**5) / q
-        dy = y**2 * (y - 2*x) / q
-        return [dx, dy]
-
-
---------------------------------------------------------------------------------
-
-    figure()
-    x = y = linspace(-1.0, 1.0, 1000)
-    streamplot(*Q(f, x, y), color="k") 
-    xticks([-1, 0, 1])
-    plot([0], [0], "k.", ms=10.0)
-
---------------------------------------------------------------------------------
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    axis("square")
-    tight_layout()
-    save("images/vinograd")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-![](images/vinograd.svg)    
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-**TODO:** exo with Vinograd?
---------------------------------------------------------------------------------
-
-### <i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
 
 Asymptotic Stability
 --------------------------------------------------------------------------------
@@ -1651,62 +1669,61 @@ Equivalently (perhaps simpler):
     $$
 
 
---------------------------------------------------------------------------------
+<i class="fa fa-question-circle-o"></i> -- Asymptotic Stability / Vinograd
+--------------------------------------------------------------------------------        
 
-Misc.
-================================================================================
+Consider the ODE with right-hand side:
 
-Prey-Predator
---------------------------------------------------------------------------------
+    def f(xy):
+        x, y = xy
+        q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
+        dx = (x**2 * (y - x) + y**5) / q
+        dy = y**2 * (y - 2*x) / q
+        return array([dx, dy])
 
 
-
-Prey-Predator Models
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     figure()
-
-    Y, X = np.mgrid[0.0:2.0:200j, 0.0:4.0:200j]
-
-    alpha = 2 / 3
-    beta = 4 / 3
-    delta = gamma = 1.0
-    U = alpha * X - beta * X * Y
-    V = delta * X * Y - gamma * Y
-
-    axes().set_aspect(1.0)
-    axes().axis([0.0, 4.0, 0.0, 2.0])    
-
-    streamplot(X, Y, U, V, color="k")
-
+    x = y = linspace(-1.0, 1.0, 1000)
+    streamplot(*Q(f, x, y), color="k") 
+    xticks([-1, 0, 1])
+    plot([0], [0], "k.", ms=10.0)
 
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    height_in = width_in / (16 / 9)
-    pp.gcf().set_size_inches((width_in, height_in)) # height_in ignored ?
-    # weight_in does not match ? dpi issue ? Prob. cause changing width_in 
-    # does have an influence.
-
-    # This is the bbox_in: tight options that is messing with us ...
-    # (width and height). Investigate what that stuff is doing.
-
-    save("images/prey-predator")     # TODO: use "savefig.dpi" param instead in rc.
+    axis("square")
+    tight_layout()
+    save("images/vinograd")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-----
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/prey-predator.svg)
+![](images/vinograd.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 --------------------------------------------------------------------------------
 
-Same kind of stuff via invariant in the prey-predator model ? 
-Yes. The model $\dot{x} = \alpha x - \beta x y$ and 
-$\dot{y} = \delta xy - \gamma y$ has the invariant
-$\delta x - \gamma \ln x +\beta y - \alpha \ln y$,
-which is good enough to prove global existence.
+  - [<i class="fa fa-flask"></i>] 
+    Does the origin of the system look attractive ?
+
+  - [<i class="fa fa-flask"></i>, <i class="fa fa-lightbulb-o"></i>] 
+    Does it seem to be asymptotically stable ?
+
+    <i class="fa fa-key"></i> **Hint.** 
+    
+      - Show if the origin is asymptotically stable, then it is 
+        **stable**, that is: for any $r>0$, there is a $\rho \leq r$ 
+        such that if $|x(0)| \leq \rho$, then $|x(t)| \leq r$ for
+        any $t\geq 0$.
+
+      - Is the system stable (graphically)?
+
 
 
 <style>
