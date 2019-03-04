@@ -1640,6 +1640,7 @@ Asymptotic stability is a stronger version of attractivity
 which is by definition robust with respect to the choice of
 the initial state.
 
+Global Asymptotic Stability
 --------------------------------------------------------------------------------
 
 The equilibrium $x_e$ is **globally asymptotically stable** if:
@@ -1659,14 +1660,30 @@ The equilibrium $x_e$ is **globally asymptotically stable** if:
 
 Equivalently (perhaps simpler): 
 
-  - **for any bounded set $B$**, for any $\epsilon > 0$, 
+  - **for any $r>0$**, for any $\epsilon > 0$, 
     there is a $\tau \geq 0$ such that any maximal solution $x(t)$ 
-    **such that $x(0) \in B$** exists for all $t \geq 0$ and 
+    **such that $\|x(0)\| \leq r$** exists for all $t \geq 0$ and 
     satisfies:
 
     $$
     \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
     $$
+
+
+Local Asymptotic Stability
+--------------------------------------------------------------------------------
+
+A variant of the global asymptotic stability: the property may hold
+only for small enough balls.
+
+  - **for some $r>0$**, for any $\epsilon > 0$, 
+    there is a $\tau \geq 0$ such that any maximal solution $x(t)$ 
+    **such that $\|x(0)\| \leq r$** exists for all $t \geq 0$ and 
+    satisfies:
+
+    $$
+    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+    $$   
 
 
 <i class="fa fa-question-circle-o"></i> -- Asymptotic Stability / Vinograd

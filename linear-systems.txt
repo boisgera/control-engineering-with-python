@@ -67,15 +67,70 @@
 
 
 
-Introduction
+Preamble
 ================================================================================
 
+Inputs
+--------------------------------------------------------------------------------
+
+It's handy to introduce non-autonomous ODEs.
+
+There are designated as
+
+  $$
+  \dot{x} = f(x, u)
+  $$
+
+where $x \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$,
+that is 
+
+$$f: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n.$$
+
+--------------------------------------------------------------------------------
+
+The vector-valued $u$ is the **system input**.
+
+This quantity may depend on the time $t$
+ 
+$$
+u: t \in \mathbb{R} \mapsto u(t) \in \mathbb{R}^m,
+$$
+
+(actually it may also depend on some state, but we will adress this later).
+
+--------------------------------------------------------------------------------
+
+A solution of 
+
+$\dot{x} = f(x, u)$ and $x(t_0) = x_0$ 
+
+is merely a solution of 
+
+$\dot{x} = h(t,x)$ and $x(t_0) = x_0$, 
+
+where
+
+$h(t, x) = f(x, u(t))$.
+
+
+Outputs
+--------------------------------------------------------------------------------
+
+We may complement the system dynamics with an equation
+
+$$
+y = g(x, u) \in \mathbb{R}^p
+$$
+
+The vector $y$ refers to the **systems output**, usually the quantities that
+we can effectively measure in a system (the state $x$ itself may be unknown).
 
 
 What Are Linear Systems?
---------------------------------------------------------------------------------
+================================================================================
 
-**Standard Form:**
+Standard Form
+--------------------------------------------------------------------------------
 
 Input $u \in \mathbb{R}^m$, state $x \in \mathbb{R}^n$, 
 output $y \in \mathbb{R}^p$.
@@ -87,8 +142,53 @@ output $y \in \mathbb{R}^p$.
   \end{array}
   $$
 
-Actually, **linear time-invariant (LTI)** systems.
+Why Linear ?
+--------------------------------------------------------------------------------
 
+Assume that:
+
+  - $\dot{x}_1 = A x_1 + B u_1$, $x_1(0) = x_{10}$,
+
+  - $\dot{x}_2 = A x_2 + B u_2$, $x_2(0) = x_{20}$,
+
+  - $x_3 = \lambda x_1 + \mu x_2$, 
+  
+  - $u_3 = \lambda u_1 + \mu u_2$ and
+
+  - $x_{30} = \lambda x_{10} + \mu x_{20}$.
+
+--------------------------------------------------------------------------------
+
+Then
+
+$$
+\dot{x}_3 = A x_3 + B u_3, \; x_3(0) = x_{30}.
+$$
+
+
+Internal + External Dynamics
+--------------------------------------------------------------------------------
+
+**Corollary:** the solution of 
+
+$$
+\dot{x} = A x + Bu, \; x(0) = x_0
+$$
+
+is the sum of the solutions $x_1$ and $x_2$ of:
+
+$$
+\dot{x}_1 = A x_1, \; x_1(0) = x_0
+$$
+
+$$
+\dot{x}_2 = A x_2 + Bu, \; x_2(0) = 0
+$$
+
+
+
+
+Matrix Size
 --------------------------------------------------------------------------------
 
 $A \in \mathbb{R}^{n \times n}$, $B \in \mathbb{R}^{n\times m}$,
@@ -114,6 +214,25 @@ Inputs & Outputs
   - When the full state can be measured ($y=x$), $C = I$ and $D=0$.
 
    
+LTI Systems
+--------------------------------------------------------------------------------
+
+They are actually referred to as **linear time-invariant (LTI)** 
+systems: 
+
+When $x(t)$ is a solution of
+
+$$
+\dot{x} = A x + Bu, \; x(0) = x_0,
+$$
+
+then $x(t- t_0)$ is a solution of 
+
+$$
+\dot{x} = A x + Bu(t-t_0), \; x(t_0) = x_0.
+$$
+
+
 
 
 Nonlinear to Linear
