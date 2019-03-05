@@ -151,11 +151,18 @@ Assume that:
 
   - $\dot{x}_2 = A x_2 + B u_2$, $x_2(0) = x_{20}$,
 
+--------------------------------------------------------------------------------
+
+Set
+
   - $x_3 = \lambda x_1 + \mu x_2$, 
   
   - $u_3 = \lambda u_1 + \mu u_2$ and
 
   - $x_{30} = \lambda x_{10} + \mu x_{20}$.
+
+for some $\lambda$ and $\mu$.
+
 
 --------------------------------------------------------------------------------
 
@@ -169,7 +176,7 @@ $$
 Internal + External Dynamics
 --------------------------------------------------------------------------------
 
-**Corollary:** the solution of 
+**Corollary:** Since $(x_0, u) = (x_0, 0) + (0, u)$ the solution of 
 
 $$
 \dot{x} = A x + Bu, \; x(0) = x_0
@@ -177,15 +184,23 @@ $$
 
 is the sum of the solutions $x_1$ and $x_2$ of:
 
+--------------------------------------------------------------------------------
+
+the **internal dynamics**
+
 $$
 \dot{x}_1 = A x_1, \; x_1(0) = x_0
 $$
+
+(behavior controlled by the initial value only, no input)
+
+and the **external dynamics**:
 
 $$
 \dot{x}_2 = A x_2 + Bu, \; x_2(0) = 0
 $$
 
-
+(behavior controlled by the input, the systems is initially at rest)
 
 
 Matrix Size
@@ -206,13 +221,6 @@ $C \in \mathbb{R}^{p \times n}$, $D \in \mathbb{R}^{p \times m}$.
   $$
 
 
-Inputs & Outputs
---------------------------------------------------------------------------------
-
-  - A system is autonomous (without input) when $m = 0$.
-
-  - When the full state can be measured ($y=x$), $C = I$ and $D=0$.
-
    
 LTI Systems
 --------------------------------------------------------------------------------
@@ -230,6 +238,75 @@ then $x(t- t_0)$ is a solution of
 
 $$
 \dot{x} = A x + Bu(t-t_0), \; x(t_0) = x_0.
+$$
+
+
+
+<i class="fa fa-eye"></i> -- Linear System / Heat Equation
+--------------------------------------------------------------------------------
+
+
+![](images/static/heat-simple.svg)
+
+Simplified Model
+--------------------------------------------------------------------------------
+
+  - Four cells numbered 1 to 4 are arranged in a row.
+
+  - The first cell has a heat source, the last one a temperature sensor.
+
+  - The heat sink/source is increasing the temperature of its cell 
+    of $u$ degrees by second.
+
+  - If the temperature of a cell is $T$ and the one of a neighbor is
+    $T_n$, $T$ increases of $T_n - T$ by second.
+
+--------------------------------------------------------------------------------
+
+Given the geometric layout:
+
+  - $d T_1/dt = u + (T_2 - T_1)$
+
+  - $d T_3/dt = (T_1 - T_2) + (T_3 - T_2)$
+
+  - $d T_3/dt = (T_2 - T_3) + (T_4 - T_3)$
+
+  - $d T_4/dt = (T_3 - T_4)$
+
+  - $y = T_4$
+
+--------------------------------------------------------------------------------
+
+Set $x = (T_1, T_2, T_3, T_4)$. 
+
+The model is linear and its standard matrices are:
+
+$$
+A = \left[
+  \begin{array}{rrrr}
+-1 & 1 & 0 & 0   \\
+1  & -1 & 1 & 0 \\
+0 & 1 & -1 & 1  \\
+0 & 0 & 1 & -1 
+\end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+B = \left[
+  \begin{array}{c}
+  1 \\ 0 \\ 0 \\ 0
+  \end{array} 
+  \right], \;
+C = 
+\left[ 
+\begin{array}{cccc}
+0 & 0 & 0 & 1
+\end{array}
+\right],
+\; D = [0]
 $$
 
 
@@ -342,52 +419,74 @@ $$
 
 where $A = \partial f (x_e, u_e) / \partial x.$
 
-Solutions of LTI Systems
-================================================================================
+<i class="fa fa-eye"></i> -- Linearization
+--------------------------------------------------------------------------------
+
+Consider
+
+$$
+\dot{x} = -x^2 + u, \; y = x u
+$$
+
+If we set $u_e = 1$, the system has an equilibrium at $x_e = 1$
+(and also $x_e = -1$ but we focus on the former) and the corresponding
+$y$ is $y_e = x_e u_e = 1$.
 
 --------------------------------------------------------------------------------
 
-When we search for the solution of the system
+Around this configuration $(x_e, u_e) = (1, 1)$, we have
 
-  $$
-  \left|
-  \begin{array}{lll}
-  \dot{x} &=& A x + B u \\
-  y &=& Cx + Du
-  \end{array}
-  \right. \; \mbox{ with } \; x(0) = x_0
-  $$
+$$
+\frac{\partial (-x^2+u)}{\partial x} = -2x_e = -2,
+\; \frac{\partial (-x^2+u)}{\partial u} = 1,
+$$
 
-we can leverage the linearity of the system.
+and
 
+$$
+\frac{\partial x u }{\partial x} = u_e = 1,
+\; \frac{\partial x u}{\partial u} = x_e = 1.
+$$
 
-Step 1 -- Autonomous system
 --------------------------------------------------------------------------------
 
-### Internal Behavior
+Thus, the approximate, linearized dynamics around this equilibrium is
 
-Set $u(t) \equiv 0$; search for the solution of 
+$$
+\begin{array}{rcr}
+d(x-1)/dt &=& -2 (x - 1) + (u - 1) \\
+y -1      &=&  (x - 1) + (u - 1)
+\end{array}
+$$
 
-  $$
-  \dot{x} = A x\; \mbox{ and } \; x(0) = x_0
-  $$
 
 
-Step 2 -- Input-Output (I/O) System
+
+
+
+<i class="fa fa-question-circle-o"></i> -- Linearized Dynamics / Pendulum
 --------------------------------------------------------------------------------
 
-### External Behavior
+A pendulum submitted to a torque $c$ is governed by
 
-Set $x_0 = 0$; search for the solution of
+$$
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
+$$
 
-  $$
-  \dot{x} = A x + B u \; \mbox{ and } \; x(0) = 0
-  $$
+We assume that only the angle $\theta$ is effectively measured.
 
-Step 3
 --------------------------------------------------------------------------------
 
-The general solution $x(t)$ is the sum of the internal and external solutions.
+  - What are the function $f$ and $g$ that determine the nonlinear
+    dynamics of the pendulum when $x=(\theta, \dot{\theta})$,
+    $u=c$ and $y=\theta$?
+
+  - Show that for any angle $\theta_e$ we can find a constant value $c_e$
+    of the torque such that $x_e = (\theta_e, 0)$ is an equilibrium.
+
+  - Compute the linearized dynamics of the pendulum around this equilibrium
+    and put it in the standard form (compute $A$, $B$, $C$ and $D$).
+
 
 
 
