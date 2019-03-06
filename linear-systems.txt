@@ -493,20 +493,17 @@ We assume that only the angle $\theta$ is effectively measured.
 Internal Dynamics
 ================================================================================
 
-
-
-
 --------------------------------------------------------------------------------
 
-    @vectorize
-    def x(t):
-        global A, x0
-        A_ = array(A)
-        return expm(A_*t) @ x0
+We study the behavior of the solution
 
+$$
+\dot{x} = A x, \; x(0) = x_0 \in \mathbb{R}^n
+$$
 
+We try to get some understanding with the simplest cases first.
 
-Scalar Case
+Scalar Case, Real-Valued
 --------------------------------------------------------------------------------
 
   $$
@@ -515,23 +512,33 @@ Scalar Case
 
 $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
+--------------------------------------------------------------------------------
+
 **Solution:**
-
   $$
-  x(t) = x_0 e^{a t}
+  x(t) = e^{a t} x_0
   $$
 
+**Proof:**
+$$
+\frac{d}{dt} e^{at} x_0 = a e^{at} x_0 = a x(t)
+$$
+and
+$$
+x(0) = e^{a \times 0} x_0 = x_0.
+$$
+
+<i class="fa fa-area-chart"></i> Trajectory
 --------------------------------------------------------------------------------
     
-    a = 2.0
-
-    A = [[a]]; x0 = [1.0]
+    a = 2.0; x0 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, x(t), "k")
+    plot(t, exp(a*t)*x0, "k")
     xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
 
+Trajectory
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -543,13 +550,38 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ![](images/scalar-LTI-2.svg)
 
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-2-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-2-poles.svg)
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
     
-    a = 1.0
-    A = [[a]]; x0 = [1.0]
+    a = 1.0; x0 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, x(t), "k")
+    plot(t, exp(a*t)*x0, "k")
     xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
 
@@ -564,15 +596,41 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ![](images/scalar-LTI-1.svg)
 
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-1-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-1-poles.svg)
+
 --------------------------------------------------------------------------------
     
-    a = 0.0
-    A = [[a]]; x0 = [1.0]
+    a = 0.0; x0 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, x(t), "k")
+    plot(t, exp(a*t)*x0, "k")
     xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
+
 
 --------------------------------------------------------------------------------
 
@@ -585,15 +643,42 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ![](images/scalar-LTI-0.svg)
 
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
     
-    a = -1.0
-    A = [[a]]; x0 = [1.0]
+    save("images/scalar-LTI-0-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-0-poles.svg)
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    a = -1.0; x0 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, x(t), "k")
+    plot(t, exp(a*t)*x0, "k")
     xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
+
 
 --------------------------------------------------------------------------------
 
@@ -606,15 +691,41 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ![](images/scalar-LTI-m1.svg)
 
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-m1-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m1-poles.svg)
+
 --------------------------------------------------------------------------------
     
-    a = -2.0
-    A = [[a]]; x0 = [1.0]
+    a = -2.0; x0 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, x(t), "k")
+    plot(t, exp(a*t)*x0, "k")
     xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
+
 
 --------------------------------------------------------------------------------
 
@@ -627,7 +738,177 @@ $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 ![](images/scalar-LTI-m2.svg)
 
-Scalar Case ($\mathbb{C}$)
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-m2-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m2-poles.svg)
+
+
+Analysis
+--------------------------------------------------------------------------------
+
+  - The origin is attractive when $a < 0.0$ ($a$ is in the left-hand plane),
+
+  - In this case, define the time constant $\tau = - 1 / a$, so that
+
+    $$
+    x(t) = e^{at} x_0 = e^{-t/\tau} x_0
+    $$
+
+  - When $t = \tau$, $|x(t)|$ is $\simeq$ $33 \%$ of $|x_0|$;  
+    when $t = 3 \tau$, $|x(t)|$ is $\simeq$ $5 \%$ of $|x_0|$.
+
+
+Vector Case, Diagonal, Real-Valued
+--------------------------------------------------------------------------------
+
+$$
+\dot{x}_1 = a_1 x_1, \; x_1(0) = x_{10}
+$$
+
+$$
+\dot{x}_2 = a_2 x_2, \; x_2(0) = x_{20}
+$$
+
+--------------------------------------------------------------------------------
+
+**Solution:** by linearity
+
+$$
+x(t) = e^{a_1 t} x_{10} + e^{a_2 t} x_{20} 
+$$
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    a1 = -1.0; a2 = 2.0; x10 = x20 = 1.0
+    figure()
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, exp(a1*t)*x10 + exp(a2*t)*x20 , "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a_1={a1}, \; a_2={a2}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
+
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-m1p2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m1p2.svg)
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a1), imag(a1), "x", color="k", ms=10.0)
+    plot(real(a2), imag(a2), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a_1={a1}, \; a_2={a2}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-m1p2-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m1p2-poles.svg)
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    a1 = -1.0; a2 = -2.0; x10 = x20 = 1.0
+    figure()
+    t = linspace(0.0, 3.0, 1000)
+    plot(t, exp(a1*t)*x10 + exp(a2*t)*x20 , "k")
+    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a_1={a1}, \; a_2={a2}$")
+    grid(); axis([0.0, 2.0, 0.0, 10.0])
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/scalar-LTI-m1m2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m1m2.svg)
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a1), imag(a1), "x", color="k", ms=10.0)
+    plot(real(a2), imag(a2), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a_1={a1}, \; a_2={a2}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-m1m2-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m1m2-poles.svg)
+
+
+Analysis
+--------------------------------------------------------------------------------
+
+  - The rightmost $a_i$ determines the asymptotic behavior,
+
+  - The origin is attractive when every $a_i$ is in the left-hand plane.
+
+
+
+Scalar Case, Complex-Valued
 --------------------------------------------------------------------------------
 
   $$
@@ -636,20 +917,29 @@ Scalar Case ($\mathbb{C}$)
 
 $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 
-**Solution:** if $a = \sigma + i \omega$ and $x_0 = |x_0| e^{i \angle x_0}$
+--------------------------------------------------------------------------------
 
-  $$
-  x(t) = x_0 e^{a t} = (|x_0| e^{\sigma t}) e^{i (\angle x_0 + \omega t)}
-  $$
+**Solution:** formally, the same old solution
+
+$$
+x(t) = e^{at} x_0
+$$
+
+Precisely, when
+
+if $a = \sigma + i \omega$ and $x_0 = |x_0| e^{i \angle x_0}$
+
+$$
+|x(t)| = |x_0| e^{\sigma t} \, \mbox{ and } \, \angle x(t) = \angle x_0 + \omega t.
+$$
 
 --------------------------------------------------------------------------------
 
-    a = 1.0j
+    a = 1.0j; x0=1.0
     figure()
     t = linspace(0.0, 20.0, 1000)
-    A = array([[a]]); x0 = [1.0]
-    plot(t, real(x(t)), label="$\mathrm{Re}(x(t))$")
-    plot(t, imag(x(t)), label="$\mathrm{Im}(x(t))$")
+    plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
+    plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
     xlabel("$t$")
     legend(); grid()
 
@@ -669,8 +959,7 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
     fig = figure()
     ax = fig.add_subplot(111, projection="3d")
     zticks = ax.set_zticks
-    xt = squeeze(x(t))
-    ax.plot(t, real(xt), imag(xt))
+    ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
     xticks([0.0, 20.0]); yticks([]); zticks([])
     ax.set_xlabel("$t$")
     ax.set_ylabel("$\mathrm{Re}(x(t))$")
@@ -687,16 +976,45 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 
 ![](images/scalar-LTI-3d.svg)
 
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
-    a = -0.1 + 1.0j
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-1j-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-1j-poles.svg)
+
+--------------------------------------------------------------------------------
+
+    a = -0.5 + 1.0j; x0=1.0
     figure()
     t = linspace(0.0, 20.0, 1000)
-    A = array([[a]]); x0 = [1.0]
-    plot(t, real(x(t)), label="$\mathrm{Re}(x(t))$")
-    plot(t, imag(x(t)), label="$\mathrm{Im}(x(t))$")
+    plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
+    plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
     xlabel("$t$")
     legend(); grid()
+
+
+
+
 
 --------------------------------------------------------------------------------
 
@@ -714,8 +1032,7 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
     fig = figure()
     ax = fig.add_subplot(111, projection="3d")
     zticks = ax.set_zticks
-    xt = squeeze(x(t))
-    ax.plot(t, real(xt), imag(xt))
+    ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
     xticks([0.0, 20.0]); yticks([]); zticks([])
     ax.set_xlabel("$t$")
     ax.set_ylabel("$\mathrm{Re}(x(t))$")
@@ -733,10 +1050,48 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 ![](images/scalar-LTI-3d-2.svg)
 
 
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(real(a), imag(a), "x", color="k", ms=10.0)
+    gca().set_aspect(1.0)
+    xlim(-3,3); ylim(-3,3); 
+    plot([-3,3], [0,0], "k")
+    plot([0, 0], [-3, 3], "k")
+    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+    title(f"$a={a}$")
+    grid(True)
 
 --------------------------------------------------------------------------------
 
-### Preamble
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    
+    save("images/scalar-LTI-m11j-poles")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/scalar-LTI-m11j-poles.svg)
+
+
+Analysis
+--------------------------------------------------------------------------------
+
+  - the origin is attractive if $a$ is in the left-hand plane:
+    $$\mathrm{Re} (a) < 0$$
+
+  - $\tau = -1/\mathrm{Re}(a)$ controls the speed of convergence,
+
+  - $\omega$ the (rotational) frequency of the oscillations.
+
+--------------------------------------------------------------------------------
+
+
+
+Exponential Matrix
+--------------------------------------------------------------------------------
 
 If $M \in \mathbb{C}^{n \times n}$,
 the **exponential** is defined as:
@@ -821,6 +1176,14 @@ is
   $$
 
 --------------------------------------------------------------------------------
+
+    @vectorize
+    def x(t):
+        global A, x0
+        A_ = array(A)
+        return expm(A_*t) @ x0
+
+
 
 Here **TODO** : local = global, attractivity = G.A.S
 

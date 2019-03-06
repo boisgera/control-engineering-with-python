@@ -29,7 +29,7 @@ Control Engineering with Python
 
       - Solutions of LTI systems, asymptotic stability (30 min)
 
-      - I/O Behavior, Laplace domain, I/O stability (1h)
+      - I/O Behavior, Laplace domain, I/O stability (30 min)
 
  3. [Controllers](https://boisgera.github.io/control-engineering-with-python/controllers.html)
 
