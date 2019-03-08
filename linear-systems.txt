@@ -1313,8 +1313,8 @@ Consider the system
 I/O Behavior
 ================================================================================
 
+Context
 --------------------------------------------------------------------------------
-
 
   - Assume that the system is "initially at rest":
 
@@ -1324,7 +1324,7 @@ I/O Behavior
 
   - Forget about the state $x(t)$ (may be unknown)
 
-  - Study the input/output I/O relationship:
+  - Study the input/output (I/O) relationship:
 
     $$
     u \to y
@@ -1335,12 +1335,11 @@ I/O Behavior
 In this context, we have:
 
   $$
-  y(t) = \int_0^{t} C e^{A(s-t)} u(s) \, ds + D u(t)
+  y(t) = \int_0^{t} C e^{A(\tau-t)} B u(\tau) \, ds + D u(t)
   $$
 
+Causal Signals
 --------------------------------------------------------------------------------
-
-Now, 
 
    - extend $u(t)$ and $y(t)$ by $0$ when $t<0$ (as **causal signals**).
 
@@ -1358,29 +1357,36 @@ Now,
 Impulse Response
 --------------------------------------------------------------------------------
 
-  - define the **impulse response** by:
+The **impulse response** is defined by:
 
-    $$
-    H(t) = (C e^{At} B) \times e(t) + D \in \mathbb{R}^{p \times m}
-    $$
+$$
+H(t) = (C e^{At} B) \times e(t) + D \in \mathbb{R}^{p \times m}
+$$
 
-  - when $p = m = 1$ (single-input & single-output or **SISO** systems),
-    the $1 \times 1$ matrix $H(t)$ is identified to the scalar $h(t)$
-    that is contains:
+<i class="fa fa-sticky-note"></i> works for general or **MIMO** systems.  
+MIMO = multiple-input & multiple-output systems.
 
-    $$
-    H(t) = [h(t)]
-    $$
+SISO Systems
+--------------------------------------------------------------------------------
 
-    <i class="fa fa-sticky-note"></i> 
-    **MIMO** refers to multiple-input & multiple-output systems.
+When 
+
+$$p = m = 1$$ 
+(single-input & single-output or **SISO** systems),
+the $1 \times 1$ matrix $H(t)$ is identified to the scalar $h(t)$
+that is contains:
+
+$$
+H(t) = [h(t)]
+$$
+
 
 --------------------------------------------------------------------------------
 
 Then, we have:
 
   $$
-  y(t) = \int_{-\infty}^{+\infty} H(t - s) u(s) \, ds 
+  y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, ds 
   $$
 
 and denote $\ast$ this operation
@@ -1392,6 +1398,46 @@ between $H$ and $u$:
 
 It's called a **convolution**.
 
+<i class="fa fa-question-eye"></i> Impulse Response & Output
+--------------------------------------------------------------------------------
+
+Consider the SISO system
+  
+$$
+\left| 
+\begin{array}{ccc}
+\dot{x} &=& ax + u \\
+y &=& x \\
+\end{array}
+\right.
+$$
+
+where $a \neq 0$.
+
+--------------------------------------------------------------------------------
+
+We have
+
+$$
+H(t) = (C e^{At} B) \times e(t) + D = [1]e^{[a]t} [1] e(t) + [0] = [e(t)e^{at}]
+$$
+
+--------------------------------------------------------------------------------
+
+When $u(t) = e(t)$ for example,
+
+$$
+\begin{split}
+y(t) 
+  &= \int_{-\infty}^{+\infty} e(t - \tau)e^{a(t-\tau)} e(\tau) \, d\tau \\
+  &= \int_{0}^{_tau} e^{a(t- \tau)} \, d\tau \\
+  &= \int_{0}^{_tau} e^{a \tau} \, d\tau  \\
+  &= \frac{1}{a} \left(e^{a t} - 1 \right)
+\end{split} 
+$$
+
+
+--------------------------------------------------------------------------------
 
 <i class="fa fa-question-circle-o"></i> Impulse Response / Integrator
 --------------------------------------------------------------------------------
@@ -1408,7 +1454,7 @@ It's called a **convolution**.
     \right.
     $$
 
-    where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
+where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
 
 
 <i class="fa fa-question-circle-o"></i> Impulse Response / Double Integrator
@@ -1474,9 +1520,11 @@ Associate to a scalar signal $x(t) \in \mathbb{R}$,
 $t\in \mathbb{R}$,
 the function of a complex argument $s \in \mathbb{C}$:
 
-  $$
-  x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
-  $$
+$$
+x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
+$$
+
+defined when $\mathrm{Re} \, (s) > \sigma$ if $\|x(t)\| \leq K e^{\sigma t}$.
 
 
 <i class="fa fa-warning"></i> Notation
@@ -1486,7 +1534,7 @@ We use the same symbol (here "$x$") to denote:
 
   - a signal $x(t)$ and
 
-  - and its Laplace transform $x(s)$
+  - its Laplace transform $x(s)$
  
 They are two equivalent representations of the same "object", 
 but different mathematical "functions". 
@@ -1500,9 +1548,15 @@ If you fear some ambiguity, use named variables, e.g.:
 Vector/Matrix-Valued Signals
 --------------------------------------------------------------------------------
 
-The Laplace transform of a vector-valued signal $x(t) \in \mathbb{R}^n$
-or matrix-valued signals $X(t) \in \mathbb{R}^{m \times n}$ are computed
-elementwise.
+The Laplace transform 
+
+  - of a vector-valued signal $x(t) \in \mathbb{R}^n$ or
+
+  - of a matrix-valued signals $X(t) \in \mathbb{R}^{m \times n}$ 
+  
+are computed elementwise.
+
+--------------------------------------------------------------------------------
 
   $$
   x_{i}(s) = \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
@@ -1511,6 +1565,7 @@ elementwise.
   $$
   X_{ij}(s) = \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
   $$
+
 
 Rational & Causal Signals
 --------------------------------------------------------------------------------
@@ -1529,7 +1584,12 @@ where:
 
 --------------------------------------------------------------------------------
 
-  - Such signals are **causal** since $x(t) = 0$ when $t < 0$. 
+  - Such signals are **causal** since 
+  
+    $x(t) = 0$ when $t < 0$. 
+
+    <i class="fa fa-sticky-note"></i> Causality $\LeftRightarrow$ $\deg n(s) \leq \deg d(s)$.
+
 
   - They are **rational** since
 
@@ -1539,41 +1599,51 @@ where:
 
     where $n(s)$ and $d(s)$ are polynomials.
 
-    <i class="fa fa-sticky-note"></i> Causality $\Leftrightarrow$ $\deg n(s) \leq \deg d(s)$.
 
-
-<i class="fa fa-eye"></i> "Impulses"
+<i class="fa fa-eye"></i> Laplace Transform / Exponential
 --------------------------------------------------------------------------------
 
-Pick a time constant $\epsilon > 0$ and define
-
-  $$
-  \delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
-  $$
+Set $x(t) = e(t) e^{a t}$
 
 
+$$
+\begin{split}
+x(s) &= \int_0^{+\infty} e^{at} e^{-s t} \, dt \\
+&= \int_0^{+\infty} e^{(a-s) t} \, dt \\
+&= \left[\frac{e^{(a-s) t}}{a-s} \, dt \right]^{+\infty}_0 \\
+&= \frac{1}{s-a}
+\end{split}
+$$
+
+(If $\mathrm{Re} (s) \geq  \mathrm{Re} \, (a) +\epsilon$, then
+$|e^{(a-s)t}| \leq e^{-\epsilon t}$)
+
+
+Symbolic Computations
 --------------------------------------------------------------------------------
 
-    def delta(t, eps=1.0):
-        return exp(-t / eps) / eps * (t >= 0)
-    figure()
-    t = linspace(-1,4,1000)
-    plot(t, delta(t, eps=1.0), label="$\epsilon=1.0$")
-    plot(t, delta(t, eps=0.5), label="$\epsilon=0.5$")
-    plot(t, delta(t, eps=0.25), label="$\epsilon=0.25$")
-    xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
-    legend()
+Alternatively
 
+    import sympy
+    from sympy.abc import t, s, a
+    from sympy.integrals.transforms import laplace_transform
+    
+    def L(f):
+        return laplace_transform(f, t, s)[0]
+
+    xt = sympy.exp(a*t)
+    xs = L(xt) # 1/(-a + s)
+
+
+<i class="fa fa-question-circle-o"></i> Laplace Transform / Ramp
 --------------------------------------------------------------------------------
 
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+Compute the Laplace Transform of
 
-    tight_layout()
-    save("images/impulses")
+$$
+x(t) = t e(t)
+$$
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-![](images/impulses.svg)
 
 --------------------------------------------------------------------------------
 
@@ -1591,23 +1661,22 @@ Pick a time constant $\epsilon > 0$ and define
 
 (assuming that $\mathrm{Re}(s) > -1/\epsilon$)
 
-
-<i class="fa fa-question-circle-o"></i> Laplace Transform / ???
+Convolution & Laplace 
 --------------------------------------------------------------------------------
 
+Let $H(t)$ be the impulse response of a system.
+Its Laplace transform $H(s)$ is called the system **transfer function**.
 
-**TODO**
+For LTI systems in standard form, we have
 
-<i class="fa fa-star-o"></i> Convolution & Laplace 
+$$
+H(s) = C [sI - A]^{-1} B + D
+$$
+
+Operational Calculus
 --------------------------------------------------------------------------------
 
-The Laplace transform simplifies convolution calculus:
-
-  $$
-  y(t) = (h \ast u)(t)
-  \; \Longleftrightarrow \;
-  y(s) = h(s) \times u(s)
-  $$
+The Laplace transform turns convolution into products:
 
   $$
   y(t) = (H \ast u)(t)
@@ -1615,24 +1684,97 @@ The Laplace transform simplifies convolution calculus:
   y(s) = H(s) \times u(s)
   $$
 
-The function $h(s)$ (or $H(s)$) is the **transfer function** of the system
 
-TODO: explain / show block-diagram
+Graphical Language
 --------------------------------------------------------------------------------
 
-(and associated exercice?)
+Control engineers used *block diagrams* to dynamical systems,
+where
 
-<i class="fa fa-question-circle-o"></i> Conv + Laplace Transform / ???
+  - boxes determine the relation betwenn input signals and output signals and
+
+  - wires "route" output signals to inputs signals.
+
+<i class="fa fa-eye"></i> Block-Diagram / Feedback
 --------------------------------------------------------------------------------
 
+![](images/static/feedback-alt.svg)  
 
-**TODO**
+--------------------------------------------------------------------------------
+
+  - Triangle denote **gains** (scalar or matrix multipliers)
+
+  - Adders sum (or substract signals)
+
+--------------------------------------------------------------------------------
+
+  - for LTI systems, the I/O behavior can be specified with:
+
+      - a set of differential equations,
+
+      - the impulse response,
+
+      - the transfer function,
+
+Equivalent Systems
+--------------------------------------------------------------------------------
+
+![](images/static/equivalent-systems.svg)  
+
+
+<i class="fa fa-question--circle-o"></i> Block-Diagram / Feedback
+--------------------------------------------------------------------------------
+
+Compute the transfer function $H(s)$ of the system depicted 
+in the feedback block-diagram example.
+
 
 
 Impulse Response
 --------------------------------------------------------------------------------
 
-What is the meaning of the signal $h(t)$ ?
+Why refer to $h(t)$ as the system "impulse response"?
+
+By the way, what's an impulse?
+
+
+<i class="fa fa-eye"></i> Impulses Approximations
+--------------------------------------------------------------------------------
+
+Pick a time constant $\epsilon > 0$ and define
+
+  $$
+  \delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
+  $$
+
+
+--------------------------------------------------------------------------------
+
+    def delta(t, eps=1.0):
+        return exp(-t / eps) / eps * (t >= 0)
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    t = linspace(-1,4,1000)
+    plot(t, delta(t, eps=1.0), "k", label="$\epsilon=1.0$")
+    plot(t, delta(t, eps=0.5), "k--", label="$\epsilon=0.5$")
+    plot(t, delta(t, eps=0.25), "k:", label="$\epsilon=0.25$")
+    xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
+    legend()
+
+--------------------------------------------------------------------------------
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/impulses")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+![](images/impulses.svg)
 
 --------------------------------------------------------------------------------
 
@@ -1649,23 +1791,86 @@ What is the meaning of the signal $h(t)$ ?
 
 --------------------------------------------------------------------------------
 
-Thus, 
+Thus, if $y(t) = (h \ast u)(t)$ and
 
  1. if $u(t) = \delta(t)$ then
 
  2. $y(s) = h(s) \times \delta(s) = h(s) \times 1 = h(s)$
 
- 3. and $y(t) = h(t)$.
+ 3. and thus $y(t) = h(t)$.
 
 **Conclusion:**
 the impulse response $h(t)$ is the output of the system when
 the input is the unit impulse $\delta(t)$.
 
-TODO: UBIBO Stability?
+
+I/O Stability
 --------------------------------------------------------------------------------
 
+A system is $I/O$-stable if there is a $K \geq 0$ such that
 
+$$
+\mbox{for any } t\geq, \|y(t)\| \leq K M
+$$
 
+whenever
+
+$$
+\mbox{for any } t\geq, \|u(t)\| \leq M
+$$
+
+There is a bound on the amplification of the input signal that the system
+can provide.
+
+Also called $UBIBO$-stability (uniformly bounded input, 
+uniformly bounded output)
+
+Transfer Function Poles
+--------------------------------------------------------------------------------
+
+A **pole** of the transfer function $H(s)$ is a $s \in \mathbb{C}$ such that
+for some elements $H_{ij}(s)$,
+
+$$
+|H_{ij}(s)| = +\infty.
+$$
+
+I/O-Stability Criteria
+--------------------------------------------------------------------------------
+
+A system is I/O-stable if and only iff all its poles are in the open left-plane,
+i.e. such that
+
+$$
+\mbox{Re}(s) < 0.
+$$
+
+Internal Stability vs I/O-Stability
+--------------------------------------------------------------------------------
+
+If the system $\dot{x} = A x$ is asymptotically stable,
+then for any matrices $B$, $C$, $D$ of appropriate sizes, the I/O-system
+$$
+\begin{split}
+\dot{x} &= A x + B u \\
+y &= C x + Du
+\end{split}
+$$
+is I/O-stable.
+
+Fully Actuated/Measured System
+--------------------------------------------------------------------------------
+
+If $B=I$, $C=I$ and $D=0$, that is
+  $$
+  \dot{x} = A x +u, \; y = x
+  $$
+then $H(s) = [sI-A]^{-1}$. 
+
+Therefore, $s$ is a pole of $H$ iff it's an eigenvalue of $A$.
+Thus, asymptotic stability and I/O-stability are equivalent.
+
+This equivalence holds under much weaker conditions.
 
 
 
