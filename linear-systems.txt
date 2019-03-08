@@ -622,6 +622,8 @@ Trajectory
 
 ![](images/scalar-LTI-1-poles.svg)
 
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
     
     a = 0.0; x0 = 1.0
@@ -717,6 +719,8 @@ Trajectory
 
 ![](images/scalar-LTI-m1-poles.svg)
 
+
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
     
     a = -2.0; x0 = 1.0
@@ -768,16 +772,23 @@ Trajectory
 Analysis
 --------------------------------------------------------------------------------
 
-  - The origin is attractive when $a < 0.0$ ($a$ is in the left-hand plane),
+  - The origin is globally asymptotically stable when $a < 0.0$:  
+    $a$ is in open the left-hand plane,
 
-  - In this case, define the time constant $\tau = - 1 / a$, so that
+  - In this case, define the time constant $\tau = - 1 / a$:
 
     $$
     x(t) = e^{at} x_0 = e^{-t/\tau} x_0
     $$
 
-  - When $t = \tau$, $|x(t)|$ is $\simeq$ $33 \%$ of $|x_0|$;  
-    when $t = 3 \tau$, $|x(t)|$ is $\simeq$ $5 \%$ of $|x_0|$.
+--------------------------------------------------------------------------------
+
+$\tau$ controls the time it take for the solution 
+to (almost) reach to the origin:
+
+  - when $t = \tau$, $|x(t)|$ is $\simeq$ $33 \%$ of $|x_0|$;  
+
+  - when $t = 3 \tau$, $|x(t)|$ is $\simeq$ $5 \%$ of $|x_0|$.
 
 
 Vector Case, Diagonal, Real-Valued
@@ -791,12 +802,24 @@ $$
 \dot{x}_2 = a_2 x_2, \; x_2(0) = x_{20}
 $$
 
+i.e.
+
+$$
+A = \left[
+\begin{array}{cc}
+a_1 &   0 \\
+  0 & a_2
+\end{array}
+\right]
+$$
+
 --------------------------------------------------------------------------------
 
 **Solution:** by linearity
 
 $$
-x(t) = e^{a_1 t} x_{10} + e^{a_2 t} x_{20} 
+x(t) =   e^{a_1 t} \left[\begin{array}{c} x_{10} \\ 0 \end{array}\right] 
+       + e^{a_2 t} \left[\begin{array}{c} 0 \\ x_{20} \end{array}\right] 
 $$
 
 
@@ -806,8 +829,12 @@ $$
     a1 = -1.0; a2 = 2.0; x10 = x20 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a1*t)*x10 + exp(a2*t)*x20 , "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a_1={a1}, \; a_2={a2}$")
+    x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
+    xn = sqrt(x1**2 + x2**2)
+    plot(t, xn , "k")
+    plot(t, x1, "k--")
+    plot(t, x2 , "k--")
+    xlabel("$t$"); ylabel("$\|x(t)\|$"); title(f"$a_1={a1}, \; a_2={a2}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
 
 
@@ -856,8 +883,12 @@ $$
     a1 = -1.0; a2 = -2.0; x10 = x20 = 1.0
     figure()
     t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a1*t)*x10 + exp(a2*t)*x20 , "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a_1={a1}, \; a_2={a2}$")
+    x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
+    xn = sqrt(x1**2 + x2**2)
+    plot(t, xn , "k")
+    plot(t, x1, "k--")
+    plot(t, x2 , "k--")
+    xlabel("$t$"); ylabel("$\|x(t)\|$"); title(f"$a_1={a1}, \; a_2={a2}$")
     grid(); axis([0.0, 2.0, 0.0, 10.0])
 
 --------------------------------------------------------------------------------
@@ -904,7 +935,8 @@ Analysis
 
   - The rightmost $a_i$ determines the asymptotic behavior,
 
-  - The origin is attractive when every $a_i$ is in the left-hand plane.
+  - The origin is globally asymptotically stable 
+    only when every $a_i$ is in the open left-hand plane.
 
 
 
@@ -925,7 +957,7 @@ $$
 x(t) = e^{at} x_0
 $$
 
-Precisely, when
+But now, $x(t) \in \mathbb{C}$:
 
 if $a = \sigma + i \omega$ and $x_0 = |x_0| e^{i \angle x_0}$
 
@@ -933,6 +965,7 @@ $$
 |x(t)| = |x_0| e^{\sigma t} \, \mbox{ and } \, \angle x(t) = \angle x_0 + \omega t.
 $$
 
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     a = 1.0j; x0=1.0
@@ -1002,6 +1035,7 @@ $$
 
 ![](images/scalar-LTI-1j-poles.svg)
 
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     a = -0.5 + 1.0j; x0=1.0
@@ -1027,6 +1061,7 @@ $$
 
 ![](images/scalar-LTI-alt-2.svg)
 
+<i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
     fig = figure()
@@ -1079,16 +1114,18 @@ $$
 Analysis
 --------------------------------------------------------------------------------
 
-  - the origin is attractive if $a$ is in the left-hand plane:
+  - the origin is globally asymptotically stable if $a$ is in the open left-hand plane:
     $$\mathrm{Re} (a) < 0$$
 
-  - $\tau = -1/\mathrm{Re}(a)$ controls the speed of convergence,
+  - if $a= \sigma + i \omega$,
 
-  - $\omega$ the (rotational) frequency of the oscillations.
+      - $\tau = -1 /\sigma$ is the time constant related of the speed of convergence,
+
+      - $\omega$ the (rotational) frequency of the (damped) oscillations.
 
 --------------------------------------------------------------------------------
 
-
+Only one step left before the (almost) general case ...
 
 Exponential Matrix
 --------------------------------------------------------------------------------
@@ -1175,44 +1212,36 @@ is
   x(t) = e^{A t} x_0.
   $$
 
---------------------------------------------------------------------------------
-
-    @vectorize
-    def x(t):
-        global A, x0
-        A_ = array(A)
-        return expm(A_*t) @ x0
-
-
-
-Here **TODO** : local = global, attractivity = G.A.S
-
-
-Scalar Case / Asymptotic Stability
---------------------------------------------------------------------------------
-
-$\dot{x} = a x$ is asymptotically stable iff $\mathrm{Re} \, a < 0$.
-
-What about the general case?
-
-
 Stability Criteria
 --------------------------------------------------------------------------------
 
 Let $A \in \mathbb{C}^{n \times n}$.
 
-The origin of $\dot{x} = A x$ is asymptotically stable 
+The origin of $\dot{x} = A x$ is globally asymptotically stable 
 
 $\Longleftrightarrow$
    
 all eigenvalues of $A$ have a negative real part.
 
 
-Why?
+<i class="fa fa-question-circle-o"></i> G.A.S. $\Leftrightarrow$ L.A.
 --------------------------------------------------------------------------------
 
-If $A$ is diagonalizable with eigenvalues $\{\lambda_1, \dots, \lambda_n\}$,
-there is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
+Show that for a linear systems $\dot{x} = Ax$, it is enough that the origin
+is locally attractive for the system to be globally asymptotically stable.
+
+--------------------------------------------------------------------------------
+
+### Why does this criteria work?
+
+Assume that $A$ is diagonalizable with eigenvalues 
+$\{\lambda_1, \dots, \lambda_n\}$.
+
+(Very likely unless $A$ has some special structure)
+
+--------------------------------------------------------------------------------
+
+Then, there is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
 
   $$
   P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
@@ -1241,17 +1270,8 @@ Thus, if $y = P x$, $\dot{x} = A x$ is equivalent to
   \right.
   $$
 
---------------------------------------------------------------------------------
-
-  $$
-  y_i(t) = y_i(0) e^{\lambda_i t}
-  $$
-
---------------------------------------------------------------------------------
-
-TODO: deal with eigenvectors too. Need to understand the "modes" associated
-to each eigenvalue/vectors, time constant, oscillatory dynamics, etc.
-
+The system is G.A.S. iff each component of the system is, 
+which holds iff $\mathrm{Re} \lambda_i < 0$ for each $i$.
 
 <i class="fa fa-question-circle-o"></i> Stability / 2nd-order system
 --------------------------------------------------------------------------------
@@ -1259,15 +1279,26 @@ to each eigenvalue/vectors, time constant, oscillatory dynamics, etc.
 Consider the scalar ODE 
 
   $$
-  \ddot{x} = x
+  \ddot{x} + k x = 0, \; \mbox{ with } k > 0
   $$
 
   - [<i class="fa fa-superscript"></i>] 
     Determine the representation of this system 
     as a first-order ODE with state $(x, \dot{x})$.
 
-  - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
-    Is this system asymptotically stable?
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+    Is this system asymptotically stable? 
+    
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+    If its solutions oscillate,
+    determine its (rotational) frequency $\omega$?
+
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+    Characterize the asymptotic behavior of $x(t)$ when
+    $\ddot{x} + b \dot{x} + k x = 0$ for some $b>0$.
+
 
 <i class="fa fa-question-circle-o"></i> Stability / Integrators
 --------------------------------------------------------------------------------
@@ -1291,7 +1322,7 @@ Consider the system
 
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
     Compute the solution when 
 
       $$
@@ -1303,11 +1334,18 @@ Consider the system
       0 \\
       1
       \end{array}
-      \right]
-      .$$
+      \right],$$
 
-  - [<i class="fa fa-gears"></i>] Is the system asymptotically stable ? 
+    then for any initial condition.
 
+--------------------------------------------------------------------------------
+
+  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+    Same questions when $\dot{x} = \lambda I + J$ 
+    for some $\lambda \in \mathbb{C}$. 
+
+  - [<i class="fa fa-lightbulb-o"></i>] Is the system asymptotically stable ? 
+    Why does it matter in general?
 
 
 I/O Behavior
@@ -1357,7 +1395,7 @@ Causal Signals
 Impulse Response
 --------------------------------------------------------------------------------
 
-The **impulse response** is defined by:
+The system **impulse response** is defined by:
 
 $$
 H(t) = (C e^{At} B) \times e(t) + D \in \mathbb{R}^{p \times m}
@@ -1372,9 +1410,10 @@ SISO Systems
 When 
 
 $$p = m = 1$$ 
+
 (single-input & single-output or **SISO** systems),
-the $1 \times 1$ matrix $H(t)$ is identified to the scalar $h(t)$
-that is contains:
+
+the $1 \times 1$ matrix $H(t)$ is identified with a scalar $h(t)$:
 
 $$
 H(t) = [h(t)]
@@ -1398,14 +1437,15 @@ between $H$ and $u$:
 
 It's called a **convolution**.
 
-<i class="fa fa-question-eye"></i> Impulse Response & Output
+
+<i class="fa fa-eye"></i> Impulse Response
 --------------------------------------------------------------------------------
 
 Consider the SISO system
   
 $$
 \left| 
-\begin{array}{ccc}
+\begin{array}{ccl}
 \dot{x} &=& ax + u \\
 y &=& x \\
 \end{array}
@@ -1419,7 +1459,11 @@ where $a \neq 0$.
 We have
 
 $$
-H(t) = (C e^{At} B) \times e(t) + D = [1]e^{[a]t} [1] e(t) + [0] = [e(t)e^{at}]
+\begin{split}
+H(t) &= (C e^{At} B) \times e(t) + D \\
+     &= [1]e^{[a]t} [1] e(t) + [0] \\
+     &= [e(t)e^{at}]
+\end{split}
 $$
 
 --------------------------------------------------------------------------------
@@ -1430,8 +1474,8 @@ $$
 \begin{split}
 y(t) 
   &= \int_{-\infty}^{+\infty} e(t - \tau)e^{a(t-\tau)} e(\tau) \, d\tau \\
-  &= \int_{0}^{_tau} e^{a(t- \tau)} \, d\tau \\
-  &= \int_{0}^{_tau} e^{a \tau} \, d\tau  \\
+  &= \int_{0}^{\tau} e^{a(t- \tau)} \, d\tau \\
+  &= \int_{0}^{\tau} e^{a \tau} \, d\tau  \\
   &= \frac{1}{a} \left(e^{a t} - 1 \right)
 \end{split} 
 $$
@@ -1588,7 +1632,7 @@ where:
   
     $x(t) = 0$ when $t < 0$. 
 
-    <i class="fa fa-sticky-note"></i> Causality $\LeftRightarrow$ $\deg n(s) \leq \deg d(s)$.
+    <i class="fa fa-sticky-note"></i> Causality $\Leftrightarrow$ $\deg n(s) \leq \deg d(s)$.
 
 
   - They are **rational** since
@@ -1605,13 +1649,10 @@ where:
 
 Set $x(t) = e(t) e^{a t}$
 
-
 $$
 \begin{split}
-x(s) &= \int_0^{+\infty} e^{at} e^{-s t} \, dt \\
-&= \int_0^{+\infty} e^{(a-s) t} \, dt \\
-&= \left[\frac{e^{(a-s) t}}{a-s} \, dt \right]^{+\infty}_0 \\
-&= \frac{1}{s-a}
+x(s) &= \int_0^{+\infty} e^{at} e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \, dt \\
+&= \left[\frac{e^{(a-s) t}}{a-s} \right]^{+\infty}_0 = \frac{1}{s-a}
 \end{split}
 $$
 
@@ -1622,14 +1663,13 @@ $|e^{(a-s)t}| \leq e^{-\epsilon t}$)
 Symbolic Computations
 --------------------------------------------------------------------------------
 
-Alternatively
-
     import sympy
     from sympy.abc import t, s, a
-    from sympy.integrals.transforms import laplace_transform
-    
+    from sympy.integrals.transforms import laplace_transform    
     def L(f):
         return laplace_transform(f, t, s)[0]
+
+--------------------------------------------------------------------------------
 
     xt = sympy.exp(a*t)
     xs = L(xt) # 1/(-a + s)
@@ -1645,26 +1685,12 @@ x(t) = t e(t)
 $$
 
 
---------------------------------------------------------------------------------
-
-  $$
-  \begin{split}
-  \delta_{\epsilon}(s) 
-    &= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
-    &= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
-    &= \frac{1}{\epsilon} 
-       \left[ 
-       \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
-       \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
-  \end{split}
-  $$
-
-(assuming that $\mathrm{Re}(s) > -1/\epsilon$)
 
 Convolution & Laplace 
 --------------------------------------------------------------------------------
 
 Let $H(t)$ be the impulse response of a system.
+
 Its Laplace transform $H(s)$ is called the system **transfer function**.
 
 For LTI systems in standard form, we have
@@ -1688,12 +1714,13 @@ The Laplace transform turns convolution into products:
 Graphical Language
 --------------------------------------------------------------------------------
 
-Control engineers used *block diagrams* to dynamical systems,
-where
+Control engineers used *block diagrams* to describe (combinations of) 
+dynamical systems, with
 
-  - boxes determine the relation betwenn input signals and output signals and
+  - "boxes" to determine the relation between input signals and output signals and
 
-  - wires "route" output signals to inputs signals.
+  - "wires" to route output signals to inputs signals.
+
 
 <i class="fa fa-eye"></i> Block-Diagram / Feedback
 --------------------------------------------------------------------------------
@@ -1702,15 +1729,15 @@ where
 
 --------------------------------------------------------------------------------
 
-  - Triangle denote **gains** (scalar or matrix multipliers)
+  - **Triangles** denote **gains** (scalar or matrix multipliers),
 
-  - Adders sum (or substract signals)
+  - **Adders** sum (or substract) signals.
 
 --------------------------------------------------------------------------------
 
-  - for LTI systems, the I/O behavior can be specified with:
+  - **LTI systems** can be specified with:
 
-      - a set of differential equations,
+      - (differential) equations,
 
       - the impulse response,
 
@@ -1722,7 +1749,7 @@ Equivalent Systems
 ![](images/static/equivalent-systems.svg)  
 
 
-<i class="fa fa-question--circle-o"></i> Block-Diagram / Feedback
+<i class="fa fa-question-circle-o"></i> Block-Diagram / Feedback
 --------------------------------------------------------------------------------
 
 Compute the transfer function $H(s)$ of the system depicted 
@@ -1759,9 +1786,9 @@ Pick a time constant $\epsilon > 0$ and define
 
     figure()
     t = linspace(-1,4,1000)
-    plot(t, delta(t, eps=1.0), "k", label="$\epsilon=1.0$")
+    plot(t, delta(t, eps=1.0), "k:", label="$\epsilon=1.0$")
     plot(t, delta(t, eps=0.5), "k--", label="$\epsilon=0.5$")
-    plot(t, delta(t, eps=0.25), "k:", label="$\epsilon=0.25$")
+    plot(t, delta(t, eps=0.25), "k", label="$\epsilon=0.25$")
     xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
     legend()
 
@@ -1776,13 +1803,31 @@ Pick a time constant $\epsilon > 0$ and define
 
 ![](images/impulses.svg)
 
+
+Impulses in the Laplace Domain
+--------------------------------------------------------------------------------
+
+  $$
+  \begin{split}
+  \delta_{\epsilon}(s) 
+    &= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
+    &= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
+    &= \frac{1}{\epsilon} 
+       \left[ 
+       \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
+       \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
+  \end{split}
+  $$
+
+(assuming that $\mathrm{Re}(s) > -1/\epsilon$)
+
 --------------------------------------------------------------------------------
 
   - The "limit" of the signal $\delta_{\epsilon}(t)$ when $\epsilon \to 0$
     is not defined *as a function* (issue for $t=0$) but as a *generalized
     function* $\delta(t)$, the **unit impulse**. 
 
-  - This technicality can be avoided in the Laplace domain since
+  - This technicality can be avoided in the Laplace domain where
       $$
       \delta(s) = \lim_{\epsilon \to 0} \delta_{\epsilon}(s)
       =
@@ -1793,7 +1838,7 @@ Pick a time constant $\epsilon > 0$ and define
 
 Thus, if $y(t) = (h \ast u)(t)$ and
 
- 1. if $u(t) = \delta(t)$ then
+ 1. $u(t) = \delta(t)$ then
 
  2. $y(s) = h(s) \times \delta(s) = h(s) \times 1 = h(s)$
 
@@ -1807,7 +1852,7 @@ the input is the unit impulse $\delta(t)$.
 I/O Stability
 --------------------------------------------------------------------------------
 
-A system is $I/O$-stable if there is a $K \geq 0$ such that
+A system is **I/O-stable** if there is a $K \geq 0$ such that
 
 $$
 \mbox{for any } t\geq, \|y(t)\| \leq K M
@@ -1822,14 +1867,15 @@ $$
 There is a bound on the amplification of the input signal that the system
 can provide.
 
-Also called $UBIBO$-stability (uniformly bounded input, 
-uniformly bounded output)
+<i class="fa fa-sticky-note"></i>
+Also called **BIBO-stability** (for "bounded input, bounded output")
+
 
 Transfer Function Poles
 --------------------------------------------------------------------------------
 
 A **pole** of the transfer function $H(s)$ is a $s \in \mathbb{C}$ such that
-for some elements $H_{ij}(s)$,
+for at least one element $H_{ij}(s)$,
 
 $$
 |H_{ij}(s)| = +\infty.
@@ -1849,26 +1895,33 @@ Internal Stability vs I/O-Stability
 --------------------------------------------------------------------------------
 
 If the system $\dot{x} = A x$ is asymptotically stable,
-then for any matrices $B$, $C$, $D$ of appropriate sizes, the I/O-system
+then for any matrices $B$, $C$, $D$ of appropriate sizes,
+
 $$
 \begin{split}
 \dot{x} &= A x + B u \\
 y &= C x + Du
 \end{split}
 $$
+
 is I/O-stable.
 
-Fully Actuated/Measured System
+Fully Actuated & Measured System
 --------------------------------------------------------------------------------
 
 If $B=I$, $C=I$ and $D=0$, that is
+
   $$
   \dot{x} = A x +u, \; y = x
   $$
+
 then $H(s) = [sI-A]^{-1}$. 
 
+--------------------------------------------------------------------------------
+
 Therefore, $s$ is a pole of $H$ iff it's an eigenvalue of $A$.
-Thus, asymptotic stability and I/O-stability are equivalent.
+
+Thus, in this case, asymptotic stability and I/O-stability are equivalent.
 
 This equivalence holds under much weaker conditions.
 
