@@ -24,7 +24,7 @@ before_install:
 
 install:
   - ./build # generate slides and notebooks
-  - decktape automatic odes.html odes.pdf
+  - $(npm bin)/decktape automatic odes.html odes.pdf
 
 deploy:
   provider: pages
@@ -34,6 +34,5 @@ deploy:
     branch: master  
 
 script: 
-  - ./build
   - chromium-browser --headless --disable-gpu $MYBINDER
 
