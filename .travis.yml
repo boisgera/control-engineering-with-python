@@ -19,9 +19,8 @@ before_install:
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
   - ./install_pandoc
-  - sudo apt-get --yes --force-yes install nodejs npm
-  - sudo ln -s /usr/bin/nodejs /usr/local/bin/node
-  - sudo npm install -g decktape
+  - conda install nodejs
+  - npm install -g decktape
 
 install:
   - ./build # generate slides and notebooks
