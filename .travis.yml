@@ -25,6 +25,7 @@ before_install:
 install:
   - ./build # generate slides and notebooks
   - $(npm bin)/decktape automatic odes.html odes.pdf
+  - mv .gitignore .gitignore.bak # for deployment to gh-pages
 
 deploy:
   provider: pages
