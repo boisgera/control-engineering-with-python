@@ -19,9 +19,12 @@ before_install:
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
   - ./install_pandoc
+  - sudo apt-get --yes --force-yes install nodejs npm
+  - npm install -g decktape
 
 install:
-  - true
+  - ./build # generate slides and notebooks
+  - decktape automatic odes.html odes.pdf
 
 deploy:
   provider: pages
