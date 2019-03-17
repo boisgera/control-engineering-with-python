@@ -19,12 +19,12 @@ before_install:
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
   - ./install_pandoc
-  - sudo apt-get --yes --force-yes install nodejs npm
+  - sudo apt-get --yes --force-yes install nodejs-legacy npm
   - sudo npm install -g decktape
 
 install:
   - ./build # generate slides and notebooks
-  - $(npm bin)/decktape automatic odes.html odes.pdf
+  - ./build-pdf
   - mv .gitignore .gitignore.bak # for deployment to gh-pages
 
 deploy:
