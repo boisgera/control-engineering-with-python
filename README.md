@@ -15,8 +15,8 @@ Control Engineering with Python
 
  0. Introduction to Control Engineering (30 min)
 
- 1. [Introduction to Dynamical Systems](https://boisgera.github.io/control-engineering-with-python/odes.html)
-    ([PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf),
+ 1. Introduction to Dynamical Systems ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
+    [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf),
     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=odes.ipynb)).
 
       - ODEs: definitions, numerical schemes, vizualisation (30 min). 
