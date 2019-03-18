@@ -28,7 +28,7 @@ Control Engineering with Python
 
  2. **Linear-Time Invariant Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.pdf),
      [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=linear-systems.ipynb))
 
       - Linearization, state-space model (30 min)
