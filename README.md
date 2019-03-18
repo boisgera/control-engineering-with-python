@@ -13,7 +13,7 @@ Control Engineering with Python
 
 ### Program
 
- 0. Introduction to Control Engineering (30 min)
+ 0. **Introduction to Control Engineering** (30 min)
 
  1. **Introduction to Dynamical Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
@@ -55,7 +55,7 @@ Control Engineering with Python
 
       - Observer design: pole assignment & optimal filtering (1h)
 
- 5. Application to mobile robotics (3h)
+ 5. **Application to mobile robotics** (3h)
 
       - Lagrangian mechanics
 
