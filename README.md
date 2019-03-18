@@ -15,7 +15,8 @@ Control Engineering with Python
 
  0. Introduction to Control Engineering (30 min)
 
- 1. **Introduction to Dynamical Systems** ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
+ 1. **Introduction to Dynamical Systems**
+    ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
     [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf),
     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=odes.ipynb)).
 
@@ -25,7 +26,10 @@ Control Engineering with Python
 
       - Asymptotic behavior (30 min)
 
- 2. [Linear-Time Invariant Systems](https://boisgera.github.io/control-engineering-with-python/linear-systems.html)
+ 2. **Linear-Time Invariant Systems**
+    ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
+     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=linear-systems.ipynb))
 
       - Linearization, state-space model (30 min)
 
@@ -33,13 +37,19 @@ Control Engineering with Python
 
       - I/O Behavior, Laplace domain, I/O stability (30 min)
 
- 3. [Controllers](https://boisgera.github.io/control-engineering-with-python/controllers.html)
+ 3. **Controllers**
+    ([HTML](https://boisgera.github.io/control-engineering-with-python/controllers.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf),
+     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllers.ipynb))
 
       - Controllability (1h)
 
       - Controller design: pole assignement & optimal control (1h)
 
- 4. [Observers](https://boisgera.github.io/control-engineering-with-python/observers.html)
+ 4. **Observers**
+    ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf),
+     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
 
       - Observability (1h)
 
