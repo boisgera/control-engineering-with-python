@@ -1,5 +1,28 @@
 % Linear Systems
 
+Preamble (Code)
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    from numpy.linalg import *
+    from matplotlib.pyplot import *
+    from mpl_toolkits.mplot3d import *
+    from scipy.integrate import solve_ivp
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    import matplotlib; matplotlib.use("nbAgg")
+    from matplotlib.pyplot import *
+    %matplotlib notebook 
+    from mpl_toolkits.mplot3d import *
+    from scipy.integrate import solve_ivp
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
