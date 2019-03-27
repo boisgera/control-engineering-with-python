@@ -1313,6 +1313,8 @@ Asymptotic Behavior
 
 Asymptotic = Long-Term: when $t \to + \infty$
 
+(note: from now on, all systems are well-posed.)
+
 Lorenz System
 --------------------------------------------------------------------------------
 
@@ -1658,10 +1660,10 @@ The equilibrium $x_e$ is **globally asymptotically stable** if:
 
 --------------------------------------------------------------------------------
 
-Equivalently (perhaps simpler): 
+Equivalently: 
 
   - **for any $r>0$**, for any $\epsilon > 0$, 
-    there is a $\tau \geq 0$ such that any maximal solution $x(t)$ 
+    there is a $\tau \geq 0$ such the maximal solution $x(t)$ 
     **such that $\|x(0)\| \leq r$** exists for all $t \geq 0$ and 
     satisfies:
 
@@ -1669,6 +1671,16 @@ Equivalently (perhaps simpler):
     \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
     $$
 
+G.A.S. in Plain Words
+--------------------------------------------------------------------------------
+
+  - Pick any bounded set $B$ in $\mathbb{R}^n$.
+
+  - Consider each point of the set as an initial value $x(0)$, 
+    compute $x(t)$. The set of all $x(t)$ is $B_t$.
+
+  - The set $B_t$ will eventually fit into an arbitrarily 
+    small neighbourghood of $x_e$ when $t \to +\infty$.
 
 Local Asymptotic Stability
 --------------------------------------------------------------------------------

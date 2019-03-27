@@ -1421,11 +1421,14 @@ Impulse Response
 The system **impulse response** is defined by:
 
 $$
-H(t) = (C e^{At} B) \times e(t) + D \in \mathbb{R}^{p \times m}
+H(t) = (C e^{At} B) \times e(t) + D \delta(t) \in \mathbb{R}^{p \times m}
 $$
 
 <i class="fa fa-sticky-note"></i> works for general or **MIMO** systems.  
 MIMO = multiple-input & multiple-output systems.
+
+<i class="fa fa-sticky-note"></i> $\delta(t)$ is the **unit impulse**, 
+we'll get back to it (in the meantime, you may assume that $D=0$).
 
 SISO Systems
 --------------------------------------------------------------------------------
@@ -1448,7 +1451,7 @@ $$
 Then, we have:
 
   $$
-  y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, ds 
+  y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau
   $$
 
 and denote $\ast$ this operation
@@ -1483,8 +1486,8 @@ We have
 
 $$
 \begin{split}
-H(t) &= (C e^{At} B) \times e(t) + D \\
-     &= [1]e^{[a]t} [1] e(t) + [0] \\
+H(t) &= (C e^{At} B) \times e(t) + D \delta(t)\\
+     &= [1]e^{[a]t} [1] e(t) + [0] \delta(t) \\
      &= [e(t)e^{at}]
 \end{split}
 $$
@@ -1640,7 +1643,7 @@ Rational & Causal Signals
 We will only deal with **rational & causal** signals:
 
   $$
-  x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda} t\right) e(t)
+  x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda t} \right) e(t)
   $$
 
 where: 
