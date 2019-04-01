@@ -1664,7 +1664,7 @@ Equivalently:
 
   - **for any $r>0$**, for any $\epsilon > 0$, 
     there is a $\tau \geq 0$ such the maximal solution $x(t)$ 
-    **such that $\|x(0)\| \leq r$** exists for all $t \geq 0$ and 
+    **such that $\|x(0) - x_e\| \leq r$** exists for all $t \geq 0$ and 
     satisfies:
 
     $$
@@ -1690,7 +1690,7 @@ only for small enough balls.
 
   - **for some $r>0$**, for any $\epsilon > 0$, 
     there is a $\tau \geq 0$ such that any maximal solution $x(t)$ 
-    **such that $\|x(0)\| \leq r$** exists for all $t \geq 0$ and 
+    **such that $\|x(0) - x_e\| \leq r$** exists for all $t \geq 0$ and 
     satisfies:
 
     $$
