@@ -454,7 +454,7 @@ Beyond the Basic Solver
 
 Many issues that our basic solver doesn't address:
 
-  - non-autonomous systems,
+  - time-dependent vector field,
 
   - error control,
 
@@ -523,14 +523,14 @@ Non-Autonomous Systems
 --------------------------------------------------------------------------------
 
 <i class="fa fa-warning"></i> The solver may apply to
-non-autonomous systems 
+systems that are not time-invariant
 
   $$
   \dot{y} = f(t, y)
   $$ 
 
 The `t` argument in the definition of `fun` is mandatory, 
-even if the returned value doesn't depend on it (autonomous system).
+even if the returned value doesn't depend on it (time-invariant system).
 
 --------------------------------------------------------------------------------
 
@@ -966,7 +966,7 @@ You cannot extend this solution beyond $\tau=1.0$.
     of $\dot{x} = x^2$ such that $x(0) = x_0$ under the assumption
     that $x(t) \neq 0$ when $t\geq 0$.
 
-    <i class="fa fa-key"></i> **Hint:** compute $d/dt(1/x(t)).$
+    <i class="fa fa-key"></i> **Hint:** compute $d(1/x(t))/dt.$
 
   - [<i class="fa fa-lightbulb-o"></i>] Find for every $x_0 \neq 0$
     a maximal solution. When is it global?
