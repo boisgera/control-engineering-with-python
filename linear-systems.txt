@@ -290,7 +290,7 @@ Given the geometric layout:
 
   - $d T_1/dt = u + (T_2 - T_1)$
 
-  - $d T_3/dt = (T_1 - T_2) + (T_3 - T_2)$
+  - $d T_2/dt = (T_1 - T_2) + (T_3 - T_2)$
 
   - $d T_3/dt = (T_2 - T_3) + (T_4 - T_3)$
 
@@ -308,8 +308,8 @@ $$
 A = \left[
   \begin{array}{rrrr}
 -1 & 1 & 0 & 0   \\
-1  & -1 & 1 & 0 \\
-0 & 1 & -1 & 1  \\
+1  & -2 & 1 & 0 \\
+0 & 1 & -2 & 1  \\
 0 & 0 & 1 & -1 
 \end{array}
 \right]
@@ -1543,7 +1543,7 @@ where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
     \right.
     $$
 
-    where $u \in \mathbb{R}$, $x=(x_1, x_2)^2 \in \mathbb{R}$ and $y \in \mathbb{R}$.
+    where $u \in \mathbb{R}$, $x=(x_1, x_2) \in \mathbb{R}^2$ and $y \in \mathbb{R}$.
 
 
 
