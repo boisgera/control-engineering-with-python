@@ -302,7 +302,7 @@ The pendulum dynamics is equivalent to:
 --------------------------------------------------------------------------------
 
   - [<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>] 
-    Determine an approcimation of the least possible angular velocity 
+    Determine an approximation of the least possible angular velocity 
     $\omega_0 > 0$ such that when $\theta(0) = 0$ and 
     $\dot{\theta}(0) = \omega_0$, the pendulum reaches (or overshoots)
     $\theta(t) = \pi$ for some $t>0$.
