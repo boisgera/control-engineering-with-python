@@ -1501,7 +1501,7 @@ Consider a pendulum with a coefficient of friction $b$.
 
   - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
     Prove that no equilibrium is locally attractive when $k=0$.
-    
+
     <i class="fa fa-key"></i> **Hint:** study the evolution in time
       $$
       E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta,
@@ -1726,8 +1726,6 @@ Consider the ODE with right-hand side:
     xticks([-1, 0, 1])
     plot([0], [0], "k.", ms=10.0)
 
---------------------------------------------------------------------------------
-
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     axis("square")
@@ -1737,6 +1735,8 @@ Consider the ODE with right-hand side:
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
 
 ![](images/vinograd.svg)    
 
