@@ -1434,7 +1434,7 @@ Consider the system
 --------------------------------------------------------------------------------
 
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-    Same questions when $\dot{x} = \lambda I + J$ 
+    Same questions when $\dot{x} = (\lambda I + J)x$ 
     for some $\lambda \in \mathbb{C}$. 
 
   - [<i class="fa fa-lightbulb-o"></i>] Is the system asymptotically stable ? 
