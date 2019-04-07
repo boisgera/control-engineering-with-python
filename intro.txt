@@ -30,23 +30,10 @@ Examples include the mathematical models that describe the
 swinging of a clock pendulum, the flow of water in a pipe, 
 and the number of fish each springtime in a lake.
 
---------------------------------------------------------------------------------
-
-Control Theory is about:
-
-- Modelling, 
-
-- Analysis and
-
-- Control 
-
-of dynamical systems
-
 <i class="fa fa-gear"></i> Robotic Arms
 --------------------------------------------------------------------------------
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s-yne8xTNM0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 --------------------------------------------------------------------------------
 
@@ -64,11 +51,29 @@ of dynamical systems
 
   - [Eurofighter Typhoon](https://www.eurofighter.com/advantages)
 
-<i class="fa fa-car"></i> Mobile Robots / Autonomous Vehicles
+<i class="fa fa-car"></i> Smart Vehicles
 --------------------------------------------------------------------------------
 
+  - [Waymo](https://waymo.com/) ("Google Car"),
 
+  - [Tesla](https://www.tesla.com):  [Autopilot](https://www.tesla.com/en_EU/autopilot?redirect=no), 
+    [Semi (truck)](https://en.wikipedia.org/wiki/Tesla_Semi),
 
+  - [Uber](https://www.uber.com): [ATG](https://www.uber.com/info/atg/)
+
+  - ...
+
+--------------------------------------------------------------------------------
+
+Control Theory is about:
+
+- Modelling, 
+
+- Analysis and
+
+- Control 
+
+of dynamical systems
 
 <i class="fa fa-github" aria-hidden="true"></i> Ressources
 --------------------------------------------------------------------------------
