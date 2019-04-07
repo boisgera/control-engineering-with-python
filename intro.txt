@@ -47,7 +47,7 @@ and the number of fish each springtime in a lake.
 
   - Accident Preliminary Report: [<i class="fa fa-file-pdf-o"></i>](http://www.ecaa.gov.et/documents/20435/0/Preliminary+Report+B737-800MAX+%2C%28ET-AVJ%29.pdf)
 
-  - [What is the Boeing 737 Max MACS ?](https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/)
+  - [What is the Boeing 737 Max MACS?](https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/)
 
   - [Eurofighter Typhoon](https://www.eurofighter.com/advantages)
 
