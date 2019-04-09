@@ -45,7 +45,7 @@ and the number of fish each springtime in a lake.
 
   - [Boeing 747 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
 
-  - [NY Times article](https://www.nytimes.com/interactive/2019/03/29/business/boeing-737-max-8-flaws.html)
+  - [The Dangerous Flaw in Boeing's Automated System](https://www.nytimes.com/interactive/2019/03/29/business/boeing-737-max-8-flaws.html)
 
   - Accident Preliminary Report: [<i class="fa fa-file-pdf-o"></i>](http://www.ecaa.gov.et/documents/20435/0/Preliminary+Report+B737-800MAX+%2C%28ET-AVJ%29.pdf)
 
