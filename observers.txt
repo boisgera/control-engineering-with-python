@@ -249,7 +249,22 @@ The system $\dot{x} = Ax, \, y = C x$ is observable iff:
   \right] = n
   $$
 
-$[C, \dots, C A^{n-1}]^t$ is the **Kalman observability matrix**.
+$[C; \dots; C A^{n-1}]$ is the **Kalman observability matrix**.
+
+("$;$" denotes the column concatenation of matrices)
+
+Duality
+--------------------------------------------------------------------------------
+
+Since
+
+$$
+[C; \dots; C A^{n-1}]^t = [C^t, \dots, (A^t)^{n-1}C^t],
+$$
+
+the system $\dot{x} = A x, \; y = Cx$ is observable iff
+the system $\dot{x} = A^t x + C^t u$ is commandable.
+
 
 <i class="fa fa-question-circle-o"></i> Fully Measured System
 --------------------------------------------------------------------------------
