@@ -5,11 +5,11 @@ Control Engineering with Python
 
 ### Notebooks
 
-  - Work in the cloud: [![Launch Binder][binder-badge]][CEIP-binder]
+Two options:
 
-or
+  - [![Launch Binder][binder-badge]][CEIP-binder] (work in the cloud)
 
-  - [Execute the project notebooks locally](install.md)
+  - Execute the project notebooks locally: [instructions](install.md)
 
 
 [binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg?style=flat-square
