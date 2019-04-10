@@ -9,7 +9,7 @@ To work with the project notebooks on your computer (instead of using [binder](h
     Alternative: install [miniconda for Python 3.x](https://docs.conda.io/en/latest/miniconda.html).
 
  2. **Download and extract the [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/gh-pages.zip)** 
-    of the gh-pages branch.
+    of the gh-pages branch.  
     Then, open a terminal (or an "anaconda prompt"), enter the `control-engineering-with-python-gh-pages` directory.
     
  3. **Install the project dependencies** with the command:
