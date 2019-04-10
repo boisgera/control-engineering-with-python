@@ -3,6 +3,8 @@
 Control Engineering with Python
 ================================================================================
 
+**UPDATE.** [Launch jupyter notebooks locally](install.md)
+
 ### Notebooks
 
 [![Launch Binder][binder-badge]][CEIP-binder]
