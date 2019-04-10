@@ -20,7 +20,7 @@ To work with the project notebooks on your computer (instead of using [binder](h
  
         $ conda activate control-engineering-with-python
         
- 5. **Launch Jupyter notebook** with
+ 5. **Launch the Jupyter notebook** with
  
         $ jupyter notebook
         
