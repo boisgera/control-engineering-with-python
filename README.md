@@ -3,11 +3,14 @@
 Control Engineering with Python
 ================================================================================
 
-**UPDATE.** [Launch jupyter notebooks locally](install.md)
-
 ### Notebooks
 
-[![Launch Binder][binder-badge]][CEIP-binder]
+  - Work in the cloud: [![Launch Binder][binder-badge]][CEIP-binder]
+
+or
+
+  - [Execute the project notebooks locally](install.md)
+
 
 [binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg?style=flat-square
 [CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
