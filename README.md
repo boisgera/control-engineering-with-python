@@ -7,7 +7,7 @@ Control Engineering with Python
 
 Two options:
 
-  - [![Launch Binder][binder-badge]][CEIP-binder] (work in the cloud)
+  - [![Launch Binder][binder-badge]][CEIP-binder]
 
   - Execute the project notebooks locally: [instructions](install.md)
 
