@@ -5,7 +5,12 @@ Control Engineering with Python
 
 ### Notebooks
 
-[![Launch Binder][binder-badge]][CEIP-binder]
+Two options:
+
+  - [![Launch Binder][binder-badge]][CEIP-binder]
+
+  - Execute the project notebooks locally: [instructions](install.md)
+
 
 [binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg?style=flat-square
 [CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages

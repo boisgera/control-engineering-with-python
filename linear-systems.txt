@@ -1466,7 +1466,7 @@ Context
 In this context, we have:
 
   $$
-  y(t) = \int_0^{t} C e^{A(\tau-t)} B u(\tau) \, ds + D u(t)
+  y(t) = \int_0^{t} C e^{A(\tau-t)} B u(\tau) \, d\tau + D u(t)
   $$
 
 Causal Signals
