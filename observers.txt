@@ -113,8 +113,9 @@ y &=& g(x)
 \right.
 $$ 
 
-is **observable** if the knowledge of $y(t) = g(x(t))$ on some time
-span $[0, T]$ determines uniquely the initial condition $x(0)$. 
+is **observable** if the knowledge of $y(t) = g(x(t))$ 
+on some finite time span $[0, \tau]$ 
+determines uniquely the initial condition $x(0)$. 
 
 Remarks
 --------------------------------------------------------------------------------
@@ -159,7 +160,7 @@ y &=& C x + D u
 \right.
 $$ 
 
-and can deduce $x(0)$ from $y(t)$ when $u=0$:
+and we can deduce $x(0)$ from $y(t)$ when $u=0$:
 
 $$
 y_0(t) = C e^{At} x(0) \; \to \; x(0)
@@ -273,7 +274,7 @@ Consider $\dot{x} = A x, \; y = Cx$
 with $x \in \mathbb{R}^n$, $y \in\mathbb{R}^p$ and $\mathrm{rank} \, C = n$.
 
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-    Is the systems observable ?
+    Is the system observable ?
 
 <i class="fa fa-question-circle-o"></i> Integrator Chain
 --------------------------------------------------------------------------------
@@ -381,7 +382,8 @@ $$
 $$
 
 for every value of $e(0) = \hat{x}(0) - x(0)$,
-**unless the eigenvalues of $A$ are in the open left-hand plane.**
+**unless the eigenvalues of $A$ are in the open left-hand plane**
+(i.e. $\dot{x} = A x$ is asymptotically stable).
 
 
 State Observer v2
@@ -458,7 +460,7 @@ Observers / Pole Assignment
 Thus, if we set
 
 $$
-L = K
+L = K^t
 $$
 
 we have solved the pole assignment problem  
@@ -530,10 +532,46 @@ Consider the double integrator $\ddot{y} = u$
   \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
   $$
 
+<i class="fa fa-flask"></i> 
+--------------------------------------------------------------------------------
+
+    def fun(t, X_Xhat):
+        x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
+        y, y_hat = C.dot(x), C.dot(x_hat)
+        dx = A.dot(x)
+        dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
+        return r_[dx, dx_hat]
 
 --------------------------------------------------------------------------------
 
-**TODO:** simulation (with $u=0$).
+    y0 = [-2.0, 1.0, 0.0, 0.0]
+    result = solve_ivp(fun=fun, t_span=[0.0, 5.0], y0=y0, max_step=0.1)
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = result["t"]
+    y = result["y"]
+    plot(t, y[0], "b", label="$x_1$")
+    plot(t, y[2], "b:", alpha=0.5, label=r"$\hat{x}_1$")
+    plot(t, y[1], "g", label="$x_2$")
+    plot(t, y[3], "g:", alpha=0.5, label=r"$\hat{x}_2$")
+    grid(); legend()
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/observer-trajectories")
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/observer-trajectories.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Kalman Filtering
 ================================================================================
@@ -595,6 +633,8 @@ If it is known that there is a large state disturbance but small output
 disturbance, it makes sense to reduce the impact of the state disturbance
 in the composition of $J$, hence to select a small $Q$ wrt $R$.
 
+<!--
+
 --------------------------------------------------------------------------------
 
 To balance the impact of the state disturbance and output disturbance error,
@@ -605,7 +645,7 @@ Q^{-1} = \mathbb{E} v(t)^t v(t),
 R^{-1} = \mathbb{E} w(t)^t w(t).
 $$
 
-
+-->
 
 Optimal Solution
 --------------------------------------------------------------------------------
@@ -703,12 +743,122 @@ d\hat{x}/dt &= - (1+\sqrt{2})(\hat{y} - y)\\
 \end{split}
 $$
 
+
+
+
+<i class="fa fa-eye"></i> Stabilization/Kalman Filter
+--------------------------------------------------------------------------------
+
+Consider the double integrator $\ddot{x} = 0,$ $y=x$.
+
+  $$
+  \frac{d}{dt}
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  =
+  \left[\begin{array}{cc} 0 & 1 \\ 0 & 0\end{array}\right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  +
+  \left[\begin{array}{c} v_1 \\ v_2 \end{array}\right],
+  y = \left[\begin{array}{c} 1 & 0 \end{array} \right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  + w
+  $$
+
+(in standard form)
+
+--------------------------------------------------------------------------------
+
+    from scipy.linalg import solve_continuous_are
+    A = array([[0, 1], [0, 0]])
+    B = array([[0], [1]])
+    Q = array([[1, 0], [0, 1]]); R = array([[1]])
+    Sigma = solve_continuous_are(A.T, C.T, inv(Q), inv(R))
+    L = Sigma @ C.T @ R
+    eigenvalues, _ = eig(A - L @ C)
+    assert all([real(s) < 0 for s in eigenvalues])
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    x = [real(s) for s in eigenvalues]
+    y = [imag(s) for s in eigenvalues]
+    plot(x, y, "kx", ms=12.0)
+    xticks([-2, -1, 0, 1, 2])
+    yticks([-2, -1, 0, 1, 2])
+    plot([0, 0], [-2, 2], "k")
+    plot([-2, 2], [0, 0], "k")   
+    grid(True)
+    title("Eigenvalues")
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    axis("square")
+    axis([-2, 2, -2, 2])
+    save("images/poles-Kalman")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/poles-Kalman.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+
+<i class="fa fa-flask"></i> 
+--------------------------------------------------------------------------------
+
+    def fun(t, X_Xhat):
+        x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
+        y, y_hat = C.dot(x), C.dot(x_hat)
+        dx = A.dot(x)
+        dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
+        return r_[dx, dx_hat]
+
+--------------------------------------------------------------------------------
+
+    y0 = [-2.0, 1.0, 0.0, 0.0]
+    result = solve_ivp(fun=fun, t_span=[0.0, 5.0], y0=y0, max_step=0.1)
+
+--------------------------------------------------------------------------------
+
+    figure()
+    t = result["t"]
+    y = result["y"]
+    plot(t, y[0], "b", label="$x_1$")
+    plot(t, y[2], "b:", alpha=0.5, label=r"$\hat{x}_1$")
+    plot(t, y[1], "g", label="$x_2$")
+    plot(t, y[3], "g:", alpha=0.5, label=r"$\hat{x}_2$")
+    grid(); legend()
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/observer-Kalman-trajectories")
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/observer-Kalman-trajectories.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+<!--
+
 --------------------------------------------------------------------------------
 
     def f(t, y):
-        return 2 * cos(t)
+        return 0.0
     def g(y):
-        return round_(y)
+        return y
 
     y0 = [10.0]
     tspan = [0.0, 20.0]
@@ -744,7 +894,7 @@ $$
     def f(t, y):
         return - (1+ sqrt(2)) * (y[0] - output(t))
 
-    y0 = [0.0]
+    y0 = [1.0]
     result2 = solve_ivp(f, tspan, y0, dense_output=True)
     t = linspace(tspan[0], tspan[-1], 1000)
     x_hat = result2["sol"](t)[0]
@@ -772,11 +922,7 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-TODO: Observer-Controller Design
-================================================================================
-
---------------------------------------------------------------------------------
+-->
 
 <style>
 
