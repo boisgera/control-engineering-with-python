@@ -723,7 +723,7 @@ Consider system with dynamics
 $$
 \begin{array}{ccr}
 \dot{x}_1 &=& x_1 - x_2 + u \\
-\dot{x}_1 &=& - x_1 + x_2 + u
+\dot{x}_2 &=& - x_1 + x_2 + u
 \end{array}
 $$
 
@@ -779,8 +779,8 @@ Consider the dynamics:
 
 $$
 \begin{array}{rcl}
-m_1 \dot{x}_1 & = & -k_1 x_1 - k_2 (x_1 - x_2) - b_1 \dot{x}_1 \\
-m_2 \dot{x}_2 & = & -k_2 (x_2 - x_1) - b_2 \dot{x}_2
+m_1 \ddot{x}_1 & = & -k_1 x_1 - k_2 (x_1 - x_2) - b_1 \dot{x}_1 \\
+m_2 \ddot{x}_2 & = & -k_2 (x_2 - x_1) - b_2 \dot{x}_2
 \end{array}
 $$
 
