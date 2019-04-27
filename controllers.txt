@@ -946,7 +946,7 @@ $$
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
     Show that
     $$
-    j(x(t), u(t)) = \frac{d}{dt} x(t)^t \Pi x(t)
+    j(x(t), u(t)) = - \frac{d}{dt} x(t)^t \Pi x(t)
     $$
 
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
