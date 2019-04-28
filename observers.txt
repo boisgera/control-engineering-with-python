@@ -264,14 +264,13 @@ $$
 $$
 
 the system $\dot{x} = A x, \; y = Cx$ is observable iff
-the system $\dot{x} = A^t x + C^t u$ is commandable.
+the system $\dot{x} = A^t x + C^t u$ is controllable.
 
 
 <i class="fa fa-question-circle-o"></i> Fully Measured System
 --------------------------------------------------------------------------------
 
-Consider $\dot{x} = A x, \; y = Cx$   
-with $x \in \mathbb{R}^n$, $y \in\mathbb{R}^p$ and $\mathrm{rank} \, C = n$.
+Consider $\dot{x} = A x, \; y = Cx$ with $x \in \mathbb{R}^n$, $y \in\mathbb{R}^p$ and $\mathrm{rank} \, C = n$.
 
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
     Is the system observable ?
@@ -339,7 +338,7 @@ Simulate the system behavior
 $$
 \left|
 \begin{split}
-d\hat{x}/dt &= A \hat{x} + B u \\
+\frac{d\hat{x}}{dt} &= A \hat{x} + B u \\
 \hat{y} &= C \hat{x} + D u
 \end{split}
 \right.
@@ -354,14 +353,14 @@ $$
 State Estimate Error
 --------------------------------------------------------------------------------
 
-Is $\hat{x}(t)$ provide a good asymptotic estimate of $x(t)$ ?
+Does $\hat{x}(t)$ provide a good asymptotic estimate of $x(t)$ ?
 
 The dynamics of the **state estimate error** $e = \hat{x} - x$ is
 
 $$
 \begin{split}
-\dot{e} & = d(\hat{x} - x)/dt \\
-        & = d\hat{x}/dt - \dot{x} \\
+\dot{e} & = \frac{d}{dt}(\hat{x} - x) \\
+        & = \frac{d\hat{x}}{dt} - \dot{x} \\
         & = (A \hat{x} + Bu) - (A x + Bu) \\
         & = A e 
 \end{split}
@@ -463,8 +462,7 @@ $$
 L = K^t
 $$
 
-we have solved the pole assignment problem  
-**for observers:**
+we have solved the pole assignment problem  **for observers:**
 
 $$
 \sigma(A - L C) = \Lambda
