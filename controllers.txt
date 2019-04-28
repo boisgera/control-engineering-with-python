@@ -780,7 +780,7 @@ Consider the dynamics:
 $$
 \begin{array}{rcl}
 m_1 \ddot{x}_1 & = & -k_1 x_1 - k_2 (x_1 - x_2) - b_1 \dot{x}_1 \\
-m_2 \ddot{x}_2 & = & -k_2 (x_2 - x_1) - b_2 \dot{x}_2
+m_2 \ddot{x}_2 & = & -k_2 (x_2 - x_1) - b_2 \dot{x}_2 + u
 \end{array}
 $$
 
