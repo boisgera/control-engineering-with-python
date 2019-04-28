@@ -71,7 +71,7 @@ Two options:
       - Control of mobile robots
       
       
-### Free Resources      
+### Free External Resources      
       
   - [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
   
