@@ -274,7 +274,9 @@ def notebookify(doc):
             # *disable* the smart output so that '–' won't get represented
             # as '--'.
             source = pandoc.write(wrapper, options=options)
-            if len(cells) >= 1 and cells[-1]["cell_type"] == "markdown":
+
+            merge_markdown = False
+            if merge_markdown and len(cells) >= 1 and cells[-1]["cell_type"] == "markdown":
                 cells[-1]['source'] += "\n" + source
             else:
                 markdown_cell = MarkdownCell()
