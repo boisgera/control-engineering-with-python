@@ -1570,8 +1570,8 @@ $$
 \begin{split}
 y(t) 
   &= \int_{-\infty}^{+\infty} e(t - \tau)e^{a(t-\tau)} e(\tau) \, d\tau \\
-  &= \int_{0}^{\tau} e^{a(t- \tau)} \, d\tau \\
-  &= \int_{0}^{\tau} e^{a \tau} \, d\tau  \\
+  &= \int_{0}^{t} e^{a(t- \tau)} \, d\tau \\
+  &= \int_{0}^{t} e^{a \tau} \, d\tau  \\
   &= \frac{1}{a} \left(e^{a t} - 1 \right)
 \end{split} 
 $$
