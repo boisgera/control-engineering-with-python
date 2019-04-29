@@ -1350,7 +1350,7 @@ Then, there is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
 
 --------------------------------------------------------------------------------
 
-Thus, if $y = P x$, $\dot{x} = A x$ is equivalent to
+Thus, if $y = P^{-1} x$, $\dot{x} = A x$ is equivalent to
 
   $$
   \left|
