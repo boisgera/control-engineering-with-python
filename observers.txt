@@ -622,7 +622,7 @@ where:
 
   - $Q$ and $R$ are **symmetric** ($R^t = R$ and $Q^t = Q$),
 
-  - $Q$ and $R$ are **positive semidefinite** (denoted "$>0$")
+  - $Q$ and $R$ are **positive definite** (denoted "$>0$")
 
 Heuristics
 --------------------------------------------------------------------------------
