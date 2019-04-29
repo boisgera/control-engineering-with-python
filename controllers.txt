@@ -611,7 +611,7 @@ Closed-Loop Dynamics
 When
 
   $$
-  \begin{array}[ccc]
+  \begin{array}{ccc}
   \dot{x} = Ax + B u \\
   u = - K x
   \end{array}
