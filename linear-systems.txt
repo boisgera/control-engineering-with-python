@@ -838,7 +838,7 @@ Analysis
 --------------------------------------------------------------------------------
 
   - The origin is globally asymptotically stable when $a < 0.0$:  
-    $a$ is in open the left-hand plane,
+    $a$ is in the open left-hand plane,
 
   - In this case, define the time constant $\tau = - 1 / a$:
 
