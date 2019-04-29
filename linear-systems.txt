@@ -1983,7 +1983,7 @@ $$
 I/O-Stability Criteria
 --------------------------------------------------------------------------------
 
-A system is I/O-stable if and only iff all its poles are in the open left-plane,
+A system is I/O-stable if and only if all its poles are in the open left-plane,
 i.e. such that
 
 $$
