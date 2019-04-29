@@ -1291,7 +1291,7 @@ Consider $\dot{x} = \sqrt{|x|}$, $x(0)=x_0$.
 Let
 
 $$
-\begin{array}
+\begin{array}{rcl}
 \dot{x} &=& \alpha x - \beta xy \\
 \dot{y} &=& \delta x y - \gamma y \\
 \end{array}
