@@ -748,7 +748,7 @@ m \ell^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = u
 $$
 
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>]
-    Compute the linearized dynamic of the system around the equilibrium 
+    Compute the linearized dynamics of the system around the equilibrium 
     $\theta=\pi$ and $\dot{\theta} = 0$.
 
 --------------------------------------------------------------------------------
