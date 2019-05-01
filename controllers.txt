@@ -767,6 +767,9 @@ $$
     m = 1.0, \, l = 1.0, \, b = 0.1,\, g = 9.81
     $$
 
+---------------------------------------------------------------------------------
+
+
   - [<i class="fa fa-flask"></i>, <i class="fa fa-laptop"></i>] 
     Simulate this control law on the nonlinear systems when 
     $\theta(0) = 0$ and $\dot{\theta}(0) = 0$; compare with
