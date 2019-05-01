@@ -247,7 +247,7 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-eye"></i> Pendulum
+<i class="fa fa-question-circle-o"></i> Pendulum
 --------------------------------------------------------------------------------
 
 Consider the pendulum with dynamics:
