@@ -355,6 +355,8 @@ State Estimate Error
 
 Does $\hat{x}(t)$ provide a good asymptotic estimate of $x(t)$ ?
 
+--------------------------------------------------------------------------------
+
 The dynamics of the **state estimate error** $e = \hat{x} - x$ is
 
 $$
