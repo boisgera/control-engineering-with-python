@@ -12,4 +12,7 @@ dependencies:
   - rise
   - pandoc=2.1.1
   - curl
+  - pip:
+    - "-e git+https://github.com/boisgera/pandoc@5077ea22aeae8cbacfb5a2387e3851d07d204ae1#egg=pandoc"
+
 
