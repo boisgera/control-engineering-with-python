@@ -44,7 +44,7 @@ Two options:
 
       - I/O Behavior, Laplace domain, I/O stability (30 min)
 
- 3. **Controllers (in progress)**
+ 3. **Controllers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/controllers.html),
      [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf),
      [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllers.ipynb))
@@ -53,7 +53,7 @@ Two options:
 
       - Controller design: pole assignement & optimal control (1h)
 
- 4. **Observers (in progress)**
+ 4. **Observers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
      [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf),
      [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
@@ -76,6 +76,8 @@ Two options:
   - [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
   
   - [The Zodiac - Theory of Robot Control](http://www.gipsa-lab.grenoble-inp.fr/~carlos.canudas-de-wit/publications/Theory_of_robot_control.pdf)
+
+  - [Stackoverflow: animation in iPython (check the second option of the answer with **%matplotlib notebook**)](https://stackoverflow.com/questions/35532498/animation-in-ipython-notebook/46878531#46878531)
 
 -----
 
