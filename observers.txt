@@ -396,7 +396,7 @@ $\hat{y}$ and $y$ (both known values):
 $$
 \left|
 \begin{split}
-d\hat{x}/dt &= A \hat{x} + B u  - L (\hat{y} - y)\\
+\frac{d\hat{x}}{dt} &= A \hat{x} + B u  - L (\hat{y} - y)\\
 \hat{y} &= C \hat{x} + D u
 \end{split}
 \right.
@@ -415,8 +415,8 @@ The new dynamics of $e = \hat{x} - x$ is
 
 $$
 \begin{split}
-\dot{e} & = d(\hat{x} - x)/dt \\
-        & = d\hat{x}/dt - \dot{x} \\
+\dot{e} & = \frac{d}{dt}(\hat{x} - x) \\
+        & = \frac{d\hat{x}}{dt} - \dot{x} \\
         & = (A \hat{x} + Bu - L(C \hat{x} - C x)) - (A x + Bu) \\
         & = (A - LC) e 
 \end{split}
