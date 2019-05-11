@@ -15,5 +15,3 @@ dependencies:
   - curl
   - pip:
     - "-e git+https://github.com/boisgera/pandoc@172f0f86fef8c972c2f0396f01e266934a67294a#egg=pandoc"
-
-
