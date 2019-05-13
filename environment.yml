@@ -13,7 +13,5 @@ dependencies:
   - rise
   - pandoc=2.1.1
   - curl
-  - pip: # this git-based install does not work with binder?
-    - "-e git+https://github.com/boisgera/pandoc@5077ea22aeae8cbacfb5a2387e3851d07d204ae1#egg=pandoc"
-
-
+  - pip:
+    - "-e git+https://github.com/boisgera/pandoc@172f0f86fef8c972c2f0396f01e266934a67294a#egg=pandoc"
