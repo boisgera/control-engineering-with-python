@@ -1,0 +1,7 @@
+#!/bin/bash
+
+decktape --size 1600x900 automatic intro.html intro.pdf
+decktape --size 1600x900 automatic odes.html odes.pdf
+decktape --size 1600x900 automatic linear-systems.html linear-systems.pdf
+decktape --size 1600x900 automatic controllers.html controllers.pdf
+decktape --size 1600x900 automatic observers.html observers.pdf

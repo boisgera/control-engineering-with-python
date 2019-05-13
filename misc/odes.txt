@@ -1,0 +1,355 @@
+% Ordinary Differential Equations
+
+
+### Initial Value Problem {#IVP}
+
+Let $n$ be an integer and $f:\mathbb{R}^n \to \mathbb{R}^n$. 
+The initial-value problem (IVP) with right-hand 
+side (or vector field) $f$ and initial value $x_0 \in \mathbb{R}^n$ 
+is described formally by the equations:
+
+  $$
+  x(t_0) = x_0 \; \mbox{ and } \; \dot{x} = f(x).
+  $$
+
+A global solution to this problem is a differentiable function 
+  $$
+  x: t\in  \left[t_0, +\infty \right[ \mapsto x(t) \in \mathbb{R}^n,
+  $$ 
+such that $x(t_0) = x_0$ and for every $t \geq 0$, $\dot{x}(t) = f(x(t))$. 
+The value $x(t_0)$ is the initial value, the time $t_0$ is the initial time
+and the pair $(x_0, t_0)$ is the initial condition.
+
+### Variants and Extensions 
+
+#### Initial Time {.note}
+
+We often let the initial time $t_0$ is unspecified. 
+In this case we will assume that it is zero.
+It makes sense since we can deduce the set of solutions in the general case
+of an initial condition $(x_0, t_0)$ from the set of solution with initial
+condition $(x_0, 0)$: the function $y:\left[t_0, +\infty\right[$ is a solution
+of the former if and only if 
+  $$
+  x: t \in \left[0, +\infty \right[ \to x(t) = y(t-t_0)
+  $$
+is a solution of the latter.
+
+#### Future and Past {.note}
+
+Some authors require a global solution to be defined for any time $t$
+in the future of the initial time $t_0$ but also for any value in its past,
+and thus for any $t \in \left]-\infty, +\infty \right[$. We don't abide to
+this definition by default since it makes the terminology of "initial time" 
+a bit confusing. 
+However, if the need arises, we may characterize such a solution
+$x: t \in \left]-\infty, +\infty \right[ \to \mathbb{R}^n$ by two classic 
+global solutions: $x^+(t)$, defined for $t \geq 0$ 
+as a solution of the IVP
+  $$
+  x^+(0) = x_0 \; \mbox{ and } \; \dot{x}^+ = f(x^+).
+  $$
+and the solution $x^-(t)$, also defined for $t \geq 0$ 
+but a solution of the IVP with a reverse right-hand side
+  $$
+  x^-(0) = x_0 \; \mbox{ and } \; \dot{x}^- = - f(x^-).
+  $$
+The complete solution is then given by
+  $$
+  x(t) 
+  = 
+  \left|
+  \begin{array}{ll}
+  x^+(t) & \mbox{if } \; t \geq 0 \\
+  x^-(-t) & \mbox{if } \; t < 0. \\
+  \end{array}
+  \right.
+  $$
+
+
+
+
+### Complex-Valued Differential Equations {.note}
+
+**TODO.**
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+For many use cases in control engineering, 
+the concept of global solution is too stringent.
+If we were to require every solution to be global, 
+we would have to exclude many dynamical systems of interest. 
+
+#### Example -- Finite-Time Blow-Up
+
+Suppose that $x(t)$ is a global solution of the 
+scalar initial-value problem 
+  $$
+  x(0) = x_0 > 0 \; \mbox{ and } \; \dot{x} = x^2.
+  $$
+Since the initial value of $x(t)$ is positive and for any $t\geq 0$,
+$\dot{x}(t) = x(t)^2 \geq 0$, $x(t)$ is positive for any $t\geq 0$.
+Therefore, the expression $1/x(t)$ is defined and differentiable
+for any such $t$;
+its derivative satisfies
+  $$
+  \frac{d}{dt}\left[ \frac{1}{x(t)}\right]
+  = - \frac{\dot{x}(t)}{x(t)^2}
+  = -1
+  $$
+and thus by integration
+  $$
+  \frac{1}{x(t)} - \frac{1}{x_0} = -t
+  $$
+which leads to
+  $$
+  x(t) = \frac{x_0}{1 - t x_0}.
+  $$
+Thus, the existence of a global solution is impossible:
+such a solution would be undefined at time $t = 1/x_0$.
+
+--------------------------------------------------------------------------------
+
+The concept of local solution can be more appropriate. 
+It is a function $x(t)$ defined when $t$ belongs to 
+some interval $I$ of $\left[t_0, +\infty\right[$ 
+such that for some $\epsilon > 0$, 
+$[t_0, t_0 +\varepsilon] \subset I$
+and for any $t \in I$, 
+$\dot{x}(t) = f(x(t))$. 
+In particular if $x$ is a global solution of the IVP, 
+$I = \left[0, +\infty\right[ = \mathbb{R}$ is acceptable, 
+and thus every global solution is a a local solution.
+
+#### Example -- Finite-Time Blow-Up
+We now search for a local solution to the IVP 
+$x(0) = x_0 > 0$ and $\dot{x} = x^2$.
+Since $1 - t x_0 \neq 0$ when $t \neq 1/x_0$, 
+we could define a function
+  $$
+  x(t) = \frac{x_0}{1 - t x_0}
+  $$
+for any $t \in \left]-\infty, 1/x_0\right[ \cup \left]1/x_0, +\infty \right[$,
+but this domain of definition is not an appropriate interval. 
+So instead, we can use the largest subinterval of $\left[0, +\infty \right]$
+that contains $0$, which is $I = \left[0, 1/x_0\right[$. It always contains the
+interval $[0, \varepsilon]$ with $\varepsilon = 1/2x_0 > 0$ for example.
+Additionally, for any $t \in I$
+  $$
+  \dot{x}(t) = - \frac{x_0}{1 - t x_0} \times (-x_0) = 
+  \left( \frac{x_0}{1 - tx_0}\right)^2 = x(t)^2,
+  $$
+hence $x(t)$ is a local solution of the IVP.
+
+--------------------------------------------------------------------------------
+
+Existence
+--------------------------------------------------------------------------------
+
+### Local Existence
+
+While global solutions may not exist in many cases, 
+a mild condition ensures the existence of at least one local solution:
+that the right-hand side $f$ of the IVP is continuous. 
+Actually, it's pretty easy to design an IVP with discontinuous 
+right-hand side for which even no local solution exist:
+
+#### Example - Discontinuous Vector Field
+Consider the scalar IVP with initial value $x(0) = 0$ and right-hand side
+  $$
+  f(x) = 
+  \left|
+  \begin{array}{rl}
+  +1 & \mbox{if } \; x < 0 \\
+  -1 & \mbox{if } \; x > 0.
+  \end{array}
+  \right.
+  $$
+Assume that $x: I \to \mathbb{R}$ is a local solution of this IVP
+and left $\varepsilon > 0$ be such that $[0,\varepsilon] \subset I$. 
+Since $\dot{x}(0) = +1 > 0$,
+for some small enough $0 < \tau < \epsilon$ and any $t \in [0, \tau]$,
+we have $x(t) > 0$. 
+Consequently, $\dot{x}(t) = -1$ and thus by integration
+  $$
+  x(\tau) =  x(0) + \int_0^{\tau} \dot{x}(t) \, dt = 0 - t < 0,
+  $$
+which is a contradiction. Thus there is no local solution to this IVP.
+
+### Maximal Solutions
+
+**TODO**: existence and "out-of-any-compact" trick.
+
+Statement: ???
+
+### Global Existence
+
+**TODO:** explain contraposition trick / a priori estimate: 
+if we know a maximal solution
+cannot escape some bounded set in a given time range, we also know that
+its "escape time" is out of the range.
+
+### Example -- Global Existence
+Consider the scalar ODE
+  $$
+  \dot{x} = \frac{e^x}{e^x + 1} 
+  $$
+associated to the initial condition $(t_0=0, x_0=0)$.
+The right-hand side of this equation is continuous, 
+hence at least one maximal solution $x(t)$ defined for 
+$t \in \left[0, t_{\infty}\right[$ exists.
+We can show that $t_{\infty} = +\infty$, or in other words that
+this solution is global. Indeed, the vector field is bounded:
+for any $x \in \mathbb{R}$,
+  $$
+  \left| \frac{e^x}{e^x + 1} \right| \leq 1
+  $$
+and thus, for any finite $t \in \left[0,t_{\infty} \right[$, 
+  $$
+  |x(t)| \leq \int_{0}^ t 1 \, d\tau \leq t.  
+  $$
+Thus, if $t_{\infty}$ is finite, for any 
+$0 \leq t < t_{\infty}$, $x(t)$ belongs to the interval
+$[-t_{\infty}, t_{\infty}]$ which is bounded.
+
+**TODO** something lacks here and the formulation above should be clear
+before I polish the conclusion here.
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------
+
+### Uniqueness
+
+Uniqueness is guaranteed if
+$f$ is continuous and $\partial f / \partial x$ exists and is 
+continuous.
+
+
+**TODO:** maximal solution (free), refer to example. Explain why that makes sense.
+Also explain why we always define such solution on open intervals
+(a closed one cannot be maximal). Carac des sols maximals (non-bornées) et par
+contraposition, sol max bornées donne global. Exemple ? (vectoriel, lin ou
+a sat avec sigmoide ?).
+
+
+
+**TODO:** Uniqueness
+
+**TODO:** Well-Posedness.
+
+
+\newpage
+
+-----
+
+We consider the initial-value problem (IVP)
+  $$
+  \dot{x} = f(t, x), \; x(t_0) = x_0
+  $$
+where $f: I \times U \to \mathbb{R}^n$, $I$ is an open interval of
+$\mathbb{R}$, $t_0 \in I$, $U$ is an open subset of $\mathbb{R}^n$
+and $x_0 \in U$.
+
+A classical solution of this problem is a function $x: J \to \mathbb{R}^n$,
+where $J$ is an open interval of $\mathbb{R}$ such that 
+
+Why open sets ? What do we do with $t$ ?
+
+Continuous right-hand side: delivers local existence. Local existence is
+itself equivalent to existence of maximal solution.
+
+Continuous $\partial f / \partial x$: delivers uniqueness
+(and well-posedness ?)
+
+### Well-Posedness
+
+Local Existence, Maximal Solutions, Uniqueness, Continuity wrt initial values.
+
+Explain why that stuff matters. Uniqueness and continuity is rather obvious,
+but not "robustness". Explain as "chaos", as unability to implement a proper
+numerical simulation ? Think of the pendulum and the initial angle of 
+$\pi/4$ that CANNOT be stored exactly on the computer. Same for the rhs.
+
+### Irregular Right-Hand Sides
+
+"Absolutely continuous" solutions:
+
+  $$
+  f(t) = \int_{t_0}^t g(s) \, ds
+  $$
+
+  $$
+  x(t) = x_0 + \int_{t_0}^t f(s, x(s))\, ds
+  $$
+
+Discont wrt $x$ and Filipov solutions.
+
+--------------------------------------------------------------------------------
+
+
+General "what can go wrong approach" for the existence and uniqueness of ODEs.
+
+Start with autonomous equations.
+
+Go for simple "really-differential-equations" with continuity of $f$ and
+$\partial f / \partial x$ stuff.
+
+Local existence and local uniqueness can be splitted.
+
+Deal with time-reversal somehow ?
+
+Consequence of uniqueness (combined with time-reversal): ex: show that you 
+cannot reach a boundary where the rhs is zero in finite time.
+
+Complete well-posedness to account for continuity wrt initial condition ?
+
+Show that local existence and uniqueness implies that NON-existence means
+getting out of every compact set (under the form of: either going to infinity
+or approaching the boundary arbitrarily close.)
+
+Application: linear equation $\dot{x} = A x$. Show that the derivative
+of $y = |x|^2$ is dominated by $2\|A\|y$ and thus with $a=\|A\|$
+that $|y|(t) \leq e^{at} |y|(0)$ (proof ?) which forbids $x$ 
+to go to $+\infty$.
+
+Same kind of stuff via invariant in the prey-predator model ? 
+Yes. The model $\dot{x} = \alpha x - \beta x y$ and 
+$\dot{y} = \delta xy - \gamma y$ has the invariant
+$\delta x - \gamma \ln x +\beta y - \alpha \ln y$,
+which is good enough to prove global existence.
+
+Flow notation.
+
+Trick to include the time in this framework and how to deal with
+$n$-th order equations.
+
+
+"Fix" this later to account for discontinuous stuff wrt $t$,
+if necessary.
+
+
+Equilibrium 
+--------------------------------------------------------------------------------
+
+**TODO.**
+
+Stability
+--------------------------------------------------------------------------------
+
+Characterization of the long-term behavior of solutions.
+
+
+
+
+
+
