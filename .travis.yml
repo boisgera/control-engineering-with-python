@@ -24,6 +24,7 @@ before_install:
 install:
   - ./build # generate slides and notebooks
   - ./build-pdf
+  - rm -rf src # pandoc from git, clean-up for deployment to gh-pages
   - mv .gitignore .gitignore.bak # for deployment to gh-pages
 
 deploy:
