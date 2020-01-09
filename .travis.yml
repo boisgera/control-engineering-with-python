@@ -19,7 +19,8 @@ before_install:
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
   - conda install -c conda-forge nodejs
-  - npm install -g decktape
+  - npm install -g --unsafe-perm hummus
+  - npm install -g --unsafe-perm decktape
 
 install:
   - ./build # generate slides and notebooks
