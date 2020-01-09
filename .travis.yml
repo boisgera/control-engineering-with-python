@@ -19,7 +19,6 @@ before_install:
   - conda env create -f environment.yml
   - source activate control-engineering-with-python
   - conda install -c conda-forge nodejs=10.13.0
-  - apt-get install build-essential
   - npm install -g --unsafe-perm hummus
   - npm install -g --unsafe-perm decktape
 
