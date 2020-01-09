@@ -25,6 +25,7 @@ install:
   - ./build # generate slides and notebooks
   - ./build-pdf
   - rm -rf src # pandoc from git, clean-up for deployment to gh-pages
+  - rm -rf conda.sh # clean-up conda installer before deployment
   - mv .gitignore .gitignore.bak # for deployment to gh-pages
 
 deploy:
