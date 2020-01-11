@@ -43,7 +43,7 @@ and the number of fish each springtime in a lake.
 <i class="fa fa-plane"></i> Aircrafts
 --------------------------------------------------------------------------------
 
-  - [Boeing 747 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
+  - [Boeing 737 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
 
   - [The Dangerous Flaw in Boeing's Automated System](https://www.nytimes.com/interactive/2019/03/29/business/boeing-737-max-8-flaws.html)
 
@@ -51,10 +51,14 @@ and the number of fish each springtime in a lake.
 
   - [What is the Boeing 737 Max MACS?](https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/)
 
+  - [Boeing 737 Max adjustable stabilizer](https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg)
+
   - [Eurofighter Typhoon](https://www.eurofighter.com/advantages)
 
-<i class="fa fa-car"></i> Smart Vehicles
+<i class="fa fa-car"></i> Tomorrow's Vehicles
 --------------------------------------------------------------------------------
+
+Typically : vehicles with self-driving capabilities.
 
   - [Waymo](https://waymo.com/) ("Google Car"),
 
@@ -65,17 +69,36 @@ and the number of fish each springtime in a lake.
 
   - ...
 
+<i class="fa fa-car"></i> Today's cars
 --------------------------------------------------------------------------------
 
-Control Theory is about:
+ADAS = Advanced Driver-Assistance Systems
+
+ 1.  Collision avoidance systems (CAS) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Collision_avoidance_system)
+
+ 2.  Cruise control (CC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Cruise_control)
+
+Adaptative cruise control = CAS + CC [(<i class="fa fa-youtube"></i> : IIHS)](https://www.youtube.com/watch?v=GInSPWZRFRM)
+
+--------------------------------------------------------------------------------
+
+ 3.  Electronic stability control (ESC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Electronic_stability_control)
+
+
+     <iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+--------------------------------------------------------------------------------
+
+Control Theory is about **dynamical systems** : their
+
 
 - Modelling, 
 
 - Analysis and
 
-- Control 
+- Control.
 
-of dynamical systems
 
 <i class="fa fa-github" aria-hidden="true"></i> Ressources
 --------------------------------------------------------------------------------
