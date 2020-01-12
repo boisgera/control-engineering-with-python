@@ -1,6 +1,16 @@
 % Control Engineering with Python
 % Sébastien Boisgérault, Mines ParisTech
 
+
+<i class="fa fa-github" aria-hidden="true"></i> Resources
+--------------------------------------------------------------------------------
+
+<https://github.com/boisgera/control-engineering-with-python>
+
+
+Definitions
+================================================================================
+
 <i class="fa fa-wikipedia-w"></i> Definitions
 --------------------------------------------------------------------------------
 
@@ -38,6 +48,11 @@ Control Theory is about **dynamical systems** : their
 - Analysis and
 
 - Control.
+
+
+
+Examples
+================================================================================
 
 
 <i class="fa fa-gear"></i> Robotic Arms
@@ -97,11 +112,6 @@ Adaptative cruise control = CAS + CC [(<i class="fa fa-youtube"></i> : IIHS)](ht
 
      <iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-
-<i class="fa fa-github" aria-hidden="true"></i> Resources
---------------------------------------------------------------------------------
-
-<https://github.com/boisgera/control-engineering-with-python>
 
 
 
