@@ -1,8 +1,6 @@
 % Control Engineering with Python
 % Sébastien Boisgérault, Mines ParisTech
 
-
-
 <i class="fa fa-wikipedia-w"></i> Definitions
 --------------------------------------------------------------------------------
 
@@ -13,14 +11,14 @@ desired behaviors in control environments.
 The discipline of controls overlaps and is usually taught along with 
 electrical engineering at many institutions around the world.
 
-
-
+<i class="fa fa-wikipedia-w"></i>
 --------------------------------------------------------------------------------
 
 **Control theory** in control systems engineering is a subfield of mathematics 
 that deals with the control of continuously operating dynamical systems in 
 engineered processes and machines.
 
+<i class="fa fa-wikipedia-w"></i>
 --------------------------------------------------------------------------------
 
 A **dynamical system** is a system in which a function describes the time 
@@ -29,6 +27,18 @@ dependence of a point in a geometrical space.
 Examples include the mathematical models that describe the 
 swinging of a clock pendulum, the flow of water in a pipe, 
 and the number of fish each springtime in a lake.
+
+
+--------------------------------------------------------------------------------
+
+Control Theory is about **dynamical systems** : their
+
+- Modelling, 
+
+- Analysis and
+
+- Control.
+
 
 <i class="fa fa-gear"></i> Robotic Arms
 --------------------------------------------------------------------------------
@@ -86,18 +96,6 @@ Adaptative cruise control = CAS + CC [(<i class="fa fa-youtube"></i> : IIHS)](ht
 
 
      <iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
---------------------------------------------------------------------------------
-
-Control Theory is about **dynamical systems** : their
-
-
-- Modelling, 
-
-- Analysis and
-
-- Control.
 
 
 <i class="fa fa-github" aria-hidden="true"></i> Ressources
