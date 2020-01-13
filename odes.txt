@@ -92,7 +92,7 @@ Let $n \in \mathbb{N}^*$ and $f:\mathbb{R}^n \to \mathbb{R}^n$.
 
 Visualize $f(x)$ as an arrow with origin the point $x$.
 
-In the plane ($n=2$), use [quiver](https://matplotlib.org/api/_as_gen/matplotlib.pyplot.streamplot.html) (Matplotlib).
+In the plane ($n=2$), use [quiver](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.quiver.html) (Matplotlib).
 
 
 Q Helper
