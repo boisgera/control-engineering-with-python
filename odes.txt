@@ -968,7 +968,7 @@ You cannot extend this solution beyond $\tau=1.0$.
 
     <i class="fa fa-key"></i> **Hint:** compute $d(1/x(t))/dt.$
 
-  - [<i class="fa fa-lightbulb-o"></i>] Find for every $x_0 \neq 0$
+  - \[<i class="fa fa-lightbulb-o"></i>\] Find for every $x_0 \neq 0$
     a maximal solution. When is it global?
 
 Bad News (1/3)
@@ -1064,24 +1064,45 @@ If $f$ is continuous,
 
 **Note.** A maximal solution is global iff $t_{\infty} = +\infty$.
 
-Maximal Solutions
+Theorem -- Characterization of Maximal Solutions
 --------------------------------------------------------------------------------
 
-A local solution on $\left[t_0, \tau \right[$ is maximal when 
+A solution on $\left[t_0, \tau \right[$ is maximal if and only if either
 
-  $$
-  \lim_{t \to \tau} \|x(t)\| = +\infty.
-  $$
+  - $\tau = +\infty$ : the solution is global, or
+
+  - $\tau < +\infty$ and $\displaystyle \lim_{t \to \tau} \|x(t)\| = +\infty.$
+
+In plain words : a non-global solution cannot be extended further in time 
+if and only if it "blows up".
 
 Corollary
 --------------------------------------------------------------------------------
 
+Let's assume that a local maximal solution exists.
+
+You wonder if a this solution is defined in $[t_0, t_f[$ or blows up before $t_f$.
+
+For example, you wonder if a solution is global  
+(if $t_f = +\infty$ or $t_f < +\infty$.)
+
+
+<i class="fa fa-lightbulb-o"></i> Idea
+--------------------------------------------------------------------------------
+
+Try to prove that any local solution defined on some
+sub-interval $[t_0, \tau[$ with $\tau < t_f$ is bounded.
+
+If you succeed, then this solution cannot be maximal (it doesn't blow up),
+thus a maximal solution is defined on $[t_0, t_f[$.
+
+<!--
 If any **potential** local solution $x(t)$ defined on 
 $\left[t_0, \tau\right[$ is **locally bounded** on this interval(*)
 then such a solution exists.  
 
 (*): bounded on any $[t_0, s] \subset \left[t_0, \tau \right[$.
-
+-->
 
 <i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
 --------------------------------------------------------------------------------
@@ -1163,6 +1184,26 @@ Good News (2/3)
 However, uniqueness of maximal solution holds under mild assumptions.
 
 
+Notation -- Jacobian Matrix
+--------------------------------------------------------------------------------
+
+Let $x=(x_1, \dots, x_n)$ and $f(x) = (f_1(x), \dots, f_n(x))$.   
+The **Jacobian matrix** of $f$ is defined as
+
+$$
+\frac{\partial f}{\partial x}
+:=
+\left[
+  \begin{array}{ccc}
+  \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+  \vdots & \vdots & \vdots \\
+  \frac{\partial f_n}{\partial x_1} & \cdots & \frac{\partial f_n}{\partial x_n} \\
+  \end{array}
+\right]
+$$
+
+(when all the partial derivatives are defined).
+
 Uniqueness
 --------------------------------------------------------------------------------
 
@@ -1177,24 +1218,38 @@ error in the solution, even in finite time.
 
 That would undermine the utility of any approximation method.
 
+
+Definition -- Continuity
+--------------------------------------------------------------------------------
+
+<!--
+Assume the existence an uniqueness of (local maximal) solutions.
+-->
+
+Instead of denoting $x(t)$ the solution, use $x(t, x_0)$ to emphasize the
+dependency w.r.t. the initial state.
+
+**Continuity w.r.t. the initial state** means that
+if $x(t, x_0)$ is defined on $[t_0, \tau]$ and $t\in [t_0, \tau]$:
+
+$$
+x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
+$$
+
+and that this convergence is uniform w.r.t. $t$.
+
 Good News (3/3)
 --------------------------------------------------------------------------------
 
 However, continuity wrt the initial value holds under mild assumptions.
 
 
-Continuity w.r.t. the Initial State
+Continuity
 --------------------------------------------------------------------------------
 
 Assume that $\partial f / \partial x$ exists and is continuous.  
 
-If $x(t, x_0)$ is defined on $[t_0, \tau]$ and $t\in [t_0, \tau]$:
-
-$$
-x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
-$$
-
-This convergence t is uniform w.r.t. $t \in [t_0, \tau]$.
+Then the dynamical system is continous w.r.t. the initial state.
 
 
 <i class="fa fa-eye"></i> Continuity / Prey-Predator
