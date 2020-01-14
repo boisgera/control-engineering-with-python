@@ -1737,11 +1737,19 @@ G.A.S. in Plain Words
 
   - Pick any bounded set $B$ in $\mathbb{R}^n$.
 
-  - Consider each point of the set as an initial value $x(0)$, 
-    compute $x(t)$. The set of all $x(t)$ is $B_t$.
+  - Consider each point of the set as an initial value $x_0$, 
+    compute $x(t, x_0)$.  Define $B_t$ as the set of all such $x(t, x_0)$:
 
-  - The set $B_t$ will eventually fit into an arbitrarily 
-    small neighbourghood of $x_e$ when $t \to +\infty$.
+    $$
+    B_t = \{ x(t, x_0) \; | \; x_0 \in B\}
+    $$
+
+  - The set $B_t$ will converge to the equilibrium $x_e$:
+    
+    $$
+    d(x_e, B_t) \to 0 \, \mbox{ when } \, t \to +\infty.
+    $$
+
 
 Local Asymptotic Stability
 --------------------------------------------------------------------------------
