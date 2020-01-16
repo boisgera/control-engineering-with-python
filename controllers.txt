@@ -16,10 +16,10 @@ Preamble
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
+    %matplotlib inline
     matplotlib.rcParams['text.usetex'] = True
     matplotlib.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}'] #if needed
     from matplotlib.pyplot import *
-    %matplotlib notebook 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -616,7 +616,7 @@ $$
 \dot{x} = A x, \; x \in \mathbb{R}^n
 $$ 
 
-is not asymptotically stable,
+is not asymptotically stable at the origin,
 
 maybe there are some inputs $u \in \mathbb{R}^m$ such that
 
@@ -682,15 +682,27 @@ is in the open left-hand plane.
 Pole Assignment
 --------------------------------------------------------------------------------
 
-  - Assume that $\dot{x} = A x + Bu$ is controllable.
+Assume that:
 
-  - Let $\Lambda = \{\lambda_1, \dots, \lambda_n\} \in \mathbb{C}^n$,
-    be a (multi-)set of complex numbers which is symmetric:  
+  - The systems $\dot{x} = A x + Bu$ is controllable.
+
+  - Let $\Lambda = \{\lambda_1, \dots, \lambda_n\} \in \mathbb{C}^n$
+    be a (multi-)set of complex numbers (a value may appear several times) 
+    which is symmetric:  
+    
     if $\lambda \in \Lambda$,
     then $\overline{\lambda} \in \Lambda$ (with the same multiplicity)
 
-  - Then there is a matrix $K$ such that the set $\sigma(A - B K)$ 
-    of eigenvalues of $A - B K$ is $\Lambda$.
+--------------------------------------------------------------------------------
+
+  - Let $\sigma(A - BK)$ denote the (multi-)set 
+    of eigenvalues of $A - B K$ (eigenvalues are counted with their multiplicity).
+
+  - Then there is a matrix $K$ such that
+
+    $$
+    \sigma(A - B K) = \Lambda.
+    $$
 
 
 <i class="fa fa-eye"></i> Stabilization/Pole Assignment
@@ -756,6 +768,16 @@ Consider the double integrator $\ddot{x} = u$
 ![](images/poles-PA.svg)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+<i class="fa fa-warning"></i> Implementation detail
+--------------------------------------------------------------------------------
+
+  - The `place_poles` function will not accept eigenvalues whose multiplicity
+is higher than the rank of $B$.
+
+  - So here `poles = [-1, -1]` won't work. 
+
+  - But `poles = [-1, -1.00000000001]` will.
 
 
 <i class="fa fa-question-circle-o"></i> Pole Assignment / Default

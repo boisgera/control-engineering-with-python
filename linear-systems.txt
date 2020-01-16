@@ -17,8 +17,8 @@ Preamble (Code)
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
+    %matplotlib inline
     from matplotlib.pyplot import *
-    %matplotlib notebook 
     from mpl_toolkits.mplot3d import *
     from scipy.integrate import solve_ivp
 
