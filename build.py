@@ -44,13 +44,14 @@ doc = pandoc.read(file=doc_file)
 # Code Execution
 # ------------------------------------------------------------------------------
 
+
 def make_code_doc(doc):
-    doc = copy.deepcopy(doc) # the transformation is actually in-place,
+    doc = copy.deepcopy(doc)  # the transformation is actually in-place,
     # but the user of this function should not worry about that.
 
-    root = doc[1] # top-level blocks
+    root = doc[1]  # top-level blocks
 
-    #print(root)
+    # print(root)
 
     # Locate the divs and extract the relevant data
     divs = []
@@ -65,7 +66,7 @@ def make_code_doc(doc):
             else:
                 divs.append(("unpack", index, contents))
 
-    # Reverse document order is needed not to invalidate 
+    # Reverse document order is needed not to invalidate
     # the remaining matches indices.
     for action, index, contents in reversed(divs):
         del root[index]
@@ -73,6 +74,7 @@ def make_code_doc(doc):
             root[index:index] = contents
 
     return doc
+
 
 code_doc = make_code_doc(doc)
 
@@ -92,12 +94,12 @@ exec(src, {"__file__": __file__})
 # ------------------------------------------------------------------------------
 # TODO: pandoc naming: is "path" well named? Cause I am tempted to also
 #       name path the last component ... the "path" representation is
-#       quite redundant ... DUNNO. Also use "location"? Path being a 
+#       quite redundant ... DUNNO. Also use "location"? Path being a
 #       nested seq of locations?
 def remove(doc, needs_removal):
     "Selected Content Removal - Two-pass Algorithm"
 
-    doc = copy.deepcopy(doc) # the removal is actually in-place,
+    doc = copy.deepcopy(doc)  # the removal is actually in-place,
     # but the user of this function should not worry about that.
 
     # Locate the divs and extract the relevant data
@@ -107,21 +109,22 @@ def remove(doc, needs_removal):
             parent, index = path[-1]
             matches.append((parent, index))
 
-    # Reverse document order is needed not to invalidate 
+    # Reverse document order is needed not to invalidate
     # the remaining matches indices.
     for parent, index in reversed(matches):
         del parent[index]
     return doc
 
+
 # Slides Generation
 # ------------------------------------------------------------------------------
 def make_slides_doc(doc):
-    doc = copy.deepcopy(doc) # the transformation is actually in-place,
+    doc = copy.deepcopy(doc)  # the transformation is actually in-place,
     # but the user of this function should not worry about that.
 
-    root = doc[1] # top-level blocks
+    root = doc[1]  # top-level blocks
 
-    #print(root)
+    # print(root)
 
     # Locate the divs and extract the relevant data
     divs = []
@@ -136,7 +139,7 @@ def make_slides_doc(doc):
             else:
                 divs.append(("unpack", index, contents))
 
-    # Reverse document order is needed not to invalidate 
+    # Reverse document order is needed not to invalidate
     # the remaining matches indices.
     for action, index, contents in reversed(divs):
         del root[index]
@@ -144,6 +147,7 @@ def make_slides_doc(doc):
             root[index:index] = contents
 
     return doc
+
 
 slides_doc = make_slides_doc(doc)
 
@@ -164,13 +168,14 @@ pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=opt
 # Ouch: the reveal target doesn't like divs very much (overlap
 # and / or no newpage). Can we solve this by unpacking slides divs ?
 
+
 def make_notebook_doc(doc):
-    doc = copy.deepcopy(doc) # the transformation is actually in-place,
+    doc = copy.deepcopy(doc)  # the transformation is actually in-place,
     # but the user of this function should not worry about that.
 
-    root = doc[1] # top-level blocks
+    root = doc[1]  # top-level blocks
 
-    #print(root)
+    # print(root)
 
     # Locate the divs and extract the relevant data
     divs = []
@@ -185,7 +190,7 @@ def make_notebook_doc(doc):
             else:
                 divs.append(("unpack", index, contents))
 
-    # Reverse document order is needed not to invalidate 
+    # Reverse document order is needed not to invalidate
     # the remaining matches indices.
     for action, index, contents in reversed(divs):
         del root[index]
@@ -193,7 +198,8 @@ def make_notebook_doc(doc):
             root[index:index] = contents
 
     return doc
-  
+
+
 notebook_doc = make_notebook_doc(doc)
 
 # TODO: also need to remove unsupported construct from Jupyter Markdown Cells.
@@ -203,91 +209,89 @@ for elt in pandoc.iter(notebook_doc):
         header = elt
         attr = header[1] = ("", [], [])
 
+
 def Notebook():
     return copy.deepcopy(
-      {
-        "cells": [],
-        "metadata": {
-          "kernelspec": {
-            "display_name": "Python 3",
-            "language": "python",
-            "name": "python3"
-          },
-          "language_info": {
-            "codemirror_mode": {
-              "name": "ipython",
-              "version": 3
+        {
+            "cells": [],
+            "metadata": {
+                "kernelspec": {
+                    "display_name": "Python 3",
+                    "language": "python",
+                    "name": "python3",
+                },
+                "language_info": {
+                    "codemirror_mode": {"name": "ipython", "version": 3},
+                    "file_extension": ".py",
+                    "mimetype": "text/x-python",
+                    "name": "python",
+                    "nbconvert_exporter": "python",
+                    "pygments_lexer": "ipython3",
+                    "version": "3.6.4",
+                },
             },
-            "file_extension": ".py",
-            "mimetype": "text/x-python",
-            "name": "python",
-            "nbconvert_exporter": "python",
-            "pygments_lexer": "ipython3",
-            "version": "3.6.4"
-           }
-        },
-        "nbformat": 4,
-        "nbformat_minor": 2
-      }
+            "nbformat": 4,
+            "nbformat_minor": 2,
+        }
     )
+
 
 def CodeCell():
     return copy.deepcopy(
-      {
-        "cell_type": "code",
-        "execution_count": 1,
-        "metadata": {},
-        "outputs": [],
-        "source": []
-      }
+        {
+            "cell_type": "code",
+            "execution_count": 1,
+            "metadata": {},
+            "outputs": [],
+            "source": [],
+        }
     )
 
-def MarkdownCell(): 
-    return copy.deepcopy(
-      {
-        "cell_type": "markdown",
-        "metadata": {},
-        "source": []
-      }
-    )
+
+def MarkdownCell():
+    return copy.deepcopy({"cell_type": "markdown", "metadata": {}, "source": []})
+
 
 def notebookify(doc):
     from pandoc.types import Pandoc, Meta, CodeBlock
+
     notebook = Notebook()
-    cells = notebook['cells']
+    cells = notebook["cells"]
     blocks = doc[1]
-    #print(blocks)
+    # print(blocks)
     execution_count = 1
 
     for block in blocks:
         if isinstance(block, CodeBlock):
             source = block[1]
             code_cell = CodeCell()
-            code_cell['source'] = source
-            code_cell['execution_count'] = execution_count
+            code_cell["source"] = source
+            code_cell["execution_count"] = execution_count
             execution_count += 1
             cells.append(code_cell)
         else:
             wrapper = Pandoc(Meta({}), [block])
-            options = ['-t', 'markdown-smart'] # needed for en-dashes for
+            options = ["-t", "markdown-smart"]  # needed for en-dashes for
             # example: we don't expect Jupyter cells to be smart, so we
             # *disable* the smart output so that '–' won't get represented
             # as '--'.
             source = pandoc.write(wrapper, options=options)
 
             merge_markdown = False
-            if merge_markdown and len(cells) >= 1 and cells[-1]["cell_type"] == "markdown":
-                cells[-1]['source'] += "\n" + source
+            if (
+                merge_markdown
+                and len(cells) >= 1
+                and cells[-1]["cell_type"] == "markdown"
+            ):
+                cells[-1]["source"] += "\n" + source
             else:
                 markdown_cell = MarkdownCell()
-                markdown_cell['source'] = source
+                markdown_cell["source"] = source
                 cells.append(markdown_cell)
     return notebook
-
 
 
 notebook = notebookify(notebook_doc)
 output = open(doc_name + ".ipynb", "w")
 output.write(json.dumps(notebook, indent=2))
 output.close()
-
