@@ -16,6 +16,8 @@ Preamble
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
+    matplotlib.rcParams['text.usetex'] = True
+    matplotlib.rcParams['text.latex.preamble'] = [r'\usepackage{amsmath}'] #if needed
     from matplotlib.pyplot import *
     %matplotlib notebook 
 
@@ -131,18 +133,30 @@ at speed $v_f$ and at time $t_f > 0$.
 Strategy
 --------------------------------------------------------------------------------
 
-  - We search for a smooth reference trajectory $x_r(t)$ 
-    such that $x_r(0)=0$, $\dot{x}_r(0) = 0$, $x_r(t_f) = x_f$, 
-    $\dot{x}_r(t_f) = v_f$.
+### Step 1 -- Trajectory Planning
+
+We search for a **reference trajectory** for the state
+
+$$X_r(t) = (x_r(t), \dot{x}_r(t))$$
+
+such that: 
+
+  - $x_r(0)=0$, $\dot{x}_r(0) = 0$, 
+  
+  - $x_r(t_f) = x_f$, $\dot{x}_r(t_f) = v_f$.
     
-  - We check that this trajectory is **admissible**, i.e. that we 
-    can find a control $u(t)$ to follow this trajectory for
-    suitable initial conditions.
+--------------------------------------------------------------------------------
+
+### Step 2 -- Admissibility
+
+We check that this reference trajectory is **admissible**, 
+i.e. that we can find a control $u_r(t)$ such that the solution
+of the IVP is $X(t) = X_r(t)$ when $X(0) = X_r(t)$.
 
 Admissible Trajectory
 --------------------------------------------------------------------------------
 
-If we apply the control $u(t) = m\ddot{x}_r(t)$,
+Here, if $x_r$ is smooth and if we apply the control $u(t) = m\ddot{x}_r(t)$,
 
   $$
   m \frac{d^2}{dt^2} (x-x_r) = 0, 
@@ -151,7 +165,9 @@ If we apply the control $u(t) = m\ddot{x}_r(t)$,
   (x-x_r)(0) = 0, \; \frac{d}{dt} (x-x_r)(0)= 0.
   $$
 
-Thus, $x(t) = x_r(t)$ for every $t\geq 0$.
+Thus, $x(t) = x_r(t)$ -- and thus $\dot{x}(t) = \dot{x}_r(t)$ -- 
+for every $t\geq 0$.
+
 
 Reference Trajectory
 --------------------------------------------------------------------------------
@@ -230,7 +246,7 @@ $$
     vt = result["sol"](t)[1]
     plot(t, 3.6 * vt)
     grid(True); xlabel("$t$")
-    title("$\dot{x}(t) \, \mbox{[km/h]}$")
+    title(r"$\dot{x}(t) \, \mbox{[km/h]}$")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -247,6 +263,26 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+<i class="fa fa-question-circle-o"></i> Non-admissible trajectory
+--------------------------------------------------------------------------------
+
+Let 
+$$
+\dot{x} = A x 
+\; \mbox{ with } \; x\in \mathbb{R}^2, \; 
+A = \left[
+\begin{array}{cc}
+0 & 1 \\
+0 & 0
+\end{array}
+\right].
+$$
+
+Find a smooth reference trajectory 
+$$x_r(t), \,t\in[0, 1]$$ 
+which is not admissible.
+
+
 <i class="fa fa-question-circle-o"></i> Pendulum
 --------------------------------------------------------------------------------
 
@@ -257,7 +293,7 @@ Consider the pendulum with dynamics:
   $$
 
   - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-    Find a smooth reference trajectory $\theta_r(t)$ that leads the
+    Find a smooth reference trajectory that leads the
     pendulum from $\theta(0)=0$ and $\dot{\theta}(0) = 0$ to
     $\theta(t_f) = \pi$ and $\dot{\theta}(t_f) = 0$.
 
@@ -481,6 +517,15 @@ $$
 Computation
 --------------------------------------------------------------------------------
 
+    def KCM(A, B):
+        n = shape(A)[0]
+        mp = matrix_power
+        cs = column_stack
+        return cs([mp(A, k) @ B for k in range(n)])
+
+
+--------------------------------------------------------------------------------
+
     n = 3 
     A = zeros((n, n))
     for i in range(0, n-1):
@@ -491,9 +536,7 @@ Computation
 
 --------------------------------------------------------------------------------
 
-    C = B
-    for i in range(n-1):
-        C = c_[C, A.dot(C[:,-1])]
+    C = KCM(A, B)
 
     C_expected = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
     assert_almost_equal(C, C_expected)
