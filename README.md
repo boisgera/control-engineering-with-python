@@ -74,8 +74,12 @@ Two options:
 
 #### Animation of dynamical systems
 
-  - [Example notebook: double pendulum](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb)
-      
+Example notebook: double pendulum
+  
+  - [view on GitHub](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb),
+
+  - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb.
+
 #### Free External Resources      
       
   - [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
