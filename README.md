@@ -74,7 +74,7 @@ Two options:
 
 #### Animation of dynamical systems
 
-  - [Example notebook](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb)
+  - [Example notebook: double pendulum](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb)
       
 #### Free External Resources      
       
