@@ -70,11 +70,13 @@ Two options:
 
       - Control of mobile robots
       
-### Animation of dynamical systems
+### Extra resources
+
+#### Animation of dynamical systems
 
   - [Example notebook](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb)
       
-### Free External Resources      
+#### Free External Resources      
       
   - [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
   
