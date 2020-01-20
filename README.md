@@ -82,7 +82,9 @@ Two options:
   
   - [The Zodiac - Theory of Robot Control](http://www.gipsa-lab.grenoble-inp.fr/~carlos.canudas-de-wit/publications/Theory_of_robot_control.pdf)
 
+<!--
   - [Stackoverflow: animation in iPython (check the second option of the answer with **%matplotlib notebook**)](https://stackoverflow.com/questions/35532498/animation-in-ipython-notebook/46878531#46878531)
+-->
 
 -----
 
