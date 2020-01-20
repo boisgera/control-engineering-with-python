@@ -13,6 +13,9 @@ misc
 sandbox
 .tmp.py
 
+#
+!examples
+
 # Outputs
 images/*.svg
 *.html
