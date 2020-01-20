@@ -78,7 +78,7 @@ Example notebook: double pendulum
   
   - [view on GitHub](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb),
 
-  - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb.
+  - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb).
 
 #### Free External Resources      
       
