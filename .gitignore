@@ -13,14 +13,14 @@ misc
 sandbox
 .tmp.py
 
-#
-!examples
-
 # Outputs
 images/*.svg
 *.html
 *.pdf
 *.ipynb
+
+# ... but for examples
+!examples/*
 
 # Pandoc from pip
 src
