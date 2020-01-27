@@ -425,15 +425,6 @@ with
 Asymptotic Stability
 --------------------------------------------------------------------------------
 
-The equilibrium $x_e$ is locally asymptotically 
-stable for 
-
-  $$
-  \dot{x} = f(x, u_e)
-  $$
-
-$\Longleftrightarrow$
-
 The equilibrium $0$ is locally 
 asymptotically stable for 
 
@@ -442,6 +433,32 @@ $$
 $$ 
 
 where $A = \partial f (x_e, u_e) / \partial x.$
+
+$\Rightarrow$
+
+The equilibrium $x_e$ is locally asymptotically 
+stable for 
+
+  $$
+  \dot{x} = f(x, u_e)
+  $$
+
+<i class="fa fa-warning"></i> Converse Result
+--------------------------------------------------------------------------------
+
+  - The converse is not true : the nonlinear system may be asymptotically
+    stable but not its linearized approximation (e.g. consider $\dot{x} = -x^3$).
+
+  - If we replace local *asymptotic stability* with local *exponential stability*,
+    the requirement that locally
+
+    $$
+    \|x(t) - x_e\| \leq A e^{-\sigma t} \|x(0) - x_e\|
+    $$
+    
+    for some $A >0$ and $\sigma > 0$, then it works.
+
+
 
 <i class="fa fa-eye"></i> -- Linearization
 --------------------------------------------------------------------------------
