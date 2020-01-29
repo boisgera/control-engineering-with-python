@@ -1747,7 +1747,7 @@ G.A.S. in Plain Words
   - The set $B_t$ will converge to the equilibrium $x_e$:
     
     $$
-    d(x_e, B_t) \to 0 \, \mbox{ when } \, t \to +\infty.
+    \sup \, \{d(x_e, x) \; | \; x \in B_t\} \to 0 \, \mbox{ when } \, t \to +\infty.
     $$
 
 
