@@ -1555,7 +1555,7 @@ Consider a pendulum with a coefficient of friction $b$.
 --------------------------------------------------------------------------------
 
   - [<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] 
-    Prove that no equilibrium is locally attractive when $k=0$.
+    Prove that no equilibrium is locally attractive when $b=0$.
 
     <i class="fa fa-key"></i> **Hint:** study the evolution in time
       $$
