@@ -1081,7 +1081,7 @@ Corollary
 
 Let's assume that a local maximal solution exists.
 
-You wonder if a this solution is defined in $[t_0, t_f[$ or blows up before $t_f$.
+You wonder if this solution is defined in $[t_0, t_f[$ or blows up before $t_f$.
 
 For example, you wonder if a solution is global  
 (if $t_f = +\infty$ or $t_f < +\infty$.)
