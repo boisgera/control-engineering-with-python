@@ -2,6 +2,14 @@
 % Sébastien Boisgérault, Mines ParisTech
 
 
+<i class="fa fa-github" aria-hidden="true"></i> Resources
+--------------------------------------------------------------------------------
+
+<https://github.com/boisgera/control-engineering-with-python>
+
+
+Definitions
+================================================================================
 
 <i class="fa fa-wikipedia-w"></i> Definitions
 --------------------------------------------------------------------------------
@@ -13,14 +21,14 @@ desired behaviors in control environments.
 The discipline of controls overlaps and is usually taught along with 
 electrical engineering at many institutions around the world.
 
-
-
+<i class="fa fa-wikipedia-w"></i>
 --------------------------------------------------------------------------------
 
 **Control theory** in control systems engineering is a subfield of mathematics 
 that deals with the control of continuously operating dynamical systems in 
 engineered processes and machines.
 
+<i class="fa fa-wikipedia-w"></i>
 --------------------------------------------------------------------------------
 
 A **dynamical system** is a system in which a function describes the time 
@@ -29,6 +37,23 @@ dependence of a point in a geometrical space.
 Examples include the mathematical models that describe the 
 swinging of a clock pendulum, the flow of water in a pipe, 
 and the number of fish each springtime in a lake.
+
+
+--------------------------------------------------------------------------------
+
+Control Theory is about **dynamical systems** : their
+
+- Modelling, 
+
+- Analysis and
+
+- Control.
+
+
+
+Examples
+================================================================================
+
 
 <i class="fa fa-gear"></i> Robotic Arms
 --------------------------------------------------------------------------------
@@ -43,7 +68,7 @@ and the number of fish each springtime in a lake.
 <i class="fa fa-plane"></i> Aircrafts
 --------------------------------------------------------------------------------
 
-  - [Boeing 747 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
+  - [Boeing 737 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
 
   - [The Dangerous Flaw in Boeing's Automated System](https://www.nytimes.com/interactive/2019/03/29/business/boeing-737-max-8-flaws.html)
 
@@ -51,10 +76,14 @@ and the number of fish each springtime in a lake.
 
   - [What is the Boeing 737 Max MACS?](https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/)
 
+  - [Boeing 737 Max adjustable stabilizer](https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg)
+
   - [Eurofighter Typhoon](https://www.eurofighter.com/advantages)
 
-<i class="fa fa-car"></i> Smart Vehicles
+<i class="fa fa-car"></i> Tomorrow's Vehicles
 --------------------------------------------------------------------------------
+
+Typically : vehicles with self-driving capabilities.
 
   - [Waymo](https://waymo.com/) ("Google Car"),
 
@@ -65,22 +94,24 @@ and the number of fish each springtime in a lake.
 
   - ...
 
+<i class="fa fa-car"></i> Today's cars
 --------------------------------------------------------------------------------
 
-Control Theory is about:
+ADAS = Advanced Driver-Assistance Systems
 
-- Modelling, 
+ 1.  Collision avoidance systems (CAS) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Collision_avoidance_system)
 
-- Analysis and
+ 2.  Cruise control (CC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Cruise_control)
 
-- Control 
+Adaptative cruise control = CAS + CC [(<i class="fa fa-youtube"></i> : IIHS)](https://www.youtube.com/watch?v=GInSPWZRFRM)
 
-of dynamical systems
-
-<i class="fa fa-github" aria-hidden="true"></i> Ressources
 --------------------------------------------------------------------------------
 
-<https://github.com/boisgera/control-engineering-with-python>
+ 3.  Electronic stability control (ESC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Electronic_stability_control)
+
+
+     <iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
 
 
 

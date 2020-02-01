@@ -17,8 +17,8 @@ Preamble
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
+    %matplotlib inline
     from matplotlib.pyplot import *
-    %matplotlib notebook 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 

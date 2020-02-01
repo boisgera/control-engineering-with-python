@@ -70,14 +70,25 @@ Two options:
 
       - Control of mobile robots
       
-      
-### Free External Resources      
+### Extra resources
+
+#### Animation of dynamical systems
+
+Example notebook: double pendulum
+  
+  - [view in GitHub](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb),
+
+  - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb).
+
+#### Free External Resources      
       
   - [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
   
   - [The Zodiac - Theory of Robot Control](http://www.gipsa-lab.grenoble-inp.fr/~carlos.canudas-de-wit/publications/Theory_of_robot_control.pdf)
 
+<!--
   - [Stackoverflow: animation in iPython (check the second option of the answer with **%matplotlib notebook**)](https://stackoverflow.com/questions/35532498/animation-in-ipython-notebook/46878531#46878531)
+-->
 
 -----
 

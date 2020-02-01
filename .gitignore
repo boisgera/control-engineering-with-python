@@ -19,5 +19,8 @@ images/*.svg
 *.pdf
 *.ipynb
 
+# ... but for examples
+!examples/*
+
 # Pandoc from pip
 src
