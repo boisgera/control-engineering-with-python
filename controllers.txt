@@ -803,7 +803,7 @@ $$
 
 --------------------------------------------------------------------------------
 
-<i class="fa fa-eye"></i> Pendulum
+<i class="fa fa-question-circle-o"></i> Pendulum
 --------------------------------------------------------------------------------
 
 Consider the pendulum with dynamics:
@@ -840,7 +840,7 @@ $$
     $\theta(0) = 0$ and $\dot{\theta}(0) = 0$; compare with
     the open-loop strategy that we have already considered.
 
-<i class="fa fa-eye"></i> Double Spring System
+<i class="fa fa-question-circle-o"></i> Double Spring System
 --------------------------------------------------------------------------------
 
 Consider the dynamics:
