@@ -777,7 +777,7 @@ is higher than the rank of $B$.
 
   - So here `poles = [-1, -1]` won't work. 
 
-  - But `poles = [-1, -1.00000000001]` will.
+  - But `poles = [-1, -1.001]` may work.
 
 
 <i class="fa fa-question-circle-o"></i> Pole Assignment / Default
