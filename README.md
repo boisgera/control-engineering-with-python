@@ -69,7 +69,11 @@ Two options:
       - Kinematic models of mobile robots
 
       - Control of mobile robots
-      
+
+### Project
+
+  - Problem statement : [Notebook](project/Project.ipynb)
+
 ### Extra resources
 
 #### Animation of dynamical systems
@@ -79,10 +83,6 @@ Example notebook: double pendulum
   - [view in GitHub](https://github.com/boisgera/control-engineering-with-python/blob/master/examples/animation.ipynb),
 
   - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb).
-
-#### Project
-
-  - Problem statement : [Notebook](project/Project.ipynb)
 
 #### Free External Resources      
       
