@@ -1,0 +1,18 @@
+name: control-engineering-with-python
+channels:
+  - conda-forge
+dependencies:
+  - python=3.7
+  - pip
+  - black
+  - numpy
+  - scipy
+  - autograd
+  - sympy
+  - matplotlib
+  - jupyter
+  - rise
+  - pandoc=2.1.1
+  - curl
+  - pip:
+    - "-e git+https://github.com/boisgera/pandoc@172f0f86fef8c972c2f0396f01e266934a67294a#egg=pandoc"

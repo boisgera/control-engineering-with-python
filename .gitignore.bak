@@ -1,0 +1,26 @@
+# Conda environment
+env
+
+# VS Code
+.vscode
+
+# Node
+node_modules
+package-lock.json
+
+# Misc.
+misc 
+sandbox
+.tmp.py
+
+# Outputs
+images/*.svg
+*.html
+*.pdf
+*.ipynb
+
+# ... but for examples
+!examples/*
+
+# Pandoc from pip
+src

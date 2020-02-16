@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Sébastien Boisgérault, Mines ParisTech">
+  <title>Ordinary Differential Equations</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Ordinary Differential Equations</h1>
+  <p class="author">Sébastien Boisgérault, Mines ParisTech</p>
+</section>
+
+<section id="preamble" class="slide level2">
+<h2>Preamble</h2>
+<pre><code>from numpy import *
+from numpy.linalg import *
+from matplotlib.pyplot import *
+from mpl_toolkits.mplot3d import *</code></pre>
+</section>
+<section><section id="introduction" class="title-slide slide level1"><h1>Introduction</h1></section><section id="vector-field" class="slide level2">
+<h2>Vector Field</h2>
+<p>Let <span class="math inline">\(n \in \mathbb{N}^*\)</span> and <span class="math inline">\(f:\mathbb{R}^n \to \mathbb{R}^n\)</span>.</p>
+<p>Visualize <span class="math inline">\(f(x)\)</span> as an arrow with origin the point <span class="math inline">\(x\)</span>.</p>
+<p>In the plane (<span class="math inline">\(n=2\)</span>), use <a href="https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.quiver.html">quiver</a> (Matplotlib).</p>
+</section><section id="q-helper" class="slide level2">
+<h2>Q Helper</h2>
+<pre><code>def Q(f, xs, ys):
+    X, Y = meshgrid(xs, ys)
+    fx = vectorize(lambda x, y: f([x, y])[0])
+    fy = vectorize(lambda x, y: f([x, y])[1])
+    return X, Y, fx(X, Y), fy(X, Y)</code></pre>
+</section><section id="vector-field-rotation" class="slide level2">
+<h2><i class="fa fa-eye"></i> Vector Field / Rotation</h2>
+<p>Consider <span class="math inline">\(f(x,y) = (-y, x).\)</span></p>
+<pre><code>def f(xy):
+    x, y = xy
+    return array([-y, x])</code></pre>
+</section><section id="section" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+x = y = linspace(-1.0, 1.0, 20)
+gca().set_aspect(1.0); grid(True)
+quiver(*Q(f, x, y)) </code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/test_Q.svg" /></p>
+</section><section id="ordinary-differential-equations-odes" class="slide level2">
+<h2>Ordinary Differential Equations (ODEs)</h2>
+<p>A solution of <span class="math inline">\(\dot{x} = f(x)\)</span> is</p>
+<ul>
+<li><p>a function <span class="math inline">\(x:I \to \mathbb{R}^n\)</span>,</p></li>
+<li><p>defined on a (possibly unbounded) interval <span class="math inline">\(I\)</span> of <span class="math inline">\(\mathbb{R}\)</span>,</p></li>
+<li><p>such that for every <span class="math inline">\(t \in I,\)</span></p>
+<p><span class="math display">\[\dot{x}(t) = dx(t)/dt = f(x(t)).\]</span></p></li>
+</ul>
+</section><section id="section-1" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+x = y = linspace(-1.0, 1.0, 20)
+gca().set_aspect(1.0); grid(True)
+streamplot(*Q(f, x, y), color=&quot;k&quot;) </code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/test_Q2.svg" /></p>
+</section><section id="initial-value-problem-ivp" class="slide level2">
+<h2>Initial Value Problem (IVP)</h2>
+<p>Solutions <span class="math inline">\(x(t)\)</span>, for <span class="math inline">\(t\geq t_0\)</span>, of</p>
+<p><span class="math display">\[
+\dot{x} = f(x)
+\]</span></p>
+<p>such that</p>
+<p><span class="math display">\[
+x(t_0) = x_0 \in \mathbb{R}^n.
+\]</span></p>
+</section><section class="slide level2">
+
+<p>The <strong>initial condition</strong> <span class="math inline">\((t_0, x_0)\)</span> is made of</p>
+<ul>
+<li><p>the <strong>initial time</strong> <span class="math inline">\(t_0 \in \mathbb{R}\)</span> and</p></li>
+<li><p>the <strong>initial value</strong> or <strong>initial state</strong> <span class="math inline">\(x_0 \in \mathbb{R}^n\)</span>.</p></li>
+</ul>
+<p>The set <span class="math inline">\(\mathbb{R}^n\)</span> is the <strong>state space</strong>,<br />
+<span class="math inline">\(x(t)\)</span> the <strong>state at time</strong> <span class="math inline">\(t\)</span>.</p>
+</section><section id="higher-order-odes" class="slide level2">
+<h2>Higher-Order ODEs</h2>
+<p>Scalar differential equations structured as</p>
+<p><span class="math display">\[
+  x^{(n)}(t) = f(x, \dot{x}, \ddot{x}, \dots, x^{(n-1)})
+  \]</span></p>
+<p>can be converted to the standard form with the state</p>
+<p><span class="math display">\[
+  y = (x, \dot{x}, \ddot{x}, \dots, x^{(n-1)}) \in \mathbb{R^n}
+  \]</span></p>
+</section><section class="slide level2">
+
+<p><span class="math display">\[
+  \begin{array}{ccl}
+  \dot{y}_1 &amp;=&amp; y_2 \\
+  \dot{y}_2 &amp;=&amp; y_3 \\
+  \vdots &amp;\vdots&amp; \vdots \\
+  \dot{y}_n &amp;=&amp; f(y_1, y_2, \dots, y_{n-1})
+  \end{array}
+  \]</span></p>
+</section><section id="pendulum" class="slide level2">
+<h2><i class="fa fa-eye"></i> Pendulum</h2>
+<p><img data-src="images/static/pendulum.svg" /></p>
+</section><section id="model-pendulum" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Model / Pendulum</h2>
+<ul>
+<li><p>[</i><i class="fa fa-gear"></i>, </i><i class="fa fa-superscript"></i>] Establish the equations governing the pendulum dynamics when the mechanical energy of the system is constant.</p></li>
+<li><p>[</i><i class="fa fa-gear"></i>, </i><i class="fa fa-superscript"></i>] Generalize the dynamics when there is a friction torque <span class="math inline">\(c = -b \dot{\theta}\)</span> for some <span class="math inline">\(b \geq 0\)</span>.</p></li>
+</ul>
+<h3 id="result"><i class="fa fa-key"></i> – Result</h3>
+<p><span class="math display">\[
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+\]</span></p>
+</section><section class="slide level2">
+
+<p>Introduce the rotational frequency <span class="math inline">\(\omega = \dot{\theta}\)</span> in rad/sec.</p>
+<p>The pendulum dynamics is equivalent to:</p>
+<p><span class="math display">\[
+  \begin{array}{lll}
+  \dot{\theta} &amp;=&amp; \omega \\
+  \dot{\omega} &amp;=&amp; - (b/m\ell^2) \omega -(g /\ell) \sin \theta  
+  \end{array}
+  \]</span></p>
+</section><section class="slide level2">
+
+<pre><code>m=1.0; b=0.0; l=1.0; g=9.81
+def f(theta_d_theta):
+    theta, d_theta = theta_d_theta
+    J = m * l * l
+    d2_theta  = - b / J * d_theta 
+    d2_theta += - g / l * sin(theta)
+    return array([d_theta, d2_theta])
+        </code></pre>
+</section><section id="section-2" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+theta = linspace(-1.5 * pi, 1.5 * pi, 100)
+d_theta = linspace(-5.0, 5.0, 100)
+grid(True)
+xticks([-pi, 0, pi], [r&quot;$-\pi$&quot;, &quot;$0$&quot;, r&quot;$\pi$&quot;])
+streamplot(*Q(f, theta, d_theta), color=&quot;k&quot;) </code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/streamplot_pendulum.svg" /></p>
+</section><section id="model-pendulum-1" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Model / Pendulum</h2>
+<ul>
+<li><p>[<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>] Determine an approximation of the least possible angular velocity <span class="math inline">\(\omega_0 &gt; 0\)</span> such that when <span class="math inline">\(\theta(0) = 0\)</span> and <span class="math inline">\(\dot{\theta}(0) = \omega_0\)</span>, the pendulum reaches (or overshoots) <span class="math inline">\(\theta(t) = \pi\)</span> for some <span class="math inline">\(t&gt;0\)</span>.</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Answer the same question analytically.</p></li>
+</ul>
+</section><section id="numerical-solution-basic" class="slide level2">
+<h2>Numerical Solution (Basic)</h2>
+<p>Given a finite <strong>time span</strong> <span class="math inline">\([t_0, t_f]\)</span> and a small enough <strong>time step</strong> <span class="math inline">\(\Delta t &gt; 0\)</span>, we can use the approximation:</p>
+<p><span class="math display">\[
+  \begin{split}
+  x(t + \Delta t) 
+    &amp; \simeq x(t) + \Delta t \times \dot{x}(t) \\
+    &amp; = x(t) + \Delta t \times f(x(t)) \\
+  \end{split}
+  \]</span></p>
+<p>to compute a sequence of states <span class="math inline">\(x_k \in \mathbb{R}^n\)</span> such that:</p>
+<p><span class="math display">\[
+  x(t = t_0 + k \Delta t) \simeq x_k.
+  \]</span></p>
+</section><section id="euler-scheme" class="slide level2">
+<h2>Euler Scheme</h2>
+<p>(Fixed-step &amp; explicit version)</p>
+<pre><code>def basic_solve_ivp(f, t0, x0, dt, t_f):
+    ts, xs = [t0], [x0]
+    while ts[-1] &lt; t_f:
+        t, x = ts[-1], xs[-1]
+        t_next, x_next = t + dt, x + dt * f(x)
+        ts.append(t_next); xs.append(x_next)
+    return (array(ts), array(xs).T)</code></pre>
+</section><section class="slide level2">
+
+<p>Why the final transposition (<code>.T</code>)?</p>
+<p>So that when</p>
+<p><code>t, x = basic_solve_ivp(...)</code>,</p>
+<p><code>x[i]</code> refers to the values of the <code>i</code>th component of <code>x</code>.</p>
+<p>(without the <code>.T</code>, it would be <code>x[:][i]</code>)</p>
+</section><section id="rotation-solution" class="slide level2">
+<h2><i class="fa fa-eye"></i> Rotation / Solution</h2>
+<p><span class="math display">\[
+  \left|
+  \begin{split}
+  \dot{x} &amp;= -y \\
+  \dot{y} &amp;= +x
+  \end{split}
+  \right.,
+  \; \mbox{ with } \;
+  \left|
+  \begin{array}{l}
+  x(0) = 1\\
+  y(0) = 0
+  \end{array}
+  \right.
+  \]</span></p>
+</section><section class="slide level2">
+
+<pre><code>def f(xy):
+    x, y = xy
+    return array([-y, x])
+t0, x0 = 0.0, array([-1.0, 0.0])
+dt, tf = 0.001, 5.0
+t, x = basic_solve_ivp(f, t0, x0, dt, tf)</code></pre>
+</section><section id="trajectories" class="slide level2">
+<h2><i class="fa fa-area-chart"></i> Trajectories</h2>
+<pre><code>figure()
+plot(t, x[0])
+plot(t, x[1])
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/rotation.svg" /></p>
+</section><section id="trajectories-state-space" class="slide level2">
+<h2><i class="fa fa-area-chart"></i> Trajectories (State Space)</h2>
+<p>Represent solutions fragments in the background</p>
+<pre><code>figure()
+xs = ys = linspace(-1.5, 1.5, 50)
+streamplot(*Q(f, xs, ys), color=&quot;lightgrey&quot;)</code></pre>
+</section><section id="section-3" class="slide level2">
+<h2><i class="fa fa-area-chart"></i> …</h2>
+<pre><code>plot(x[0], x[1], &quot;k&quot;)
+plot(x0[0], x0[1], &quot;ko&quot;)
+dx = x[0][-1] - x[0][-2]
+dy = x[1][-1] - x[1][-2]
+arrow(x[0][-1], x[1][-1], dx, dy, width=0.02, color=&quot;k&quot;)
+grid()
+axis(&quot;equal&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/rotation2.svg" /></p>
+</section><section id="beyond-the-basic-solver" class="slide level2">
+<h2>Beyond the Basic Solver</h2>
+<p>Many issues that our basic solver doesn’t address:</p>
+<ul>
+<li><p>time-dependent vector field,</p></li>
+<li><p>error control,</p></li>
+<li><p>dense outputs,</p></li>
+<li><p>and more …</p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Instead, use:</p>
+<pre><code>from scipy.integrate import solve_ivp</code></pre>
+<p>Documentation: <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html"><code>solve_ivp</code></a> (Scipy)</p>
+</section><section id="ivp-rotation" class="slide level2">
+<h2><i class="fa fa-eye"></i> IVP / Rotation</h2>
+<p>Compute the solution <span class="math inline">\(x(t)\)</span> for <span class="math inline">\(t\in[0,2\pi]\)</span> of the IVP:</p>
+<p><span class="math display">\[
+  \left|
+  \begin{split}
+  \dot{x}_1 &amp;= -x_2 \\
+  \dot{x}_2 &amp;= +x_1
+  \end{split}
+  \right.
+  \; \mbox{ with } \;
+  \left|
+  \begin{array}{l}
+  x_1(0) = 1\\
+  x_2(0) = 0
+  \end{array}
+  \right.
+  \]</span></p>
+</section><section id="solver-interface-rotation" class="slide level2">
+<h2><i class="fa fa-eye"></i> Solver Interface / Rotation</h2>
+<pre><code>def fun(t, y):
+    x1, x2 = y
+    return array([-x2, x1])
+t_span = [0.0, 2*pi]
+y0 = [1.0, 0.0]
+result = solve_ivp(fun=fun, t_span=t_span, y0=y0)</code></pre>
+</section><section id="result-structure" class="slide level2">
+<h2>Result Structure</h2>
+<p>The <code>result</code> is a dictionary-like object (a “bunch”).</p>
+<p>Its fields:</p>
+<ul>
+<li><p><code>t</code> : array, time points, shape <code>(n_points,)</code>,</p></li>
+<li><p><code>y</code> : array, values of the solution at t, shape <code>(n, n_points)</code>,</p></li>
+<li><p>…</p></li>
+</ul>
+<p>(See <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html"><code>solve_ivp</code> documentation</a>)</p>
+</section><section id="non-autonomous-systems" class="slide level2">
+<h2>Non-Autonomous Systems</h2>
+<p><i class="fa fa-warning"></i> The solver may apply to systems that are not time-invariant</p>
+<p><span class="math display">\[
+  \dot{y} = f(t, y)
+  \]</span></p>
+<p>The <code>t</code> argument in the definition of <code>fun</code> is mandatory, even if the returned value doesn’t depend on it (time-invariant system).</p>
+</section><section class="slide level2">
+
+<pre><code>r_t = result[&quot;t&quot;]
+x_1 = result[&quot;y&quot;][0]
+x_2 = result[&quot;y&quot;][1]</code></pre>
+</section><section id="section-4" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+t = linspace(0, 2*pi, 1000)
+plot(t, cos(t), &quot;k--&quot;)
+plot(t, sin(t), &quot;k--&quot;)
+bold = {&quot;lw&quot;: 2.0, &quot;ms&quot;: 10.0}
+plot(r_t, x_1, &quot;.-&quot;, label=&quot;$x_1(t)$&quot;, **bold)
+plot(r_t, x_2, &quot;.-&quot;, label=&quot;$x_2(t)$&quot;, **bold)
+xlabel(&quot;$t$&quot;); grid(); legend()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/solve_ivp_1.svg" /></p>
+</section><section id="variable-step-size" class="slide level2">
+<h2>Variable Step Size</h2>
+<p>The step size is:</p>
+<ul>
+<li><p>variable: <span class="math inline">\(t_{n+1} - t_n\)</span> may not be constant,</p></li>
+<li><p>automatically selected by the algorithm,</p></li>
+</ul>
+<p>The solver shall meet the user specification, but should select the largest step size to do so to minimize the number of computations.</p>
+<p>Optionally, you can specify a <code>max_step</code> (default: <span class="math inline">\(+\infty\)</span>).</p>
+</section><section id="error-control" class="slide level2">
+<h2>Error Control</h2>
+<p>We generally want to control the (local) error <span class="math inline">\(e(t)\)</span>:<br />
+the difference between the numerical solution and the exact one.</p>
+<ul>
+<li><p><code>atol</code> is the <strong>absolute tolerance</strong> (default: <span class="math inline">\(10^{-6}\)</span>),</p></li>
+<li><p><code>rtol</code> is the <strong>relative tolerance</strong> (default: <span class="math inline">\(10^{-3}\)</span>).</p></li>
+</ul>
+<p>The solver ensures (approximately) that at each step:</p>
+<p><span class="math display">\[
+  |e(t)| \leq \mathrm{atol} + \mathrm{rtol} \times |x(t)|
+  \]</span></p>
+</section><section class="slide level2">
+
+<pre><code>options = {
+    # at least 20 data points
+    &quot;max_step&quot;: 2*pi / 20, 
+    # standard absolute tolerance
+    &quot;atol&quot;    : 1e-6,        
+    # very large relative tolerance
+    &quot;rtol&quot;    : 1e9 
+}</code></pre>
+</section><section class="slide level2">
+
+<pre><code>result = solve_ivp(
+    fun=fun, t_span=t_span, y0=y0, 
+    **options
+)
+r_t = result[&quot;t&quot;]
+x_1 = result[&quot;y&quot;][0]
+x_2 = result[&quot;y&quot;][1]</code></pre>
+</section><section id="section-5" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+t = linspace(0, 2*pi, 20)
+plot(t, cos(t), &quot;k--&quot;)
+plot(t, sin(t), &quot;k--&quot;)
+bold = {&quot;lw&quot;: 2.0, &quot;ms&quot;: 10.0}
+plot(r_t, x_1, &quot;.-&quot;, label=&quot;$x_1(t)$&quot;, **bold)
+plot(r_t, x_2, &quot;.-&quot;, label=&quot;$x_2(t)$&quot;, **bold)
+xlabel(&quot;$t$&quot;); grid(); legend()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/solve_ivp_2.svg" /></p>
+</section><section id="dense-output" class="slide level2">
+<h2>Dense Output</h2>
+<p>Using a small <code>max_step</code> is usually the wrong way to “get more data points” since this will trigger many (potentially expensive) evaluations of <code>fun</code>.</p>
+<p>Instead, use dense outputs: the solver may return<br />
+the discrete data <code>result[&quot;t&quot;]</code> and <code>result[&quot;y&quot;]</code> <strong>and</strong> an approximate solution <code>result[&quot;sol&quot;]</code> <strong>as a function of <code>t</code></strong> with little extra computations.</p>
+</section><section class="slide level2">
+
+<pre><code>options = {
+    &quot;dense_output&quot;: True
+}</code></pre>
+</section><section class="slide level2">
+
+<pre><code>result = solve_ivp(
+    fun=fun, t_span=t_span, y0=y0, 
+    **options
+)
+r_t = result[&quot;t&quot;]
+x_1 = result[&quot;y&quot;][0]
+x_2 = result[&quot;y&quot;][1]
+sol = result[&quot;sol&quot;]</code></pre>
+</section><section class="slide level2">
+
+<pre><code>figure()
+t = linspace(0, 2*pi, 1000)
+plot(t, cos(t), &quot;k--&quot;)
+plot(t, sin(t), &quot;k--&quot;)
+bold = {&quot;lw&quot;: 2.0, &quot;ms&quot;: 10.0}
+plot(t, sol(t)[0], &quot;-&quot;, label=&quot;$x_1(t)$&quot;, **bold)
+plot(t, sol(t)[1], &quot;-&quot;, label=&quot;$x_2(t)$&quot;, **bold)
+plot(r_t, x_1, &quot;.&quot;, color=&quot;C0&quot;, **bold)
+plot(r_t, x_2, &quot;.&quot;, color=&quot;C1&quot;, **bold)
+xlabel(&quot;$t$&quot;); grid(); legend()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/solve_ivp_3.svg" /></p>
+<!--
+
+--------------------------------------------------------------------------------
+
+    def explicit_euler_step(fun, t, y, step):
+        return y + step * fun(t, y)
+
+Example
+--------------------------------------------------------------------------------
+
+
+----
+
+    class ODEScheme:
+        def __init__(self, fun, t0, y0, max_step, tf):
+            self.fun = fun
+            self.t = t0
+            self.y = y0
+            self.max_step = max_step
+            self.tf = tf
+
+----
+
+    class ExplicitEuler(ODEScheme):
+        def step(self):
+            t_next = min(self.tf, \
+                         self.t + self.max_step)
+            step = t_next - self.t
+            y_next = explicit_euler_step(self.fun, \
+                                         self.t,   \
+                                         self.y,   \
+                                         step      )
+            self.t = t_next
+            self.y = y_next
+
+
+Interpolation
+--------------------------------------------------------------------------------
+
+    from scipy.interpolate import interp1d
+    def interpolate(ti, yi):
+        def function(t):
+            options = {"axis": 0, \
+                       "fill_value": "extrapolate"}
+            return interp1d(ti, yi, **options)(t).T
+        return function
+
+Example
+--------------------------------------------------------------------------------
+
+    ti, yi = array([0, 1, 2]), array([1, 2, 1])
+    f = interpolate(ti, yi)
+    t = linspace(-1, 3, 100)
+    y = f(t)
+    figure()
+    plot(ti, yi, "ko")
+    plot(t, y, "k--")
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/interpolation")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Result
+--------------------------------------------------------------------------------
+
+![](images/interpolation.svg)    
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+-----
+
+    def solve_ivp(fun, t_span, y0, \
+                  max_step=1e-5, \
+                  dense_output=False, \
+                  **options):
+        t0, tf = t_span
+        scheme = ExplicitEuler(fun, t0, y0, max_step, tf)
+
+        result = {}
+        t, y = [t0], [y0]
+        try:
+            while t[-1] < tf:
+                scheme.step()
+                t.append(scheme.t)
+                y.append(scheme.y)
+            result["success"] = True
+        except: # too wide. What can happen here ? nan stuff ?
+            result["success"] = False
+        result["t"] = t = array(t)
+        result["y"] = y = array(y)
+        if dense_output:
+            result["sol"] = interpolate(t, y)
+        else:
+            result["sol"] = None
+        return result  
+
+-----
+
+    def fun(t, y):
+        return y
+
+    t0, tf, y0 = 0.0, 5.0, array([1.0])
+    result = solve_ivp(fun, (t0, tf), y0, \
+                       max_step=0.25, \
+                       dense_output=True)
+
+------
+
+    td, yd = result["t"], result["y"]
+    t = linspace(t0, tf, 1000)
+    y = result["sol"](t)
+    figure()
+    plot(t, exp(t), "k")
+    plot(t, y.T, "k--")
+    plot(td, yd, "k+")
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/exp")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Results
+--------------------------------------------------------------------------------
+
+![](images/exp.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+-->
+</section></section>
+<section><section id="well-posedness" class="title-slide slide level1"><h1>Well-Posedness</h1></section><section id="well-posedness-of-an-ivp" class="slide level2">
+<h2>Well-Posedness of an IVP</h2>
+<p><strong>Well-Posedness</strong> = Existence + Uniqueness + Continuity</p>
+<p>A set of properties that ensures that common problems with IVPs cannot happen.</p>
+<p>We are going to detail each property</p>
+</section><section id="preamble-local-vs-global" class="slide level2">
+<h2>Preamble: Local vs Global</h2>
+<p>So far, we have only dealt with <strong>global</strong> solutions <span class="math inline">\(x(t)\)</span> of IVPs, defined for any <span class="math inline">\(t \geq t_0\)</span>.</p>
+<p>This concept is sometimes too stringent.</p>
+</section><section class="slide level2">
+
+<p>Consider for example:</p>
+<p><span class="math inline">\(\dot{x} = x^2\)</span> and <span class="math inline">\(x(0)=1.\)</span></p>
+</section><section class="slide level2">
+
+<pre><code>def fun(t, y):
+    return y * y
+t0, tf, y0 = 0.0, 3.0, array([1.0])
+result = solve_ivp(fun, t_span=[t0, tf], y0=y0)
+figure()
+plot(result[&quot;t&quot;], result[&quot;y&quot;][0], &quot;k&quot;)
+xlim(t0, tf); xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/finite-time-blowup.svg" /></p>
+</section><section class="slide level2">
+
+<p>Ouch.</p>
+<p>There is actually no <strong>global</strong> solution.</p>
+<p>However there is <strong>local</strong> solution <span class="math inline">\(x(t)\)</span>, defined for <span class="math inline">\(t \in \left[t_0, \tau\right[\)</span> for some <span class="math inline">\(\tau &gt; t_0\)</span>.</p>
+</section><section class="slide level2">
+
+<p>Indeed, the function</p>
+<p><span class="math display">\[
+x(t) = \frac{1}{1 - t}
+\]</span></p>
+<p>satisfies</p>
+<p><span class="math display">\[
+\dot{x}(t) = \frac{d}{dt} x(t) = -\frac{-1}{(1 - t)^2} 
+=  (x(t))^2.
+\]</span></p>
+<p>But it’s defined only for <span class="math inline">\(t&lt;1.\)</span></p>
+</section><section id="section-6" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>tf = 1.0
+result = solve_ivp(fun, t_span=[t0, tf], y0=y0, max_step=0.01)
+figure()
+plot(result[&quot;t&quot;], result[&quot;y&quot;][0], &quot;k&quot;)
+ylim(0.0, 10.0); grid(); xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/finite-time-blowup-2.svg" /></p>
+</section><section class="slide level2">
+
+<p>This local solution is also <strong>maximal</strong>:</p>
+<p>You cannot extend this solution beyond <span class="math inline">\(\tau=1.0\)</span>.</p>
+</section><section id="localmaximal-solution" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Local/Maximal Solution</h2>
+<ul>
+<li><p>[<i class="fa fa-superscript"></i>] Find a local solution <span class="math inline">\(x(t)\)</span> of <span class="math inline">\(\dot{x} = x^2\)</span> such that <span class="math inline">\(x(0) = x_0\)</span> under the assumption that <span class="math inline">\(x(t) \neq 0\)</span> when <span class="math inline">\(t\geq 0\)</span>.</p>
+<p><i class="fa fa-key"></i> <strong>Hint:</strong> compute <span class="math inline">\(d(1/x(t))/dt.\)</span></p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>] Find for every <span class="math inline">\(x_0 \neq 0\)</span> a maximal solution. When is it global?</p></li>
+</ul>
+</section><section id="bad-news-13" class="slide level2">
+<h2>Bad News (1/3)</h2>
+<p>Sometimes things get worse than simply having no global solution.</p>
+</section><section id="no-local-solution" class="slide level2">
+<h2><i class="fa fa-eye"></i> – No Local Solution</h2>
+<p>Consider the scalar IVP with initial value <span class="math inline">\(x(0) = (0,0)\)</span> and right-hand side</p>
+<p><span class="math display">\[
+  f(x_1,x_2) = 
+  \left|
+  \begin{array}{rl}
+  (+1,0) &amp; \mbox{if } \; x_1&lt; 0 \\
+  (-1,0) &amp; \mbox{if } \; x_1 \geq 0.
+  \end{array}
+  \right.
+  \]</span></p>
+</section><section id="no-local-solution-1" class="slide level2">
+<h2><i class="fa fa-area-chart"></i> – No Local Solution</h2>
+<pre><code>def f(x1x2):
+    x1, x2 = x1x2
+    dx1 = 1.0 if x1 &lt; 0.0 else -1.0
+    return array([dx1, 0.0])
+figure()
+x1 = x2 = linspace(-1.0, 1.0, 20)
+gca().set_aspect(1.0); grid(True)
+quiver(*Q(f, x1, x2), color=&quot;k&quot;) </code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/discont.svg" /></p>
+</section><section id="no-local-solution-2" class="slide level2">
+<h2><i class="fa fa-lightbulb-o"></i> – No Local Solution</h2>
+<p>This system has no solution, not even a local one, when <span class="math inline">\(x(0) = (0,0)\)</span>.</p>
+</section><section id="proof" class="slide level2">
+<h2>Proof</h2>
+<ul>
+<li><p>Assume that <span class="math inline">\(x: [0, \tau[ \to \mathbb{R}\)</span> is a local solution.</p></li>
+<li><p>Since <span class="math inline">\(\dot{x}(0) = -1 &lt; 0\)</span>, for some small enough <span class="math inline">\(0 &lt; \epsilon &lt; \tau\)</span> and any <span class="math inline">\(t \in \left]0, \epsilon\right]\)</span>, we have <span class="math inline">\(x(t) &lt; 0\)</span>.</p></li>
+<li><p>Consequently, <span class="math inline">\(\dot{x}(t) = +1\)</span> and thus by integration</p>
+<p><span class="math display">\[
+x(\epsilon) =  x(0) + \int_0^{\epsilon} \dot{x}(t) \, dt = \epsilon &gt; 0,
+\]</span></p>
+<p>which is a contradiction.</p></li>
+</ul>
+</section><section id="good-news-13" class="slide level2">
+<h2>Good News (1/3)</h2>
+<p>However, a local solution exists under very mild assumptions.</p>
+</section><section id="existence" class="slide level2">
+<h2>Existence</h2>
+<p>If <span class="math inline">\(f\)</span> is continuous,</p>
+<ul>
+<li><p>There is a (at least one) local solution to the IVP</p>
+<p><span class="math inline">\(\dot{x} = f(x)\)</span> and <span class="math inline">\(x(t_0) = x_0\)</span>.</p></li>
+<li><p>Any local solution on some <span class="math inline">\(\left[t_0, \tau \right[\)</span> can be extended to a (at least one) maximal one on some <span class="math inline">\(\left[t_0, t_{\infty}\right[\)</span>.</p></li>
+</ul>
+<p><strong>Note.</strong> A maximal solution is global iff <span class="math inline">\(t_{\infty} = +\infty\)</span>.</p>
+</section><section id="theorem-characterization-of-maximal-solutions" class="slide level2">
+<h2>Theorem – Characterization of Maximal Solutions</h2>
+<p>A solution on <span class="math inline">\(\left[t_0, \tau \right[\)</span> is maximal if and only if either</p>
+<ul>
+<li><p><span class="math inline">\(\tau = +\infty\)</span> : the solution is global, or</p></li>
+<li><p><span class="math inline">\(\tau &lt; +\infty\)</span> and <span class="math inline">\(\displaystyle \lim_{t \to \tau} \|x(t)\| = +\infty.\)</span></p></li>
+</ul>
+<p>In plain words : a non-global solution cannot be extended further in time if and only if it “blows up”.</p>
+</section><section id="corollary" class="slide level2">
+<h2>Corollary</h2>
+<p>Let’s assume that a local maximal solution exists.</p>
+<p>You wonder if this solution is defined in <span class="math inline">\([t_0, t_f[\)</span> or blows up before <span class="math inline">\(t_f\)</span>.</p>
+<p>For example, you wonder if a solution is global<br />
+(if <span class="math inline">\(t_f = +\infty\)</span> or <span class="math inline">\(t_f &lt; +\infty\)</span>.)</p>
+</section><section id="idea" class="slide level2">
+<h2><i class="fa fa-lightbulb-o"></i> Idea</h2>
+<p>Try to prove that any local solution defined on some sub-interval <span class="math inline">\([t_0, \tau[\)</span> with <span class="math inline">\(\tau &lt; t_f\)</span> is bounded.</p>
+<p>If you succeed, then this solution cannot be maximal (it doesn’t blow up), thus a maximal solution is defined on <span class="math inline">\([t_0, t_f[\)</span>.</p>
+<!--
+If any **potential** local solution $x(t)$ defined on 
+$\left[t_0, \tau\right[$ is **locally bounded** on this interval(*)
+then such a solution exists.  
+
+(*): bounded on any $[t_0, s] \subset \left[t_0, \tau \right[$.
+-->
+</section><section id="existence-sigmoid" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Existence / Sigmoid</h2>
+<p>Consider</p>
+<p><span class="math display">\[
+  \dot{x} = \frac{1}{1 + e^{-x}} \mbox{ with } x(0) = x_0 \in \mathbb{R}
+  \]</span></p>
+<ul>
+<li><p>[</i><i class="fa fa-superscript"></i>] Show that there is a (at least one) maximal solution.</p></li>
+<li><p>[<i class="fa fa-superscript"></i>] Show that any such solution is global.</p></li>
+</ul>
+</section><section id="existence-linear-systems" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Existence / Linear Systems</h2>
+<p>Let <span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span> and <span class="math inline">\(x_0 \in \mathbb{R}^n\)</span>. Consider <span class="math display">\[
+  \dot{x} = A x \; \mbox{ and } \; x(0) = x_0
+  \]</span></p>
+<p><i class="fa fa-bullseye"></i> <strong>Aim.</strong> Show that any maximal solution is global.</p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[</i><i class="fa fa-superscript"></i>] Show that <span class="math inline">\(y(t) = \|x(t)\|^2\)</span> is differentiable and satisfies <span class="math inline">\(y(t) \geq 0\)</span> and <span class="math inline">\(\dot{y}(t) \leq \alpha y(t)\)</span> for some <span class="math inline">\(\alpha \geq 0\)</span>.</p></li>
+<li><p>[</i><i class="fa fa-superscript"></i>] Compute the derivative of <span class="math inline">\(y(t) e^{-\alpha t}\)</span> and conclude that <span class="math inline">\(0 \leq y(t) \leq y(0) e^{\alpha t}\)</span>.</p></li>
+<li><p>[</i><i class="fa fa-superscript"></i>] Prove that any maximal solution <span class="math inline">\(x(t)\)</span> of the initial IVP is global.</p></li>
+</ul>
+</section><section id="bad-news-23" class="slide level2">
+<h2>Bad News (2/3)</h2>
+<p>Uniqueness of solutions, even the maximal ones, is not granted either.</p>
+<p>(Note: why does uniqueness of local solution does not make sense?)</p>
+</section><section id="non-uniqueness" class="slide level2">
+<h2><i class="fa fa-eye"></i> – Non-Uniqueness</h2>
+<p>The IVP</p>
+<p><span class="math inline">\(\dot{x} = \sqrt{x}\)</span>, <span class="math inline">\(x(0) = 0\)</span></p>
+<p>has several maximal (global) solutions.</p>
+</section><section id="proof-1" class="slide level2">
+<h2>Proof</h2>
+<p>For any <span class="math inline">\(\tau \geq 0\)</span>, <span class="math inline">\(x_{\tau}\)</span> is a solution:</p>
+<p><span class="math display">\[
+x_{\tau}(t) = 
+\left| 
+\begin{array}{ll}
+0 &amp; \mbox{if} \; t \leq \tau, \\
+1/4 \times (t-\tau)^2 &amp; \mbox{if} \; t &gt; \tau.
+\end{array}
+\right.
+\]</span></p>
+</section><section id="good-news-23" class="slide level2">
+<h2>Good News (2/3)</h2>
+<p>However, uniqueness of maximal solution holds under mild assumptions.</p>
+</section><section id="notation-jacobian-matrix" class="slide level2">
+<h2>Notation – Jacobian Matrix</h2>
+<p>Let <span class="math inline">\(x=(x_1, \dots, x_n)\)</span> and <span class="math inline">\(f(x) = (f_1(x), \dots, f_n(x))\)</span>.<br />
+The <strong>Jacobian matrix</strong> of <span class="math inline">\(f\)</span> is defined as</p>
+<p><span class="math display">\[
+\frac{\partial f}{\partial x}
+:=
+\left[
+  \begin{array}{ccc}
+  \frac{\partial f_1}{\partial x_1} &amp; \cdots &amp; \frac{\partial f_1}{\partial x_n} \\
+  \vdots &amp; \vdots &amp; \vdots \\
+  \frac{\partial f_n}{\partial x_1} &amp; \cdots &amp; \frac{\partial f_n}{\partial x_n} \\
+  \end{array}
+\right]
+\]</span></p>
+<p>(when all the partial derivatives are defined).</p>
+</section><section id="uniqueness" class="slide level2">
+<h2>Uniqueness</h2>
+<p>If <span class="math inline">\(\partial f/\partial x\)</span> exists and is continuous,<br />
+the maximal solution is unique.</p>
+</section><section id="bad-news-33" class="slide level2">
+<h2>Bad News (3/3)</h2>
+<p>An infinitely small error in the initial value could result in a finite error in the solution, even in finite time.</p>
+<p>That would undermine the utility of any approximation method.</p>
+</section><section id="definition-continuity" class="slide level2">
+<h2>Definition – Continuity</h2>
+<!--
+Assume the existence an uniqueness of (local maximal) solutions.
+-->
+<p>Instead of denoting <span class="math inline">\(x(t)\)</span> the solution, use <span class="math inline">\(x(t, x_0)\)</span> to emphasize the dependency w.r.t. the initial state.</p>
+<p><strong>Continuity w.r.t. the initial state</strong> means that if <span class="math inline">\(x(t, x_0)\)</span> is defined on <span class="math inline">\([t_0, \tau]\)</span> and <span class="math inline">\(t\in [t_0, \tau]\)</span>:</p>
+<p><span class="math display">\[
+x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
+\]</span></p>
+<p>and that this convergence is uniform w.r.t. <span class="math inline">\(t\)</span>.</p>
+</section><section id="good-news-33" class="slide level2">
+<h2>Good News (3/3)</h2>
+<p>However, continuity wrt the initial value holds under mild assumptions.</p>
+</section><section id="continuity" class="slide level2">
+<h2>Continuity</h2>
+<p>Assume that <span class="math inline">\(\partial f / \partial x\)</span> exists and is continuous.</p>
+<p>Then the dynamical system is continous w.r.t. the initial state.</p>
+</section><section id="continuity-prey-predator" class="slide level2">
+<h2><i class="fa fa-eye"></i> Continuity / Prey-Predator</h2>
+<pre><code>alpha = 2 / 3; beta = 4 / 3; delta = gamma = 1.0
+def f(t, y):
+    x, y = y 
+    u = alpha * x - beta * x * y
+    v = delta * x * y - gamma * y
+    return array([u, v])</code></pre>
+</section><section class="slide level2">
+
+<pre><code>tf = 3.0
+result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.5], max_step=0.01)
+x = result[&quot;y&quot;][0]
+y = result[&quot;y&quot;][1]</code></pre>
+</section><section id="section-7" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure(); ax = gca()
+xr = yr = linspace(0.0, 2.0, 1000)
+streamplot(*Q(lambda y: f(0,y), xr, yr), color=&quot;grey&quot;)
+for xy in zip(x, y):
+    x_, y_ = xy
+    ax.add_artist(Circle((x_, y_), 0.2, color=&quot;#d3d3d3&quot;))
+ax.add_artist(Circle((x[0], y[0]), 0.1, color=&quot;#808080&quot;))
+plot(x, y, &quot;k&quot;)</code></pre>
+</section><section id="section-8" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575], max_step=0.01)
+x = result[&quot;y&quot;][0]
+y = result[&quot;y&quot;][1]
+plot(x, y, &quot;k--&quot;)
+axis([0,2,0,2]); axis(&quot;square&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/continuity.svg" /></p>
+</section><section class="slide level2">
+
+<h3 id="continuity-initial-value"><i class="fa fa-question-circle-o"></i> – Continuity / Initial Value</h3>
+<p>Let <span class="math inline">\(h \geq 0\)</span> and <span class="math inline">\(x^h(t)\)</span> be the solution of <span class="math inline">\(\dot{x} = x\)</span> and <span class="math inline">\(x^h(0) = 1+ h\)</span>.</p>
+<ul>
+<li>[<i class="fa fa-superscript"></i>]. Let <span class="math inline">\(\epsilon &gt; 0\)</span>; find the smallest <span class="math inline">\(\delta &gt; 0\)</span> such that <span class="math inline">\(|h| &lt; \delta\)</span> ensures that <span class="math display">\[\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| &lt; \epsilon\]</span></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li>[<i class="fa fa-superscript"></i>]. What is the behavior of <span class="math inline">\(\delta\)</span> when <span class="math inline">\(\tau\)</span> goes to infinity?</li>
+</ul>
+</section><section id="continuity-initial-value-1" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Continuity / Initial Value</h2>
+<p>Consider <span class="math inline">\(\dot{x} = \sqrt{|x|}\)</span>, <span class="math inline">\(x(0)=x_0\)</span>.</p>
+<ul>
+<li><p>[<i class="fa fa-laptop"></i>] Solve numerically this IVP for <span class="math inline">\(t \in [0,1]\)</span> and <span class="math inline">\(x_0 = 0\)</span>. Then, solve it again for <span class="math inline">\(x_0 = 0.1\)</span>, <span class="math inline">\(x_0=0.01\)</span>, etc.</p></li>
+<li><p>[<i class="fa fa-flask"></i>] Does the solution seem to be continuous with respect to the initial value?</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>] Explain this experimental result.</p></li>
+</ul>
+</section><section id="well-posedness-prey-predator" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Well-Posedness / Prey-Predator</h2>
+<p>Let</p>
+<p><span class="math display">\[
+\begin{array}{rcl}
+\dot{x} &amp;=&amp; \alpha x - \beta xy \\
+\dot{y} &amp;=&amp; \delta x y - \gamma y \\
+\end{array}
+\]</span></p>
+<p>with <span class="math inline">\(\alpha = 2 / 3\)</span>, <span class="math inline">\(\beta = 4 / 3\)</span>, <span class="math inline">\(\delta = \gamma = 1.0\)</span>.</p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-lightbulb-o"></i>] Show that the system is well-posed.</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Show that if <span class="math inline">\(x(0) &gt; 0\)</span> and <span class="math inline">\(y(0) &gt; 0\)</span>, the maximal solution is global.</p>
+<p><i class="fa fa-key"></i> <strong>Hint.</strong> Compute <span class="math display">\[
+d/dt(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
+\]</span></p></li>
+</ul>
+</section></section>
+<section><section id="asymptotic-behavior" class="title-slide slide level1"><h1>Asymptotic Behavior</h1></section><section class="slide level2">
+
+<p>Asymptotic = Long-Term: when <span class="math inline">\(t \to + \infty\)</span></p>
+<p>(note: from now on, all systems are well-posed.)</p>
+</section><section id="lorenz-system" class="slide level2">
+<h2>Lorenz System</h2>
+<p><span class="math display">\[
+  \begin{array}{lll}
+  \dot{x} &amp;=&amp; \sigma (y - x) \\
+  \dot{y} &amp;=&amp; x (\rho - z) \\
+  \dot{z} &amp;=&amp; xy - \beta z 
+  \end{array}
+  \]</span></p>
+</section><section class="slide level2">
+
+<p><a href="https://portsmouth.github.io/fibre/?settings=eyJSIjp7InJheUJhdGNoIjoxMjgsIm1heFRpbWVTdGVwcyI6MjI5LCJtYXhJdGVyYXRpb25zIjoxMDAsImludGVncmF0aW9uVGltZSI6MiwiaW50ZWdyYXRlRm9yd2FyZCI6dHJ1ZSwiZ3JpZFNwYWNlIjowLjAzMzA4MjA1NjczMzUyMTgwNCwidHViZVdpZHRoIjowLjAxMzIzMjgyMjY5MzQwODcyMywidHViZVNwcmVhZCI6ZmFsc2UsInJlY29yZF9yZWFsdGltZSI6dHJ1ZSwieG1pbiI6MTguMTI3NTIxNDk3MTg5NjI2LCJ4bWF4IjoyNi43NDEyMjM2ODMyMjY3NzgsInltaW4iOi0xNS4xMDMyMzE2NzQyNjQ5NDUsInltYXgiOi04LjczODI1MzU0Njc5NDE0Mywiem1pbiI6MTkuMjU3MzA2NjExNDgwNjYsInptYXgiOjIxLjU4ODgyMDMyODM4NTQ2MywiY2xpcFRvQm91bmRzIjpmYWxzZSwic2hvd0JvdW5kcyI6dHJ1ZSwiZXhwb3N1cmUiOi0wLjc1MzM5MjIwMzMxNjgyMSwiZ2FtbWEiOjAuOTkyNDYxNzAyMDA1NjU2NSwiY29udHJhc3QiOjEuMTIyMzM0Njk3MzkzOTI2Mywic2F0dXJhdGlvbiI6MS4zODY5OTExNjk1MDI0NzcsInN1YnRyYWN0aXZlQ29sb3IiOmZhbHNlLCJiZ0NvbG9yIjpbMCwwLDBdLCJoYWlyU2hhZGVyIjpmYWxzZSwic3BlY1NoaW5lIjoyMS45NzI4NjIzNzM0NjU0MzIsInNwZWNDb2xvciI6WzAuOTAxOTUzMjc1MDg4MDg4MSwwLjg5MzEwOTkxODYyMzQ5MjEsMC44OTMxMDk5MTg2MjM0OTIxXSwibGlnaHQxX2NvbG9yIjpbMSwwLjksMC44XSwibGlnaHQyX2NvbG9yIjpbMC44LDAuOSwxXSwibGlnaHQxX2RpciI6WzAuNTc3MzUwMjY5MTg5NjI1OCwwLjU3NzM1MDI2OTE4OTYyNTgsMC41NzczNTAyNjkxODk2MjU4XSwibGlnaHQyX2RpciI6Wy0wLjU3NzM1MDI2OTE4OTYyNTgsLTAuNTc3MzUwMjY5MTg5NjI1OCwtMC41NzczNTAyNjkxODk2MjU4XSwiZGVwdGhUZXN0Ijp0cnVlLCJkYXNoX3NwYWNpbmciOjAuNTQwMzQwMjU5OTgwODU3NCwiZGFzaF9zcGVlZCI6MzMuMDgyMDU2NzMzNTIxODksImRhc2hfc2l6ZSI6MC45MTUyNzAyMzYyOTQxMDU1LCJkYXNoZXMiOmZhbHNlLCJzdWJ0cmFjdGl2ZV9jb2xvciI6ZmFsc2UsImhhaXJTaGluZSI6MTAsImhhaXJTcGVjQ29sb3IiOlsxLDEsMV19LCJDIjp7InBvcyI6Wy03LjQyNjkzNjMzNzgzOTcxLC02Ljk5ODI1Mjk3MjIzMzY1OSwxMTcuMTMyNDU3OTg4NDA0MDddLCJ0YXIiOlsxLjE4NTQzMDE1NTUyNDU3NCwtMS4zMzUzOTk3MDQyNDcyNDA1LDI3Ljk0Nzk3NzA0NDE1MDk1N10sIm5lYXIiOjAuMDM0NjQxMDE2MTUxMzc3NTUsImZhciI6MzQ2NDEuMDE2MTUxMzc3NTQ2fSwiRSI6eyJjb2RlIjoiXG4vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBMb3JlbnogYXR0cmFjdG9yXG4vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vXG5cbmNvbnN0IGZsb2F0IGthcHBhID0gZmxvYXQoMS44NCk7XG5jb25zdCBmbG9hdCBhbHBoYSA9IGZsb2F0KDYuNyk7XG5cbiNkZWZpbmUgcmdiIHZlYzNcblxuY29uc3QgdmVjMyBjb2xMbyA9IHJnYigyNTQsNDUsNzMpIC8gMjU1LjA7XG5jb25zdCB2ZWMzIGNvbEhpID0gcmdiKDUsMTM4LDI1NSkgLyAyNTUuMDtcbmNvbnN0IGZsb2F0IG1hZ1NjYWxlID0gZmxvYXQoMC42KTtcblxuY29uc3QgZmxvYXQgcmhvICAgPSBmbG9hdCgyOC4wKTsgICAgIFxuY29uc3QgZmxvYXQgc2lnbWEgPSBmbG9hdCgxMC4wKTtcbmNvbnN0IGZsb2F0IGJldGEgID0gZmxvYXQoOC4wKS9mbG9hdCgzLjApO1xuXG5cbiB2ZWMzIHZlbG9jaXR5KHZlYzMgcCwgZmxvYXQgdClcbiB7XG4gICAgIHZlYzMgdjtcbiAgICAgZmxvYXQgeCA9IHAueDtcbiAgICAgZmxvYXQgeSA9IHAueTtcbiAgICAgZmxvYXQgeiA9IHAuejtcbiAgICAgdi54ID0gc2lnbWEqKHkgLSB4KTtcbiAgICAgdi55ID0geCoocmhvIC0geik7XG4gICAgIHYueiA9IHgqeSAtIGJldGEqejtcbiAgICAgcmV0dXJuIHY7XG4gfSAgICBcbiBcbiBcbnZlYzMgY29sb3IodmVjMyBwLCBmbG9hdCB0KVxue1xuICAgIHZlYzMgdiA9IHZlbG9jaXR5KHAsIHQpO1xuICBcdGZsb2F0IG1hZzIgPSB0L21hZ1NjYWxlO1xuICAgIGZsb2F0IGxlcnAgPSBtYWcyLygxLjArbWFnMik7XG4gICAgcmV0dXJuICgxLjAtbGVycCkqY29sTG8gKyBsZXJwKmNvbEhpO1xufSAgXG4ifX0%3D"><img data-src="images/static/lorenz-attractor.png" /></a></p>
+<p>Visualized with <a href="https://github.com/portsmouth/fibre">Fibre</a></p>
+</section><section id="hadley-system" class="slide level2">
+<h2>Hadley System</h2>
+<p><span class="math display">\[
+  \begin{array}{lll}
+  \dot{x} &amp;=&amp; -y^2 - z^2 - ax + af\\
+  \dot{y} &amp;=&amp; xy - b xz - y + g \\
+  \dot{z} &amp;=&amp; bxy + xz - z
+  \end{array}
+  \]</span></p>
+</section><section class="slide level2">
+
+<p><a href="https://portsmouth.github.io/fibre/?settings=eyJSIjp7InJheUJhdGNoIjoxMjgsIm1heFRpbWVTdGVwcyI6MzE5LCJtYXhJdGVyYXRpb25zIjoxMDAsImludGVncmF0aW9uVGltZSI6MjAsImludGVncmF0ZUZvcndhcmQiOnRydWUsImdyaWRTcGFjZSI6MC4wMDUsInR1YmVXaWR0aCI6MC4wMTg3NDc4NDI2MTk1ODA5MzIsInR1YmVTcHJlYWQiOmZhbHNlLCJyZWNvcmRfcmVhbHRpbWUiOnRydWUsInhtaW4iOi0xLjg0MjQzOTkxMzY3MjEzMjEsInhtYXgiOi0xLjY5NzQwMDg2MTM5ODUwMjUsInltaW4iOi0wLjc1MDc5Mzc1MTk1Njc2MDIsInltYXgiOi0wLjI5OTU4ODE4NTU3MDA5MzE1LCJ6bWluIjotMC44MTQyMDU1NzE1Mzg3ODkzLCJ6bWF4IjotMC43NTYwODExMDg1OTM5NzI5LCJjbGlwVG9Cb3VuZHMiOmZhbHNlLCJzaG93Qm91bmRzIjp0cnVlLCJleHBvc3VyZSI6LTEuMTc3NDg1ODI2MDc5NTYxLCJnYW1tYSI6MS4wMjU2MTcyNzI3MTgyNTEsImNvbnRyYXN0IjoxLjI5MDI5MjY5NzkzNTg2NDIsInNhdHVyYXRpb24iOjEuNDU1NzE0ODM4Njk2ODcyMywic3VidHJhY3RpdmVDb2xvciI6ZmFsc2UsImJnQ29sb3IiOlswLDAsMF0sImhhaXJTaGFkZXIiOmZhbHNlLCJzcGVjU2hpbmUiOjMxLjg5NzQ4MDA3NzUzNjA3Nywic3BlY0NvbG9yIjpbMSwxLDFdLCJsaWdodDFfY29sb3IiOlsxLDAuOSwwLjhdLCJsaWdodDJfY29sb3IiOlswLjgsMC45LDFdLCJsaWdodDFfZGlyIjpbMC41NzczNTAyNjkxODk2MjU4LDAuNTc3MzUwMjY5MTg5NjI1OCwwLjU3NzM1MDI2OTE4OTYyNThdLCJsaWdodDJfZGlyIjpbLTAuNTc3MzUwMjY5MTg5NjI1OCwtMC41NzczNTAyNjkxODk2MjU4LC0wLjU3NzM1MDI2OTE4OTYyNThdLCJkZXB0aFRlc3QiOnRydWUsImRhc2hfc3BhY2luZyI6MC41NDAzNDAyNTk5ODA4NTc0LCJkYXNoX3NwZWVkIjozMy4wODIwNTY3MzM1MjE4OSwiZGFzaF9zaXplIjowLjkxNTI3MDIzNjI5NDEwNTUsImRhc2hlcyI6ZmFsc2UsInN1YnRyYWN0aXZlX2NvbG9yIjpmYWxzZSwiaGFpclNoaW5lIjoxMCwiaGFpclNwZWNDb2xvciI6WzEsMSwxXX0sIkMiOnsicG9zIjpbLTQuMjgwNDkyMTM4MTY3OTY3NSwwLjg4NDU1MjA5Nzk1NTE3MSwtMy40OTI3MzM4Njc0MzM3ODFdLCJ0YXIiOlswLjQ0MzkwMDY5MjE1MTE1OTUsMC4xMDk3ODc2ODUzODYxNzI1MywtMC4xNDE1NTE2NDc4Mzk3MTEzXSwibmVhciI6MC4wMzQ2NDEwMTYxNTEzNzc1NSwiZmFyIjozNDY0MS4wMTYxNTEzNzc1NDZ9LCJFIjp7ImNvZGUiOiJcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIEhhZGxleSBhdHRyYWN0b3Jcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy9cblxuY29uc3QgZmxvYXQgYSA9IGZsb2F0KDAuMik7XG5jb25zdCBmbG9hdCBiID0gZmxvYXQoNC4wKTtcbmNvbnN0IGZsb2F0IGYgPSBmbG9hdCg4LjApO1xuY29uc3QgZmxvYXQgZyA9IGZsb2F0KDEuMCk7XG5cbiNkZWZpbmUgcmdiIHZlYzNcblxuY29uc3QgdmVjMyBjb2xMbyA9IHJnYigyNTUsNjEsODcpIC8gMjU1LjA7XG5jb25zdCB2ZWMzIGNvbEhpID0gcmdiKDg2LDE3NiwyNTQpIC8gMjU1LjA7XG5jb25zdCBmbG9hdCBtYWdTY2FsZSA9IGZsb2F0KDYpO1xuXG52ZWMzIHZlbG9jaXR5KHZlYzMgcCwgZmxvYXQgdClcbntcbiAgICB2ZWMzIHY7XG4gICAgZmxvYXQgeCA9IHAueDtcbiAgICBmbG9hdCB5ID0gcC55O1xuICAgIGZsb2F0IHogPSBwLno7XG4gICAgdi54ID0gLXkqeSAteip6IC1hKnggKyBhKmY7XG4gICAgdi55ID0geCp5IC0gYip4KnogLSB5ICsgZztcbiAgICB2LnogPSBiKngqeSArIHgqeiAtIHo7XG4gICAgcmV0dXJuIHY7XG59ICAgIFxuIFxudmVjMyBjb2xvcih2ZWMzIHAsIGZsb2F0IHQpXG57XG4gICAgdmVjMyB2ID0gdmVsb2NpdHkocCwgdCk7XG4gICAgZmxvYXQgbWFnMiA9IHQvbWFnU2NhbGU7XG4gICAgZmxvYXQgbGVycCA9IG1hZzIvKDEuMCttYWcyKTtcbiAgICByZXR1cm4gKDEuMC1sZXJwKSpjb2xMbyArIGxlcnAqY29sSGk7XG59ICBcbiJ9fQ%3D%3D"><img data-src="images/static/hadley-attractor.png" /></a></p>
+<p>Visualized with <a href="https://github.com/portsmouth/fibre">Fibre</a></p>
+</section><section id="equilibrium" class="slide level2">
+<h2>Equilibrium</h2>
+<p>An <strong>equilibrium</strong> of system <span class="math inline">\(\dot{x} = f(x)\)</span> is a state <span class="math inline">\(x_e\)</span> such that the maximal solution of this system such that <span class="math inline">\(x(0) = x_e\)</span> is <span class="math inline">\(x(t) = x_e\)</span> for any <span class="math inline">\(t &gt; 0\)</span>.</p>
+<p>The state <span class="math inline">\(x_e\)</span> is an equilibrium if and only if <span class="math inline">\(f(x_e) = 0\)</span>.</p>
+</section><section class="slide level2">
+
+<h3 id="equilibrium-pendulum"><i class="fa fa-question-circle-o"></i> – Equilibrium / Pendulum</h3>
+<p><strong>Reminder:</strong> the pendulum is governed by the equation</p>
+<p><span class="math display">\[
+  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+  \]</span></p>
+<ul>
+<li>[<i class="fa fa-superscript"></i>] Find the equilibriums of this dynamics.</li>
+</ul>
+</section><section id="stability" class="slide level2">
+<h2>Stability</h2>
+<p>About the long-term behavior of solutions.</p>
+<ul>
+<li><p>“Stability” subtle concept,</p></li>
+<li><p>“Asymptotic Stability” simpler (and stronger),</p></li>
+<li><p>“Attractivity” simpler yet, (but often too weak).</p></li>
+</ul>
+</section><section id="attractivity" class="slide level2">
+<h2>Attractivity</h2>
+<p>Consider a well-posed ODE <span class="math inline">\(\dot{x} = f(x)\)</span>.</p>
+<p>An equilibrium <span class="math inline">\(x_e\)</span> is:</p>
+<ul>
+<li><p><strong>globally attractive</strong> if for every <span class="math inline">\(x_0\)</span>, the maximal solution <span class="math inline">\(x(t)\)</span> of the IVP with <span class="math inline">\(x(0)=x_0\)</span> exists for any <span class="math inline">\(t\geq 0\)</span> and <span class="math display">\[
+  \lim_{t \to +\infty} x(t) = x_e.
+  \]</span></p></li>
+<li><p><strong>locally attractive</strong> if this property holds when <span class="math inline">\(x_0\)</span> is sufficiently close to the equilibrium <span class="math inline">\(x_e\)</span>.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<pre><code>def f(xy):
+    x, y = xy
+    dx = -2*x + y
+    dy = -2*y + x
+    return array([dx, dy])</code></pre>
+</section><section id="section-9" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color=&quot;k&quot;) 
+plot([0], [0], &quot;k.&quot;, ms=10.0)</code></pre>
+</section><section id="globally-attractive" class="slide level2">
+<h2>Globally Attractive</h2>
+<p><img data-src="images/globally-attractive.svg" /></p>
+</section><section class="slide level2">
+
+<pre><code>def f(xy):
+    x, y = xy
+    dx = -2*x + y**3
+    dy = -2*y + x**3
+    return array([dx, dy])</code></pre>
+</section><section id="section-10" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color=&quot;k&quot;) 
+plot([0], [0], &quot;k.&quot;, ms=10.0)</code></pre>
+</section><section id="locally-attractive" class="slide level2">
+<h2>Locally Attractive</h2>
+<p><img data-src="images/locally-attractive.svg" /></p>
+</section><section class="slide level2">
+
+<h3 id="equilibrium-stability"><i class="fa fa-question-circle-o"></i> – Equilibrium / Stability</h3>
+<p>Consider a pendulum with a coefficient of friction <span class="math inline">\(b\)</span>.</p>
+<ul>
+<li><p>[<i class="fa fa-gears"></i>] Is any equilibrium globally attractive?</p></li>
+<li><p>[<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>]</p>
+<ul>
+<li><p>Assume that <span class="math inline">\(b&gt;0\)</span>. Determine graphically the equilibriums which are locally attractive.</p></li>
+<li><p>What happens when <span class="math inline">\(b=0\)</span>?</p></li>
+</ul></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-gears"></i>, <i class="fa fa-superscript"></i>] Prove that no equilibrium is locally attractive when <span class="math inline">\(b=0\)</span>.</p>
+<p><i class="fa fa-key"></i> <strong>Hint:</strong> study the evolution in time <span class="math display">\[
+  E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta,
+  \]</span> with <span class="math inline">\(J = m\ell^2\)</span>, the total mechanical energy of the pendulum.</p></li>
+</ul>
+</section><section id="attractivity-1" class="slide level2">
+<h2>Attractivity</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is globally attractive iff:</p>
+<ul>
+<li><p>for any <span class="math inline">\(x_0\)</span> and for any <span class="math inline">\(\epsilon &gt; 0\)</span>, there is a <span class="math inline">\(\tau \geq 0\)</span> such that the maximal solution <span class="math inline">\(x(t)\)</span> such that <span class="math inline">\(x(0) = x_0\)</span> exists for all <span class="math inline">\(t \geq 0\)</span> and satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+</section><section id="section-11" class="slide level2">
+<h2><i class="fa fa-warning"></i></h2>
+<ul>
+<li><p>Very close values of <span class="math inline">\(x(0)\)</span> could lead to very different “speed of convergence” towards the equilibrium.</p></li>
+<li><p>This is not contradictory with the well-posedness assumption: continuity w.r.t. the initial condition only works with finite time spans.</p></li>
+</ul>
+</section><section id="example" class="slide level2">
+<h2>Example</h2>
+<p><span class="math display">\[
+  \left|
+  \begin{array}{lll}
+  \dot{x} &amp;=&amp; x + xy - (x + y)\sqrt{x^2 + y^2} \\
+  \dot{y} &amp;=&amp; y - x^2 + (x - y) \sqrt{x^2 + y^2}
+  \end{array}
+  \right.
+  \]</span></p>
+</section><section class="slide level2">
+
+<p>Equivalently, in polar coordinates:</p>
+<p><span class="math display">\[
+  \left|
+  \begin{array}{lll}
+  \dot{r} &amp;=&amp; r (1 - r) \\
+  \dot{\theta} &amp;=&amp; r (1 - \cos \theta)
+  \end{array}
+  \right.
+  \]</span></p>
+</section><section id="stream-plot" class="slide level2">
+<h2>Stream Plot</h2>
+<pre><code>def f(xy):
+    x, y = xy
+    r = sqrt(x*x + y*y)
+    dx = x + x * y - (x + y) * r
+    dy = y - x * x + (x - y) * r
+    return [dx, dy]</code></pre>
+</section><section class="slide level2">
+
+<pre><code>figure()
+x = y = linspace(-2.0, 2.0, 1000)
+streamplot(*Q(f, x, y), color=&quot;k&quot;) 
+plot([1], [0], &quot;k.&quot;, ms=10.0)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/attractive2.svg" /></p>
+</section><section class="slide level2">
+
+<p>First, make sure that the right-hand side is time-dependent:</p>
+<pre><code>def fun(t, y):
+    return f(y)</code></pre>
+</section><section class="slide level2">
+
+<p>Then, pick a large time span and an initial state just above the equilibrium <span class="math inline">\((1.0, 0.0)\)</span>:</p>
+<pre><code>t_span = (0.0, 600.0)
+theta_0 = 2 * pi / 1000
+y0 = [cos(theta_0), sin(theta_0)]</code></pre>
+</section><section class="slide level2">
+
+<pre><code>y = solve_ivp(fun, t_span, y0=y0, dense_output=True).sol
+t = linspace(t_span[0], t_span[-1], 1000)</code></pre>
+</section><section id="section-12" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<p>Plot the distance to the equilibrium as a function of time.</p>
+<pre><code>figure()
+x1, x2 = y(t)[0], y(t)[1]
+plot(t, (sqrt((x1-1.0)**2 + x2**2)))
+grid()
+xlabel(&quot;$t$&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/attractive-time.svg" /></p>
+</section><section id="asymptotic-stability" class="slide level2">
+<h2>Asymptotic Stability</h2>
+<p>Asymptotic stability is a stronger version of attractivity which is by definition robust with respect to the choice of the initial state.</p>
+</section><section id="global-asymptotic-stability" class="slide level2">
+<h2>Global Asymptotic Stability</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is <strong>globally asymptotically stable</strong> if:</p>
+<ul>
+<li><p>for any <span class="math inline">\(x_0\)</span> and for any <span class="math inline">\(\epsilon &gt; 0\)</span>, there is a <span class="math inline">\(\tau \geq 0\)</span> <strong>and a <span class="math inline">\(r &gt; 0\)</span> such that if <span class="math inline">\(\|x_1 - x_0\| \leq r\)</span></strong>, the maximal solution <span class="math inline">\(x(t)\)</span> <strong>such that <span class="math inline">\(x(0) = x_1\)</span></strong> exists for all <span class="math inline">\(t \geq 0\)</span> and satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Equivalently:</p>
+<ul>
+<li><p><strong>for any <span class="math inline">\(r&gt;0\)</span></strong>, for any <span class="math inline">\(\epsilon &gt; 0\)</span>, there is a <span class="math inline">\(\tau \geq 0\)</span> such the maximal solution <span class="math inline">\(x(t)\)</span> <strong>such that <span class="math inline">\(\|x(0) - x_e\| \leq r\)</span></strong> exists for all <span class="math inline">\(t \geq 0\)</span> and satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+</section><section id="g.a.s.-in-plain-words" class="slide level2">
+<h2>G.A.S. in Plain Words</h2>
+<ul>
+<li><p>Pick any bounded set <span class="math inline">\(B\)</span> in <span class="math inline">\(\mathbb{R}^n\)</span>.</p></li>
+<li><p>Consider each point of the set as an initial value <span class="math inline">\(x_0\)</span>, compute <span class="math inline">\(x(t, x_0)\)</span>. Define <span class="math inline">\(B_t\)</span> as the set of all such <span class="math inline">\(x(t, x_0)\)</span>:</p>
+<p><span class="math display">\[
+B_t = \{ x(t, x_0) \; | \; x_0 \in B\}
+\]</span></p></li>
+<li><p>The set <span class="math inline">\(B_t\)</span> will converge to the equilibrium <span class="math inline">\(x_e\)</span>:</p>
+<p><span class="math display">\[
+\sup \, \{d(x_e, x) \; | \; x \in B_t\} \to 0 \, \mbox{ when } \, t \to +\infty.
+\]</span></p></li>
+</ul>
+</section><section id="local-asymptotic-stability" class="slide level2">
+<h2>Local Asymptotic Stability</h2>
+<p>A variant of the global asymptotic stability: the property may hold only for small enough balls.</p>
+<ul>
+<li><p><strong>for some <span class="math inline">\(r&gt;0\)</span></strong>, for any <span class="math inline">\(\epsilon &gt; 0\)</span>, there is a <span class="math inline">\(\tau \geq 0\)</span> such that any maximal solution <span class="math inline">\(x(t)\)</span> <strong>such that <span class="math inline">\(\|x(0) - x_e\| \leq r\)</span></strong> exists for all <span class="math inline">\(t \geq 0\)</span> and satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+</section><section id="asymptotic-stability-vinograd" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Asymptotic Stability / Vinograd</h2>
+<p>Consider the ODE with right-hand side:</p>
+<pre><code>def f(xy):
+    x, y = xy
+    q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
+    dx = (x**2 * (y - x) + y**5) / q
+    dy = y**2 * (y - 2*x) / q
+    return array([dx, dy])</code></pre>
+</section><section id="section-13" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+x = y = linspace(-1.0, 1.0, 1000)
+streamplot(*Q(f, x, y), color=&quot;k&quot;) 
+xticks([-1, 0, 1])
+plot([0], [0], &quot;k.&quot;, ms=10.0)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/vinograd.svg" /></p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-flask"></i>] Does the origin of the system look attractive ?</p></li>
+<li><p>[<i class="fa fa-flask"></i>, <i class="fa fa-lightbulb-o"></i>] Does it seem to be asymptotically stable ?</p>
+<p><i class="fa fa-key"></i> <strong>Hint.</strong></p>
+<ul>
+<li><p>Show if the origin is asymptotically stable, then it is <strong>stable</strong>, that is: for any <span class="math inline">\(r&gt;0\)</span>, there is a <span class="math inline">\(\rho \leq r\)</span> such that if <span class="math inline">\(|x(0)| \leq \rho\)</span>, then <span class="math inline">\(|x(t)| \leq r\)</span> for any <span class="math inline">\(t\geq 0\)</span>.</p></li>
+<li><p>Is the system stable (graphically)?</p></li>
+</ul></li>
+</ul>
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/math/math.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,1331 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <title>Linear Systems</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Linear Systems</h1>
+</section>
+
+<section id="preamble-code" class="slide level2">
+<h2>Preamble (Code)</h2>
+<pre><code>from numpy import *
+from numpy.linalg import *
+from matplotlib.pyplot import *
+from mpl_toolkits.mplot3d import *
+from scipy.integrate import solve_ivp</code></pre>
+</section>
+<section><section id="preamble" class="title-slide slide level1"><h1>Preamble</h1></section><section id="inputs" class="slide level2">
+<h2>Inputs</h2>
+<p>It’s handy to introduce non-autonomous ODEs.</p>
+<p>There are designated as</p>
+<p><span class="math display">\[
+  \dot{x} = f(x, u)
+  \]</span></p>
+<p>where <span class="math inline">\(x \in \mathbb{R}^n\)</span> and <span class="math inline">\(u \in \mathbb{R}^m\)</span>, that is</p>
+<p><span class="math display">\[f: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n.\]</span></p>
+</section><section class="slide level2">
+
+<p>The vector-valued <span class="math inline">\(u\)</span> is the <strong>system input</strong>.</p>
+<p>This quantity may depend on the time <span class="math inline">\(t\)</span></p>
+<p><span class="math display">\[
+u: t \in \mathbb{R} \mapsto u(t) \in \mathbb{R}^m,
+\]</span></p>
+<p>(actually it may also depend on some state, but we will adress this later).</p>
+</section><section class="slide level2">
+
+<p>A solution of</p>
+<p><span class="math inline">\(\dot{x} = f(x, u)\)</span> and <span class="math inline">\(x(t_0) = x_0\)</span></p>
+<p>is merely a solution of</p>
+<p><span class="math inline">\(\dot{x} = h(t,x)\)</span> and <span class="math inline">\(x(t_0) = x_0\)</span>,</p>
+<p>where</p>
+<p><span class="math inline">\(h(t, x) = f(x, u(t))\)</span>.</p>
+</section><section id="outputs" class="slide level2">
+<h2>Outputs</h2>
+<p>We may complement the system dynamics with an equation</p>
+<p><span class="math display">\[
+y = g(x, u) \in \mathbb{R}^p
+\]</span></p>
+<p>The vector <span class="math inline">\(y\)</span> refers to the <strong>systems output</strong>, usually the quantities that we can effectively measure in a system (the state <span class="math inline">\(x\)</span> itself may be unknown).</p>
+</section></section>
+<section><section id="what-are-linear-systems" class="title-slide slide level1"><h1>What Are Linear Systems?</h1></section><section id="standard-form" class="slide level2">
+<h2>Standard Form</h2>
+<p>Input <span class="math inline">\(u \in \mathbb{R}^m\)</span>, state <span class="math inline">\(x \in \mathbb{R}^n\)</span>, output <span class="math inline">\(y \in \mathbb{R}^p\)</span>.</p>
+<p><span class="math display">\[
+  \begin{array}{c}
+  \dot{x} &amp;=&amp; A x + B u \\
+  y       &amp;=&amp; C x + D u
+  \end{array}
+  \]</span></p>
+</section><section id="why-linear" class="slide level2">
+<h2>Why Linear ?</h2>
+<p>Assume that:</p>
+<ul>
+<li><p><span class="math inline">\(\dot{x}_1 = A x_1 + B u_1\)</span>, <span class="math inline">\(x_1(0) = x_{10}\)</span>,</p></li>
+<li><p><span class="math inline">\(\dot{x}_2 = A x_2 + B u_2\)</span>, <span class="math inline">\(x_2(0) = x_{20}\)</span>,</p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Set</p>
+<ul>
+<li><p><span class="math inline">\(u_3 = \lambda u_1 + \mu u_2\)</span> and</p></li>
+<li><p><span class="math inline">\(x_{30} = \lambda x_{10} + \mu x_{20}\)</span>.</p></li>
+</ul>
+<p>for some <span class="math inline">\(\lambda\)</span> and <span class="math inline">\(\mu\)</span>.</p>
+</section><section class="slide level2">
+
+<p>Then, if</p>
+<p><span class="math display">\[x_3 = \lambda x_1 + \mu x_2,\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+\dot{x}_3 = A x_3 + B u_3, \; x_3(0) = x_{30}.
+\]</span></p>
+</section><section id="internal-external-dynamics" class="slide level2">
+<h2>Internal + External Dynamics</h2>
+<p><strong>Corollary:</strong> Since <span class="math inline">\((x_0, u) = (x_0, 0) + (0, u)\)</span> the solution of</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu, \; x(0) = x_0
+\]</span></p>
+<p>is the sum of the solutions <span class="math inline">\(x_1\)</span> and <span class="math inline">\(x_2\)</span> of:</p>
+</section><section class="slide level2">
+
+<p>the <strong>internal dynamics</strong></p>
+<p><span class="math display">\[
+\dot{x}_1 = A x_1, \; x_1(0) = x_0
+\]</span></p>
+<p>(behavior controlled by the initial value only, no input)</p>
+<p>and the <strong>external dynamics</strong>:</p>
+<p><span class="math display">\[
+\dot{x}_2 = A x_2 + Bu, \; x_2(0) = 0
+\]</span></p>
+<p>(behavior controlled by the input, the systems is initially at rest)</p>
+</section><section id="matrix-size" class="slide level2">
+<h2>Matrix Size</h2>
+<p><span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span>, <span class="math inline">\(B \in \mathbb{R}^{n\times m}\)</span>, <span class="math inline">\(C \in \mathbb{R}^{p \times n}\)</span>, <span class="math inline">\(D \in \mathbb{R}^{p \times m}\)</span>.</p>
+<p><span class="math display">\[
+  \left[
+  \begin{array}{c|c}
+  A &amp;  B \\
+  \hline
+  C &amp;  D
+  \end{array} 
+  \right]
+  \]</span></p>
+</section><section id="lti-systems" class="slide level2">
+<h2>LTI Systems</h2>
+<p>They are actually referred to as <strong>linear time-invariant (LTI)</strong> systems:</p>
+<p>When <span class="math inline">\(x(t)\)</span> is a solution of</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu, \; x(0) = x_0,
+\]</span></p>
+<p>then <span class="math inline">\(x(t- t_0)\)</span> is a solution of</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu(t-t_0), \; x(t_0) = x_0.
+\]</span></p>
+</section><section id="linear-system-heat-equation" class="slide level2">
+<h2><i class="fa fa-eye"></i> – Linear System / Heat Equation</h2>
+<p><img data-src="images/static/heat-simple.svg" /></p>
+</section><section id="simplified-model" class="slide level2">
+<h2>Simplified Model</h2>
+<ul>
+<li><p>Four cells numbered 1 to 4 are arranged in a row.</p></li>
+<li><p>The first cell has a heat source, the last one a temperature sensor.</p></li>
+<li><p>The heat sink/source is increasing the temperature of its cell of <span class="math inline">\(u\)</span> degrees by second.</p></li>
+<li><p>If the temperature of a cell is <span class="math inline">\(T\)</span> and the one of a neighbor is <span class="math inline">\(T_n\)</span>, <span class="math inline">\(T\)</span> increases of <span class="math inline">\(T_n - T\)</span> by second.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Given the geometric layout:</p>
+<ul>
+<li><p><span class="math inline">\(d T_1/dt = u + (T_2 - T_1)\)</span></p></li>
+<li><p><span class="math inline">\(d T_2/dt = (T_1 - T_2) + (T_3 - T_2)\)</span></p></li>
+<li><p><span class="math inline">\(d T_3/dt = (T_2 - T_3) + (T_4 - T_3)\)</span></p></li>
+<li><p><span class="math inline">\(d T_4/dt = (T_3 - T_4)\)</span></p></li>
+<li><p><span class="math inline">\(y = T_4\)</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Set <span class="math inline">\(x = (T_1, T_2, T_3, T_4)\)</span>.</p>
+<p>The model is linear and its standard matrices are:</p>
+<p><span class="math display">\[
+A = \left[
+  \begin{array}{rrrr}
+-1 &amp; 1 &amp; 0 &amp; 0   \\
+1  &amp; -2 &amp; 1 &amp; 0 \\
+0 &amp; 1 &amp; -2 &amp; 1  \\
+0 &amp; 0 &amp; 1 &amp; -1 
+\end{array}
+\right]
+\]</span></p>
+</section><section class="slide level2">
+
+<p><span class="math display">\[
+B = \left[
+  \begin{array}{c}
+  1 \\ 0 \\ 0 \\ 0
+  \end{array} 
+  \right], \;
+C = 
+\left[ 
+\begin{array}{cccc}
+0 &amp; 0 &amp; 0 &amp; 1
+\end{array}
+\right],
+\; D = [0]
+\]</span></p>
+</section><section id="nonlinear-to-linear" class="slide level2">
+<h2>Nonlinear to Linear</h2>
+<p>Consider the nonlinear system</p>
+<p><span class="math display">\[
+  \begin{array}{ccc}
+  \dot{x} &amp;=&amp; f(x, u) \\
+        y &amp;=&amp; g(x, u)
+  \end{array}
+  \]</span></p>
+<p>Assume that <span class="math inline">\(x_e\)</span> is an equilibrium when <span class="math inline">\(u=u_e\)</span> (cst):</p>
+<p><span class="math display">\[
+  f(x_e, u_e) = 0
+  \]</span></p>
+<p>and let</p>
+<p><span class="math display">\[
+  y_e = g(x_e, u_e)
+  \]</span></p>
+</section><section class="slide level2">
+
+<p>Define the error variables</p>
+<ul>
+<li><p><span class="math inline">\(\Delta x = x - x_e\)</span>,</p></li>
+<li><p><span class="math inline">\(\Delta u = u - u_e\)</span> and</p></li>
+<li><p><span class="math inline">\(\Delta y = y - y_e\)</span>.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>As long as the error variables stay small</p>
+<p><span class="math display">\[
+  f(x, u) 
+  \simeq
+  \overbrace{f(x_e, u_e)}^0 + 
+  \frac{\partial f}{\partial x}(x_e, u_e) \Delta x
+  + \frac{\partial f}{\partial u}(x_e, u_e) \Delta u
+  \]</span></p>
+<p><span class="math display">\[
+  g(x, u) 
+  \simeq
+  \overbrace{g(x_e, u_e)}^{y_e} + 
+  \frac{\partial g}{\partial x}(x_e, u_e) \Delta x
+  + \frac{\partial g}{\partial u}(x_e, u_e) \Delta u
+  \]</span></p>
+</section><section class="slide level2">
+
+<p>Hence, the error variables satisfy <em>approximately</em></p>
+<p><span class="math display">\[
+  \begin{array}{c}
+  d(\Delta x)/dt &amp;=&amp; A \Delta x + B \Delta u \\
+  \Delta y       &amp;=&amp; C \Delta x + D \Delta u
+  \end{array}
+  \]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+  \left[
+  \begin{array}{c|c}
+  A &amp;  B \\
+  \hline
+  C &amp;  D
+  \end{array} 
+  \right]
+  = 
+  \left[
+  \begin{array}{c|c}
+  \frac{\partial f}{\partial x} &amp;  \frac{\partial f}{\partial u} \\
+  \hline
+  \frac{\partial g}{\partial x} &amp;  \frac{\partial g}{\partial u}
+  \end{array} 
+  \right](x_e, u_e)
+  \]</span></p>
+</section><section id="asymptotic-stability" class="slide level2">
+<h2>Asymptotic Stability</h2>
+<p>The equilibrium <span class="math inline">\(0\)</span> is locally asymptotically stable for</p>
+<p><span class="math display">\[
+\frac{d \Delta x}{dt} = A \Delta x
+\]</span></p>
+<p>where <span class="math inline">\(A = \partial f (x_e, u_e) / \partial x.\)</span></p>
+<p><span class="math inline">\(\Rightarrow\)</span></p>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is locally asymptotically stable for</p>
+<p><span class="math display">\[
+  \dot{x} = f(x, u_e)
+  \]</span></p>
+</section><section id="converse-result" class="slide level2">
+<h2><i class="fa fa-warning"></i> Converse Result</h2>
+<ul>
+<li><p>The converse is not true : the nonlinear system may be asymptotically stable but not its linearized approximation (e.g. consider <span class="math inline">\(\dot{x} = -x^3\)</span>).</p></li>
+<li><p>If we replace local <em>asymptotic stability</em> with local <em>exponential stability</em>, the requirement that locally</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq A e^{-\sigma t} \|x(0) - x_e\|
+\]</span></p>
+<p>for some <span class="math inline">\(A &gt;0\)</span> and <span class="math inline">\(\sigma &gt; 0\)</span>, then it works.</p></li>
+</ul>
+</section><section id="linearization" class="slide level2">
+<h2><i class="fa fa-eye"></i> – Linearization</h2>
+<p>Consider</p>
+<p><span class="math display">\[
+\dot{x} = -x^2 + u, \; y = x u
+\]</span></p>
+<p>If we set <span class="math inline">\(u_e = 1\)</span>, the system has an equilibrium at <span class="math inline">\(x_e = 1\)</span> (and also <span class="math inline">\(x_e = -1\)</span> but we focus on the former) and the corresponding <span class="math inline">\(y\)</span> is <span class="math inline">\(y_e = x_e u_e = 1\)</span>.</p>
+</section><section class="slide level2">
+
+<p>Around this configuration <span class="math inline">\((x_e, u_e) = (1, 1)\)</span>, we have</p>
+<p><span class="math display">\[
+\frac{\partial (-x^2+u)}{\partial x} = -2x_e = -2,
+\; \frac{\partial (-x^2+u)}{\partial u} = 1,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\frac{\partial x u }{\partial x} = u_e = 1,
+\; \frac{\partial x u}{\partial u} = x_e = 1.
+\]</span></p>
+</section><section class="slide level2">
+
+<p>Thus, the approximate, linearized dynamics around this equilibrium is</p>
+<p><span class="math display">\[
+\begin{array}{rcr}
+d(x-1)/dt &amp;=&amp; -2 (x - 1) + (u - 1) \\
+y -1      &amp;=&amp;  (x - 1) + (u - 1)
+\end{array}
+\]</span></p>
+</section><section id="linearized-dynamics-pendulum" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> – Linearized Dynamics / Pendulum</h2>
+<p>A pendulum submitted to a torque <span class="math inline">\(c\)</span> is governed by</p>
+<p><span class="math display">\[
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
+\]</span></p>
+<p>We assume that only the angle <span class="math inline">\(\theta\)</span> is effectively measured.</p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>What are the function <span class="math inline">\(f\)</span> and <span class="math inline">\(g\)</span> that determine the nonlinear dynamics of the pendulum when <span class="math inline">\(x=(\theta, \dot{\theta})\)</span>, <span class="math inline">\(u=c\)</span> and <span class="math inline">\(y=\theta\)</span>?</p></li>
+<li><p>Show that for any angle <span class="math inline">\(\theta_e\)</span> we can find a constant value <span class="math inline">\(c_e\)</span> of the torque such that <span class="math inline">\(x_e = (\theta_e, 0)\)</span> is an equilibrium.</p></li>
+<li><p>Compute the linearized dynamics of the pendulum around this equilibrium and put it in the standard form (compute <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span> and <span class="math inline">\(D\)</span>).</p></li>
+</ul>
+</section></section>
+<section><section id="internal-dynamics" class="title-slide slide level1"><h1>Internal Dynamics</h1></section><section class="slide level2">
+
+<p>We study the behavior of the solution</p>
+<p><span class="math display">\[
+\dot{x} = A x, \; x(0) = x_0 \in \mathbb{R}^n
+\]</span></p>
+<p>We try to get some understanding with the simplest cases first.</p>
+</section><section id="scalar-case-real-valued" class="slide level2">
+<h2>Scalar Case, Real-Valued</h2>
+<p><span class="math display">\[
+  \dot{x} = a x
+  \]</span></p>
+<p><span class="math inline">\(a \in \mathbb{R}\)</span>, <span class="math inline">\(x(0) = x_0 \in \mathbb{R}\)</span>.</p>
+</section><section class="slide level2">
+
+<p><strong>Solution:</strong> <span class="math display">\[
+  x(t) = e^{a t} x_0
+  \]</span></p>
+<p><strong>Proof:</strong> <span class="math display">\[
+\frac{d}{dt} e^{at} x_0 = a e^{at} x_0 = a x(t)
+\]</span> and <span class="math display">\[
+x(0) = e^{a \times 0} x_0 = x_0.
+\]</span></p>
+</section><section id="trajectory" class="slide level2">
+<h2><i class="fa fa-area-chart"></i> Trajectory</h2>
+<pre><code>a = 2.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, &quot;k&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;); title(f&quot;$a={a}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section id="trajectory-1" class="slide level2">
+<h2>Trajectory</h2>
+<p><img data-src="images/scalar-LTI-2.svg" /></p>
+</section><section id="section" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-2-poles.svg" /></p>
+</section><section id="section-1" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a = 1.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, &quot;k&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;); title(f&quot;$a={a}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-1.svg" /></p>
+</section><section id="section-2" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-1-poles.svg" /></p>
+</section><section id="section-3" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a = 0.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, &quot;k&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;); title(f&quot;$a={a}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-0.svg" /></p>
+</section><section id="section-4" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-0-poles.svg" /></p>
+</section><section id="section-5" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a = -1.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, &quot;k&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;); title(f&quot;$a={a}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m1.svg" /></p>
+</section><section id="section-6" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m1-poles.svg" /></p>
+</section><section id="section-7" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a = -2.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, &quot;k&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$x(t)$&quot;); title(f&quot;$a={a}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m2.svg" /></p>
+</section><section id="section-8" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m2-poles.svg" /></p>
+</section><section id="analysis" class="slide level2">
+<h2>Analysis</h2>
+<ul>
+<li><p>The origin is globally asymptotically stable when <span class="math inline">\(a &lt; 0.0\)</span>:<br />
+<span class="math inline">\(a\)</span> is in the open left-hand plane,</p></li>
+<li><p>In this case, define the time constant <span class="math inline">\(\tau = - 1 / a\)</span>:</p>
+<p><span class="math display">\[
+x(t) = e^{at} x_0 = e^{-t/\tau} x_0
+\]</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<p><span class="math inline">\(\tau\)</span> controls the time it take for the solution to (almost) reach to the origin:</p>
+<ul>
+<li><p>when <span class="math inline">\(t = \tau\)</span>, <span class="math inline">\(|x(t)|\)</span> is <span class="math inline">\(\simeq\)</span> <span class="math inline">\(1/3\)</span> of <span class="math inline">\(|x_0|\)</span>;</p></li>
+<li><p>when <span class="math inline">\(t = 3 \tau\)</span>, <span class="math inline">\(|x(t)|\)</span> is <span class="math inline">\(\simeq\)</span> <span class="math inline">\(5 \%\)</span> of <span class="math inline">\(|x_0|\)</span>.</p></li>
+</ul>
+</section><section id="vector-case-diagonal-real-valued" class="slide level2">
+<h2>Vector Case, Diagonal, Real-Valued</h2>
+<p><span class="math display">\[
+\dot{x}_1 = a_1 x_1, \; x_1(0) = x_{10}
+\]</span></p>
+<p><span class="math display">\[
+\dot{x}_2 = a_2 x_2, \; x_2(0) = x_{20}
+\]</span></p>
+<p>i.e.</p>
+<p><span class="math display">\[
+A = \left[
+\begin{array}{cc}
+a_1 &amp;   0 \\
+  0 &amp; a_2
+\end{array}
+\right]
+\]</span></p>
+</section><section class="slide level2">
+
+<p><strong>Solution:</strong> by linearity</p>
+<p><span class="math display">\[
+x(t) =   e^{a_1 t} \left[\begin{array}{c} x_{10} \\ 0 \end{array}\right] 
+       + e^{a_2 t} \left[\begin{array}{c} 0 \\ x_{20} \end{array}\right] 
+\]</span></p>
+</section><section id="section-9" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a1 = -1.0; a2 = 2.0; x10 = x20 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
+xn = sqrt(x1**2 + x2**2)
+plot(t, xn , &quot;k&quot;)
+plot(t, x1, &quot;k--&quot;)
+plot(t, x2 , &quot;k--&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$\|x(t)\|$&quot;); title(f&quot;$a_1={a1}, \; a_2={a2}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m1p2.svg" /></p>
+</section><section id="section-10" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a1), imag(a1), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+plot(real(a2), imag(a2), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a_1={a1}, \; a_2={a2}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m1p2-poles.svg" /></p>
+</section><section id="section-11" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a1 = -1.0; a2 = -2.0; x10 = x20 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
+xn = sqrt(x1**2 + x2**2)
+plot(t, xn , &quot;k&quot;)
+plot(t, x1, &quot;k--&quot;)
+plot(t, x2 , &quot;k--&quot;)
+xlabel(&quot;$t$&quot;); ylabel(&quot;$\|x(t)\|$&quot;); title(f&quot;$a_1={a1}, \; a_2={a2}$&quot;)
+grid(); axis([0.0, 2.0, 0.0, 10.0])</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m1m2.svg" /></p>
+</section><section id="section-12" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a1), imag(a1), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+plot(real(a2), imag(a2), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a_1={a1}, \; a_2={a2}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m1m2-poles.svg" /></p>
+</section><section id="analysis-1" class="slide level2">
+<h2>Analysis</h2>
+<ul>
+<li><p>The rightmost <span class="math inline">\(a_i\)</span> determines the asymptotic behavior,</p></li>
+<li><p>The origin is globally asymptotically stable only when every <span class="math inline">\(a_i\)</span> is in the open left-hand plane.</p></li>
+</ul>
+</section><section id="scalar-case-complex-valued" class="slide level2">
+<h2>Scalar Case, Complex-Valued</h2>
+<p><span class="math display">\[
+  \dot{x} = a x
+  \]</span></p>
+<p><span class="math inline">\(a \in \mathbb{C}\)</span>, <span class="math inline">\(x(0) = x_0 \in \mathbb{C}\)</span>.</p>
+</section><section class="slide level2">
+
+<p><strong>Solution:</strong> formally, the same old solution</p>
+<p><span class="math display">\[
+x(t) = e^{at} x_0
+\]</span></p>
+<p>But now, <span class="math inline">\(x(t) \in \mathbb{C}\)</span>:</p>
+<p>if <span class="math inline">\(a = \sigma + i \omega\)</span> and <span class="math inline">\(x_0 = |x_0| e^{i \angle x_0}\)</span></p>
+<p><span class="math display">\[
+|x(t)| = |x_0| e^{\sigma t} \, \mbox{ and } \, \angle x(t) = \angle x_0 + \omega t.
+\]</span></p>
+</section><section id="section-13" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a = 1.0j; x0=1.0
+figure()
+t = linspace(0.0, 20.0, 1000)
+plot(t, real(exp(a*t)*x0), label=&quot;$\mathrm{Re}(x(t))$&quot;)
+plot(t, imag(exp(a*t)*x0), label=&quot;$\mathrm{Im}(x(t))$&quot;)
+xlabel(&quot;$t$&quot;)
+legend(); grid()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-alt-1.svg" /></p>
+</section><section class="slide level2">
+
+<pre><code>fig = figure()
+ax = fig.add_subplot(111, projection=&quot;3d&quot;)
+zticks = ax.set_zticks
+ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
+xticks([0.0, 20.0]); yticks([]); zticks([])
+ax.set_xlabel(&quot;$t$&quot;)
+ax.set_ylabel(&quot;$\mathrm{Re}(x(t))$&quot;)
+ax.set_zlabel(&quot;$\mathrm{Im}(x(t))$&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-3d.svg" /></p>
+</section><section id="section-14" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-1j-poles.svg" /></p>
+</section><section id="section-15" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>a = -0.5 + 1.0j; x0=1.0
+figure()
+t = linspace(0.0, 20.0, 1000)
+plot(t, real(exp(a*t)*x0), label=&quot;$\mathrm{Re}(x(t))$&quot;)
+plot(t, imag(exp(a*t)*x0), label=&quot;$\mathrm{Im}(x(t))$&quot;)
+xlabel(&quot;$t$&quot;)
+legend(); grid()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-alt-2.svg" /></p>
+</section><section id="section-16" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>fig = figure()
+ax = fig.add_subplot(111, projection=&quot;3d&quot;)
+zticks = ax.set_zticks
+ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
+xticks([0.0, 20.0]); yticks([]); zticks([])
+ax.set_xlabel(&quot;$t$&quot;)
+ax.set_ylabel(&quot;$\mathrm{Re}(x(t))$&quot;)
+ax.set_zlabel(&quot;$\mathrm{Im}(x(t))$&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-3d-2.svg" /></p>
+</section><section id="section-17" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+plot(real(a), imag(a), &quot;x&quot;, color=&quot;k&quot;, ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], &quot;k&quot;)
+plot([0, 0], [-3, 3], &quot;k&quot;)
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f&quot;$a={a}$&quot;)
+grid(True)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/scalar-LTI-m11j-poles.svg" /></p>
+</section><section id="analysis-2" class="slide level2">
+<h2>Analysis</h2>
+<ul>
+<li><p>the origin is globally asymptotically stable if <span class="math inline">\(a\)</span> is in the open left-hand plane: <span class="math display">\[\mathrm{Re} (a) &lt; 0\]</span></p></li>
+<li><p>if <span class="math inline">\(a= \sigma + i \omega\)</span>,</p>
+<ul>
+<li><p><span class="math inline">\(\tau = -1 /\sigma\)</span> is the time constant related of the speed of convergence,</p></li>
+<li><p><span class="math inline">\(\omega\)</span> the (rotational) frequency of the (damped) oscillations.</p></li>
+</ul></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Only one step left before the (almost) general case …</p>
+</section><section id="exponential-matrix" class="slide level2">
+<h2>Exponential Matrix</h2>
+<p>If <span class="math inline">\(M \in \mathbb{C}^{n \times n}\)</span>, the <strong>exponential</strong> is defined as:</p>
+<p><span class="math display">\[
+  e^{M} = \sum_{i=0}^{+\infty} \frac{M^n}{n !} \in \mathbb{C}^{n \times n}
+  \]</span></p>
+</section><section class="slide level2">
+
+<h3 id="section-18"><i class="fa fa-warning"></i></h3>
+<p>The exponential of a matrix <span class="math inline">\(M\)</span> is <em>not</em> the matrix with elements <span class="math inline">\(e^{M_{ij}}\)</span> (the elementwise exponential).</p>
+<ul>
+<li><p>elementwise exponential: <strong><code>exp</code></strong> (<code>numpy</code> module),</p></li>
+<li><p>exponential: <strong><code>expm</code></strong> (<code>scipy.linalg</code> module).</p></li>
+</ul>
+</section><section id="exponential-matrix-1" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Exponential Matrix</h2>
+<p>Let</p>
+<p><span class="math display">\[
+  M = 
+  \left[
+  \begin{array}{cc}
+  0 &amp; 1 \\
+  1 &amp; 0
+  \end{array}
+  \right]
+  \]</span></p>
+<ul>
+<li><p>[<i class="fa fa-superscript"></i>] Compute the exponential of <span class="math inline">\(M\)</span>.</p>
+<p><i class="fa fa-key"></i> <strong>Hint:</strong> <span class="math inline">\(\cosh x = \frac{e^x + e^{-x}}{2},\)</span> <span class="math inline">\(\sinh x = \frac{e^x - e^{-x}}{2}.\)</span></p></li>
+<li><p>[<i class="fa fa-flask"></i>] Check the results with <code>expm</code>.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Note that</p>
+<p><span class="math display">\[
+  \begin{align}
+  \frac{d}{dt} e^{A t} &amp;= \frac{d}{dt} \sum_{n=0}^{+\infty} \frac{A^n}{n!} t^n \\ 
+  &amp;= \sum_{n=1}^{+\infty} \frac{A^{n}}{(n-1)!} t^{n-1} \\
+  &amp;= A \sum_{n=1}^{+\infty} \frac{A^{n-1}}{(n-1)!} t^{n-1} 
+  = A e^{A t}
+  \end{align}
+  \]</span></p>
+</section><section class="slide level2">
+
+<p>Thus, for any <span class="math inline">\(A \in \mathbb{C}^{n\times n}\)</span> and <span class="math inline">\(x_0 \in \mathbb{C}^n\)</span>,</p>
+<p><span class="math display">\[
+  \frac{d}{dt} (e^{A t} x_0) 
+  = A (e^{At} x_0)
+  \]</span></p>
+</section><section id="internal-dynamics-1" class="slide level2">
+<h2>Internal Dynamics</h2>
+<p>The solution of</p>
+<p><span class="math display">\[
+  \dot{x} = A x\; \mbox{ and } \; x(0) = x_0
+  \]</span></p>
+<p>is</p>
+<p><span class="math display">\[
+  x(t) = e^{A t} x_0.
+  \]</span></p>
+</section><section id="stability-criteria" class="slide level2">
+<h2>Stability Criteria</h2>
+<p>Let <span class="math inline">\(A \in \mathbb{C}^{n \times n}\)</span>.</p>
+<p>The origin of <span class="math inline">\(\dot{x} = A x\)</span> is globally asymptotically stable</p>
+<p><span class="math inline">\(\Longleftrightarrow\)</span></p>
+<p>all eigenvalues of <span class="math inline">\(A\)</span> have a negative real part.</p>
+</section><section id="g.a.s.-leftrightarrow-l.a." class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> G.A.S. <span class="math inline">\(\Leftrightarrow\)</span> L.A.</h2>
+<p>Show that for a linear systems <span class="math inline">\(\dot{x} = Ax\)</span>, it is enough that the origin is locally attractive for the system to be globally asymptotically stable.</p>
+</section><section class="slide level2">
+
+<h3 id="why-does-this-criteria-work">Why does this criteria work?</h3>
+<p>Assume that <span class="math inline">\(A\)</span> is diagonalizable with eigenvalues <span class="math inline">\(\{\lambda_1, \dots, \lambda_n\}\)</span>.</p>
+<p>(Very likely unless <span class="math inline">\(A\)</span> has some special structure)</p>
+</section><section class="slide level2">
+
+<p>Then, there is an invertible matrix <span class="math inline">\(P \in \mathbb{C}^{n \times n}\)</span> such that</p>
+<p><span class="math display">\[
+  P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
+  \left[
+  \begin{array}{cccc}
+  \lambda_1 &amp; 0         &amp; \cdots &amp; 0 \\
+  0         &amp; \lambda_2 &amp; \cdots &amp; 0 \\
+  \vdots    &amp; \vdots    &amp; \vdots &amp; \vdots \\
+  0         &amp; \cdots    &amp; \cdots &amp; \lambda_n
+  \end{array}
+  \right] 
+  \]</span></p>
+</section><section class="slide level2">
+
+<p>Thus, if <span class="math inline">\(y = P^{-1} x\)</span>, <span class="math inline">\(\dot{x} = A x\)</span> is equivalent to</p>
+<p><span class="math display">\[
+  \left|
+  \begin{array}{ccc}
+  \dot{y}_1 &amp;=&amp; \lambda_1 y_1 \\
+  \dot{y}_2 &amp;=&amp; \lambda_2 y_2 \\
+  \vdots &amp;=&amp; \vdots \\
+  \dot{y}_n &amp;=&amp; \lambda_n y_n \\
+  \end{array}
+  \right.
+  \]</span></p>
+<p>The system is G.A.S. iff each component of the system is, which holds iff <span class="math inline">\(\mathrm{Re} \lambda_i &lt; 0\)</span> for each <span class="math inline">\(i\)</span>.</p>
+</section><section id="stability-2nd-order-system" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Stability / 2nd-order system</h2>
+<p>Consider the scalar ODE</p>
+<p><span class="math display">\[
+  \ddot{x} + k x = 0, \; \mbox{ with } k &gt; 0
+  \]</span></p>
+<ul>
+<li><p>[<i class="fa fa-superscript"></i>] Determine the representation of this system as a first-order ODE with state <span class="math inline">\((x, \dot{x})\)</span>.</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Is this system asymptotically stable?</p></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] If its solutions oscillate, determine its (rotational) frequency <span class="math inline">\(\omega\)</span>?</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Characterize the asymptotic behavior of <span class="math inline">\(x(t)\)</span> when <span class="math inline">\(\ddot{x} + b \dot{x} + k x = 0\)</span> for some <span class="math inline">\(b&gt;0\)</span>.</p></li>
+</ul>
+</section><section id="stability-integrators" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Stability / Integrators</h2>
+<p>Consider the system</p>
+<p><span class="math display">\[
+  \dot{x} = J x 
+  \; \mbox{ with } \; 
+  J = 
+  \left[
+  \begin{array}{cccc}
+  0 &amp; 1 &amp; 0 &amp; \dots &amp; 0 \\
+  0 &amp; 0 &amp; 1 &amp; \dots &amp; 0 \\
+  \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+  0 &amp; 0 &amp; 0 &amp; \dots &amp; 1 \\
+  0 &amp; 0 &amp; 0 &amp; \dots &amp; 0
+  \end{array}
+  \right]
+  \]</span></p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Compute the solution when</p>
+<p><span class="math display">\[
+  x(0) =
+  \left[
+  \begin{array}{c}
+  0 \\
+  \vdots \\
+  0 \\
+  1
+  \end{array}
+  \right],\]</span></p>
+<p>then for any initial condition.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Same questions when <span class="math inline">\(\dot{x} = (\lambda I + J)x\)</span> for some <span class="math inline">\(\lambda \in \mathbb{C}\)</span>.</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>] Is the system asymptotically stable ? Why does it matter in general?</p></li>
+</ul>
+</section></section>
+<section><section id="io-behavior" class="title-slide slide level1"><h1>I/O Behavior</h1></section><section id="context" class="slide level2">
+<h2>Context</h2>
+<ul>
+<li><p>Assume that the system is “initially at rest”:</p>
+<p><span class="math display">\[
+x(0) = 0
+\]</span></p></li>
+<li><p>Forget about the state <span class="math inline">\(x(t)\)</span> (may be unknown)</p></li>
+<li><p>Study the input/output (I/O) relationship:</p>
+<p><span class="math display">\[
+u \to y
+\]</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>In this context, we have:</p>
+<p><span class="math display">\[
+  y(t) = \int_0^{t} C e^{A(t-\tau)} B u(\tau) \, d\tau + D u(t)
+  \]</span></p>
+</section><section id="causal-signals" class="slide level2">
+<h2>Causal Signals</h2>
+<ul>
+<li><p>extend <span class="math inline">\(u(t)\)</span> and <span class="math inline">\(y(t)\)</span> by <span class="math inline">\(0\)</span> when <span class="math inline">\(t&lt;0\)</span> (as <strong>causal signals</strong>).</p></li>
+<li><p>introduce the <strong>Heaviside function</strong> defined by</p>
+<p><span class="math display">\[
+e(t) = \left|
+\begin{array}{c}
+1 &amp; \mbox{if } \; t\geq 0, \\
+0 &amp; \mbox{if } \; t &lt; 0.
+\end{array}
+\right.
+\]</span></p></li>
+</ul>
+</section><section id="impulse-response" class="slide level2">
+<h2>Impulse Response</h2>
+<p>The system <strong>impulse response</strong> is defined by:</p>
+<p><span class="math display">\[
+H(t) = (C e^{At} B) \times e(t) + D \delta(t) \in \mathbb{R}^{p \times m}
+\]</span></p>
+<p><i class="fa fa-sticky-note"></i> works for general or <strong>MIMO</strong> systems.<br />
+MIMO = multiple-input &amp; multiple-output systems.</p>
+<p><i class="fa fa-sticky-note"></i> <span class="math inline">\(\delta(t)\)</span> is the <strong>unit impulse</strong>, we’ll get back to it (in the meantime, you may assume that <span class="math inline">\(D=0\)</span>).</p>
+</section><section id="siso-systems" class="slide level2">
+<h2>SISO Systems</h2>
+<p>When</p>
+<p><span class="math display">\[p = m = 1\]</span></p>
+<p>(single-input &amp; single-output or <strong>SISO</strong> systems),</p>
+<p>the <span class="math inline">\(1 \times 1\)</span> matrix <span class="math inline">\(H(t)\)</span> is identified with a scalar <span class="math inline">\(h(t)\)</span>:</p>
+<p><span class="math display">\[
+H(t) = [h(t)]
+\]</span></p>
+</section><section class="slide level2">
+
+<p>Then, we have:</p>
+<p><span class="math display">\[
+  y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau
+  \]</span></p>
+<p>and denote <span class="math inline">\(\ast\)</span> this operation between <span class="math inline">\(H\)</span> and <span class="math inline">\(u\)</span>:</p>
+<p><span class="math display">\[
+  y(t) = (H \ast u) (t)
+  \]</span></p>
+<p>It’s called a <strong>convolution</strong>.</p>
+</section><section id="impulse-response-1" class="slide level2">
+<h2><i class="fa fa-eye"></i> Impulse Response</h2>
+<p>Consider the SISO system</p>
+<p><span class="math display">\[
+\left| 
+\begin{array}{ccl}
+\dot{x} &amp;=&amp; ax + u \\
+y &amp;=&amp; x \\
+\end{array}
+\right.
+\]</span></p>
+<p>where <span class="math inline">\(a \neq 0\)</span>.</p>
+</section><section class="slide level2">
+
+<p>We have</p>
+<p><span class="math display">\[
+\begin{split}
+H(t) &amp;= (C e^{At} B) \times e(t) + D \delta(t)\\
+     &amp;= [1]e^{[a]t} [1] e(t) + [0] \delta(t) \\
+     &amp;= [e(t)e^{at}]
+\end{split}
+\]</span></p>
+</section><section class="slide level2">
+
+<p>When <span class="math inline">\(u(t) = e(t)\)</span> for example,</p>
+<p><span class="math display">\[
+\begin{split}
+y(t) 
+  &amp;= \int_{-\infty}^{+\infty} e(t - \tau)e^{a(t-\tau)} e(\tau) \, d\tau \\
+  &amp;= \int_{0}^{t} e^{a(t- \tau)} \, d\tau \\
+  &amp;= \int_{0}^{t} e^{a \tau} \, d\tau  \\
+  &amp;= \frac{1}{a} \left(e^{a t} - 1 \right)
+\end{split} 
+\]</span></p>
+</section><section id="impulse-response-integrator" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Impulse Response / Integrator</h2>
+<ul>
+<li><p>[<i class="fa fa-superscript"></i>] Compute the impulse response of the system</p>
+<p><span class="math display">\[
+\left| 
+\begin{array}{ccc}
+\dot{x} &amp;=&amp; u \\
+y &amp;=&amp; x \\
+\end{array}
+\right.
+\]</span></p></li>
+</ul>
+<p>where <span class="math inline">\(u \in \mathbb{R}\)</span>, <span class="math inline">\(x \in \mathbb{R}\)</span> and <span class="math inline">\(y \in \mathbb{R}\)</span>.</p>
+</section><section id="impulse-response-double-integrator" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Impulse Response / Double Integrator</h2>
+<ul>
+<li><p>[<i class="fa fa-superscript"></i>] Compute the impulse response of the system</p>
+<p><span class="math display">\[
+\left| 
+\begin{array}{ccc}
+\dot{x}_1 &amp;=&amp; x_2 \\
+\dot{x}_2 &amp;=&amp; u \\
+y &amp;=&amp; x_1 \\
+\end{array}
+\right.
+\]</span></p>
+<p>where <span class="math inline">\(u \in \mathbb{R}\)</span>, <span class="math inline">\(x=(x_1, x_2) \in \mathbb{R}^2\)</span> and <span class="math inline">\(y \in \mathbb{R}\)</span>.</p></li>
+</ul>
+</section><section id="impulse-response-gain" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Impulse Response / Gain</h2>
+<ul>
+<li><p>[<i class="fa fa-superscript"></i>] Compute the impulse response of the system</p>
+<p><span class="math display">\[
+y = K u
+\]</span></p>
+<p>where <span class="math inline">\(u \in \mathbb{R}^m\)</span>, <span class="math inline">\(y \in \mathbb{R}^p\)</span> and <span class="math inline">\(K \in \mathbb{R}^{p \times m}\)</span>.</p></li>
+</ul>
+</section><section id="impulse-response-mimo-system" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Impulse Response / MIMO System</h2>
+<ul>
+<li>[<i class="fa fa-superscript"></i>] Find a linear system with matrices <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span> whose impulse response is</li>
+</ul>
+<p><span class="math display">\[
+  H(t) = 
+  \left[
+  \begin{array}{cc}
+  e^{t} e(t) &amp; e^{-t} e(t)
+  \end{array}
+  \right]
+  \]</span></p>
+<ul>
+<li>[<i class="fa fa-superscript"></i>] Is there another set of matrices <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span> with the same impulse response? With a matrix <span class="math inline">\(A\)</span> of a different size?</li>
+</ul>
+</section><section id="laplace-transform" class="slide level2">
+<h2>Laplace Transform</h2>
+<p>Associate to a scalar signal <span class="math inline">\(x(t) \in \mathbb{R}\)</span>, <span class="math inline">\(t\in \mathbb{R}\)</span>, the function of a complex argument <span class="math inline">\(s \in \mathbb{C}\)</span>:</p>
+<p><span class="math display">\[
+x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
+\]</span></p>
+<p>defined when <span class="math inline">\(\mathrm{Re} \, (s) &gt; \sigma\)</span> if <span class="math inline">\(\|x(t)\| \leq K e^{\sigma t}\)</span>.</p>
+</section><section id="notation" class="slide level2">
+<h2><i class="fa fa-warning"></i> Notation</h2>
+<p>We use the same symbol (here “<span class="math inline">\(x\)</span>”) to denote:</p>
+<ul>
+<li><p>a signal <span class="math inline">\(x(t)\)</span> and</p></li>
+<li><p>its Laplace transform <span class="math inline">\(x(s)\)</span></p></li>
+</ul>
+<p>They are two equivalent representations of the same “object”, but different mathematical “functions”.</p>
+<p>If you fear some ambiguity, use named variables, e.g.:</p>
+<p><span class="math display">\[
+  x(t=1) \, \mbox{ or } \, x(s=1) \, \mbox{ instead of } \, x(1).
+  \]</span></p>
+</section><section id="vectormatrix-valued-signals" class="slide level2">
+<h2>Vector/Matrix-Valued Signals</h2>
+<p>The Laplace transform</p>
+<ul>
+<li><p>of a vector-valued signal <span class="math inline">\(x(t) \in \mathbb{R}^n\)</span> or</p></li>
+<li><p>of a matrix-valued signals <span class="math inline">\(X(t) \in \mathbb{R}^{m \times n}\)</span></p></li>
+</ul>
+<p>are computed elementwise.</p>
+</section><section class="slide level2">
+
+<p><span class="math display">\[
+  x_{i}(s) = \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
+  \]</span></p>
+<p><span class="math display">\[
+  X_{ij}(s) = \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
+  \]</span></p>
+</section><section id="rational-causal-signals" class="slide level2">
+<h2>Rational &amp; Causal Signals</h2>
+<p>We will only deal with <strong>rational &amp; causal</strong> signals:</p>
+<p><span class="math display">\[
+  x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda t} \right) e(t)
+  \]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(\Lambda\)</span> is a finite subset of <span class="math inline">\(\mathbb{C}\)</span>,</p></li>
+<li><p>for every <span class="math inline">\(\lambda \in \Lambda\)</span>, <span class="math inline">\(p_{\lambda}(t)\)</span> is a polynomial in <span class="math inline">\(t\)</span>.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p>Such signals are <strong>causal</strong> since</p>
+<p><span class="math inline">\(x(t) = 0\)</span> when <span class="math inline">\(t &lt; 0\)</span>.</p>
+<p><i class="fa fa-sticky-note"></i> Causality <span class="math inline">\(\Leftrightarrow\)</span> <span class="math inline">\(\deg n(s) \leq \deg d(s)\)</span>.</p></li>
+<li><p>They are <strong>rational</strong> since</p>
+<p><span class="math display">\[
+  x(s) = \frac{n(s)}{d(s)}
+  \]</span></p>
+<p>where <span class="math inline">\(n(s)\)</span> and <span class="math inline">\(d(s)\)</span> are polynomials.</p></li>
+</ul>
+</section><section id="laplace-transform-exponential" class="slide level2">
+<h2><i class="fa fa-eye"></i> Laplace Transform / Exponential</h2>
+<p>Set <span class="math inline">\(x(t) = e(t) e^{a t}\)</span></p>
+<p><span class="math display">\[
+\begin{split}
+x(s) &amp;= \int_0^{+\infty} e^{at} e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \, dt \\
+&amp;= \left[\frac{e^{(a-s) t}}{a-s} \right]^{+\infty}_0 = \frac{1}{s-a}
+\end{split}
+\]</span></p>
+<p>(If <span class="math inline">\(\mathrm{Re} (s) \geq \mathrm{Re} \, (a) +\epsilon\)</span>, then <span class="math inline">\(|e^{(a-s)t}| \leq e^{-\epsilon t}\)</span>)</p>
+</section><section id="symbolic-computations" class="slide level2">
+<h2>Symbolic Computations</h2>
+<pre><code>import sympy
+from sympy.abc import t, s, a
+from sympy.integrals.transforms import laplace_transform    
+def L(f):
+    return laplace_transform(f, t, s)[0]</code></pre>
+</section><section class="slide level2">
+
+<pre><code>xt = sympy.exp(a*t)
+xs = L(xt) # 1/(-a + s)</code></pre>
+</section><section id="laplace-transform-ramp" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Laplace Transform / Ramp</h2>
+<p>Compute the Laplace Transform of</p>
+<p><span class="math display">\[
+x(t) = t e(t)
+\]</span></p>
+</section><section id="convolution-laplace" class="slide level2">
+<h2>Convolution &amp; Laplace</h2>
+<p>Let <span class="math inline">\(H(t)\)</span> be the impulse response of a system.</p>
+<p>Its Laplace transform <span class="math inline">\(H(s)\)</span> is called the system <strong>transfer function</strong>.</p>
+<p>For LTI systems in standard form, we have</p>
+<p><span class="math display">\[
+H(s) = C [sI - A]^{-1} B + D
+\]</span></p>
+</section><section id="operational-calculus" class="slide level2">
+<h2>Operational Calculus</h2>
+<p>The Laplace transform turns convolution into products:</p>
+<p><span class="math display">\[
+  y(t) = (H \ast u)(t)
+  \; \Longleftrightarrow \;
+  y(s) = H(s) \times u(s)
+  \]</span></p>
+</section><section id="graphical-language" class="slide level2">
+<h2>Graphical Language</h2>
+<p>Control engineers used <em>block diagrams</em> to describe (combinations of) dynamical systems, with</p>
+<ul>
+<li><p>“boxes” to determine the relation between input signals and output signals and</p></li>
+<li><p>“wires” to route output signals to inputs signals.</p></li>
+</ul>
+</section><section id="block-diagram-feedback" class="slide level2">
+<h2><i class="fa fa-eye"></i> Block-Diagram / Feedback</h2>
+<p><img data-src="images/static/feedback-alt.svg" /></p>
+</section><section class="slide level2">
+
+<ul>
+<li><p><strong>Triangles</strong> denote <strong>gains</strong> (scalar or matrix multipliers),</p></li>
+<li><p><strong>Adders</strong> sum (or substract) signals.</p></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p><strong>LTI systems</strong> can be specified with:</p>
+<ul>
+<li><p>(differential) equations,</p></li>
+<li><p>the impulse response,</p></li>
+<li><p>the transfer function,</p></li>
+</ul></li>
+</ul>
+</section><section id="equivalent-systems" class="slide level2">
+<h2>Equivalent Systems</h2>
+<p><img data-src="images/static/equivalent-systems.svg" /></p>
+</section><section id="block-diagram-feedback-1" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Block-Diagram / Feedback</h2>
+<p>Compute the transfer function <span class="math inline">\(H(s)\)</span> of the system depicted in the feedback block-diagram example.</p>
+</section><section id="impulse-response-2" class="slide level2">
+<h2>Impulse Response</h2>
+<p>Why refer to <span class="math inline">\(h(t)\)</span> as the system “impulse response”?</p>
+<p>By the way, what’s an impulse?</p>
+</section><section id="impulses-approximations" class="slide level2">
+<h2><i class="fa fa-eye"></i> Impulses Approximations</h2>
+<p>Pick a time constant <span class="math inline">\(\epsilon &gt; 0\)</span> and define</p>
+<p><span class="math display">\[
+  \delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
+  \]</span></p>
+</section><section class="slide level2">
+
+<pre><code>def delta(t, eps=1.0):
+    return exp(-t / eps) / eps * (t &gt;= 0)</code></pre>
+</section><section id="section-19" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+t = linspace(-1,4,1000)
+plot(t, delta(t, eps=1.0), &quot;k:&quot;, label=&quot;$\epsilon=1.0$&quot;)
+plot(t, delta(t, eps=0.5), &quot;k--&quot;, label=&quot;$\epsilon=0.5$&quot;)
+plot(t, delta(t, eps=0.25), &quot;k&quot;, label=&quot;$\epsilon=0.25$&quot;)
+xlabel(&quot;$t$&quot;); title(&quot;$\delta_{\epsilon}(t)$&quot;) 
+legend()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/impulses.svg" /></p>
+</section><section id="impulses-in-the-laplace-domain" class="slide level2">
+<h2>Impulses in the Laplace Domain</h2>
+<p><span class="math display">\[
+  \begin{split}
+  \delta_{\epsilon}(s) 
+    &amp;= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
+    &amp;= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
+    &amp;= \frac{1}{\epsilon} 
+       \left[ 
+       \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
+       \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
+  \end{split}
+  \]</span></p>
+<p>(assuming that <span class="math inline">\(\mathrm{Re}(s) &gt; -1/\epsilon\)</span>)</p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>The “limit” of the signal <span class="math inline">\(\delta_{\epsilon}(t)\)</span> when <span class="math inline">\(\epsilon \to 0\)</span> is not defined <em>as a function</em> (issue for <span class="math inline">\(t=0\)</span>) but as a <em>generalized function</em> <span class="math inline">\(\delta(t)\)</span>, the <strong>unit impulse</strong>.</p></li>
+<li><p>This technicality can be avoided in the Laplace domain where <span class="math display">\[
+  \delta(s) = \lim_{\epsilon \to 0} \delta_{\epsilon}(s)
+  =
+  \lim_{\epsilon \to 0} \frac{1}{1 + \epsilon s} = 1.
+  \]</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Thus, if <span class="math inline">\(y(t) = (h \ast u)(t)\)</span> and</p>
+<ol type="1">
+<li><p><span class="math inline">\(u(t) = \delta(t)\)</span> then</p></li>
+<li><p><span class="math inline">\(y(s) = h(s) \times \delta(s) = h(s) \times 1 = h(s)\)</span></p></li>
+<li><p>and thus <span class="math inline">\(y(t) = h(t)\)</span>.</p></li>
+</ol>
+<p><strong>Conclusion:</strong> the impulse response <span class="math inline">\(h(t)\)</span> is the output of the system when the input is the unit impulse <span class="math inline">\(\delta(t)\)</span>.</p>
+</section><section id="io-stability" class="slide level2">
+<h2>I/O Stability</h2>
+<p>A system is <strong>I/O-stable</strong> if there is a <span class="math inline">\(K \geq 0\)</span> such that</p>
+<p><span class="math display">\[
+\mbox{for any } t\geq, \|y(t)\| \leq K M
+\]</span></p>
+<p>whenever</p>
+<p><span class="math display">\[
+\mbox{for any } t\geq, \|u(t)\| \leq M
+\]</span></p>
+<p>There is a bound on the amplification of the input signal that the system can provide.</p>
+<p><i class="fa fa-sticky-note"></i> Also called <strong>BIBO-stability</strong> (for “bounded input, bounded output”)</p>
+</section><section id="transfer-function-poles" class="slide level2">
+<h2>Transfer Function Poles</h2>
+<p>A <strong>pole</strong> of the transfer function <span class="math inline">\(H(s)\)</span> is a <span class="math inline">\(s \in \mathbb{C}\)</span> such that for at least one element <span class="math inline">\(H_{ij}(s)\)</span>,</p>
+<p><span class="math display">\[
+|H_{ij}(s)| = +\infty.
+\]</span></p>
+</section><section id="io-stability-criteria" class="slide level2">
+<h2>I/O-Stability Criteria</h2>
+<p>A system is I/O-stable if and only if all its poles are in the open left-plane, i.e. such that</p>
+<p><span class="math display">\[
+\mbox{Re}(s) &lt; 0.
+\]</span></p>
+</section><section id="internal-stability-vs-io-stability" class="slide level2">
+<h2>Internal Stability vs I/O-Stability</h2>
+<p>If the system <span class="math inline">\(\dot{x} = A x\)</span> is asymptotically stable, then for any matrices <span class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span> of appropriate sizes,</p>
+<p><span class="math display">\[
+\begin{split}
+\dot{x} &amp;= A x + B u \\
+y &amp;= C x + Du
+\end{split}
+\]</span></p>
+<p>is I/O-stable.</p>
+</section><section id="fully-actuated-measured-system" class="slide level2">
+<h2>Fully Actuated &amp; Measured System</h2>
+<p>If <span class="math inline">\(B=I\)</span>, <span class="math inline">\(C=I\)</span> and <span class="math inline">\(D=0\)</span>, that is</p>
+<p><span class="math display">\[
+  \dot{x} = A x +u, \; y = x
+  \]</span></p>
+<p>then <span class="math inline">\(H(s) = [sI-A]^{-1}\)</span>.</p>
+</section><section class="slide level2">
+
+<p>Therefore, <span class="math inline">\(s\)</span> is a pole of <span class="math inline">\(H\)</span> iff it’s an eigenvalue of <span class="math inline">\(A\)</span>.</p>
+<p>Thus, in this case, asymptotic stability and I/O-stability are equivalent.</p>
+<p>This equivalence holds under much weaker conditions.</p>
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/math/math.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

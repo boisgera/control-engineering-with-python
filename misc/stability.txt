@@ -1,0 +1,200 @@
+% Stability
+
+**TODO.**
+
+  - initial focus on $\dot{x} = f(t,x)$, so that later we can consider
+    $\dot{x} = f(x, u), \; y = g(x, u)$: even if there is no explicit
+    $t$, there is a time-dependency through $u$. 
+    Work on the well-posedness stuff here.
+
+  - make a try at minimal differential geometry? Would be nice.
+    Example being the pendulum, better example is the evolution 
+    of rigid bodies. Approach through non-singular constraint 
+    functions and embedding in $\mathbb{R}^n$ ?
+    Need to 'extend' the rhs to some neighbourghood of the manifold
+    somehow, but the precise extension does not matter, this is nice.
+    And in the examples I have in mind, it's pretty easy to build that
+    extension ... The issue when talking about additional structure
+    is about compactness? Compact sets in the manifolds are NOT
+    traces of compact sets. Do they have an simple characterization
+    (beyond sequences ?)?
+
+  - try Laplace for rational "function" (or generalized) only ?
+    Dunno really. Dirac as the limit of short-time constant 
+    exponential? Does it make sense? Think of use cases.
+    At least I'd like to talk about impulse response.
+
+
+Initial-Value Problem
+--------------------------------------------------------------------------------
+
+Context:
+
+$$
+\dot{x} = f(x)
+$$
+
+where $f: U \subset \mathbb{R}^n \to \mathbb{R}^n$, $U$ open.
+(Q: open domain $D$ instead ? Nota: we cannot expect global attracitivity
+unless $U$ is connected ...)
+The Caratheodory conditions that ensure uniqueness and 
+(local) existence everywhere are met (reduce to locally 
+Lipschitz here, right ?). 
+
+(Q: focus on $U = \mathbb{R}^n$ ?)
+
+Nota: ODEs as integral equations.
+
+(autonomous ODES only so far ...)
+
+(Nota: (embedded) manifolds ? Probably not realistic.)
+
+Notation for the solution:
+
+$x(t)$ or $x(t, x_0)$ or even $x(t, t_0, x_0)$ when needed
+(depends on the emphasis that is needed).
+
+Nota: local existence and uniqueness means (consequence) 
+that for any $x_0$, the trajectory is
+defined on a maximal time interval $\left[0, t_{\infty}\right[$
+where $t_{\infty} \in \left]0, +\infty \right]$ and that
+when $t_{\infty} < +\infty$, the solution "approaches the 
+boundary of $U$ or $\infty$" (find the more palatable variant to
+say that it doesn't stay in any compact subset of $U$; subsequence
+such that $d(x_n, \partial U) \to 0$ or $|x_n| \to +\infty$ ?
+Examples in each case ...)
+
+Note: global existence first prerequisite for (global) attractivity.
+
+
+
+Equilibrium
+--------------------------------------------------------------------------------
+
+Stability
+--------------------------------------------------------------------------------
+
+
+  - Assume that we have already handled equilibrium concept, 
+    explain why having set the right equilibrium is not good enough.
+    We search for some "robustness".
+
+  - Focus on global concepts first (local later)
+
+  - Focus on asymptotic stability
+
+  - Start with attractivity (the "natural" definition)
+  
+  - Show its shortcoming: given a target precision, we can't tell
+    how much time is needed to get it "convergence speed"
+
+  - Example
+
+  - Small progress: we cannot expect a complete uniformity of the
+    convergence: consider IV farther away, that makes sense that
+    such trajectories cannot meet the same objective in the same
+    amount of time; consider IV near the boundary as a more subtle
+    example of the same case.
+
+  - Define (G)AS as the uniform convergence towards the equiibrium 
+    wrt any set of initial condition far from infinity and the
+    boundary.
+
+  - Extra (optional): we only need to require a "local" uniformity
+    around any IV point to make it work.
+
+
+(Global) attractivity (0 being an equilibrium):
+
+  $$
+  \mbox{for every } x_0 \in U, \; 
+  \lim_{t \to +\infty} x(t, x_0) = 0
+  $$
+
+same as
+
+  $$
+  \forall \, \epsilon > 0, \;
+  \forall \, x_0 \in U, \;
+  \exists \, t_0 > 0, \;
+  \forall \, t \geq t_0, \;
+  |x(t, x_0)| < \epsilon.
+  $$
+
+(nota: hence (global) attractivity implicitly requires that for every
+initial value in $U$, the solution is defined for all $t$)
+
+But this concept does not preclude the trajectory to take an arbitrary
+long time to meet the (approximate) target.
+
+Exemple: (polar coords): $\dot{r} = r(1-r)$, $\dot{\theta} = \sin^2 \theta/2$,
+$U = \mathbb{R}^2 \setminus \{0\}$, the only equilibrium is $(1,0)$, it is
+attractive but not stable. May represent the "quiver" plot and the
+evolution of the angle for initial values with $r=1$ and small but
+positive angles.
+
+Therefore, a stronger version of attractivity: we require the
+condition above to be met locally uniformly wrt the initial 
+condition (in a neighbourhood of every points, the trajectories
+converge "at the same speed" to the origin):
+  $$
+  \forall \, \epsilon > 0, \;
+  \forall \, x_0 \in U, \;
+  \exists \, \delta > 0,
+  \exists \, t_0 > 0, \;
+  \forall \, t \geq t_0, \;
+  \forall \, x_1 \in U, \;
+  |x_1 - x_0| < \delta \; 
+  \rightarrow
+  |x(t, x_1)| < \epsilon.
+  $$
+
+Equivalently (compactness argument):
+  $$
+  \forall \, \epsilon > 0,
+  \forall \, K \subset U, \; K \, \mbox{compact}, \;
+  \exists \, t_0 > 0, \;
+  \forall \, x_0 \in K, \;
+  \forall \, t \geq t_0, \;
+  |x(t, x_0)| < \epsilon.
+  $$
+
+Nota: this condition above clearly yields attractivity (D'oh!) AND stability.
+Conversely, if we assume that the system is globally asymptotically stable,
+then the appropriate Lyapunov converse theorem gives us a smooth 
+definite positive function $V(x)$ with a definite negative 
+$\dot{V}(x)$ 
+and with compact sublevel sets 
+$\{x \in U \, | \, V(x) \leq v\}$ for any $v \in \mathbb{R}$.
+Any compact subset $K$ of $U$ is included in some of these sets
+(consider an appropriate local open cover of $K$, 
+max $V$ over each neighbourhood -- compactly included in $U$ --,
+extract a finite cover, etc.)
+so we may assume take a "new" (possibly larger) $K$ whih is the 
+sublevel set associated to some value $v_0$.
+Now, define
+  $$
+  \alpha(v) = \min \{-\dot{V}(x) \, | \, v \leq V(x) \leq v_0\}
+  $$
+for $v>0$ and $\alpha(0)$. The funcion $\alpha$ is continous,
+zero only for $x = 0$ and non-decreasing. 
+By construction, we also have $\dot{V}(x) \leq - \alpha(V(x))$.
+Now, since the sublevels sets of $V$ are a neighbourhood basis 
+of $0$, all we have to do is to prove that,
+  $$
+  \lim_{t \to + \infty} \max_{x_0} \{V(x(t, x_0)) \; | \; V(x_0) \leq v_0 \} = 0.
+  $$ 
+If the limit was positive instead, say $v_1$, since $V(x(t, x_0))$ 
+is non-increasing wrt $t$, we would have $v_1 \leq V(x(t, x_0))$ for
+all $t$, all thus $\dot{V}(x(t, x_0)) \leq -\alpha(v_1)$ for all $t$,
+which would yield a contradiction.
+
+
+**Example streamplot:**
+
+![Streamplot](images/streamplot.pdf)
+
+
+![Prey-predator. Test font size: $2.00$](images/prey-predator.pdf)
+
+

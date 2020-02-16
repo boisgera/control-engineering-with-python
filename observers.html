@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Sébastien Boisgérault, Mines ParisTech">
+  <title>Observers</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Observers</h1>
+  <p class="author">Sébastien Boisgérault, Mines ParisTech</p>
+</section>
+
+<section><section id="preamble" class="title-slide slide level1"><h1>Preamble</h1></section><section class="slide level2">
+
+<pre><code>from numpy import *
+from numpy.linalg import *
+from numpy.testing import *
+from matplotlib.pyplot import *
+from scipy.integrate import *</code></pre>
+</section></section>
+<section><section id="observability" class="title-slide slide level1"><h1>Observability</h1></section><section id="motivation" class="slide level2">
+<h2>Motivation</h2>
+<p>Controling a system generally requires the knowledge of the state <span class="math inline">\(x(t)\)</span>, but measuring every state variable may be impossible (or too expensive).</p>
+<p>Can we reduce the amount of physical sensors and still be able to compute the state with “virtual” or “software” sensors ?</p>
+</section><section class="slide level2">
+
+<p>Control engineers call these software devices <strong>observers</strong>.</p>
+<p>First we adress the mathematical feasibility of observers: <strong>observability</strong>.</p>
+</section><section id="definition" class="slide level2">
+<h2>Definition</h2>
+<p>The system</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{rcl}
+\dot{x} &amp;=&amp; f(x) \\
+y &amp;=&amp; g(x)
+\end{array}
+\right.
+\]</span></p>
+<p>is <strong>observable</strong> if the knowledge of <span class="math inline">\(y(t) = g(x(t))\)</span> on some finite time span <span class="math inline">\([0, \tau]\)</span> determines uniquely the initial condition <span class="math inline">\(x(0)\)</span>.</p>
+</section><section id="remarks" class="slide level2">
+<h2>Remarks</h2>
+<ul>
+<li><p>The knowledge of <span class="math inline">\(x(0)\)</span> determines uniquely <span class="math inline">\(x(t)\)</span> via the system dynamics.</p></li>
+<li><p>Later, observers will provide merely <strong>asymptotically exact</strong> estimates <span class="math inline">\(\hat{x}(t)\)</span> of <span class="math inline">\(x(t)\)</span>, that satisfy</p>
+<p><span class="math inline">\(\hat{x}(t) - x(t)\)</span> when <span class="math inline">\(t \to +\infty\)</span>.</p></li>
+</ul>
+</section><section id="extension" class="slide level2">
+<h2>Extension</h2>
+<p>The definition of observability may be extended to systems with (known) inputs <span class="math inline">\(u\)</span>:</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{rcl}
+\dot{x} &amp;=&amp; f(x, u) \\
+y &amp;=&amp; g(x, u)
+\end{array}
+\right.
+\]</span></p>
+<p>In general, the input <span class="math inline">\(u\)</span> may then be selected specifically to generate the appropriate <span class="math inline">\(y(t)\)</span> that allows us to compute <span class="math inline">\(x(0)\)</span>.</p>
+</section><section class="slide level2">
+
+<p>But for linear systems, the choice of <span class="math inline">\(u\)</span> is irrelevant.</p>
+<p>Indeed, if</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{rcl}
+\dot{x} &amp;=&amp; Ax + Bu \\
+y &amp;=&amp; C x + D u
+\end{array}
+\right.
+\]</span></p>
+<p>and we can deduce <span class="math inline">\(x(0)\)</span> from <span class="math inline">\(y(t)\)</span> when <span class="math inline">\(u=0\)</span>:</p>
+<p><span class="math display">\[
+y_0(t) = C e^{At} x(0) \; \to \; x(0)
+\]</span></p>
+</section><section class="slide level2">
+
+<p>then in the general case, when we measure</p>
+<p><span class="math display">\[
+y_u(t) = C e^{At} x(0) + (H \ast u)(t) 
+\]</span></p>
+<p>we can compute</p>
+<p><span class="math display">\[
+y_0(t) = y_u(t) - (H \ast u)(t)
+\]</span></p>
+<p>and deduce <span class="math inline">\(x(0)\)</span> at this stage.</p>
+</section><section id="observability-car" class="slide level2">
+<h2><i class="fa fa-eye"></i> Observability / Car</h2>
+<p>The position <span class="math inline">\(x\)</span> (in meters) of a car of mass <span class="math inline">\(m\)</span> (in kg) on a straight road is governed by</p>
+<p><span class="math display">\[
+m \ddot{x} = u
+\]</span></p>
+<p>where <span class="math inline">\(u\)</span> the force (in Newtons) generated by its motor.</p>
+</section><section class="slide level2">
+
+<ul>
+<li><p>we don’t know where the car is at <span class="math inline">\(t=0\)</span>,</p></li>
+<li><p>we don’t know what its initial speed was,</p></li>
+<li><p>but we know that the car doesn’t accelerate (<span class="math inline">\(u=0\)</span>).</p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>If we measure the position <span class="math inline">\(y(t) = x(t)\)</span>:</p>
+<ul>
+<li><p><span class="math inline">\(x(0) = y(0)\)</span> is known,</p></li>
+<li><p><span class="math inline">\(\dot{x}(0) = \dot{y}(0)\)</span> is also computable.</p></li>
+</ul>
+<p>Thus the system is observable.</p>
+</section><section class="slide level2">
+
+<p>But what if we measure instead the speed <span class="math inline">\(y(t) = \dot{x}(t)\)</span> ?</p>
+<p>The system dynamics <span class="math inline">\(m \ddot{x}(t) = u(t) = 0\)</span> yields <span class="math display">\[
+x(t) = x(0) + \dot{x}(0) t
+\]</span> thus <span class="math display">\[
+\dot{x}(t) = \dot{x}(0)
+\]</span> and any <span class="math inline">\(x(0)\)</span> is consistent with a measure of a constant speed.</p>
+<p>We can’t deduce the position of the car from the measure of its speed; the system is not observable.</p>
+</section><section id="kalman-criterion" class="slide level2">
+<h2>Kalman Criterion</h2>
+<p>The system <span class="math inline">\(\dot{x} = Ax, \, y = C x\)</span> is observable iff:</p>
+<p><span class="math display">\[
+  \mathrm{rank} \, 
+  \left[
+  \begin{array}{c}
+  C \\
+  CA \\ 
+  \vdots \\
+  C A^{n-1}
+  \end{array}
+  \right] = n
+  \]</span></p>
+<p><span class="math inline">\([C; \dots; C A^{n-1}]\)</span> is the <strong>Kalman observability matrix</strong>.</p>
+<p>(“<span class="math inline">\(;\)</span>” denotes the column concatenation of matrices)</p>
+</section><section id="duality" class="slide level2">
+<h2>Duality</h2>
+<p>Since</p>
+<p><span class="math display">\[
+[C; \dots; C A^{n-1}]^t = [C^t, \dots, (A^t)^{n-1}C^t],
+\]</span></p>
+<p>the system <span class="math inline">\(\dot{x} = A x, \; y = Cx\)</span> is observable iff the system <span class="math inline">\(\dot{x} = A^t x + C^t u\)</span> is controllable.</p>
+</section><section id="fully-measured-system" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Fully Measured System</h2>
+<p>Consider <span class="math inline">\(\dot{x} = A x, \; y = Cx\)</span> with <span class="math inline">\(x \in \mathbb{R}^n\)</span>, <span class="math inline">\(y \in\mathbb{R}^p\)</span> and <span class="math inline">\(\mathrm{rank} \, C = n\)</span>.</p>
+<ul>
+<li>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Is the system observable ?</li>
+</ul>
+</section><section id="integrator-chain" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Integrator Chain</h2>
+<p><img data-src="images/static/integrator-chain-2.svg" /> <span class="math display">\[\dot{x}_n = 0, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2, \, y=x_1\]</span></p>
+</section><section class="slide level2">
+
+<ul>
+<li>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Show that the system is observable.</li>
+</ul>
+</section><section id="heat-equation" class="slide level2">
+<h2><i class="fa fa-question-circle-o"></i> Heat Equation</h2>
+<p><img data-src="images/static/heat-simple.svg" /></p>
+</section><section class="slide level2">
+
+<ul>
+<li><p><span class="math inline">\(d T_1/dt = 0 + (T_2 - T_1)\)</span></p></li>
+<li><p><span class="math inline">\(d T_2/dt = (T_1 - T_2) + (T_3 - T_2)\)</span></p></li>
+<li><p><span class="math inline">\(d T_3/dt = (T_2 - T_3) + (T_4 - T_3)\)</span></p></li>
+<li><p><span class="math inline">\(d T_4/dt = (T_3 - T_4)\)</span></p></li>
+<li><p><span class="math inline">\(y = T_4\)</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Show that the system is observable.</p></li>
+<li><p>[<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] Is it still true if the four cells are organized as a square and the temperature sensor is in any of the corners ? How many independent sensors do you need to make the system observable and where can you place them?</p></li>
+</ul>
+</section></section>
+<section><section id="observer-design" class="title-slide slide level1"><h1>Observer Design</h1></section><section class="slide level2">
+
+<p><span class="math display">\[
+\left|
+\begin{split}
+\dot{x} = A x + B u \\
+y = C x + D u
+\end{split}
+\right.
+\]</span></p>
+</section><section id="state-observer-v1" class="slide level2">
+<h2>State Observer v1</h2>
+<p>Simulate the system behavior</p>
+<p><span class="math display">\[
+\left|
+\begin{split}
+\frac{d\hat{x}}{dt} &amp;= A \hat{x} + B u \\
+\hat{y} &amp;= C \hat{x} + D u
+\end{split}
+\right.
+\]</span></p>
+<p>and since we don’t know better,</p>
+<p><span class="math display">\[
+\hat{x}(0) = 0.
+\]</span></p>
+</section><section id="state-estimate-error" class="slide level2">
+<h2>State Estimate Error</h2>
+<p>Does <span class="math inline">\(\hat{x}(t)\)</span> provide a good asymptotic estimate of <span class="math inline">\(x(t)\)</span> ?</p>
+</section><section class="slide level2">
+
+<p>The dynamics of the <strong>state estimate error</strong> <span class="math inline">\(e = \hat{x} - x\)</span> is</p>
+<p><span class="math display">\[
+\begin{split}
+\dot{e} &amp; = \frac{d}{dt}(\hat{x} - x) \\
+        &amp; = \frac{d\hat{x}}{dt} - \dot{x} \\
+        &amp; = (A \hat{x} + Bu) - (A x + Bu) \\
+        &amp; = A e 
+\end{split}
+\]</span></p>
+</section><section class="slide level2">
+
+<p>The state estimator error <span class="math inline">\(e(t)\)</span>, solution of</p>
+<p><span class="math display">\[
+\dot{e} = A e 
+\]</span></p>
+<p>doesn’t satisfy</p>
+<p><span class="math display">\[
+\lim_{t \to +\infty} e(t) = 0
+\]</span></p>
+<p>for every value of <span class="math inline">\(e(0) = \hat{x}(0) - x(0)\)</span>, <strong>unless the eigenvalues of <span class="math inline">\(A\)</span> are in the open left-hand plane</strong> (i.e. <span class="math inline">\(\dot{x} = A x\)</span> is asymptotically stable).</p>
+</section><section id="state-observer-v2" class="slide level2">
+<h2>State Observer v2</h2>
+<p>Change the observer dynamics to account for differences between <span class="math inline">\(\hat{y}\)</span> and <span class="math inline">\(y\)</span> (both known values):</p>
+<p><span class="math display">\[
+\left|
+\begin{split}
+\frac{d\hat{x}}{dt} &amp;= A \hat{x} + B u  - L (\hat{y} - y)\\
+\hat{y} &amp;= C \hat{x} + D u
+\end{split}
+\right.
+\]</span></p>
+<p>for some <strong>observer gain</strong> matrix <span class="math inline">\(L \in \mathbb{R}^{n \times p}\)</span><br />
+(to be determined).</p>
+</section><section class="slide level2">
+
+<p><img data-src="images/static/observer.svg" /></p>
+</section><section class="slide level2">
+
+<p>The new dynamics of <span class="math inline">\(e = \hat{x} - x\)</span> is</p>
+<p><span class="math display">\[
+\begin{split}
+\dot{e} &amp; = \frac{d}{dt}(\hat{x} - x) \\
+        &amp; = \frac{d\hat{x}}{dt} - \dot{x} \\
+        &amp; = (A \hat{x} + Bu - L(C \hat{x} - C x)) - (A x + Bu) \\
+        &amp; = (A - LC) e 
+\end{split}
+\]</span></p>
+</section><section id="reminder" class="slide level2">
+<h2>Reminder</h2>
+<p>The system <span class="math inline">\(\dot{x} = A x, \; y = Cx\)</span> is observable</p>
+<p><span class="math inline">\(\Longleftrightarrow\)</span></p>
+<p>The system <span class="math inline">\(\dot{x} = A^t x + C^t u\)</span> is commandable.</p>
+</section><section id="so-what" class="slide level2">
+<h2>So what?</h2>
+<p>In this case, we can perform arbitrary pole assignment:</p>
+<ul>
+<li><p>for any conjugate set <span class="math inline">\(\Lambda\)</span> of eigenvalues,</p></li>
+<li><p>there is a matrix <span class="math inline">\(K \in \mathbb{R}^{p \times n}\)</span> such that</p>
+<p><span class="math display">\[
+\sigma(A^t - C^t K) = \Lambda
+\]</span></p></li>
+</ul>
+</section><section class="slide level2">
+
+<p>Since <span class="math inline">\(\sigma(M) = \sigma(M^t)\)</span> for any square matrix <span class="math inline">\(M\)</span>,</p>
+<p><span class="math display">\[
+\begin{split}
+\sigma(A^t - C^t K) &amp; = \sigma((A - K^tC)^t) \\
+                    &amp; = \sigma(A - K^t C) \\
+\end{split}
+\]</span></p>
+</section><section id="observers-pole-assignment" class="slide level2">
+<h2>Observers / Pole Assignment</h2>
+<p>Thus, if we set</p>
+<p><span class="math display">\[
+L = K^t
+\]</span></p>
+<p>we have solved the pole assignment problem <strong>for observers:</strong></p>
+<p><span class="math display">\[
+\sigma(A - L C) = \Lambda
+\]</span></p>
+</section><section id="observerpole-assignment" class="slide level2">
+<h2><i class="fa fa-eye"></i> Observer/Pole Assignment</h2>
+<p>Consider the double integrator <span class="math inline">\(\ddot{y} = u\)</span></p>
+<p><span class="math display">\[
+  \frac{d}{dt}
+  \left[\begin{array}{c} x_1 \\ x_2 \end{array}\right]
+  =
+  \left[\begin{array}{cx} 0 &amp; 1 \\ 0 &amp; 0\end{array}\right]
+  \left[\begin{array}{c} x_1 \\ x_2 \end{array}\right]
+  +
+  \left[\begin{array}{c} 0 \\ 1 \end{array}\right] u
+  \]</span></p>
+<p><span class="math display">\[
+  y = 
+  \left[
+  \begin{array}{cc}
+  1 &amp; 0
+  \end{array}
+  \right]
+  \left[\begin{array}{c} x_1 \\ x_2 \end{array}\right]
+  \]</span></p>
+<p>(in standard form)</p>
+</section><section class="slide level2">
+
+<pre><code>from scipy.signal import place_poles
+A = array([[0, 1], [0, 0]])
+C = array([[1, 0]])
+poles = [-1, -2]
+K = place_poles(A.T, C.T, poles).gain_matrix
+L = K.T
+assert_almost_equal(K, [[3.0, 2.0]])</code></pre>
+</section><section class="slide level2">
+
+<p><span class="math display">\[
+  \frac{d}{dt}
+  \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
+  =
+  \left[\begin{array}{cx} 0 &amp; 1 \\ 0 &amp; 0\end{array}\right]
+  \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
+  +
+  \left[\begin{array}{c} 0 \\ 1 \end{array}\right] u
+  - \left[\begin{array}{c} 3 \\2 \end{array}\right] (\hat{y} - y)
+  \]</span></p>
+<p><span class="math display">\[
+  \hat{y} = 
+  \left[
+  \begin{array}{cc}
+  1 &amp; 0
+  \end{array}
+  \right]
+  \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
+  \]</span></p>
+</section><section id="section" class="slide level2">
+<h2><i class="fa fa-flask"></i></h2>
+<pre><code>def fun(t, X_Xhat):
+    x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
+    y, y_hat = C.dot(x), C.dot(x_hat)
+    dx = A.dot(x)
+    dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
+    return r_[dx, dx_hat]</code></pre>
+</section><section class="slide level2">
+
+<pre><code>y0 = [-2.0, 1.0, 0.0, 0.0]
+result = solve_ivp(fun=fun, t_span=[0.0, 5.0], y0=y0, max_step=0.1)</code></pre>
+</section><section class="slide level2">
+
+<pre><code>figure()
+t = result[&quot;t&quot;]
+y = result[&quot;y&quot;]
+plot(t, y[0], &quot;b&quot;, label=&quot;$x_1$&quot;)
+plot(t, y[2], &quot;b:&quot;, alpha=0.5, label=r&quot;$\hat{x}_1$&quot;)
+plot(t, y[1], &quot;g&quot;, label=&quot;$x_2$&quot;)
+plot(t, y[3], &quot;g:&quot;, alpha=0.5, label=r&quot;$\hat{x}_2$&quot;)
+grid(); legend()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/observer-trajectories.svg" /></p>
+</section></section>
+<section><section id="kalman-filtering" class="title-slide slide level1"><h1>Kalman Filtering</h1></section><section id="setting" class="slide level2">
+<h2>Setting</h2>
+<p>Consider <span class="math inline">\(\dot{x} = A x, \; y = Cx\)</span> where:</p>
+<ul>
+<li><p>the state <span class="math inline">\(x(t)\)</span> is unknown (<span class="math inline">\(x(0)\)</span> is unknown),</p></li>
+<li><p>only (a noisy version of) <span class="math inline">\(y(t)\)</span> is available.</p></li>
+</ul>
+<p>We want a sensible estimation <span class="math inline">\(\hat{x}(t)\)</span> of <span class="math inline">\(x(t)\)</span>.</p>
+</section><section class="slide level2">
+
+<p>We now assume the existence of state and output disturbances <span class="math inline">\(v(t)\)</span> and <span class="math inline">\(w(t)\)</span> (deviations from the exact dynamics)</p>
+<p><span class="math display">\[
+\left|
+\begin{split}
+\dot{x} &amp;= A x + v \\
+y &amp;= C x + w
+\end{split}
+\right.
+\]</span></p>
+<p>Thes disturbances (or “noises”) are unknown; we are searching for the estimate <span class="math inline">\(\hat{x}(t)\)</span> of <span class="math inline">\(x(t)\)</span> that requires the smallest deviation from the exact dynamics to explain the data.</p>
+</section><section class="slide level2">
+
+<p>For a known <span class="math inline">\(y(t)\)</span>, among all possible trajectories <span class="math inline">\(x(t)\)</span> of the system, find the one that minimizes</p>
+<p><span class="math display">\[ 
+  J = \int_0^{+\infty} v(t)^t Q v(t) + w(t)^t R w(t) \, dt
+  \]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(Q \in \mathbb{R}^{n \times n}\)</span> and <span class="math inline">\(R \in \mathbb{R}^{p\times p}\)</span>,</p></li>
+<li><p>(to be continued …)</p></li>
+</ul>
+</section><section class="slide level2">
+
+<ul>
+<li><p><span class="math inline">\(Q\)</span> and <span class="math inline">\(R\)</span> are <strong>symmetric</strong> (<span class="math inline">\(R^t = R\)</span> and <span class="math inline">\(Q^t = Q\)</span>),</p></li>
+<li><p><span class="math inline">\(Q\)</span> and <span class="math inline">\(R\)</span> are <strong>positive definite</strong> (denoted “<span class="math inline">\(&gt;0\)</span>”)</p></li>
+</ul>
+</section><section id="heuristics" class="slide level2">
+<h2>Heuristics</h2>
+<p>If it is known that there is a large state disturbance but small output disturbance, it makes sense to reduce the impact of the state disturbance in the composition of <span class="math inline">\(J\)</span>, hence to select a small <span class="math inline">\(Q\)</span> wrt <span class="math inline">\(R\)</span>.</p>
+<!--
+
+--------------------------------------------------------------------------------
+
+To balance the impact of the state disturbance and output disturbance error,
+one may set:
+
+$$
+Q^{-1} = \mathbb{E} v(t)^t v(t),
+R^{-1} = \mathbb{E} w(t)^t w(t).
+$$
+
+-->
+</section><section id="optimal-solution" class="slide level2">
+<h2>Optimal Solution</h2>
+<p>Assume that <span class="math inline">\(\dot{x} = A x, \; y = Cx\)</span> is observable.</p>
+<p>There is a state estimation <span class="math inline">\(\hat{x}(t)\)</span>, given for some <span class="math inline">\(L \in \mathbb{R}^{n \times p}\)</span> as the solution of</p>
+<p><span class="math display">\[
+\left|
+\begin{split}
+d\hat{x}/dt &amp;= A \hat{x} - L (\hat{y} - y)\\
+\hat{y} &amp;= C \hat{x}
+\end{split}
+\right.
+\]</span></p>
+<p>The dynamics of the corresponding estimation error <span class="math inline">\(e(t) = \hat{x}(t) - x(t)\)</span> is asymptotically stable.</p>
+</section><section id="algebraic-riccati-equation" class="slide level2">
+<h2>Algebraic Riccati Equation</h2>
+<p>The gain matrix <span class="math inline">\(L\)</span> is given by</p>
+<p><span class="math display">\[
+  L = \Sigma C^t R,
+  \]</span></p>
+<p>where <span class="math inline">\(\Sigma \in \mathbb{R}^{n \times n}\)</span> is the unique matrix such that <span class="math inline">\(\Sigma^t = \Sigma\)</span>, <span class="math inline">\(\Sigma &gt; 0\)</span> and</p>
+<p><span class="math display">\[
+   \Sigma C^t R C \Sigma - \Sigma A^t - A \Sigma - Q^{-1} = 0.
+   \]</span></p>
+</section><section id="optimal-control-leftrightarrow-filter" class="slide level2">
+<h2>Optimal Control <span class="math inline">\(\leftrightarrow\)</span> Filter</h2>
+<p>Solve the Ricatti equation for optimal control with</p>
+<p><span class="math display">\[
+(A, B, Q, R) = (A^t, C^t, Q^{-1}, R^{-1})
+\]</span></p>
+<p>then</p>
+<p><span class="math inline">\(\Sigma = \Pi^t\)</span> and <span class="math inline">\(L = K^t.\)</span></p>
+</section><section id="kalman-filter" class="slide level2">
+<h2><i class="fa fa-eye"></i> Kalman Filter</h2>
+<p>Consider the system <span class="math display">\[
+\begin{split}
+\dot{x} &amp;= v\\
+y &amp;= x + w
+\end{split}
+\]</span></p>
+<p>If we believe that the state and output perturbation are of the same scale, we may try</p>
+<p><span class="math display">\[
+Q=[1.0], R=[1.0]
+\]</span></p>
+</section><section class="slide level2">
+
+<p>With <span class="math inline">\(\Sigma = [\sigma]\)</span>, the filtering Ricatti equation becomes</p>
+<p><span class="math display">\[
+\sigma^2 - 2\sigma  - 1 = 0
+\]</span></p>
+<p>whose only positive solution is</p>
+<p><span class="math display">\[
+\sigma = \frac{2 + \sqrt{(-2)^2 - 4\times 1 \times (-1)}}{2} = 1+\sqrt{2}.
+\]</span></p>
+</section><section class="slide level2">
+
+<p>With <span class="math inline">\(L = [\ell]\)</span>, we end up with</p>
+<p><span class="math inline">\(\ell = \sigma = 1 + \sqrt{2}.\)</span></p>
+<p>Thus, the optimal filter is</p>
+<p><span class="math display">\[
+\begin{split}
+d\hat{x}/dt &amp;= - (1+\sqrt{2})(\hat{y} - y)\\
+\hat{y} &amp;= \hat{x}
+\end{split}
+\]</span></p>
+</section><section id="stabilizationkalman-filter" class="slide level2">
+<h2><i class="fa fa-eye"></i> Stabilization/Kalman Filter</h2>
+<p>Consider the double integrator <span class="math inline">\(\ddot{x} = 0,\)</span> <span class="math inline">\(y=x\)</span>.</p>
+<p><span class="math display">\[
+  \frac{d}{dt}
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  =
+  \left[\begin{array}{cc} 0 &amp; 1 \\ 0 &amp; 0\end{array}\right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  +
+  \left[\begin{array}{c} v_1 \\ v_2 \end{array}\right],
+  y = \left[\begin{array}{c} 1 &amp; 0 \end{array} \right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  + w
+  \]</span></p>
+<p>(in standard form)</p>
+</section><section class="slide level2">
+
+<pre><code>from scipy.linalg import solve_continuous_are
+A = array([[0, 1], [0, 0]])
+B = array([[0], [1]])
+Q = array([[1, 0], [0, 1]]); R = array([[1]])
+Sigma = solve_continuous_are(A.T, C.T, inv(Q), inv(R))
+L = Sigma @ C.T @ R
+eigenvalues, _ = eig(A - L @ C)
+assert all([real(s) &lt; 0 for s in eigenvalues])</code></pre>
+</section><section id="section-1" class="slide level2">
+<h2><i class="fa fa-area-chart"></i></h2>
+<pre><code>figure()
+x = [real(s) for s in eigenvalues]
+y = [imag(s) for s in eigenvalues]
+plot(x, y, &quot;kx&quot;, ms=12.0)
+xticks([-2, -1, 0, 1, 2])
+yticks([-2, -1, 0, 1, 2])
+plot([0, 0], [-2, 2], &quot;k&quot;)
+plot([-2, 2], [0, 0], &quot;k&quot;)   
+grid(True)
+title(&quot;Eigenvalues&quot;)</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/poles-Kalman.svg" /></p>
+</section><section id="section-2" class="slide level2">
+<h2><i class="fa fa-flask"></i></h2>
+<pre><code>def fun(t, X_Xhat):
+    x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
+    y, y_hat = C.dot(x), C.dot(x_hat)
+    dx = A.dot(x)
+    dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
+    return r_[dx, dx_hat]</code></pre>
+</section><section class="slide level2">
+
+<pre><code>y0 = [-2.0, 1.0, 0.0, 0.0]
+result = solve_ivp(fun=fun, t_span=[0.0, 5.0], y0=y0, max_step=0.1)</code></pre>
+</section><section class="slide level2">
+
+<pre><code>figure()
+t = result[&quot;t&quot;]
+y = result[&quot;y&quot;]
+plot(t, y[0], &quot;b&quot;, label=&quot;$x_1$&quot;)
+plot(t, y[2], &quot;b:&quot;, alpha=0.5, label=r&quot;$\hat{x}_1$&quot;)
+plot(t, y[1], &quot;g&quot;, label=&quot;$x_2$&quot;)
+plot(t, y[3], &quot;g:&quot;, alpha=0.5, label=r&quot;$\hat{x}_2$&quot;)
+grid(); legend()</code></pre>
+</section><section class="slide level2">
+
+<p><img data-src="images/observer-Kalman-trajectories.svg" /></p>
+<!--
+
+--------------------------------------------------------------------------------
+
+    def f(t, y):
+        return 0.0
+    def g(y):
+        return y
+
+    y0 = [10.0]
+    tspan = [0.0, 20.0]
+    result = solve_ivp(f, tspan, y0, dense_output=True)
+    t = linspace(tspan[0], tspan[-1], 1000)
+    x = result["sol"](t)[0]
+
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(t, x, "k", label=r"$x(t)$")
+    output = lambda t: g(result["sol"](t)[0])
+    plot(t, output(t), "k--", label=r"$y(t)$")
+    grid(True)
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/K")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/K.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+--------------------------------------------------------------------------------
+
+    def f(t, y):
+        return - (1+ sqrt(2)) * (y[0] - output(t))
+
+    y0 = [1.0]
+    result2 = solve_ivp(f, tspan, y0, dense_output=True)
+    t = linspace(tspan[0], tspan[-1], 1000)
+    x_hat = result2["sol"](t)[0]
+
+
+--------------------------------------------------------------------------------
+
+    figure()
+    plot(t, x, "k", label=r"$x(t)$")
+    plot(t, output(t), "k--", label=r"$y(t)$")
+    plot(t, x_hat, "g")
+    grid(True)
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    save("images/K2")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+![](images/K2.svg)
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+-->
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/math/math.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

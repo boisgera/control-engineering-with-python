@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Sébastien Boisgérault, Mines ParisTech">
+  <title>Control Engineering with Python</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="reveal.js/css/reveal.css">
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <link rel="stylesheet" href="reveal.js/css/theme/white.css" id="theme">
+  <!-- Printing and PDF exports -->
+  <script>
+    var link = document.createElement( 'link' );
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = window.location.search.match( /print-pdf/gi ) ? 'reveal.js/css/print/pdf.css' : 'reveal.js/css/print/paper.css';
+    document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script>
+  <!--[if lt IE 9]>
+  <script src="reveal.js/lib/js/html5shiv.js"></script>
+  <![endif]-->
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Control Engineering with Python</h1>
+  <p class="author">Sébastien Boisgérault, Mines ParisTech</p>
+</section>
+
+<section id="resources" class="slide level2">
+<h2><i class="fa fa-github" aria-hidden="true"></i> Resources</h2>
+<p><a href="https://github.com/boisgera/control-engineering-with-python" class="uri">https://github.com/boisgera/control-engineering-with-python</a></p>
+</section>
+<section><section id="definitions" class="title-slide slide level1"><h1>Definitions</h1></section><section id="definitions-1" class="slide level2">
+<h2><i class="fa fa-wikipedia-w"></i> Definitions</h2>
+<p><strong>Control engineering</strong> or <strong>control systems engineering</strong> is an engineering discipline that applies automatic control theory to design systems with desired behaviors in control environments.</p>
+<p>The discipline of controls overlaps and is usually taught along with electrical engineering at many institutions around the world.</p>
+</section><section id="section" class="slide level2">
+<h2><i class="fa fa-wikipedia-w"></i></h2>
+<p><strong>Control theory</strong> in control systems engineering is a subfield of mathematics that deals with the control of continuously operating dynamical systems in engineered processes and machines.</p>
+</section><section id="section-1" class="slide level2">
+<h2><i class="fa fa-wikipedia-w"></i></h2>
+<p>A <strong>dynamical system</strong> is a system in which a function describes the time dependence of a point in a geometrical space.</p>
+<p>Examples include the mathematical models that describe the swinging of a clock pendulum, the flow of water in a pipe, and the number of fish each springtime in a lake.</p>
+</section><section class="slide level2">
+
+<p>Control Theory is about <strong>dynamical systems</strong> : their</p>
+<ul>
+<li><p>Modelling,</p></li>
+<li><p>Analysis and</p></li>
+<li><p>Control.</p></li>
+</ul>
+</section></section>
+<section><section id="examples" class="title-slide slide level1"><h1>Examples</h1></section><section id="robotic-arms" class="slide level2">
+<h2><i class="fa fa-gear"></i> Robotic Arms</h2>
+<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s-yne8xTNM0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</section><section class="slide level2">
+
+<p><strong>DEMO:</strong> <span class="math inline">\(2 k \pi\)</span> (<a href="http://www.mines-paristech.fr/Recherche/Centres-de-recherche/Centre-automatique-et-systemes-CAS/">CAS</a>)</p>
+</section><section id="aircrafts" class="slide level2">
+<h2><i class="fa fa-plane"></i> Aircrafts</h2>
+<ul>
+<li><p><a href="https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons">Boeing 737 Max Plane Crashes</a></p></li>
+<li><p><a href="https://www.nytimes.com/interactive/2019/03/29/business/boeing-737-max-8-flaws.html">The Dangerous Flaw in Boeing’s Automated System</a></p></li>
+<li><p>Accident Preliminary Report: <a href="http://www.ecaa.gov.et/documents/20435/0/Preliminary+Report+B737-800MAX+%2C%28ET-AVJ%29.pdf"><i class="fa fa-file-pdf-o"></i></a></p></li>
+<li><p><a href="https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/">What is the Boeing 737 Max MACS?</a></p></li>
+<li><p><a href="https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg">Boeing 737 Max adjustable stabilizer</a></p></li>
+<li><p><a href="https://www.eurofighter.com/advantages">Eurofighter Typhoon</a></p></li>
+</ul>
+</section><section id="tomorrows-vehicles" class="slide level2">
+<h2><i class="fa fa-car"></i> Tomorrow’s Vehicles</h2>
+<p>Typically : vehicles with self-driving capabilities.</p>
+<ul>
+<li><p><a href="https://waymo.com/">Waymo</a> (“Google Car”),</p></li>
+<li><p><a href="https://www.tesla.com">Tesla</a>: <a href="https://www.tesla.com/en_EU/autopilot?redirect=no">Autopilot</a>, <a href="https://en.wikipedia.org/wiki/Tesla_Semi">Semi (truck)</a>,</p></li>
+<li><p><a href="https://www.uber.com">Uber</a>: <a href="https://www.uber.com/info/atg/">ATG</a></p></li>
+<li><p>…</p></li>
+</ul>
+</section><section id="todays-cars" class="slide level2">
+<h2><i class="fa fa-car"></i> Today’s cars</h2>
+<p>ADAS = Advanced Driver-Assistance Systems</p>
+<ol type="1">
+<li><p>Collision avoidance systems (CAS) <a href="https://en.wikipedia.org/wiki/Collision_avoidance_system">(<i class="fa fa-wikipedia-w"></i>)</a></p></li>
+<li><p>Cruise control (CC) <a href="https://en.wikipedia.org/wiki/Cruise_control">(<i class="fa fa-wikipedia-w"></i>)</a></p></li>
+</ol>
+<p>Adaptative cruise control = CAS + CC <a href="https://www.youtube.com/watch?v=GInSPWZRFRM">(<i class="fa fa-youtube"></i> : IIHS)</a></p>
+</section><section class="slide level2">
+
+<ol start="3" type="1">
+<li><p>Electronic stability control (ESC) <a href="https://en.wikipedia.org/wiki/Electronic_stability_control">(<i class="fa fa-wikipedia-w"></i>)</a></p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe></li>
+</ol>
+<style>
+
+.reveal section img {
+  border:0;
+  height:50vh;
+  width:auto;
+
+}
+
+.reveal section img.medium {
+  border:0;
+  max-width:50vh;
+}
+
+.reveal section img.icon {
+  display:inline;
+  border:0;
+  width:1em;
+  margin:0em;
+  box-shadow:none;
+  vertical-align:-10%;
+}
+
+.reveal code {
+  font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+  font-size: 1.5em;
+  line-height: 1.5em;
+  /* max-height: 80wh; won't work, overriden */
+}
+
+input {
+  font-family: "Source Sans Pro", Helvetica, sans-serif;
+  font-size: 42px;
+  line-height: 54.6px;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section></section>
+    </div>
+  </div>
+
+  <script src="reveal.js/lib/js/head.min.js"></script>
+  <script src="reveal.js/js/reveal.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://github.com/hakimel/reveal.js#configuration
+      Reveal.initialize({
+        // Display the page number of the current slide
+        slideNumber: true,
+        // Push each slide change to the browser history
+        history: true,
+        math: {
+          mathjax: 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // Optional reveal.js plugins
+        dependencies: [
+          { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+          { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true },
+          { src: 'reveal.js/plugin/math/math.js', async: true },
+          { src: 'reveal.js/plugin/notes/notes.js', async: true }
+        ]
+      });
+    </script>
+    </body>
+</html>

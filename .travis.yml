@@ -1,0 +1,41 @@
+dist: xenial
+language: bash
+
+env: 
+  global:
+    - CONDA=https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh
+    - MYBINDER=https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
+
+before_install:
+  - sudo apt-get --yes --force-yes install texlive-full
+  - sudo apt-get install chromium-browser
+  - curl $CONDA > conda.sh
+  - bash conda.sh -b -p $HOME/conda
+  - export PATH=$HOME/conda/bin:$PATH
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update conda
+  - conda info -a # debugging
+  - conda env create -f environment.yml
+  - source activate control-engineering-with-python
+  - conda install -c conda-forge nodejs=10.13.0
+  - npm install -g --unsafe-perm hummus
+  - npm install -g --unsafe-perm decktape
+
+install:
+  - ./build # generate slides and notebooks
+  - ./build-pdf
+  - rm -rf src # pandoc from git, clean-up for deployment to gh-pages
+  - rm -rf conda.sh # clean-up conda installer before deployment
+  - mv .gitignore .gitignore.bak # for deployment to gh-pages
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  
+  on:
+    branch: master  
+
+script: 
+  - chromium-browser --headless --disable-gpu $MYBINDER
+
