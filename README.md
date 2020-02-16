@@ -72,7 +72,7 @@ Two options:
 
 ### Project
 
-  - Problem statement : [Notebook](project/Project.ipynb)
+  - Problem statement : [notebook](project/Project.ipynb)
 
 ### Extra resources
 
