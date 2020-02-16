@@ -72,7 +72,7 @@ Two options:
 
 ### Project
 
-  - Problem statement : [view](project/Project.ipynb), [download](https://boisgera.github.io/control-engineering-with-python/project/Project.ipynb).
+  - Problem statement (notebook): [view in github](project/Project.ipynb), [download](https://boisgera.github.io/control-engineering-with-python/project/Project.ipynb).
 
 ### Extra resources
 
