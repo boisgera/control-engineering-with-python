@@ -80,6 +80,10 @@ Example notebook: double pendulum
 
   - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb).
 
+#### Project
+
+  - Problem statement : [Notebook](project/Project.ipynb)
+
 #### Free External Resources      
       
   - [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
