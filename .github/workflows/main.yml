@@ -8,21 +8,25 @@ jobs:
       run:
         shell: bash -l {0} 
       steps:
+
         - uses: conda-incubator/setup-miniconda@v2
           with:
             activate-environment: control-engineering-with-python
             environment-file: environment.yml
+
         # Install Decktape
         # ----------------------------------------------------------------------
         - uses: actions/setup-node@v2
           with:
             node-version: '12'
         - run: npm install -g decktape
+
         # Checkout & Build
         # ----------------------------------------------------------------------
         - uses: actions/checkout@v2
         - run: ./build # generate slides and notebooks
         - run: ./build-pdf
+        
         # Deploy to gh-pages
         # ----------------------------------------------------------------------
         - run: rm .gitignore
