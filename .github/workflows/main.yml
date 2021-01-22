@@ -8,8 +8,6 @@ jobs:
       run:
         shell: bash -l {0} 
       steps:
-        # Install Conda environment
-        # ----------------------------------------------------------------------
         - uses: conda-incubator/setup-miniconda@v2
           with:
             activate-environment: control-engineering-with-python
