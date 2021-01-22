@@ -8,6 +8,9 @@ jobs:
       run:
         shell: bash -l {0} 
     steps:
+      # Checkout
+      # ------------------------------------------------------------------------
+      - uses: actions/checkout@v2
 
       # Activate Conda Environment
       # ----------------------------------------------------------------------
@@ -23,9 +26,8 @@ jobs:
           node-version: '12'
       - run: npm install -g decktape
 
-      # Checkout & Build
+      # Build
       # ----------------------------------------------------------------------
-      - uses: actions/checkout@v2
       - run: ./build # generate slides and notebooks
       - run: ./build-pdf
 
