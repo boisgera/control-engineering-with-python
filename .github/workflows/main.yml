@@ -21,6 +21,7 @@ jobs:
 
       # Install Latex
       # ------------------------------------------------------------------------
+      - run: sudo apt-get update
       - run: sudo apt-get install texlive-full
 
       # Install Decktape
