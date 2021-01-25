@@ -8,9 +8,9 @@ Control Engineering with Python
 
 Either open, edit and run the project notebooks :
 
-  - in the cloud with [binder](https://mybinder.org/): [![Launch Binder][binder-badge]][CEIP-binder],
+  - in the cloud: [![Launch Binder][binder-badge]][CEIP-binder],
 
-  - locally on your computer: [instructions](install.md).
+  - on your computer: [instructions](install.md).
 
 
 [binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg
