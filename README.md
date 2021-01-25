@@ -8,16 +8,10 @@ Control Engineering with Python
 
 Either open, edit and run the project notebooks :
 
-| In the cloud  | On your computer |
-| ------------- | ------------- |
-| [![Open binder](https://img.shields.io/badge/-open%20binder-blue)][CEIP-binder]  | Content Cell  |
+| In the cloud                     | On your computer                          |
+| -------------------------------- | ----------------------------------------- |
+| [Open project with Binder][CEIP-binder] | [Read the instructions](install.md)|
 
-  - in the cloud: ,
-
-  - on your computer: [instructions](install.md).
-
-
-[binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg
 [CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
 
 
