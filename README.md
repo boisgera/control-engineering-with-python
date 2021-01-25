@@ -10,7 +10,7 @@ Either open, edit and run the project notebooks :
 
 | In the cloud  | On your computer |
 | ------------- | ------------- |
-| [![https://img.shields.io/badge/-open%20binder-blue]][CEIP-binder]  | Content Cell  |
+| [![Open binder](https://img.shields.io/badge/-open%20binder-blue)][CEIP-binder]  | Content Cell  |
 
   - in the cloud: ,
 
