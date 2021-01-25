@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/boisgera/control-engineering-with-python.svg?branch=master)](https://travis-ci.org/boisgera/control-engineering-with-python)
+[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/main/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions)
 
 Control Engineering with Python
 ================================================================================
