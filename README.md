@@ -72,7 +72,7 @@ Open, edit and run these notebooks either
 
   - Problem statement (notebook): [view in github](project/Project.ipynb) or [download](https://boisgera.github.io/control-engineering-with-python/project/Project.ipynb).
 
-### Extra resources
+### :tada: Extra resources
 
 #### :computer: Animation of dynamical systems
 
