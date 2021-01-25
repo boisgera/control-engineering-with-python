@@ -57,7 +57,7 @@ Control Engineering with Python
 
 ### :computer: Notebooks
 
-The slideshow contents are also available as Jupyter notebooks. 
+The course contents are also available as Jupyter notebooks. 
 Open, edit and run these notebooks either
 
   - in the cloud: [open project with Binder][CEIP-binder], or
