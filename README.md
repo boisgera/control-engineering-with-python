@@ -4,16 +4,6 @@ Control Engineering with Python
 
 [![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions)
 
-### Notebooks
-
-Either open, edit and run the project notebooks :
-
-  -  in the cloud: [open project with Binder][CEIP-binder],
-
-  - on your computer: [follow the instructions](install.md).
-
-[CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
-
 
 ### Program
 
@@ -68,6 +58,21 @@ Either open, edit and run the project notebooks :
       - Kinematic models of mobile robots
 
       - Control of mobile robots
+
+### Notebooks
+
+The slideshow contents are also available as Jupyter notebooks ; 
+Open, edit and run these notebooks either
+
+  - in the cloud: [open project with Binder][CEIP-binder],
+
+or
+
+  - on your computer: [follow the instructions](install.md).
+
+[CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
+
+
 
 ### Project
 
