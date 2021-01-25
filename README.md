@@ -5,7 +5,7 @@ Control Engineering with Python
 [![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions)
 
 
-### :books: Program
+### :books: Program & Slides
 
  0. **Introduction to Control Engineering** (30 min)
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
@@ -71,6 +71,8 @@ Open, edit and run these notebooks either
 ### :rocket: Project
 
   - Problem statement (notebook): [view in github](project/Project.ipynb) or [download](https://boisgera.github.io/control-engineering-with-python/project/Project.ipynb).
+
+-----
 
 ### Extra resources
 
