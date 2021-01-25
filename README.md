@@ -15,7 +15,7 @@ Control Engineering with Python
     ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
     [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf)).
 
-      - ODEs: definitions, numerical schemes, vizualisation (30 min). 
+      - ODEs: definitions, numerical schemes, visualization (30 min). 
 
       - Well-posedness of IVPs (30 min).
 
