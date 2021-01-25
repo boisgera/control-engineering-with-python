@@ -13,8 +13,7 @@ Control Engineering with Python
 
  1. **Introduction to Dynamical Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
-    [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf),
-    [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=odes.ipynb)).
+    [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf)).
 
       - ODEs: definitions, numerical schemes, vizualisation (30 min). 
 
@@ -24,8 +23,7 @@ Control Engineering with Python
 
  2. **Linear-Time Invariant Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.pdf),
-     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=linear-systems.ipynb))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.pdf))
 
       - Linearization, state-space model (30 min)
 
@@ -35,8 +33,7 @@ Control Engineering with Python
 
  3. **Controllers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/controllers.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf),
-     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllers.ipynb))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf))
 
       - Controllability (1h)
 
@@ -44,8 +41,7 @@ Control Engineering with Python
 
  4. **Observers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf),
-     [notebook](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf))
 
       - Observability (1h)
 
