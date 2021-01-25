@@ -55,7 +55,7 @@ Control Engineering with Python
 
       - Control of mobile robots
 
-### Notebooks
+### :computer: Notebooks
 
 The slideshow contents are also available as Jupyter notebooks. 
 Open, edit and run these notebooks either
@@ -68,7 +68,7 @@ Open, edit and run these notebooks either
 
 
 
-### Project
+### :rocket: Project
 
   - Problem statement (notebook): [view in github](project/Project.ipynb) or [download](https://boisgera.github.io/control-engineering-with-python/project/Project.ipynb).
 
