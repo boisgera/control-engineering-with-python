@@ -55,7 +55,7 @@ Control Engineering with Python
 
       - Control of mobile robots
 
-### :computer: Notebooks
+### :notebook: Notebooks
 
 The course contents are also available as Jupyter notebooks. 
 Open, edit and run these notebooks either
