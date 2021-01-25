@@ -60,9 +60,9 @@ Control Engineering with Python
 The course contents are also available as Jupyter notebooks. 
 Open, edit and run these notebooks either
 
-  - in the cloud: [open project with Binder][CEIP-binder], or
+  - :cloud: in the cloud: [open project with Binder][CEIP-binder] or
 
-  - on your computer: [follow the instructions](install.md).
+  - :computer: on your computer: [follow the instructions](install.md).
 
 [CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
 
