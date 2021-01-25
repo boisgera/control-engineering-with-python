@@ -13,7 +13,7 @@ Two options:
   - Execute the project notebooks locally: [instructions](install.md)
 
 
-[binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg?style=flat-square
+[binder-badge]: https://img.shields.io/badge/Launch-Binder-blue.svg
 [CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
 
 
