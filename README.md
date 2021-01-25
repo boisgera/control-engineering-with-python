@@ -5,7 +5,7 @@ Control Engineering with Python
 [![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions)
 
 
-### Program
+### :books: Program
 
  0. **Introduction to Control Engineering** (30 min)
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
