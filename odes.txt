@@ -383,7 +383,7 @@ So that when
     def f(xy):
         x, y = xy
         return array([-y, x])
-    t0, x0 = 0.0, array([-1.0, 0.0])
+    t0, x0 = 0.0, array([1.0, 0.0])
     dt, tf = 0.001, 5.0
     t, x = basic_solve_ivp(f, t0, x0, dt, tf)
 
