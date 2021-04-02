@@ -959,6 +959,15 @@ This local solution is also **maximal**:
 
 You cannot extend this solution beyond $\tau=1.0$.
 
+Maximal Solution
+--------------------------------------------------------------------------------
+
+A solution $x :[0, \tau[$ to an IVP is **maximal** if there is no other solution
+ 
+  - defined on $[0, \tau'[$ with $\tau' > \tau$,
+  
+  - whose restriction to $[0, \tau[$ is $x$.
+
 <i class="fa fa-question-circle-o"></i> -- Local/Maximal Solution
 --------------------------------------------------------------------------------
 
@@ -1054,15 +1063,15 @@ Existence
 
 If $f$ is continuous, 
 
-  - There is a (at least one) local solution to the IVP
+  - There is a (at least one) **local** solution to the IVP
 
     $\dot{x} = f(x)$ and $x(t_0) = x_0$.
 
   - Any local solution on some $\left[t_0, \tau \right[$ 
-    can be extended to a (at least one) maximal one 
+    can be extended to a (at least one) **maximal** one 
     on some $\left[t_0, t_{\infty}\right[$.
 
-**Note.** A maximal solution is global iff $t_{\infty} = +\infty$.
+**Note:** a maximal solution is **global** iff $t_{\infty} = +\infty$.
 
 Theorem -- Characterization of Maximal Solutions
 --------------------------------------------------------------------------------
@@ -1087,14 +1096,17 @@ For example, you wonder if a solution is global
 (if $t_f = +\infty$ or $t_f < +\infty$.)
 
 
-<i class="fa fa-lightbulb-o"></i> Idea
+<i class="fa fa-lightbulb-o"></i> Prove existence on $[0, t_f[$
 --------------------------------------------------------------------------------
 
-Try to prove that any local solution defined on some
-sub-interval $[t_0, \tau[$ with $\tau < t_f$ is bounded.
+**TODO.** Show that any solution which defined on some
+sub-interval $[t_0, \tau]$ with $\tau < t_f$ would is bounded.
 
-If you succeed, then this solution cannot be maximal (it doesn't blow up),
-thus a maximal solution is defined on $[t_0, t_f[$.
+Then, no solution can be maximal on any
+such $[0, \tau[$ (since it doesn't blow up !). Since a maximal
+solution does exist, its domain is $[0, t_{\infty}[$ with $t_{\infty} \geq t_f$.
+
+**$\Rightarrow$ a solution is defined on $[t_0, t_f[$.**
 
 <!--
 If any **potential** local solution $x(t)$ defined on 
@@ -1120,6 +1132,32 @@ Consider
 
   - [<i class="fa fa-superscript"></i>] 
     Show that any such solution is global.
+
+<i class="fa fa-question-circle-o"></i> -- Existence / Pendulum
+--------------------------------------------------------------------------------
+
+Consider the pendulum, subject to a torque $c$
+
+$$
+ml^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = c
+$$
+
+We assume that the torque provides a bounded power:
+
+$$
+P(t) = c(t) \dot{\theta}(t) \leq M < +\infty.
+$$
+
+--------------------------------------------------------------------------------
+
+  - [</i><i class="fa fa-superscript"></i>] Show that for any initial condition
+    $t_0$, $\theta(t_0) = \theta_0$ and $\dot{\theta}(t_0) = \omega_0$, there is
+    a solution to the IVP which is global.
+
+    <i class="fa fa-key"></i> **Hint.** Compute the derivative with respect to $t$ of
+    $$
+    E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta
+    $$
 
 <i class="fa fa-question-circle-o"></i> -- Existence / Linear Systems
 --------------------------------------------------------------------------------
@@ -1313,7 +1351,7 @@ Then the dynamical system is continous w.r.t. the initial state.
 Let $h \geq 0$ and $x^h(t)$ be the solution of $\dot{x} = x$ 
 and $x^h(0) = 1+ h$.
 
-  - [<i class="fa fa-superscript"></i>]. Let $\epsilon > 0$; 
+  - [<i class="fa fa-superscript"></i>]. Let $\epsilon > 0$ and $\tau \geq 0$; 
     find the smallest  $\delta > 0$ such that 
     $|h| < \delta$ ensures that
     $$\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| < \epsilon$$
