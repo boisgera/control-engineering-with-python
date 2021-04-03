@@ -20,10 +20,18 @@ for any $t \geq \tau$, $X(t, B) \subset B(0, \epsilon)$. Let $V = X(t,B)$;
 if $x(0) \in V$, then for any $t\geq 0$, $|x(t)| < \epsilon$ (invariance
 by translation in time). Now, since $0$ is an equilibrium and $0 \in B$,
 $0 \in V$; since the reverse system (that goes back in time) is well-posed, 
-if $|x(\tau)|$ is small enough, $<$ some $r$, then $|x(0)|$ 
-is smaller than $1$ and thus $x(0) \in B$; 
-thus, if $|x(0)| < r$, $x(t) \in V$ and that gives
+if $|x(\tau)|$ is small enough, say smaller than $r$ some $r$, then $|x(0)|$ 
+is smaller than $1$ and thus $x(0) \in B$; thus, $B(0, r) \subset V$.
+Consequently, if $|x(0)| < r$, $x(t) \in V$ and that gives
 us that $|x(t)| < \epsilon$ for any $t\geq 0$. 
+
+Sketch of an alternative (simpler) proof (original idea by @c-joly):
+
+> Il faut montrer que si on fixe un voisinage V du pt d'équilibre et que l'on part d'assez prêt du pt d'eq, on ne sort jamais de V. La preuve c'est :
+>
+>  - à long terme (t>tau), on sait qu'on est dans V par stabilité asymptotique (locale) si x0 est assez proche,
+>
+>  - reste à s'assurer qu'on ne sort pas de V quand t <= tau. Mais x(t) = x_e est solution, si x(0) est assez proche de x_e, par continuité par rapport aux conditions initiales (caractère bien posé), c'est gagné.
 
 Local Attractive equivalent to Globally Asymptotically Stable
 --------------------------------------------------------------------------------
