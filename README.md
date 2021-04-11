@@ -84,13 +84,11 @@ Example notebook: double pendulum
 
 #### :books: Free External Resources      
       
-  - :book: [Eduardo Sontag - Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
-  
-  - :book: [The Zodiac - Theory of Robot Control](http://www.gipsa-lab.grenoble-inp.fr/~carlos.canudas-de-wit/publications/Theory_of_robot_control.pdf)
+  - :book: [Eduardo Sontag – Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
 
-<!--
-  - [Stackoverflow: animation in iPython (check the second option of the answer with **%matplotlib notebook**)](https://stackoverflow.com/questions/35532498/animation-in-ipython-notebook/46878531#46878531)
--->
+  - :book: [Vladimír Kučera – Riccati Equations and their Solution](http://library.utia.cas.cz/separaty/2011/TR/kucera-0436431.pdf)
+  
+  - :book: [The Zodiac – Theory of Robot Control](http://www.gipsa-lab.grenoble-inp.fr/~carlos.canudas-de-wit/publications/Theory_of_robot_control.pdf)
 
 -----
 
