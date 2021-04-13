@@ -70,7 +70,7 @@ Open, edit and run these notebooks either
 
 ### :rocket: Project
 
-  - Problem statement (notebook): [view in github](project/Project.ipynb) or [download](https://boisgera.github.io/control-engineering-with-python/project/Project.ipynb).
+  - Use the [:octocat: template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
 
 ### :tada: Extra resources
 
