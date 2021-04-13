@@ -70,7 +70,7 @@ Open, edit and run these notebooks either
 
 ### :rocket: Project
 
-  - Use the [:octocat: template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
+  - :octocat:  Use the [template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
 
 ### :tada: Extra resources
 
