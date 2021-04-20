@@ -2,7 +2,7 @@
 Control Engineering with Python
 ================================================================================
 
-[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) 
+[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) [![Join the chat at https://gitter.im/control-engineering-with-python/community](https://badges.gitter.im/control-engineering-with-python/community.svg)](https://gitter.im/control-engineering-with-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 
 ### :books: Program & Slides
@@ -68,8 +68,8 @@ Open, edit and run these notebooks either
 
 ### :speech_balloon: Chat room
 
-[![Join the chat at https://gitter.im/control-engineering-with-python/community](https://badges.gitter.im/control-engineering-with-python/community.svg)](https://gitter.im/control-engineering-with-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
+  - :speech_balloon: [Join the chat room](https://gitter.im/control-engineering-with-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge) (GitHub sign-in required)
+ 
 ### :rocket: Project
 
   - :octocat:  Use this [template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
