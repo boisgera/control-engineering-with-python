@@ -2,7 +2,7 @@
 Control Engineering with Python
 ================================================================================
 
-[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) [![Join the chat at https://gitter.im/control-engineering-with-python/community](https://badges.gitter.im/control-engineering-with-python/community.svg)](https://gitter.im/control-engineering-with-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) 
 
 
 ### :books: Program & Slides
@@ -66,7 +66,9 @@ Open, edit and run these notebooks either
 
 [CEIP-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
 
+### :speech_balloon: Chat room
 
+[![Join the chat at https://gitter.im/control-engineering-with-python/community](https://badges.gitter.im/control-engineering-with-python/community.svg)](https://gitter.im/control-engineering-with-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### :rocket: Project
 
