@@ -1,15 +1,24 @@
 #!/usr/bin/env python
 
+# Python 3 Standard Library
 import copy
 import json
 import os.path
 import sys
 
+# Pandoc
 import pandoc
 from pandoc.types import *
 
 
 # ------------------------------------------------------------------------------
+# TODO: reconsider all flags wrt use cases and simplification of the document.
+# Consider:
+#   - slides and slides + hidden? (aka setup code need for proper display
+#     of the slides ?)
+
+# TODO: the div removal filters off the 'notes' and thus borks speaker notes.
+
 __doc__ = """
 
 flags:
@@ -18,84 +27,73 @@ flags:
 
     'hidden' is "exec-only", the nitty-gritty stuff that won't appear anywhere,
     but is necessary for some side effects such as generating images used by
-    the slides.
+    the slides. This is a "slides setup" option ... require slides to be
+    added to this list of classes at the same time? (more explicit)
 
     'slides' won't appear in the notebook, but in the slides, and it's
     also executed
 
     'notebook' is not executed and appears only in the notebook.
 
-  - exec status: no-exec or no flag (exec by default in slides mode only)
-
-    NOTA: no-exec never used so far in the slides.
-
 """
-
 
 # Source Document
 # ------------------------------------------------------------------------------
-doc_file = sys.argv[1]
+doc_file = sys.argv[1]  # some markdown document
 doc_name = os.path.splitext(doc_file)[0]
 doc = pandoc.read(file=doc_file)
-# TODO: add python writer support in pandoc, add proper pdf quirk mangt
-# pandoc.write(doc, file="doc.py", format="python") # debug
-
 
 # Code Execution
 # ------------------------------------------------------------------------------
+# TODO: make a single function that gathers the code that need to be executed
+# (filter off non-executable divs and code blocks at the same time).
+# That would be handy to flag some small portions of the documents as 
+# slides-only, such as images, without a big div wrap.
 
 
-def make_code_doc(doc):
-    doc = copy.deepcopy(doc)  # the transformation is actually in-place,
-    # but the user of this function should not worry about that.
+def exec_code(doc):
+    """
+    Execute all code blocks not flagged as "notebook" (and not in "notebook" div).
+    """
+    doc = copy.deepcopy(doc)
 
-    root = doc[1]  # top-level blocks
-
-    # print(root)
+    root = doc[1]  # top-level blocks (Pandoc(Meta, [Block]))
 
     # Locate the divs and extract the relevant data
     divs = []
-    for index, elt in enumerate(root):
+    for index, elt in enumerate(root):  # top-level divs only
         if isinstance(elt, Div):
             div = elt
-            classes = div[0][1]
-            contents = div[1]
+            attr, blocks = div[:]  # Div(Attr, [Block])
+            classes = attr[1]  # Attr = (Text, [Text], [(Text, Text)])
 
-            if "no-exec" in classes or "notebook" in classes:
-                divs.append(("remove", index, contents))
-            else:
-                divs.append(("unpack", index, contents))
+            if "notebook" in classes:
+                divs.append((index, blocks))
 
     # Reverse document order is needed not to invalidate
     # the remaining matches indices.
-    for action, index, contents in reversed(divs):
-        del root[index]
-        if action == "unpack":
-            root[index:index] = contents
+    for index, blocks in reversed(divs):
+        del root[index]  # remove the div
 
-    return doc
+    src = ""
+    for elt in pandoc.iter(doc):
+        if isinstance(elt, CodeBlock):
+            code = elt
+            attr, text = code[:]  # CodeBlock(Attr, Text)
+            _, classes, _ = attr[:]  # Attr = (Text, [Text], [(Text, Text)])
+            if "notebook" not in classes:
+                src += text + "\n"
+    with open(".tmp.py", "w") as output:
+        output.write(src)
+    exec(src, {"__file__": __file__})
 
-
-code_doc = make_code_doc(doc)
-
-src = ""
-for elt in pandoc.iter(code_doc):
-    if isinstance(elt, CodeBlock):
-        code = elt
-        attr, text = code[:]
-        _, classes, _ = attr[:]
-        if "no-exec" not in classes and "notebook" not in classes:
-            src += text + "\n"
-with open(".tmp.py", "w") as output:
-    output.write(src)
-exec(src, {"__file__": __file__})
+exec_code(doc)
 
 # Document Filter
 # ------------------------------------------------------------------------------
-# TODO: pandoc naming: is "path" well named? Cause I am tempted to also
-#       name path the last component ... the "path" representation is
-#       quite redundant ... DUNNO. Also use "location"? Path being a
-#       nested seq of locations?
+# TODO: great stuff, why not used yet ?!? Ah I see because the concrete 
+# operations not only remove but unpack stuff or delete. So we need a
+# replace rather than a remove.
 def remove(doc, needs_removal):
     "Selected Content Removal - Two-pass Algorithm"
 
@@ -113,8 +111,8 @@ def remove(doc, needs_removal):
     # the remaining matches indices.
     for parent, index in reversed(matches):
         del parent[index]
-    return doc
 
+    return doc
 
 # Slides Generation
 # ------------------------------------------------------------------------------
@@ -124,27 +122,25 @@ def make_slides_doc(doc):
 
     root = doc[1]  # top-level blocks
 
-    # print(root)
-
     # Locate the divs and extract the relevant data
     divs = []
-    for index, elt in enumerate(root):
+    for index, elt in enumerate(root):  # top-level divs only
         if isinstance(elt, Div):
             div = elt
-            classes = div[0][1]
-            contents = div[1]
+            attr, blocks = div[:]  # Div(Attr, [Block])
+            classes = attr[1]  # Attr = (Text, [Text], [(Text, Text)])
 
             if "hidden" in classes or "notebook" in classes:
-                divs.append(("remove", index, contents))
-            else:
-                divs.append(("unpack", index, contents))
+                divs.append(("remove", index, blocks))
+            elif "notes" not in classes: # don't remove the speaker notes wrapper.
+                divs.append(("unpack", index, blocks))
 
     # Reverse document order is needed not to invalidate
     # the remaining matches indices.
-    for action, index, contents in reversed(divs):
+    for action, index, blocks in reversed(divs):
         del root[index]
         if action == "unpack":
-            root[index:index] = contents
+            root[index:index] = blocks
 
     return doc
 
@@ -183,19 +179,19 @@ def make_notebook_doc(doc):
         if isinstance(elt, Div):
             div = elt
             classes = div[0][1]
-            contents = div[1]
+            blocks = div[1]
 
-            if "hidden" in classes or "slides" in classes:
-                divs.append(("remove", index, contents))
+            if "hidden" in classes or "slides" or "notes" in classes:
+                divs.append(("remove", index, blocks))
             else:
-                divs.append(("unpack", index, contents))
+                divs.append(("unpack", index, blocks))
 
     # Reverse document order is needed not to invalidate
     # the remaining matches indices.
-    for action, index, contents in reversed(divs):
+    for action, index, blocks in reversed(divs):
         del root[index]
         if action == "unpack":
-            root[index:index] = contents
+            root[index:index] = blocks
 
     return doc
 

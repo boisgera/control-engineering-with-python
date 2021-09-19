@@ -1,8 +1,8 @@
 #!/bin/bash
 
-./build.py intro.txt
-./build.py odes.txt
-./build.py linear-systems.txt
-./build.py controllers.txt
-./build.py observers.txt
+./build.py intro.md
+./build.py odes.md
+./build.py linear-systems.md
+./build.py controllers.md
+./build.py observers.md
 

@@ -1757,6 +1757,18 @@ The equilibrium $x_e$ is **globally asymptotically stable** if:
     \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
     $$
 
+::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+Global asymptotic stability is requirement which is very similar to attractivity.
+The only difference is that it requires the time $\tau$ that we should wait
+to be sure that the distance between $x(t)$ and the equilibrium is less that
+$\varepsilon$ should be valid not only for the initial condition $x(0) = x_0$ 
+but also for any other initial condition in an (arbitrary small) neighbourhood
+of $x_0$. There is a common profile for the "speed of convergence" towards the equilibrium between an initial condition and its neighbors ; 
+this condition is not always met if we merely have an attractive equilibrium.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 --------------------------------------------------------------------------------
 
 Equivalently: 
