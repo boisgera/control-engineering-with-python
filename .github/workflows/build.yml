@@ -3,43 +3,41 @@ on: [push]
 
 jobs:
   main:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         shell: bash -l {0} 
     steps:
-      # Checkout
-      # ------------------------------------------------------------------------
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      # Activate Conda Environment
-      # ----------------------------------------------------------------------
-      - uses: conda-incubator/setup-miniconda@v2
+      - name: Activate Conda Environment
+        uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: control-engineering-with-python
           environment-file: environment.yml
 
-      # Install Latex
-      # ------------------------------------------------------------------------
-      - run: sudo apt-get update
-      - run: sudo apt-get install texlive-full
+      - name: LaTeX Install
+        run: sudo apt-get update && sudo apt-get install texlive-full
 
-      # Install Decktape
-      # ----------------------------------------------------------------------
-      - uses: actions/setup-node@v2
+      - name: Node Install
+        uses: actions/setup-node@v2
         with:
           node-version: '12'
-      - run: npm install -g decktape
 
-      # Build
-      # ----------------------------------------------------------------------
-      - run: ./build # generate slides and notebooks
-      - run: ./build-pdf
+      - name: Decktape Install
+        run: npm install -g decktape
 
-      # Deploy to gh-pages
-      # ----------------------------------------------------------------------
-      - run: rm .gitignore
-      - name: deploy to gh-pages
+      - name: Slides & Notebooks build
+        run: ./build
+
+      - name: PDF build
+        run: ./build-pdf
+
+      - name: Deployment Setup
+        run: rm .gitignore
+
+      - name: Deployment
         uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
