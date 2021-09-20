@@ -39,7 +39,7 @@ flags:
 
 # Source Document
 # ------------------------------------------------------------------------------
-doc_file = sys.argv[1]  # some markdown document
+doc_file = sys.argv[-1]  # some markdown document
 doc_name = os.path.splitext(doc_file)[0]
 doc = pandoc.read(file=doc_file)
 
@@ -87,7 +87,8 @@ def exec_code(doc):
         output.write(src)
     exec(src, {"__file__": __file__})
 
-exec_code(doc)
+if "--fast" not in sys.argv:
+    exec_code(doc)
 
 # Document Filter
 # ------------------------------------------------------------------------------
