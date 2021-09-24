@@ -9,7 +9,8 @@ Control Engineering with Python
 
  0. **Introduction to Control Engineering** (30 min)
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/intro.pdf))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/intro.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=intro.ipynb))
 
  1. **Introduction to Dynamical Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
