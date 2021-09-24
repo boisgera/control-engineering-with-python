@@ -14,7 +14,8 @@ Control Engineering with Python
 
  1. **Introduction to Dynamical Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/odes.html),
-    [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf)).
+    [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf),
+    [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=odes.ipynb))
 
       - ODEs: definitions, numerical schemes, visualization (30 min). 
 
@@ -24,7 +25,8 @@ Control Engineering with Python
 
  2. **Linear-Time Invariant Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.pdf))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=linear-systems.ipynb))
 
       - Linearization, state-space model (30 min)
 
@@ -34,7 +36,8 @@ Control Engineering with Python
 
  3. **Controllers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/controllers.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllers.ipynb))
 
       - Controllability (1h)
 
@@ -42,7 +45,8 @@ Control Engineering with Python
 
  4. **Observers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf))
+     [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
 
       - Observability (1h)
 
