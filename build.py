@@ -268,10 +268,13 @@ def notebookify(doc):
             cells.append(code_cell)
         else:
             wrapper = Pandoc(Meta({}), [block])
-            options = ["-t", "markdown-smart"]  # needed for en-dashes for
-            # example: we don't expect Jupyter cells to be smart, so we
-            # *disable* the smart output so that '–' won't get represented
-            # as '--'.
+            options = ["-t", "markdown-smart-raw_attribute"]  
+            # -smart needed for en-dashes for example: we don't expect Jupyter 
+            # cells to be smart, so we *disable* the smart output so that 
+            # '–' won't get represented as '--'.
+            # -raw_attribute so that raw html is output as HTML, not as
+            # the non-standard markdown syntax `<p>Hello</p>`{=html} that
+            # the Jupyter notebooks do not understand.
             source = pandoc.write(wrapper, options=options)
 
             merge_markdown = False
