@@ -13,7 +13,7 @@ Preamble (Code)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
@@ -36,7 +36,6 @@ Preamble (Code)
     from mpl_toolkits.mplot3d import *
     from scipy.linalg import *
 
-
     import numpy as np; np.seterr(all="ignore")
     import numpy.linalg as la
     import scipy.misc
@@ -56,7 +55,7 @@ Preamble (Code)
 
     rc = {
         "text.usetex": True,
-        "pgf.preamble": [r"\usepackage{amsmath,amsfonts,amssymb}"], 
+        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}", 
         #"font.family": "serif",
         "font.serif": [],
         #"font.sans-serif": [],
@@ -65,6 +64,7 @@ Preamble (Code)
         "axes.labelsize":  fontsize,
         "xtick.labelsize": fontsize,
         "ytick.labelsize": fontsize,
+        "figure.max_open_warning": 100,
         #"savefig.dpi": 300,
         #"figure.dpi": 300,
     }

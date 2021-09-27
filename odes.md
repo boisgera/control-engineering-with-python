@@ -49,7 +49,7 @@ Preamble
 
     rc = {
         "text.usetex": True,
-        "pgf.preamble": [r"\usepackage{amsmath,amsfonts,amssymb}"], 
+        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}", 
         #"font.family": "serif",
         "font.serif": [],
         #"font.sans-serif": [],
@@ -58,6 +58,7 @@ Preamble
         "axes.labelsize":  fontsize,
         "xtick.labelsize": fontsize,
         "ytick.labelsize": fontsize,
+        "figure.max_open_warning": 100,
         #"savefig.dpi": 300,
         #"figure.dpi": 300,
     }

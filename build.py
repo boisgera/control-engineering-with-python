@@ -47,7 +47,7 @@ doc = pandoc.read(file=doc_file)
 # ------------------------------------------------------------------------------
 # TODO: make a single function that gathers the code that need to be executed
 # (filter off non-executable divs and code blocks at the same time).
-# That would be handy to flag some small portions of the documents as 
+# That would be handy to flag some small portions of the documents as
 # slides-only, such as images, without a big div wrap.
 
 
@@ -87,12 +87,13 @@ def exec_code(doc):
         output.write(src)
     exec(src, {"__file__": __file__})
 
+
 if "--fast" not in sys.argv:
     exec_code(doc)
 
 # Document Filter
 # ------------------------------------------------------------------------------
-# TODO: great stuff, why not used yet ?!? Ah I see because the concrete 
+# TODO: great stuff, why not used yet ?!? Ah I see because the concrete
 # operations not only remove but unpack stuff or delete. So we need a
 # replace rather than a remove.
 def remove(doc, needs_removal):
@@ -115,6 +116,7 @@ def remove(doc, needs_removal):
 
     return doc
 
+
 # Slides Generation
 # ------------------------------------------------------------------------------
 def make_slides_doc(doc):
@@ -133,7 +135,7 @@ def make_slides_doc(doc):
 
             if "hidden" in classes or "notebook" in classes:
                 divs.append(("remove", index, blocks))
-            elif "notes" not in classes: # don't remove the speaker notes wrapper.
+            elif "notes" not in classes:  # don't remove the speaker notes wrapper.
                 divs.append(("unpack", index, blocks))
 
     # Reverse document order is needed not to invalidate
@@ -172,8 +174,6 @@ def make_notebook_doc(doc):
 
     root = doc[1]  # top-level blocks
 
-    # print(root)
-
     # Locate the divs and extract the relevant data
     divs = []
     for index, elt in enumerate(root):
@@ -182,7 +182,7 @@ def make_notebook_doc(doc):
             classes = div[0][1]
             blocks = div[1]
 
-            if "hidden" in classes or "slides" or "notes" in classes:
+            if "hidden" in classes or "slides" in classes or "notes" in classes:
                 divs.append(("remove", index, blocks))
             else:
                 divs.append(("unpack", index, blocks))
@@ -213,7 +213,7 @@ def Notebook():
             "cells": [],
             "metadata": {
                 "kernelspec": {
-                    "display_name": "Python 3",
+                    "display_name": "Python 3 (ipykernel)",
                     "language": "python",
                     "name": "python3",
                 },
@@ -224,11 +224,11 @@ def Notebook():
                     "name": "python",
                     "nbconvert_exporter": "python",
                     "pygments_lexer": "ipython3",
-                    "version": "3.6.4",
+                    "version": "3.9.7",
                 },
             },
             "nbformat": 4,
-            "nbformat_minor": 2,
+            "nbformat_minor": 5,
         }
     )
 
@@ -237,7 +237,7 @@ def CodeCell():
     return copy.deepcopy(
         {
             "cell_type": "code",
-            "execution_count": 1,
+            #"execution_count": 1,
             "metadata": {},
             "outputs": [],
             "source": [],
@@ -255,22 +255,21 @@ def notebookify(doc):
     notebook = Notebook()
     cells = notebook["cells"]
     blocks = doc[1]
-    # print(blocks)
-    execution_count = 1
+    #execution_count = 1
 
     for block in blocks:
         if isinstance(block, CodeBlock):
             source = block[1]
             code_cell = CodeCell()
             code_cell["source"] = source
-            code_cell["execution_count"] = execution_count
-            execution_count += 1
+            #code_cell["execution_count"] = execution_count
+            #execution_count += 1
             cells.append(code_cell)
         else:
             wrapper = Pandoc(Meta({}), [block])
-            options = ["-t", "markdown-smart-raw_attribute"]  
-            # -smart needed for en-dashes for example: we don't expect Jupyter 
-            # cells to be smart, so we *disable* the smart output so that 
+            options = ["-t", "markdown-smart-raw_attribute"]
+            # -smart needed for en-dashes for example: we don't expect Jupyter
+            # cells to be smart, so we *disable* the smart output so that
             # '–' won't get represented as '--'.
             # -raw_attribute so that raw html is output as HTML, not as
             # the non-standard markdown syntax `<p>Hello</p>`{=html} that
