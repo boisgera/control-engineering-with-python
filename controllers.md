@@ -17,8 +17,8 @@ Preamble
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
     %matplotlib inline
-    matplotlib.rcParams['text.usetex'] = True
-    matplotlib.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}' #if needed
+    #matplotlib.rcParams['text.usetex'] = True
+    #matplotlib.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}' #if needed
     from matplotlib.pyplot import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -224,7 +224,7 @@ $$
     t = linspace(0, tf, 1000)
     xt = result["sol"](t)[0]
     plot(t, xt)
-    grid(True); xlabel("$t$"); title("$x(t)$")
+    grid(True); xlabel("t"); title("x(t)")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -246,8 +246,8 @@ $$
     figure()
     vt = result["sol"](t)[1]
     plot(t, 3.6 * vt)
-    grid(True); xlabel("$t$")
-    title(r"$\dot{x}(t) \, \mbox{[km/h]}$")
+    grid(True); xlabel("t")
+    title(r"dx/dt km/h")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
