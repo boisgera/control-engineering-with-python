@@ -440,6 +440,7 @@ $$\dot{x}_n = u, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2.$$
      sources do you need to make the system controllable and where can you
      place them?
 
+<!--
 Extra Exercices
 --------------------------------------------------------------------------------
 
@@ -450,6 +451,9 @@ Extra Exercices
   - Controllability in prey-predator systems (via the invariant)
 
   - etc.
+
+-->
+
 
 Asymptotic Stabilization
 ================================================================================
