@@ -1,5 +1,5 @@
 % Observers
-% Sébastien Boisgérault, Mines ParisTech
+% [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), MINES ParisTech, PSL University
 
 Preamble
 ================================================================================

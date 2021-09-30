@@ -1,5 +1,5 @@
 % Ordinary Differential Equations
-% [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), MINES ParisTech
+% [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), MINES ParisTech, PSL University
 
 Preamble
 --------------------------------------------------------------------------------

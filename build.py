@@ -250,12 +250,34 @@ def MarkdownCell():
 
 
 def notebookify(doc):
-    from pandoc.types import Pandoc, Meta, CodeBlock
+    from pandoc.types import Pandoc, Meta, CodeBlock, Header, Para, Str, Space
 
     notebook = Notebook()
     cells = notebook["cells"]
     blocks = doc[1]
     #execution_count = 1
+
+    metamap = doc[0][0]
+    hero_title = [
+        Str("Control"), Space(), Str("Engineering"), Space(), 
+        Str("with"), Space(), 
+        Str("Python")
+    ]
+    title = metamap["title"][0]
+    author = metamap["author"][0][0][0]
+
+    header = Pandoc(
+        Meta({}), 
+        [
+            Header(1, ("", [], []), hero_title),
+            Header(1, ("", [], []), title),
+            Para(author),
+        ]
+    )
+
+    header_cell = MarkdownCell()
+    header_cell["source"] = pandoc.write(header)
+    cells.append(header_cell)
 
     for block in blocks:
         if isinstance(block, CodeBlock):

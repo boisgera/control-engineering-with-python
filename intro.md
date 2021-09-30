@@ -1,5 +1,5 @@
-% Control Engineering with Python
-% Sébastien Boisgérault, MINES ParisTech
+% Introduction
+% [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), MINES ParisTech, PSL University
 
 
 <i class="fa fa-github" aria-hidden="true"></i> Resources
