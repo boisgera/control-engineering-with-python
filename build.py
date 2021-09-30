@@ -262,7 +262,7 @@ def notebookify(doc):
             source = block[1]
             code_cell = CodeCell()
             code_cell["source"] = source
-            #code_cell["execution_count"] = execution_count
+            code_cell["execution_count"] = None # execution_count
             #execution_count += 1
             cells.append(code_cell)
         else:
