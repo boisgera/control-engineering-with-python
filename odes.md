@@ -213,7 +213,7 @@ Scalar differential equations structured as
 can be converted to the standard form with the state
  
   $$
-  y = (x, \dot{x}, \ddot{x}, \dots, x^{(n-1)}) \in \mathbb{R^n}
+  y = (x, \dot{x}, \ddot{x}, \dots, x^{(n-1)}) \in \mathbb{R}^n
   $$
 
 --------------------------------------------------------------------------------
