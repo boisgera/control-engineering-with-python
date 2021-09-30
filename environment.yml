@@ -1,4 +1,4 @@
-name: control-engineering-with-python
+name: control
 channels:
   - conda-forge
 dependencies:
