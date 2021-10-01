@@ -58,11 +58,7 @@ Examples
 <i class="fa fa-gear"></i> Robotic Arms
 --------------------------------------------------------------------------------
 
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/s-yne8xTNM0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
---------------------------------------------------------------------------------
-
-**DEMO:** $2 k \pi$ ([CAS](http://www.mines-paristech.fr/Recherche/Centres-de-recherche/Centre-automatique-et-systemes-CAS/))
+Video: [<i class="fa fa-youtube"></i>](https://www.youtube.com/watch?v=s-yne8xTNM0)
 
 
 <i class="fa fa-plane"></i> Aircrafts
@@ -111,13 +107,7 @@ Adaptative cruise control = CAS + CC [(<i class="fa fa-youtube"></i> : IIHS)](ht
 
  3.  Electronic stability control (ESC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Electronic_stability_control)
 
-
-     <iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-
-
-
-
+Video: [<i class="fa fa-youtube"></i>](https://www.youtube.com/watch?v=ie0Icbo6jJ8)
 
 
 <style>
