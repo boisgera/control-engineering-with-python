@@ -16,7 +16,7 @@ Preamble
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib inline
+    %matplotlib notebook
     matplotlib.rcParams['text.usetex'] = True
     matplotlib.rcParams['text.latex.preamble'] = r'\usepackage{amsmath}' #if needed
     from matplotlib.pyplot import *

@@ -17,7 +17,7 @@ Preamble
 
     from numpy import *
     import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib inline
+    %matplotlib notebook
     from matplotlib.pyplot import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -417,20 +417,18 @@ So that when
 
 Represent solutions fragments in the background
 
-    figure()
     xs = ys = linspace(-1.5, 1.5, 50)
-    streamplot(*Q(f, xs, ys), color="lightgrey")
+    x0, x1 = x
 
 <i class="fa fa-area-chart"></i> ...
 --------------------------------------------------------------------------------
 
-    plot(x[0], x[1], "k")
-    plot(x0[0], x0[1], "ko")
-    dx = x[0][-1] - x[0][-2]
-    dy = x[1][-1] - x[1][-2]
-    arrow(x[0][-1], x[1][-1], dx, dy, width=0.02, color="k")
-    grid()
-    axis("equal")
+    figure()
+    streamplot(*Q(f, xs, ys), color="lightgrey")
+    plot(x0, x1, "k"); plot(x0[0], x1[0], "ko")
+    dx0, dx1 = x0[-1] - x0[-2], x1[-1] - x1[-2]
+    arrow(x[0][-1], x[1][-1], dx0, dx1, width=0.02, color="k", zorder=10)
+    grid(); axis("equal")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1312,22 +1310,39 @@ Then the dynamical system is continous w.r.t. the initial state.
 <i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
-    figure(); ax = gca()
-    xr = yr = linspace(0.0, 2.0, 1000)
-    streamplot(*Q(lambda y: f(0,y), xr, yr), color="grey")
-    for xy in zip(x, y):
-        x_, y_ = xy
-        ax.add_artist(Circle((x_, y_), 0.2, color="#d3d3d3"))
-    ax.add_artist(Circle((x[0], y[0]), 0.1, color="#808080"))
-    plot(x, y, "k")
+    def display_streamplot(): 
+        ax = gca()
+        xr = yr = linspace(0.0, 2.0, 1000)
+        streamplot(*Q(lambda y: f(0,y), xr, yr), color="grey")
 
 <i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
-    result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575], max_step=0.01)
-    x = result["y"][0]
-    y = result["y"][1]
-    plot(x, y, "k--")
+    def display_reference_solution():
+        ax = gca()
+        for xy in zip(x, y):
+            x_, y_ = xy
+            ax.add_artist(Circle((x_, y_), 0.2, color="#d3d3d3"))
+        ax.add_artist(Circle((x[0], y[0]), 0.1, color="#808080"))
+        plot(x, y, "k")
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    def display_alternate_solution():
+        result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575], max_step=0.01)
+        x = result["y"][0]
+        y = result["y"][1]
+        plot(x, y, "k--")
+
+
+<i class="fa fa-area-chart"></i>
+--------------------------------------------------------------------------------
+
+    figure()
+    display_streamplot()
+    display_reference_solution()
+    display_alternate_solution()
     axis([0,2,0,2]); axis("square")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1607,13 +1622,13 @@ $\|x_0 - x_e\| \leq r$.
     x = y = linspace(-5.0, 5.0, 1000)
     streamplot(*Q(f, x, y), color="k") 
     plot([0], [0], "k.", ms=10.0)
+    axis("square")
 
 Globally Attractive
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("square")
     tight_layout()
     save("images/globally-attractive")
 
@@ -1641,13 +1656,13 @@ Globally Attractive
     x = y = linspace(-5.0, 5.0, 1000)
     streamplot(*Q(f, x, y), color="k") 
     plot([0], [0], "k.", ms=10.0)
+    axis("square")
 
 Locally Attractive
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("square")
     tight_layout()
     save("images/locally-attractive")
 
@@ -1754,12 +1769,12 @@ Stream Plot
     x = y = linspace(-2.0, 2.0, 1000)
     streamplot(*Q(f, x, y), color="k") 
     plot([1], [0], "k.", ms=10.0)
+    axis("square")
 
 --------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("square")
     tight_layout()
     save("images/attractive2")
 
@@ -1925,10 +1940,10 @@ Consider the ODE with right-hand side:
     streamplot(*Q(f, x, y), color="k") 
     xticks([-1, 0, 1])
     plot([0], [0], "k.", ms=10.0)
+    axis("square")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("square")
     tight_layout()
     save("images/vinograd")
 
