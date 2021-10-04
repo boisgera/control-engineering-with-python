@@ -7,10 +7,6 @@ authors:
   - name: Sébastien Boisgérault
     orcid: 0000-0003-4685-8099
     affiliation: 1
-  - name: Author Without ORCID^[co-first author] # note this makes a footnote saying 'co-first author'
-    affiliation: 2
-  - name: Author with no affiliation^[corresponding author]
-    affiliation: 3
 affiliations:
  - name: Center for Robotics, MINES ParisTech, PSL University
    index: 1
