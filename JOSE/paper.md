@@ -16,18 +16,18 @@ bibliography: paper.bib
 
 Test reference: [@Sontag98]
 
-### Prerequisites
+## Statement of Need
 
-  - Ordinary Differential Equations and Linear Algebra
-    (undergraduate level).
+TODO:
 
-  - Scientific Computing skills with the Python/SciPy stack.
+  - Mix theory and numerical/visualisation methods
 
-  - Experience in a domain where control engineering is useful:
-    either Mechanical Engineering, 
-    Electrical Engineering, Process Engineering, etc. 
+  - Python ecosystem (wider audience, tools more familiar, etc.)
 
-### Learning Objectives
+## Learning Objectives
+
+The course targets students with a basic knowledge of linear algebra and ordinary differential equations as well as some experience with the Python scientific tools (NumPy, Scipy, Matplotlib, Jupyter notebooks). Expertise in an application domain
+of control engineering, such as mechanical engineering, electrical engineering or process engineering can be useful.
 
 At the end of this course, students will be able to:
 
@@ -37,13 +37,20 @@ At the end of this course, students will be able to:
 
   - leverage the control engineering perspective in application domains.
 
-### Calendar
+## Experience
 
-The course is composed of 3 periods of 2 days (with a 6-hour workday), 
-separated by at least two weeks. The typical student workload should be
-in the 75--90 hour range (including the 36 hours of face-to-face teaching).
+TODO: convert links to bibliography?
 
-Accordingly, the course is decomposed in three parts:
+The course material has been taught:
+
+  - in [EMINES engineering cycle](https://www.emines-ingenieur.org/en/education/course-catalog) since 2019. In this context, the course is composed of 
+  2 periods of 3 (6-hour) day. The typical student workload is in the 75--90 hour range (including the 36 hours of face-to-face teaching). The second period is
+  entirely dedicated to a mobile robotics project.
+
+  - in [MINES ParisTech master's degree in science and executive engineering](https://mines-paristech.eu/Admissions/Master-degree-in-science-and-engineering/), since 2021.
+  Since the format is shorter ($3 \times 3$h plus the 1.5h exam) some subjects are dropped and the robotics project is not included.
+
+Accordingly, the course is composed of three parts:
 
  1. Dynamical Systems: Models, Properties, Simulation.
 
@@ -112,3 +119,30 @@ be produced at most two weeks after the end of the part.
 Up to 1/3 of the final mark will be based on the 
 interactions with the teachers during the course.
 
+# TODO
+
+JOSE papers should:
+
+  - [X] List all authors and affiliations.
+    
+  - [ ] Describe the submission, and explain its eligibility for JOSE.
+    
+  - [ ] Include a “Statement of Need” section, explaining how the submitted 
+    artifacts contribute to computationally enabled teaching and learning, and describing how they might be adopted by others.
+
+    -> TODO: teaching of theory & code, integrated. Not Matlab based, but 
+    Python-based (scientific stack)
+
+  - [ ] For learning modules, describe the learning objectives, content, instructional design, and experience of use in teaching and learning situations.
+    
+  - [ ] Tell us the “story” of the project: how did it come to be?
+    
+  - [ ] Cite key references, including a link to the open archive of the sofware or the learning module.
+
+JOSE welcomes submissions with diverse educational contexts. 
+
+  - [ ] You should write your paper for a non-specialist reader. 
+  
+  - [ ] Your submission should probably be around 1000 words (or around two pages).
+
+The goal is that someone reading the JOSE paper has enough information to decide if they’d be interested in adoping the learnig module or software. Readers will want to know how the content/software has been used, and how they would adopt it. They may also want to be persuaded that the authors have put careful work on creating the material, and have experience teaching with it.

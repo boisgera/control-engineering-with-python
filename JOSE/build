@@ -1,0 +1,3 @@
+#!/bin/bash
+
+pandoc -o paper.pdf --bibliography=paper.bib paper.md
