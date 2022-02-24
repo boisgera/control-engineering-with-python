@@ -14,6 +14,6 @@ dependencies:
   - jupyterlab
   - rise
   - curl
-  - pandoc=2.14.2
+  - pandoc=2.17.1.1
   - pip:
-    - "-e git+https://github.com/boisgera/pandoc@bc90e6ec7f3e423bbe078f3a446b25d02c246b51#egg=pandoc"
+    - pandoc==2.1
