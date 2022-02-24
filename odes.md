@@ -117,12 +117,10 @@ Consider $f(x,y) = (-y, x).$
 <i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
-``` python
-  figure()
-  x = y = linspace(-1.0, 1.0, 20)
-  gca().set_aspect(1.0); grid(True)
-  quiver(*Q(f, x, y)) 
-```
+    figure()
+    x = y = linspace(-1.0, 1.0, 20)
+    gca().set_aspect(1.0); grid(True)
+    quiver(*Q(f, x, y))
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -152,11 +150,12 @@ A solution of $\dot{x} = f(x)$ is
 <i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
-    figure()
-    x = y = linspace(-1.0, 1.0, 20)
-    gca().set_aspect(1.0); grid(True)
-    streamplot(*Q(f, x, y), color="k") 
-
+``` python
+figure()
+x = y = linspace(-1.0, 1.0, 20)
+gca().set_aspect(1.0); grid(True)
+streamplot(*Q(f, x, y), color="k") 
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -164,14 +163,11 @@ A solution of $\dot{x} = f(x)$ is
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/test_Q2.svg)
+## {.section data-background="images/test_Q2.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 Initial Value Problem (IVP)
 --------------------------------------------------------------------------------
@@ -291,13 +287,12 @@ The pendulum dynamics is equivalent to:
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/streamplot_pendulum.svg)
+## {.section data-background="images/streamplot_pendulum.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 <i class="fa fa-question-circle-o"></i> -- Model / Pendulum
 --------------------------------------------------------------------------------
@@ -406,11 +401,10 @@ So that when
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/rotation.svg)    
+## {.section data-background="images/rotation.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 <i class="fa fa-area-chart"></i> Trajectories (State Space)
 --------------------------------------------------------------------------------
@@ -439,13 +433,9 @@ Represent solutions fragments in the background
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/rotation2.svg)    
+## {.section data-background="images/rotation2.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 
 Beyond the Basic Solver
@@ -560,10 +550,10 @@ even if the returned value doesn't depend on it (time-invariant system).
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-![](images/solve_ivp_1.svg)    
+## {.section data-background="images/solve_ivp_1.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 
 Variable Step Size
@@ -642,12 +632,12 @@ The solver ensures (approximately) that at each step:
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-![](images/solve_ivp_2.svg)    
+## {.section data-background="images/solve_ivp_2.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Dense Output
+
+Dense Outputs
 --------------------------------------------------------------------------------
 
 Using a small `max_step` is usually the wrong way to "get more data points" 
@@ -700,10 +690,10 @@ with little extra computations.
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-![](images/solve_ivp_3.svg)    
+## {.section data-background="images/solve_ivp_3.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 
 <!--
@@ -894,9 +884,7 @@ $\dot{x} = x^2$ and $x(0)=1.$
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/finite-time-blowup.svg)
+## {.section data-background="images/finite-time-blowup.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -946,11 +934,10 @@ But it's defined only for $t<1.$
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/finite-time-blowup-2.svg)
+## {.section data-background="images/finite-time-blowup-2.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 --------------------------------------------------------------------------------
 
@@ -1021,12 +1008,9 @@ Consider the scalar IVP with initial value $x(0) = (0,0)$ and right-hand side
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/discont.svg)    
+## {.section data-background="images/discont.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 
 <i class="fa fa-lightbulb-o"></i> -- No Local Solution
@@ -1353,9 +1337,7 @@ Then the dynamical system is continous w.r.t. the initial state.
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/continuity.svg)  
+## {.section data-background="images/continuity.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1636,7 +1618,7 @@ Globally Attractive
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/globally-attractive.svg)    
+## {.section data-background="images/globally-attractive.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1670,12 +1652,12 @@ Locally Attractive
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/locally-attractive.svg)    
+## {.section data-background="images/locally-attractive.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-        
 
+      
 --------------------------------------------------------------------------------
 
 ### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Stability
@@ -1780,11 +1762,13 @@ Stream Plot
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/attractive2.svg)    
+## {.section data-background="images/attractive2.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 --------------------------------------------------------------------------------
 
@@ -1828,13 +1812,12 @@ Plot the distance to the equilibrium as a function of time.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-![](images/attractive-time.svg)    
+## {.section data-background="images/attractive-time.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 Asymptotic Stability
 --------------------------------------------------------------------------------
@@ -1951,9 +1934,7 @@ Consider the ODE with right-hand side:
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/vinograd.svg)    
+## {.section data-background="images/vinograd.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
