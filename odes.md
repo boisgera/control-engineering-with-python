@@ -1849,7 +1849,7 @@ print([-xm, xm, -ym, ym])
 axes.axis([-xm, xm, -ym, ym])
 print(axes.axis())
 fig.subplots_adjust(0, 0, 1, 1)
-#axes.axis('off')
+axes.axis('off')
 
 polygon = None
 
@@ -1869,7 +1869,7 @@ anim.save("videos/tear.mp4", writer=writer, dpi=100)
 
 --------------------------------------------------------------------------------
 
-<video width="480" height="480" controls> <!--  style="width:80vw; height:45vw" -->
+<video controls style="width:100vw"> <!--  style="width:80vw; height:45vw" -->
   <source src="videos/tear.mp4" type="video/mp4">
 Your browser does not support the video tag.
 </video> 
