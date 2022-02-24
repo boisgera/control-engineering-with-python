@@ -10,6 +10,7 @@ dependencies:
   - autograd
   - sympy
   - matplotlib
+  - ffmpeg
   - jupyter
   - jupyterlab
   - rise
