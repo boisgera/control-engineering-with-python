@@ -23,5 +23,3 @@ videos/*
 # ... but for examples
 !examples/*
 
-# Pandoc from pip
-src
