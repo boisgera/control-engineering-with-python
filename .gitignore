@@ -18,6 +18,7 @@ images/*.svg
 *.html
 *.pdf
 *.ipynb
+videos/*
 
 # ... but for examples
 !examples/*
