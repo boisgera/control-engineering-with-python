@@ -220,19 +220,18 @@ for elt, path in pandoc.iter(notebook_doc, path=True):
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(io.StringIO(content), parser)
             html = tree.getroot()
-            print(">>>", html)
-            print("ooo", content)
-            videos = list(html.iter("video"))
-            if videos:
-                video = videos[0]
-                source = video.find("source")
-                src = source.attrib["src"]
-                type_ = source.attrib["type"]
-                code = CodeBlock(
-                    ("", [], []), VIDEO_TEMPLATE.format(src=src, type=type_)
-                )
-                holder, index = path[-1]
-                video_elements.append((holder, index, code))
+            if html:
+                videos = list(html.iter("video"))
+                if videos:
+                    video = videos[0]
+                    source = video.find("source")
+                    src = source.attrib["src"]
+                    type_ = source.attrib["type"]
+                    code = CodeBlock(
+                        ("", [], []), VIDEO_TEMPLATE.format(src=src, type=type_)
+                    )
+                    holder, index = path[-1]
+                    video_elements.append((holder, index, code))
 
 for holder, index, code in reversed(video_elements):
     holder[index] = code
