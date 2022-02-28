@@ -8,8 +8,7 @@ import sys
 
 # Pandoc
 import pandoc
-from pandoc.types import *
-
+from pandoc.types import CodeBlock, Div, Header, RawBlock
 
 # ------------------------------------------------------------------------------
 # TODO: reconsider all flags wrt use cases and simplification of the document.
@@ -56,12 +55,11 @@ def exec_code(doc):
     Execute all code blocks not flagged as "notebook" (and not in "notebook" div).
     """
     doc = copy.deepcopy(doc)
-
-    root = doc[1]  # top-level blocks (Pandoc(Meta, [Block]))
+    toplevel_blocks = doc[1]  # top-level blocks (Pandoc(Meta, [Block]))
 
     # Locate the divs and extract the relevant data
     divs = []
-    for index, elt in enumerate(root):  # top-level divs only
+    for index, elt in enumerate(toplevel_blocks):  # top-level divs only
         if isinstance(elt, Div):
             div = elt
             attr, blocks = div[:]  # Div(Attr, [Block])
@@ -73,7 +71,7 @@ def exec_code(doc):
     # Reverse document order is needed not to invalidate
     # the remaining matches indices.
     for index, blocks in reversed(divs):
-        del root[index]  # remove the div
+        del toplevel_blocks[index]  # remove the div
 
     src = ""
     for elt in pandoc.iter(doc):
@@ -86,7 +84,6 @@ def exec_code(doc):
     with open(".tmp.py", "w") as output:
         output.write(src)
     exec(src, {"__file__": __file__})
-
 
 if "--fast" not in sys.argv:
     exec_code(doc)
@@ -119,6 +116,17 @@ def remove(doc, needs_removal):
 
 # Slides Generation
 # ------------------------------------------------------------------------------
+
+# Two issues here: for one some Header stuff flagged 'slides'
+# should be removed from the notebook output but isn't. Mmmmmm shit.
+# Second, deeper issue: Headers are NOT the holders of the elements
+# that follow, so the algorithm needs to be smarter and identify the
+# corresponding content.
+# For now, short term: squash two issues by using only divs in the
+# document to deal with conditional content.
+# Ouch: the reveal target doesn't like divs very much (overlap
+# and / or no newpage). Can we solve this by unpacking slides divs ?
+
 def make_slides_doc(doc):
     doc = copy.deepcopy(doc)  # the transformation is actually in-place,
     # but the user of this function should not worry about that.
@@ -154,20 +162,9 @@ options = ["--standalone", "-V", "theme:white", "--mathjax", "-V", "slideNumber:
 
 pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=options)
 
+
 # Notebook Generation
 # ------------------------------------------------------------------------------
-
-# Two issues here: for one some Header stuff flagged 'slides'
-# should be removed from the notebook output but isn't. Mmmmmm shit.
-# Second, deeper issue: Headers are NOT the holders of the elements
-# that follow, so the algorithm needs to be smarter and identify the
-# corresponding content.
-# For now, short term: squash two issues by using only divs in the
-# document to deal with conditional content.
-# Ouch: the reveal target doesn't like divs very much (overlap
-# and / or no newpage). Can we solve this by unpacking slides divs ?
-
-
 def make_notebook_doc(doc):
     doc = copy.deepcopy(doc)  # the transformation is actually in-place,
     # but the user of this function should not worry about that.
@@ -198,6 +195,12 @@ def make_notebook_doc(doc):
 
 
 notebook_doc = make_notebook_doc(doc)
+
+for elt in pandoc.iter(notebook_doc[1]):
+    if isinstance(elt, RawBlock):
+        print("***", elt)
+# TODO: search for raw html, parse with lxml, filter on video tags, search for
+# source(s? first one?), generate the appropriate Jupyter Code Cell.
 
 # TODO: also need to remove unsupported construct from Jupyter Markdown Cells.
 #       E.g.: attributes (that's about it ?)
@@ -237,7 +240,7 @@ def CodeCell():
     return copy.deepcopy(
         {
             "cell_type": "code",
-            #"execution_count": 1,
+            # "execution_count": 1,
             "metadata": {},
             "outputs": [],
             "source": [],
@@ -255,24 +258,28 @@ def notebookify(doc):
     notebook = Notebook()
     cells = notebook["cells"]
     blocks = doc[1]
-    #execution_count = 1
+    # execution_count = 1
 
     metamap = doc[0][0]
     hero_title = [
-        Str("Control"), Space(), Str("Engineering"), Space(), 
-        Str("with"), Space(), 
-        Str("Python")
+        Str("Control"),
+        Space(),
+        Str("Engineering"),
+        Space(),
+        Str("with"),
+        Space(),
+        Str("Python"),
     ]
     title = metamap["title"][0]
     author = metamap["author"][0][0][0]
 
     header = Pandoc(
-        Meta({}), 
+        Meta({}),
         [
             Header(1, ("", [], []), hero_title),
             Header(1, ("", [], []), title),
             Para(author),
-        ]
+        ],
     )
 
     header_cell = MarkdownCell()
@@ -284,8 +291,8 @@ def notebookify(doc):
             source = block[1]
             code_cell = CodeCell()
             code_cell["source"] = source
-            code_cell["execution_count"] = None # execution_count
-            #execution_count += 1
+            code_cell["execution_count"] = None  # execution_count
+            # execution_count += 1
             cells.append(code_cell)
         else:
             wrapper = Pandoc(Meta({}), [block])
@@ -312,6 +319,8 @@ def notebookify(doc):
     return notebook
 
 
+# TODO: try to replace notebookify with "native" pandoc notebook conversion;
+# See how it goes. Compare ...
 notebook = notebookify(notebook_doc)
 output = open(doc_name + ".ipynb", "w")
 output.write(json.dumps(notebook, indent=2))

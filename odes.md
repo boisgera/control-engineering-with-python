@@ -696,146 +696,6 @@ with little extra computations.
 
 
 
-<!--
-
---------------------------------------------------------------------------------
-
-    def explicit_euler_step(fun, t, y, step):
-        return y + step * fun(t, y)
-
-Example
---------------------------------------------------------------------------------
-
-
-----
-
-    class ODEScheme:
-        def __init__(self, fun, t0, y0, max_step, tf):
-            self.fun = fun
-            self.t = t0
-            self.y = y0
-            self.max_step = max_step
-            self.tf = tf
-
-----
-
-    class ExplicitEuler(ODEScheme):
-        def step(self):
-            t_next = min(self.tf, \
-                         self.t + self.max_step)
-            step = t_next - self.t
-            y_next = explicit_euler_step(self.fun, \
-                                         self.t,   \
-                                         self.y,   \
-                                         step      )
-            self.t = t_next
-            self.y = y_next
-
-
-Interpolation
---------------------------------------------------------------------------------
-
-    from scipy.interpolate import interp1d
-    def interpolate(ti, yi):
-        def function(t):
-            options = {"axis": 0, \
-                       "fill_value": "extrapolate"}
-            return interp1d(ti, yi, **options)(t).T
-        return function
-
-Example
---------------------------------------------------------------------------------
-
-    ti, yi = array([0, 1, 2]), array([1, 2, 1])
-    f = interpolate(ti, yi)
-    t = linspace(-1, 3, 100)
-    y = f(t)
-    figure()
-    plot(ti, yi, "ko")
-    plot(t, y, "k--")
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    save("images/interpolation")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Result
---------------------------------------------------------------------------------
-
-![](images/interpolation.svg)    
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
------
-
-    def solve_ivp(fun, t_span, y0, \
-                  max_step=1e-5, \
-                  dense_output=False, \
-                  **options):
-        t0, tf = t_span
-        scheme = ExplicitEuler(fun, t0, y0, max_step, tf)
-
-        result = {}
-        t, y = [t0], [y0]
-        try:
-            while t[-1] < tf:
-                scheme.step()
-                t.append(scheme.t)
-                y.append(scheme.y)
-            result["success"] = True
-        except: # too wide. What can happen here ? nan stuff ?
-            result["success"] = False
-        result["t"] = t = array(t)
-        result["y"] = y = array(y)
-        if dense_output:
-            result["sol"] = interpolate(t, y)
-        else:
-            result["sol"] = None
-        return result  
-
------
-
-    def fun(t, y):
-        return y
-
-    t0, tf, y0 = 0.0, 5.0, array([1.0])
-    result = solve_ivp(fun, (t0, tf), y0, \
-                       max_step=0.25, \
-                       dense_output=True)
-
-------
-
-    td, yd = result["t"], result["y"]
-    t = linspace(t0, tf, 1000)
-    y = result["sol"](t)
-    figure()
-    plot(t, exp(t), "k")
-    plot(t, y.T, "k--")
-    plot(td, yd, "k+")
-
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    save("images/exp")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-Results
---------------------------------------------------------------------------------
-
-![](images/exp.svg)
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
--->
-
-
 Well-Posedness
 ================================================================================
 
@@ -1091,14 +951,6 @@ solution does exist, its domain is $[0, t_{\infty}[$ with $t_{\infty} \geq t_f$.
 
 **$\Rightarrow$ a solution is defined on $[t_0, t_f[$.**
 
-<!--
-If any **potential** local solution $x(t)$ defined on 
-$\left[t_0, \tau\right[$ is **locally bounded** on this interval(*)
-then such a solution exists.  
-
-(*): bounded on any $[t_0, s] \subset \left[t_0, \tau \right[$.
--->
-
 <i class="fa fa-question-circle-o"></i> -- Existence / Sigmoid
 --------------------------------------------------------------------------------
 
@@ -1242,10 +1094,6 @@ That would undermine the utility of any approximation method.
 
 Definition -- Continuity
 --------------------------------------------------------------------------------
-
-<!--
-Assume the existence an uniqueness of (local maximal) solutions.
--->
 
 Instead of denoting $x(t)$ the solution, use $x(t, x_0)$ to emphasize the
 dependency w.r.t. the initial state.
@@ -1869,10 +1717,12 @@ anim.save("videos/tear.mp4", writer=writer, dpi=100)
 
 --------------------------------------------------------------------------------
 
-<video controls style="width:100vw"> <!--  style="width:80vw; height:45vw" -->
+```{=html}
+<video controls style="width:100vw;">
   <source src="videos/tear.mp4" type="video/mp4">
-Your browser does not support the video tag.
+  Your browser does not support the video tag.
 </video> 
+```
 
 --------------------------------------------------------------------------------
 
