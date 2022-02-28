@@ -2,13 +2,17 @@
 
 # Python 3 Standard Library
 import copy
+import io
 import json
 import os.path
 import sys
 
+# Third-Party
+import lxml.etree
+
 # Pandoc
 import pandoc
-from pandoc.types import CodeBlock, Div, Header, RawBlock
+from pandoc.types import CodeBlock, Div, Format, Header, RawBlock
 
 # ------------------------------------------------------------------------------
 # TODO: reconsider all flags wrt use cases and simplification of the document.
@@ -85,6 +89,7 @@ def exec_code(doc):
         output.write(src)
     exec(src, {"__file__": __file__})
 
+
 if "--fast" not in sys.argv:
     exec_code(doc)
 
@@ -126,6 +131,7 @@ def remove(doc, needs_removal):
 # document to deal with conditional content.
 # Ouch: the reveal target doesn't like divs very much (overlap
 # and / or no newpage). Can we solve this by unpacking slides divs ?
+
 
 def make_slides_doc(doc):
     doc = copy.deepcopy(doc)  # the transformation is actually in-place,
@@ -196,9 +202,39 @@ def make_notebook_doc(doc):
 
 notebook_doc = make_notebook_doc(doc)
 
-for elt in pandoc.iter(notebook_doc[1]):
+VIDEO_TEMPLATE = '''
+from IPython.display import HTML
+HTML("""
+<video controls style="width:100%;">
+   <source src="{src}" type="{type}">
+</video>
+""")
+'''
+
+
+video_elements = []
+for elt, path in pandoc.iter(notebook_doc, path=True):
     if isinstance(elt, RawBlock):
-        print("***", elt)
+        format, content = elt[:]
+        if format == Format("html"):
+            parser = lxml.etree.HTMLParser()
+            tree = lxml.etree.parse(io.StringIO(content), parser)
+            html = tree.getroot()
+            videos = list(html.iter("video"))
+            if videos:
+                video = videos[0]
+                source = video.find("source")
+                src = source.attrib["src"]
+                type_ = source.attrib["type"]
+                code = CodeBlock(
+                    ("", [], []), VIDEO_TEMPLATE.format(src=src, type=type_)
+                )
+                holder, index = path[-1]
+                video_elements.append((holder, index, code))
+
+for holder, index, code in reversed(video_elements):
+    holder[index] = code
+
 # TODO: search for raw html, parse with lxml, filter on video tags, search for
 # source(s? first one?), generate the appropriate Jupyter Code Cell.
 
