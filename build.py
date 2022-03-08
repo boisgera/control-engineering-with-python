@@ -220,7 +220,7 @@ for elt, path in pandoc.iter(notebook_doc, path=True):
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(io.StringIO(content), parser)
             html = tree.getroot()
-            print(f"{tree = }, {html =}")
+            print(f"{tree = }, {html =}, {parser = }")
             if len(html):
                 videos = list(html.iter("video"))
                 if videos:
