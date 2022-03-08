@@ -1271,7 +1271,10 @@ We will now turn to the study of such properties specifically.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Lorenz System
+
+
+
+Lorenz System 
 --------------------------------------------------------------------------------
 
   $$
@@ -1340,7 +1343,6 @@ so that their asymptotic behavior is more acceptable.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 Equilibrium
 --------------------------------------------------------------------------------
 
@@ -1397,8 +1399,6 @@ and $\omega (= \dot{\theta}) = 0$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
 Stability
 --------------------------------------------------------------------------------
 
@@ -1414,9 +1414,14 @@ About the long-term behavior of solutions.
 Attractivity
 --------------------------------------------------------------------------------
 
-Consider a well-posed ODE $\dot{x} = f(x)$.
+**Context of the definition:** 
 
-An equilibrium $x_e$ is: 
+  - Well-posed system $\dot{x} = f(x)$ with equilibrium $x_e$.
+
+
+--------------------------------------------------------------------------------
+
+The equilibrium $x_e$ is: 
 
   - **globally attractive** if for every $x_0$,
     the maximal solution $x(t)$ of the IVP with $x(0)=x_0$ 
@@ -1425,8 +1430,16 @@ An equilibrium $x_e$ is:
       \lim_{t \to +\infty} x(t) = x_e.
       $$
 
-  - **locally attractive** if this property holds when $x_0$ 
-    is sufficiently close to the equilibrium $x_e$.
+--------------------------------------------------------------------------------
+
+The equilibrium $x_e$ is: 
+
+  - **locally attractive** if for every $x_0$ **close enough to $x_e$**,
+    the maximal solution $x(t)$ of the IVP with $x(0)=x_0$ 
+    exists for any $t\geq 0$ and
+      $$
+      \lim_{t \to +\infty} x(t) = x_e.
+      $$
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1437,25 +1450,44 @@ $\|x_0 - x_e\| \leq r$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+👁️ Example 1
 --------------------------------------------------------------------------------
 
-    def f(xy):
-        x, y = xy
-        dx = -2*x + y
-        dy = -2*y + x
-        return array([dx, dy])
+The system
 
-<i class="fa fa-area-chart"></i>
+$$
+\begin{array}{cc}
+\dot{x} &=& -2x + y \\
+\dot{y} &=& -2y + x
+\end{array}
+$$
+
+  - is well-posed,
+  
+  - has a (unique) equilibrium at $(0, 0)$.
+
+🐍 Vector field
 --------------------------------------------------------------------------------
 
-    figure()
-    x = y = linspace(-5.0, 5.0, 1000)
-    streamplot(*Q(f, x, y), color="k") 
-    plot([0], [0], "k.", ms=10.0)
-    axis("square")
+``` python
+def f(xy):
+    x, y = xy
+    dx = -2*x + y
+    dy = -2*y + x
+    return array([dx, dy])
+```
 
-Globally Attractive
+🐍 📈 Stream plot
 --------------------------------------------------------------------------------
+
+``` python
+figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color="k") 
+plot([0], [0], "k.", ms=20.0)
+axis("square")
+axis("off")
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1472,24 +1504,90 @@ Globally Attractive
 
 --------------------------------------------------------------------------------
 
-    def f(xy):
-        x, y = xy
-        dx = -2*x + y**3
-        dy = -2*y + x**3
-        return array([dx, dy])
+The equilibrium is globally attractive
 
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+``` python
+import matplotlib.animation as ani
+
+ft = lambda t, y: f(y)
+fps = df = 60.0
+dt = 1.0 / df
+t_span = (0.0, 5.0)
+t = concatenate((arange(t_span[0], t_span[-1], dt), [t_span[-1]]))
+r = solve_ivp(fun=ft, y0=(-4.0, 1.0), t_span=t_span, dense_output=True)
+xt1, yt1 = r.sol(t)
+r = solve_ivp(fun=ft, y0=(4.0, -1.0), t_span=t_span, dense_output=True)
+xt2, yt2 = r.sol(t)
+
+print("***")
+
+fig = figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color="k")
+plot([0], [0], "k.", ms=20.0)
+axis("square")
+axis("off")
+line1 = plot([], [],
+    lw=3.0, 
+    ms=10.0,
+    marker="o", markevery=[-1],
+    markeredgecolor="white")[0]
+line2 = plot([], [],
+    lw=3.0, 
+    ms=10.0,
+    marker="o", markevery=[-1],
+    markeredgecolor="white")[0]    
+tight_layout()
+
+def update(i):
+    x1, y1 = xt1[:i], yt1[:i]
+    line1.set_data(x1, y1)
+    x2, y2 = xt2[:i], yt2[:i]
+    line2.set_data(x2, y2)
+
+writer = ani.FFMpegWriter(fps=fps)
+animation = ani.FuncAnimation(fig, func=update, frames=len(xt1))
+animation.save("videos/globally-attractive.mp4", writer=writer, dpi=300)
+
+print("***")
+
+```
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 --------------------------------------------------------------------------------
 
-    figure()
-    x = y = linspace(-5.0, 5.0, 1000)
-    streamplot(*Q(f, x, y), color="k") 
-    plot([0], [0], "k.", ms=10.0)
-    axis("square")
+```{=html}
+<video controls style="width:100vw;">
+  <source src="videos/globally-attractive.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video> 
+```
 
-Locally Attractive
+🐍 Vector field
 --------------------------------------------------------------------------------
+
+``` python
+def f(xy):
+    x, y = xy
+    dx = -2*x + y**3
+    dy = -2*y + x**3
+    return array([dx, dy])
+```
+
+🐍 📈 Stream plot
+--------------------------------------------------------------------------------
+
+``` python
+figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color="k") 
+plot([0], [0], "k.", ms=10.0)
+axis("square")
+axis("off")
+```
+
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1619,98 +1717,64 @@ Stream Plot
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 ``` python
-import time
+
+# Third-Party Libraries
+import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.animation
 
+# Local Library
+import mivp
 
-# def fun(t, xy):
-#     x, y = xy
-#     return array([-y - 0.5 * x, +x - 0.1 * y])
+# ------------------------------------------------------------------------------
 
+# Vector field
 def fun(t, xy):
     x, y = xy
-    r = sqrt(x*x + y*y)
+    r = np.sqrt(x * x + y * y)
     dx = x + x * y - (x + y) * r
     dy = y - x * x + (x - y) * r
     return [dx, dy]
 
+
+# Time span & frame rate
 t_span = (0.0, 10.0)
-y0 = [1.0, 0.0]
 
 df = 60.0
 dt = 1.0 / df
+t = np.arange(t_span[0], t_span[1], dt)
+t = np.r_[t, t_span[1]]
 
-r = solve_ivp(fun, t_span, y0, dense_output=True)
-t = linspace(t_span[0], t_span[1], 1000)
-td = arange(t_span[0], t_span[1], dt)
-x_t, y_t = r.sol(t)
-x_td, y_td = r.sol(td)
+# Initial set boundary
+y0 = [1.0, 0.0]
+radius = 0.5
+n = 10000
+xc, yc = y0
 
-if False:
-    plt.figure()
-    plt.axis([-1.2, 1.2, -1.2, 1.2])
-    plt.axis("equal")
-    plt.plot(x_t, y_t, "--", color="grey")
-    plt.plot(x_td, y_td, "k.")
-    plt.grid(True)
-    plt.show()
+def boundary(t):  # we assume that t is a 1-dim array
+    return np.array(
+        [
+            [xc + radius * np.cos(theta), yc + radius * np.sin(theta)]
+            for theta in 2 * np.pi * t
+        ]
+    )
 
-if True:
+# Precision
+rtol = 1e-6  # default: 1e-3
+atol = 1e-12  # default: 1e-6
 
-    radius = 0.5
-    n = 10000
-    xc, yc = y0
-    y0s = array([
-        [xc + radius * cos(theta), yc + radius * sin(theta)]
-        for theta in linspace(0, 2 * pi, n)
-    ])
+# ------------------------------------------------------------------------------
 
-    t_ = time.time()
-    print(0.0)
-
-    rs = []
-    for y0 in y0s:
-        r = solve_ivp(fun, t_span, y0, dense_output=True, rtol=1e-9, atol=1e-100)
-        rs.append(r)
-
-    print(time.time() - t_)
-
-    if False:
-        plt.figure()
-        plt.axis([-1.2, 1.2, -1.2, 1.2])
-        plt.axis("equal")
-        plt.plot(x_t, y_t, "--", color="grey")
-
-    data = zeros((len(td), 2, n))
-    for i, r in enumerate(rs):
-        sol_td = r.sol(td)
-        data[:, :, i] = sol_td.T
-
-fig = plt.figure(figsize=(16, 9))
-axes = fig.subplots()
-axes.axis("equal")
-ratio = 16/9
-ym = 1.2
-xm = ym * ratio
-print([-xm, xm, -ym, ym])
-axes.axis([-xm, xm, -ym, ym])
-print(axes.axis())
-fig.subplots_adjust(0, 0, 1, 1)
-axes.axis('off')
-
-polygon = None
-
-def func(i):
-    global polygon
-    x, y = data[i]
-    if polygon:
-        polygon.remove()
-    polygon = plt.fill(x, y, color="k")[0]
-
-writer = matplotlib.animation.FFMpegWriter(fps=df)
-anim = matplotlib.animation.FuncAnimation(fig, func, len(td))
-anim.save("videos/tear.mp4", writer=writer, dpi=100)
+data = mivp.solve_alt(
+    fun=fun,
+    t_eval=t,
+    boundary=boundary,
+    boundary_rtol=0.0,
+    boundary_atol=0.1,
+    rtol=rtol,
+    atol=atol,
+    method="LSODA",
+)
+mivp.generate_movie(data, filename="videos/movie.mp4", fps=df)
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
