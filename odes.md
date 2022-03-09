@@ -273,12 +273,16 @@ The pendulum dynamics is equivalent to:
 <i class="fa fa-area-chart"></i>
 --------------------------------------------------------------------------------
 
-    figure()
+    width = 345 / 72.27
+    height = width / (16 / 9)
+    figure(figsize=(width, height))
     theta = linspace(-1.5 * pi, 1.5 * pi, 100)
     d_theta = linspace(-5.0, 5.0, 100)
     grid(True)
-    xticks([-pi, 0, pi], [r"$-\pi$", "$0$", r"$\pi$"])
-    streamplot(*Q(f, theta, d_theta), color="k") 
+    xticks([-pi, 0, pi], [r"$-\pi$", "$0$", r"$\pi$"], fontsize=10)
+    yticks(fontsize=10)
+
+    streamplot(*Q(f, theta, d_theta), color="k", linewidth=1.0) 
 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -292,6 +296,87 @@ The pendulum dynamics is equivalent to:
 ## {.section data-background="images/streamplot_pendulum.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+``` python
+import matplotlib.animation as ani
+from matplotlib.colors import to_rgb
+from scipy.integrate import solve_ivp
+from tqdm import tqdm
+
+
+neutral = grey_4 = to_rgb("#ced4da")
+blue_5 = to_rgb("#339af0")
+#grey_5 = to_rgb("#adb5bd")
+#grey_8 = to_rgb("#343a40")
+good = to_rgb("#51cf66")
+bad = to_rgb("#ff6b6b")
+
+ft = lambda t, y: f(y)
+fps = df = 60.0
+dt = 1.0 / df
+t_span = t_i, t_f = (0.0, 10.0)
+t = np.arange(t_i, t_f + 0.1*dt, dt)
+
+y0s = [[-pi/2+0.01, 0]]
+colors = [good]
+xys = []
+for y0 in tqdm(y0s):
+    r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
+    xys.append(r.y)
+
+
+fig = figure()
+x = linspace(-1.1*pi/2, 1.1*pi/2, 1000)
+y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color=grey_4)
+plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+        markeredgecolor="white", color=neutral)
+axis("square")
+axis("off")
+
+lines = []
+for x, y in xys:
+    line = plot(
+        [x[0]], [y[0]],
+        lw=3.0, 
+        ms=10.0,
+        color=blue_5,
+        marker="o", markevery=[-1],
+        markeredgecolor="white")[0]
+    lines.append(line)
+tight_layout()
+
+num_frames = len(t) * len(lines)
+
+def gamma(x):
+    return pow(x, 0.5)
+
+def update(i):
+    j, k = divmod(i, len(t)) 
+    x, y = xys[j]
+    line = lines[j]
+    line.set_data(x[:k+1], y[:k+1])
+
+animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
+writer = ani.FFMpegWriter(fps=fps)
+bar = tqdm(total=num_frames)
+animation.save("videos/pendulum.mp4", writer=writer, dpi=300,
+progress_callback = lambda i, n: bar.update(1))
+bar.close()
+```
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+```{=html}
+<video style="width:100vw;" controls>
+  <source src="videos/pendulum.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video> 
+```
 
 
 <i class="fa fa-question-circle-o"></i> -- Model / Pendulum
