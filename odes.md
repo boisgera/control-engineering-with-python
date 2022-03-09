@@ -1343,14 +1343,24 @@ so that their asymptotic behavior is more acceptable.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Equilibrium
+🏷️ Equilibrium
 --------------------------------------------------------------------------------
 
 An **equilibrium** of system $\dot{x} = f(x)$ is a state $x_e$
-such that the maximal solution of this system such that $x(0) = x_e$ 
-is $x(t) = x_e$ for any $t > 0$.
+such that the maximal solution $x(t)$ such that $x(0) = x_e$
 
-The state $x_e$ is an equilibrium if and only if $f(x_e) = 0$.
+  - exists globally and,
+
+  - is $x(t) = x_e$ for any $t > 0$.
+
+💎 Equilibrium
+--------------------------------------------------------------------------------
+
+The state $x_e$ is an equilibrium of $\dot{x} = f(x)$ 
+
+$\Longleftrightarrow$
+
+$f(x_e) = 0$.
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1364,40 +1374,6 @@ then $0 = \dot{x}(0) = f(x(0)) = f(x_e)$.
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
---------------------------------------------------------------------------------
-
-### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Pendulum
-
-**Reminder:** the pendulum is governed by the equation
-
-  $$
-  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
-  $$
-
-  - [<i class="fa fa-superscript"></i>] 
-    Find the equilibriums of this dynamics.
-
-::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-The 2nd-order differential equations are equivalent to the first order system
-$$
-\left|
-\begin{array}{rcl}
-\dot{\theta} &=& \omega \\
-\dot{\omega} &=& (- b / m \ell^2) \omega - (g /\ell) \sin \theta \\
-\end{array}
-\right.
-$$
-Thus, the system state is $x =(\theta, \omega)$ and is governed by $\dot{x} = f(x)$ with
-$$
-f(\theta, \omega) = (\omega, (- b / m \ell^2) \omega - (g /\ell) \sin \theta).
-$$
-Hence, the state $(\theta, \omega)$ is a solution to $f(\theta, \omega) = 0$ 
-if and only if $\omega = 0$ and $\sin \theta = 0$. In other words, the equilibria
-of the system are characterized by $\theta = k \pi$ for some $k \in \mathbb{Z}$
-and $\omega (= \dot{\theta}) = 0$.
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Stability
 --------------------------------------------------------------------------------
@@ -1414,11 +1390,9 @@ About the long-term behavior of solutions.
 Attractivity
 --------------------------------------------------------------------------------
 
-**Context of the definition:** 
+**Context:** system $\dot{x} = f(x)$ with equilibrium $x_e$.
 
-  - Well-posed system $\dot{x} = f(x)$ with equilibrium $x_e$.
-
-
+🏷️ Global Attractivity
 --------------------------------------------------------------------------------
 
 The equilibrium $x_e$ is: 
@@ -1430,6 +1404,7 @@ The equilibrium $x_e$ is:
       \lim_{t \to +\infty} x(t) = x_e.
       $$
 
+🏷️ Local Attractivity
 --------------------------------------------------------------------------------
 
 The equilibrium $x_e$ is: 
@@ -1450,7 +1425,7 @@ $\|x_0 - x_e\| \leq r$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-👁️ Example 1
+🔍 Global Attractivity
 --------------------------------------------------------------------------------
 
 The system
@@ -1464,7 +1439,7 @@ $$
 
   - is well-posed,
   
-  - has a (unique) equilibrium at $(0, 0)$.
+  - has an equilibrium at $(0, 0)$.
 
 🐍 Vector field
 --------------------------------------------------------------------------------
@@ -1477,7 +1452,7 @@ def f(xy):
     return array([dx, dy])
 ```
 
-🐍 📈 Stream plot
+📈 Stream plot
 --------------------------------------------------------------------------------
 
 ``` python
@@ -1502,9 +1477,6 @@ axis("off")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-The equilibrium is globally attractive
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1518,7 +1490,7 @@ neutral = grey_4 = to_rgb("#ced4da")
 #grey_5 = to_rgb("#adb5bd")
 #grey_8 = to_rgb("#343a40")
 good = to_rgb("#51cf66")
-bad = to_rgb("#ff922b")
+bad = to_rgb("#ff6b6b")
 
 ft = lambda t, y: f(y)
 fps = df = 60.0
@@ -1588,6 +1560,23 @@ bar.close()
 </video> 
 ```
 
+🔍 Local Attractivity
+--------------------------------------------------------------------------------
+
+
+The system
+
+$$
+\begin{array}{cc}
+\dot{x} &=& -2x + y^3 \\
+\dot{y} &=& -2y + x^3
+\end{array}
+$$
+
+  - is well-posed,
+  
+  - has an equilibrium at $(0, 0)$.
+
 🐍 Vector field
 --------------------------------------------------------------------------------
 
@@ -1599,7 +1588,7 @@ def f(xy):
     return array([dx, dy])
 ```
 
-🐍 📈 Stream plot
+📈 Stream plot
 --------------------------------------------------------------------------------
 
 ``` python
@@ -1625,10 +1614,6 @@ axis("off")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-The equilibrium is locally attractive
-
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ``` python
@@ -1641,7 +1626,7 @@ neutral = grey_4 = to_rgb("#ced4da")
 #grey_5 = to_rgb("#adb5bd")
 #grey_8 = to_rgb("#343a40")
 good = to_rgb("#51cf66")
-bad = to_rgb("#ff922b")
+bad = to_rgb("#ff6b6b")
 
 ft = lambda t, y: f(y)
 fps = df = 60.0
@@ -1711,9 +1696,190 @@ bar.close()
 </video> 
 ```
       
+
+🔍 No Attractivity
 --------------------------------------------------------------------------------
 
-### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Stability
+
+The system
+
+$$
+\begin{array}{cr}
+\dot{x} &=& -2x + y \\
+\dot{y} &=&  2y - x
+\end{array}
+$$
+
+  - is well-posed,
+  
+  - has a (unique) equilibrium at $(0, 0)$.
+
+🐍 Vector field
+--------------------------------------------------------------------------------
+
+``` python
+def f(xy):
+    x, y = xy
+    dx = -2*x + y
+    dy =  2*y - x
+    return array([dx, dy])
+```
+
+📈 Stream plot
+--------------------------------------------------------------------------------
+
+``` python
+figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color="k") 
+plot([0], [0], "k.", ms=10.0)
+axis("square")
+axis("off")
+```
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/not-attractive")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/not-attractive.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+``` python
+import matplotlib.animation as ani
+from matplotlib.colors import to_rgb
+from tqdm import tqdm
+
+
+neutral = grey_4 = to_rgb("#ced4da")
+#grey_5 = to_rgb("#adb5bd")
+#grey_8 = to_rgb("#343a40")
+good = to_rgb("#51cf66")
+bad = to_rgb("#ff6b6b")
+
+ft = lambda t, y: f(y)
+fps = df = 60.0
+dt = 1.0 / df
+t_span = t_i, t_f = (0.0, 3.0)
+t = np.arange(t_i, t_f + dt, dt)
+
+y0s = [[-4*0.9659258262890683, -4*0.2588190451025208],  
+       [-4*0.9659258262890683, -4*0.2588190451025208 + 0.2],
+       [0.0, 0.2]]
+colors = [good, bad, bad]
+xys = []
+for y0 in tqdm(y0s):
+    r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
+    xys.append(r.y)
+
+
+fig = figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, x, y), color=grey_4)
+plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+        markeredgecolor="white", color=neutral)
+axis("square")
+axis("off")
+
+lines = []
+for x, y in xys:
+    line = plot(
+        [x[0]], [y[0]],
+        lw=3.0, 
+        ms=10.0,
+        color=neutral,
+        marker="o", markevery=[-1],
+        markeredgecolor="white")[0]
+    lines.append(line)
+tight_layout()
+
+num_frames = len(t) * len(lines)
+
+def gamma(x):
+    return pow(x, 0.5)
+
+def update(i):
+    j, k = divmod(i, len(t)) 
+    x, y = xys[j]
+    line = lines[j]
+    line.set_data(x[:k+1], y[:k+1])
+    alpha = gamma(k / (len(t)-1))
+    final_color = colors[j]
+    line.set_color(
+      tuple((1-alpha)*array(neutral) + alpha*array(final_color))
+    )
+
+animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
+writer = ani.FFMpegWriter(fps=fps)
+bar = tqdm(total=num_frames)
+animation.save("videos/not-attractive.mp4", writer=writer, dpi=300,
+progress_callback = lambda i, n: bar.update(1))
+bar.close()
+```
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+```{=html}
+<video controls style="width:100vw;">
+  <source src="videos/not-attractive.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video> 
+```
+      
+
+
+
+--------------------------------------------------------------------------------
+
+### ❔❓🤔 Pendulum / Equilibrium
+
+**Reminder.** The pendulum is governed by the equation
+
+  $$
+  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+  $$
+
+where $m>0$, $\ell>0$, $g>0$ and $b\geq0$.
+
+--------------------------------------------------------------------------------
+
+  - 📝 Locate the equilibria of this system.
+
+::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+The 2nd-order differential equations are equivalent to the first order system
+$$
+\left|
+\begin{array}{rcl}
+\dot{\theta} &=& \omega \\
+\dot{\omega} &=& (- b / m \ell^2) \omega - (g /\ell) \sin \theta \\
+\end{array}
+\right.
+$$
+Thus, the system state is $x =(\theta, \omega)$ and is governed by $\dot{x} = f(x)$ with
+$$
+f(\theta, \omega) = (\omega, (- b / m \ell^2) \omega - (g /\ell) \sin \theta).
+$$
+Hence, the state $(\theta, \omega)$ is a solution to $f(\theta, \omega) = 0$ 
+if and only if $\omega = 0$ and $\sin \theta = 0$. In other words, the equilibria
+of the system are characterized by $\theta = k \pi$ for some $k \in \mathbb{Z}$
+and $\omega (= \dot{\theta}) = 0$.
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+--------------------------------------------------------------------------------
+
+### <i class="fa fa-question-circle-o"></i> -- Equilibrium / Attractivity
 
 Consider a pendulum with a coefficient of friction $b$.
 
@@ -1895,54 +2061,6 @@ mivp.generate_movie(data, filename="videos/movie.mp4", fps=df)
 </video> 
 ```
 
---------------------------------------------------------------------------------
-
-First, make sure that the right-hand side is time-dependent:
-
-    def fun(t, y):
-        return f(y)
-
---------------------------------------------------------------------------------
-
-Then, pick a large time span and an initial state 
-just above the equilibrium $(1.0, 0.0)$:
-
-    t_span = (0.0, 600.0)
-    theta_0 = 2 * pi / 1000
-    y0 = [cos(theta_0), sin(theta_0)]
-
---------------------------------------------------------------------------------
-
-    y = solve_ivp(fun, t_span, y0=y0, dense_output=True).sol
-    t = linspace(t_span[0], t_span[-1], 1000)
-
-<i class="fa fa-area-chart"></i>
---------------------------------------------------------------------------------
-
-Plot the distance to the equilibrium as a function of time.
-
-    figure()
-    x1, x2 = y(t)[0], y(t)[1]
-    plot(t, (sqrt((x1-1.0)**2 + x2**2)))
-    grid()
-    xlabel("$t$")
-
---------------------------------------------------------------------------------
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    #axis("square")
-    tight_layout()
-    save("images/attractive-time")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-## {.section data-background="images/attractive-time.svg" data-background-size="contain"}
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Asymptotic Stability
 --------------------------------------------------------------------------------
