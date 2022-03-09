@@ -9,6 +9,7 @@ node_modules
 package-lock.json
 
 # Misc.
+__pycache__
 misc 
 sandbox
 .tmp.py
