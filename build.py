@@ -221,7 +221,7 @@ for elt, path in pandoc.iter(notebook_doc, path=True):
             tree = lxml.etree.parse(io.StringIO(content), parser)
             html = tree.getroot()
             print(f"{tree = }, {html =}, {parser = }")
-            if len(html):
+            if html is not None and len(html):
                 videos = list(html.iter("video"))
                 if videos:
                     video = videos[0]
