@@ -2,6 +2,7 @@
 
 ./build.py intro.md
 ./build.py odes.md
+./build.py asymptotic.md
 ./build.py linear-systems.md
 ./build.py controllers.md
 ./build.py observers.md

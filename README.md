@@ -17,11 +17,14 @@ Control Engineering with Python
     [PDF](https://boisgera.github.io/control-engineering-with-python/odes.pdf),
     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=odes.ipynb))
 
-      - ODEs: definitions, numerical schemes, visualization (30 min). 
+      - ODEs: definitions, numerical schemes, visualization. 
 
-      - Well-posedness of IVPs (30 min).
+      - Well-posedness of IVPs.
 
-      - Asymptotic behavior (30 min)
+    **Asymptotic Behavior**
+    ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic.html),
+    [PDF](https://boisgera.github.io/control-engineering-with-python/asymptotic.pdf),
+    [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic.ipynb))
 
  2. **Linear-Time Invariant Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
