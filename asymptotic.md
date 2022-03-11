@@ -1105,7 +1105,7 @@ data = mivp.solve_alt(
 )
 
 bad = to_rgb("#ff6b6b")
-mivp.generate_movie(data, filename="videos/movie.mp4", fps=df, dpi=300,
+mivp.generate_movie(data, filename="videos/movie.mp4", fps=df,
     axes=gca(), zorder=1000, color=bad, linewidth=3.0,
 )
 ```

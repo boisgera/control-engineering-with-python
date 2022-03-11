@@ -130,4 +130,4 @@ def generate_movie(data, filename, fps, axes=None, **options):
 
     writer = ani.FFMpegWriter(fps=fps)
     animation = ani.FuncAnimation(fig, func=update, frames=len(data))
-    animation.save(filename, writer=writer, dpi=100)
+    animation.save(filename, writer=writer, dpi=300)
