@@ -248,8 +248,8 @@ Attractivity
 🏷️ Global Attractivity
 --------------------------------------------------------------------------------
 
-[The equilibrium $x_e$ is **globally attractive** if for every $x_0$,
-the maximal solution $x(t)$ such that $x(0)=x_0$]{.left}
+The equilibrium $x_e$ is **globally attractive** if for every $x_0,$
+the maximal solution $x(t)$ such that $x(0)=x_0$
 
   - is global and,
 
@@ -857,11 +857,11 @@ bad = to_rgb("#ff6b6b")
 ft = lambda t, y: f(y)
 fps = df = 60.0
 dt = 1.0 / df
-t_span = t_i, t_f = (0.0, 5.0)
-t = np.arange(t_i, t_f + dt, dt)
+t_span = t_i, t_f = (0.0, 10.0)
+t = np.arange(t_i, t_f + 0.1*dt, dt)
 
-y0s = [[1, -1], [-1, -1], [-1, 1], [1, 1]]
-colors = [good, good, good, good]
+y0s = [[1.5*cos(theta), 1.5*sin(theta)] for theta in linspace(0, (11/12)*2*pi, 12)]
+# colors = [good] * len(y0s)
 xys = []
 for y0 in tqdm(y0s):
     r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
@@ -871,7 +871,7 @@ for y0 in tqdm(y0s):
 fig = figure()
 x = y = linspace(-2.0, 2.0, 1000)
 streamplot(*Q(f, x, y), color=grey_4)
-plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+plot([1], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
         markeredgecolor="white", color=neutral)
 axis("square")
 axis("off")
@@ -882,27 +882,29 @@ for x, y in xys:
         [x[0]], [y[0]],
         lw=3.0, 
         ms=10.0,
-        color=neutral,
+        #color=neutral,
         marker="o", markevery=[-1],
         markeredgecolor="white")[0]
     lines.append(line)
 tight_layout()
 
-num_frames = len(t) * len(lines)
+num_frames = len(t)
 
 def gamma(x):
     return pow(x, 0.5)
 
 def update(i):
-    j, k = divmod(i, len(t)) 
-    x, y = xys[j]
-    line = lines[j]
-    line.set_data(x[:k+1], y[:k+1])
-    alpha = gamma(k / (len(t)-1))
-    final_color = colors[j]
-    line.set_color(
-      tuple((1-alpha)*array(neutral) + alpha*array(final_color))
-    )
+  for line, (x, y) in zip(lines, xys):
+      line.set_data(x[:i+1], y[:i+1])  
+    # j, k = divmod(i, len(t)) 
+    # x, y = xys[j]
+    # line = lines[j]
+    # line.set_data(x[:k+1], y[:k+1])
+    # alpha = gamma(k / (len(t)-1))
+    # final_color = colors[j]
+    # line.set_color(
+    #   tuple((1-alpha)*array(neutral) + alpha*array(final_color))
+    # )
 
 animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
 writer = ani.FFMpegWriter(fps=fps)
@@ -928,17 +930,18 @@ Asymptotic stability is a stronger version of attractivity
 which is by definition robust with respect to the choice of
 the initial state.
 
-Global Asymptotic Stability
+🏷️Global Asympt. Stability
 --------------------------------------------------------------------------------
 
-The equilibrium $x_e$ is **globally asymptotically stable** if:
+The equilibrium $x_e$ is **globally asympt. stable** iff:
 
-  - for any $x_0$ and for any $\epsilon > 0$, 
-    there is a $\tau \geq 0$ **and a $r > 0$
-    such that if $\|x_1 - x_0\| \leq r$**, 
-    the maximal solution $x(t)$ 
-    **such that $x(0) = x_1$** exists for all $t \geq 0$ and 
-    satisfies:
+  - for any state $x_0$ and for any $\epsilon > 0$ there is a $\tau \geq 0$, 
+
+  - and there is a $r > 0$ such that if $\|x_0' - x_0\| \leq r$, 
+
+  - such that the maximal solution $x(t)$ such that $x(0) = x_0'$ is global and,
+    
+  - satisfies:
 
     $$
     \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
@@ -956,6 +959,8 @@ this condition is not always met if we merely have an attractive equilibrium.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+<!--
+
 --------------------------------------------------------------------------------
 
 Equivalently: 
@@ -969,8 +974,30 @@ Equivalently:
     \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
     $$
 
-G.A.S. in Plain Words
+The equilibrium $x_e$ is **globally attractive** if for every $x_0,$
+the maximal solution $x(t)$ such that $x(0)=x_0$
+
+  - is global and,
+
+  - $x(t) \to  x_e$ when $t \to +\infty$.
+
+-->
+
+ODEs with Multiple Initial Conditions
 --------------------------------------------------------------------------------
+
+Let $f: \mathbb{R}^n \to \mathbb{R}^n$ and $X_0 \subset \mathbb{R}^n$. 
+
+Let $X(t)$ be the image of $X_0$ by the flow at time $t$:
+
+$$
+X(t) := \{x(t) \; | \; \dot{x} = f(x), \; x(0)= x_0, \; x_0 \in X_0 \ \}.
+$$
+
+💎 Global Asympt. Stability
+--------------------------------------------------------------------------------
+
+An equilibrium $x_e$ is globally asympt. stable iff
 
   - Pick any bounded set $B$ in $\mathbb{R}^n$.
 
