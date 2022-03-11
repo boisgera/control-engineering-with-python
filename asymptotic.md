@@ -930,7 +930,7 @@ Asymptotic stability is a stronger version of attractivity
 which is by definition robust with respect to the choice of
 the initial state.
 
-🏷️Global Asympt. Stability
+🏷️ Global Asympt. Stability
 --------------------------------------------------------------------------------
 
 The equilibrium $x_e$ is **globally asympt. stable** iff:
@@ -983,7 +983,7 @@ the maximal solution $x(t)$ such that $x(0)=x_0$
 
 -->
 
-ODEs with Multiple Initial Conditions
+Set of Initial Conditions
 --------------------------------------------------------------------------------
 
 Let $f: \mathbb{R}^n \to \mathbb{R}^n$ and $X_0 \subset \mathbb{R}^n$. 
@@ -994,25 +994,45 @@ $$
 X(t) := \{x(t) \; | \; \dot{x} = f(x), \; x(0)= x_0, \; x_0 \in X_0 \ \}.
 $$
 
+
+
 💎 Global Asympt. Stability
 --------------------------------------------------------------------------------
 
 An equilibrium $x_e$ is globally asympt. stable iff
 
-  - Pick any bounded set $B$ in $\mathbb{R}^n$.
+  - for every bounded set $X_0$ and any $x_0 \in X_0$ 
+    the associated maximal solution $x(t)$ is global and,
 
-  - Consider each point of the set as an initial value $x_0$, 
-    compute $x(t, x_0)$.  Define $B_t$ as the set of all such $x(t, x_0)$:
+  - $X(t) \to \{x_e\}$ when $t\to +\infty$.
 
-    $$
-    B_t = \{ x(t, x_0) \; | \; x_0 \in B\}
-    $$
 
-  - The set $B_t$ will converge to the equilibrium $x_e$:
-    
-    $$
-    \sup \, \{d(x_e, x) \; | \; x \in B_t\} \to 0 \, \mbox{ when } \, t \to +\infty.
-    $$
+🏷️ Limits of Sets
+--------------------------------------------------------------------------------
+
+$$
+X(t) \to \{x_e\}
+$$ 
+
+to be interpreted as
+
+$$
+\sup_{x(t) \in X(t)} \|x(t) - x_e\| \to 0.
+$$
+
+🏷️ Hausdorff Distance
+--------------------------------------------------------------------------------
+
+$$
+\sup_{x(t) \in X(t)} \|x(t) - x_e\| = d_H(X(t), \{x_e\})
+$$
+where $d_H$ is the [**Hausdorff distance**](https://en.wikipedia.org/wiki/Hausdorff_distance) between sets:
+
+$$
+d_H(A, B) := \max \left\{ \sup_{a \in A} d(a, B), \sup_{b\in B} d(A, b) \right\}.
+$$
+
+
 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1035,6 +1055,15 @@ def fun(t, xy):
     dy = y - x * x + (x - y) * r
     return [dx, dy]
 
+# Streamplot
+fig = figure()
+x = y = linspace(-2.0, 2.0, 1000)
+streamplot(*Q(f, x, y), color=grey_4)
+plot([1], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+        markeredgecolor="white", color=neutral)
+axis("square")
+axis("off")
+tight_layout()
 
 # Time span & frame rate
 t_span = (0.0, 10.0)
@@ -1074,7 +1103,11 @@ data = mivp.solve_alt(
     atol=atol,
     method="LSODA",
 )
-mivp.generate_movie(data, filename="videos/movie.mp4", fps=df)
+
+bad = to_rgb("#ff6b6b")
+mivp.generate_movie(data, filename="videos/movie.mp4", fps=df, dpi=300,
+    axes=gca(), zorder=1000, color=bad, linewidth=3.0,
+)
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1083,51 +1116,94 @@ mivp.generate_movie(data, filename="videos/movie.mp4", fps=df)
 
 ```{=html}
 <video controls style="width:100vw;">
-  <source src="videos/tear.mp4" type="video/mp4">
+  <source src="videos/movie.mp4" type="video/mp4">
   Your browser does not support the video tag.
 </video> 
 ```
 
-
-
-Local Asymptotic Stability
+🏷️ Local Asymptotic Stability
 --------------------------------------------------------------------------------
 
-A variant of the global asymptotic stability: the property may hold
-only for small enough balls.
+The equilibrium $x_e$ is **locally asympt. stable** iff:
 
-  - **for some $r>0$**, for any $\epsilon > 0$, 
-    there is a $\tau \geq 0$ such that any maximal solution $x(t)$ 
-    **such that $\|x(0) - x_e\| \leq r$** exists for all $t \geq 0$ and 
-    satisfies:
+  - there is a $r>0$ such that for any $\epsilon > 0$,
+  
+  - there is a $\tau \geq 0$ such that,
+
+  - if $\|x_0 - x_e\| \leq r$, the maximal solution $x(t)$ such that $x(0) = x_0$ 
+    is global and satisfies:
 
     $$
     \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
-    $$   
+    $$
 
-
-<i class="fa fa-question-circle-o"></i> -- Asymptotic Stability / Vinograd
---------------------------------------------------------------------------------        
-
-Consider the ODE with right-hand side:
-
-    def f(xy):
-        x, y = xy
-        q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
-        dx = (x**2 * (y - x) + y**5) / q
-        dy = y**2 * (y - 2*x) / q
-        return array([dx, dy])
-
-
-<i class="fa fa-area-chart"></i>
+💎 Local Asympt. Stability
 --------------------------------------------------------------------------------
 
-    figure()
-    x = y = linspace(-1.0, 1.0, 1000)
-    streamplot(*Q(f, x, y), color="k") 
-    xticks([-1, 0, 1])
-    plot([0], [0], "k.", ms=10.0)
-    axis("square")
+An equilibrium $x_e$ is globally asympt. stable iff:
+
+  - there is a $r>0$ such that for every set $X_0$ such that 
+    
+    $$
+    X_0 \subset \{x \; | \; \|x\| \leq r \},
+    $$
+
+  - and for and any $x_0 \in X_0$, the associated maximal solution 
+    $x(t)$ is global and
+
+    $$
+    X(t) \to \{x_e\} \mbox{ when } t\to +\infty.
+    $$
+
+🏷️ Stability
+--------------------------------------------------------------------------------
+
+An equilibrium $x_e$ is **stable** iff:
+
+  - for any $r>0$, 
+  
+  - there is a $\rho \leq r$ such that if $|x(0)| \leq \rho$, then 
+
+  - for any $t\geq 0$, $|x(t)| \leq r$.
+
+
+🎓 Asympt. Stability / Vinograd System
+--------------------------------------------------------------------------------        
+
+Consider the system:
+
+$$
+\begin{array}{rcl}
+\dot{x} &=& (x^2 (y-x) +y^5) / (x^2 + y^2 (1 + (x^2 + y^2)^2 )) \\
+\dot{y} &=& y^2 (y - 2x) / (x^2 + y^2 (1 + (x^2 + y^2)^2 ))
+\end{array}
+$$
+
+
+🐍 Vector field
+--------------------------------------------------------------------------------
+
+``` python
+def f(xy):
+    x, y = xy
+    q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
+    dx = (x**2 * (y - x) + y**5) / q
+    dy = y**2 * (y - 2*x) / q
+    return array([dx, dy])
+```
+
+📈 Stream plot
+--------------------------------------------------------------------------------
+
+``` python
+figure()
+x = y = linspace(-1.0, 1.0, 1000)
+streamplot(*Q(f, x, y), color="k") 
+xticks([-1, 0, 1])
+plot([0], [0], "k.", ms=10.0)
+axis("square")
+axis("off")
+``` 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1144,22 +1220,16 @@ Consider the ODE with right-hand side:
 
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-flask"></i>] 
-    Does the origin of the system look attractive ?
+  - ⚙️ Show that the origin $(0, 0)$ is an equilibrium.
 
-  - [<i class="fa fa-flask"></i>, <i class="fa fa-lightbulb-o"></i>] 
-    Does it seem to be asymptotically stable ?
-
-    <i class="fa fa-key"></i> **Hint.** 
-    
-      - Show if the origin is asymptotically stable, then it is 
-        **stable**, that is: for any $r>0$, there is a $\rho \leq r$ 
-        such that if $|x(0)| \leq \rho$, then $|x(t)| \leq r$ for
-        any $t\geq 0$.
-
-      - Is the system stable (graphically)?
+  - 📈 Does it seems to be attractive ?
 
 
+--------------------------------------------------------------------------------
+
+  - 🧠 Show that: asympt. stable $\Rightarrow$ stable.
+  
+  - 📈 Does the origin seem to be stable ? Conclude.
 
 <style>
 
