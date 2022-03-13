@@ -1,6 +1,7 @@
 % Asymptotic Behavior
 % 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), 
   🏦 MINES ParisTech, PSL University
+% ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
 🐍 Imports
 --------------------------------------------------------------------------------
@@ -923,6 +924,7 @@ bar.close()
   Your browser does not support the video tag.
 </video> 
 ```
+
 Asymptotic Stability
 --------------------------------------------------------------------------------
 
@@ -1033,6 +1035,90 @@ d_H(A, B) := \max \left\{ \sup_{a \in A} d(a, B), \sup_{b\in B} d(A, b) \right\}
 $$
 
 
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+``` python
+
+# Third-Party Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Local Library
+import mivp
+
+# ------------------------------------------------------------------------------
+
+# Vector field
+def fun(t, xy):
+    x, y = xy
+    dx = -2*x + y
+    dy = -2*y + x
+    return array([dx, dy])
+
+# Streamplot
+fig = figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(lambda xy: fun(0, xy), x, y), color=grey_4)
+plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+        markeredgecolor="white", color=neutral)
+axis("square")
+axis("off")
+tight_layout()
+
+# Time span & frame rate
+t_span = (0.0, 10.0)
+
+df = 60.0
+dt = 1.0 / df
+t = np.arange(t_span[0], t_span[1], dt)
+t = np.r_[t, t_span[1]]
+
+# Initial set boundary
+y0 = [2.5, 0.0]
+radius = 2.0
+xc, yc = y0
+
+def boundary(t):  # we assume that t is a 1-dim array
+    return np.array(
+        [
+            [xc + radius * np.cos(theta), yc + radius * np.sin(theta)]
+            for theta in 2 * np.pi * t
+        ]
+    )
+
+# Precision
+rtol = 1e-6  # default: 1e-3
+atol = 1e-12  # default: 1e-6
+
+# ------------------------------------------------------------------------------
+
+data = mivp.solve_alt(
+    fun=fun,
+    t_eval=t,
+    boundary=boundary,
+    boundary_rtol=0.0,
+    boundary_atol=0.1,
+    rtol=rtol,
+    atol=atol,
+    method="LSODA",
+)
+
+good = to_rgb("#51cf66")
+bad = to_rgb("#ff6b6b")
+mivp.generate_movie(data, filename="videos/gas.mp4", fps=df,
+    axes=gca(), zorder=1000, color=good, linewidth=3.0,
+)
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+```{=html}
+<video controls style="width:100vw;">
+  <source src="videos/gas.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video> 
+```
 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1145,7 +1231,7 @@ An equilibrium $x_e$ is globally asympt. stable iff:
   - there is a $r>0$ such that for every set $X_0$ such that 
     
     $$
-    X_0 \subset \{x \; | \; \|x\| \leq r \},
+    X_0 \subset \{x \; | \; \|x - x_e\| \leq r \},
     $$
 
   - and for and any $x_0 \in X_0$, the associated maximal solution 
@@ -1163,6 +1249,8 @@ An equilibrium $x_e$ is **stable** iff:
   - for any $r>0$, 
   
   - there is a $\rho \leq r$ such that if $|x(0)| \leq \rho$, then 
+
+  - the solution $x(t)$ is global,
 
   - for any $t\geq 0$, $|x(t)| \leq r$.
 
