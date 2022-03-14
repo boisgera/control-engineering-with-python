@@ -1248,11 +1248,11 @@ An equilibrium $x_e$ is **stable** iff:
 
   - for any $r>0$, 
   
-  - there is a $\rho \leq r$ such that if $|x(0)| \leq \rho$, then 
+  - there is a $\rho \leq r$ such that if $|x(0) - x_e| \leq \rho$, then 
 
   - the solution $x(t)$ is global,
 
-  - for any $t\geq 0$, $|x(t)| \leq r$.
+  - for any $t\geq 0$, $|x(t) - x_e| \leq r$.
 
 
 🎓 Asympt. Stability / Vinograd System
