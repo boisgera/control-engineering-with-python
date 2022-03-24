@@ -37,14 +37,19 @@ Control Engineering with Python
 
       - I/O Behavior, Laplace domain, I/O stability (30 min)
 
- 3. **Controllers**
-    ([HTML](https://boisgera.github.io/control-engineering-with-python/controllers.html),
-     [PDF](https://boisgera.github.io/control-engineering-with-python/controllers.pdf),
-     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllers.ipynb))
+ 3. **Controller Design**
 
-      - Controllability (1h)
+      - Controllability ([HTML](https://boisgera.github.io/control-engineering-with-python/controllability.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/controllability.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllability.ipynb))
 
-      - Controller design: pole assignement & optimal control (1h)
+      - Asymptotic Stabilization ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic-stabilization.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/asymptotic-stabilization.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic-stabilization.ipynb))
+
+      - Optimal Control ([HTML](https://boisgera.github.io/control-engineering-with-python/optimal-control.html),
+     [PDF](https://boisgera.github.io/control-engineering-with-python/optimal-control.pdf),
+     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=optimal-control.ipynb))
 
  4. **Observers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),

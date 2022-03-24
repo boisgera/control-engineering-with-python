@@ -4,6 +4,8 @@
 ./build.py odes.md
 ./build.py asymptotic.md
 ./build.py linear-systems.md
-./build.py controllers.md
+./build.py controllability.md
+./build.py asymptotic-stabilization.md
+./build.py optimal-control.md
 ./build.py observers.md
 
