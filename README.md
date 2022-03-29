@@ -85,16 +85,16 @@ Open, edit and run these notebooks either
  
 ### :rocket: Project
 
-#### 2020-2021
-
-  - :octocat:  Use this [template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
 
 #### 2021-2022
 
-  - :octocat: Fork  [this project](https://github.com/boisgera/control-engineering-with-python-project-2021-2022) as a starting point,
+  - :octocat: Fork [this project](https://github.com/boisgera/control-engineering-with-python-project-2021-2022) as a starting point,
 
-  - :octocat: Fetch upstream to get the project updates.
+  - :octocat: When needed, "fetch upstream" to get the project updates.
 
+#### 2020-2021
+
+  - :octocat:  Use this [template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
 
 ### :tada: Extra resources
 
