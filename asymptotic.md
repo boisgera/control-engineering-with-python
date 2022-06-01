@@ -1,6 +1,6 @@
 % Asymptotic Behavior
 % 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), 
-  🏦 MINES ParisTech, PSL University
+  🏦 MINES Paris, PSL University
 % ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
 🐍 Imports
@@ -685,13 +685,9 @@ bar.close()
   Your browser does not support the video tag.
 </video> 
 ```
-      
 
-
-
+🎓  Pendulum / Equilibrium
 --------------------------------------------------------------------------------
-
-### 🎓  Pendulum / Equilibrium
 
 **Reminder.** The pendulum is governed by the equation
 
