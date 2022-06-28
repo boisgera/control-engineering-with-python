@@ -1,14 +1,16 @@
-% Asymptotic Behavior
-% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), 
-  🏦 MINES Paris, PSL University
-% ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+---
+title: Asymptotic Behavior
+author:
+  - "👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr)
+    🏦 MINES Paris, PSL University"
+date: ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+---
 
-🐍 Imports
---------------------------------------------------------------------------------
+## 🐍 Imports
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-``` python
+```python
 from numpy import *
 from numpy.linalg import *
 from scipy.integrate import solve_ivp
@@ -17,10 +19,9 @@ from matplotlib.pyplot import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-🐍 Streamplot Helper
---------------------------------------------------------------------------------
+## 🐍 Streamplot Helper
 
-``` python
+```python
 def Q(f, xs, ys):
     X, Y = meshgrid(xs, ys)
     v = vectorize
@@ -37,7 +38,6 @@ def Q(f, xs, ys):
     from matplotlib.pyplot import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -58,18 +58,18 @@ def Q(f, xs, ys):
     #
     # Matplotlib Configuration & Helper Functions
     # --------------------------------------------------------------------------
-    
+
     # TODO: also reconsider line width and markersize stuff "for the web
     #       settings".
     fontsize = 35
 
     rc = {
         "text.usetex": True,
-        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}", 
+        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}",
         #"font.family": "serif",
         "font.serif": [],
         #"font.sans-serif": [],
-        "legend.fontsize": fontsize, 
+        "legend.fontsize": fontsize,
         "axes.titlesize":  fontsize,
         "axes.labelsize":  fontsize,
         "xtick.labelsize": fontsize,
@@ -80,9 +80,9 @@ def Q(f, xs, ys):
     }
     mpl.rcParams.update(rc)
 
-    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi
     # (the "standard" dpi for Web computations) gives 1600 px.
-    width_in = 160 / 9 
+    width_in = 160 / 9
 
     def save(name):
         cwd = os.getcwd()
@@ -98,17 +98,13 @@ def Q(f, xs, ys):
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-ℹ️ Assumption
---------------------------------------------------------------------------------
+## ℹ️ Assumption
 
 From now on, we only deal with well-posed systems.
 
-
-🏷️ Asymptotic
---------------------------------------------------------------------------------
+## 🏷️ Asymptotic
 
 **Asymptotic** = Long-Term: when $t \to + \infty$
-
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -122,26 +118,25 @@ We will now turn to the study of such properties specifically.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 Asymptotic behavior of dynamical systems can be complex.
 
---------------------------------------------------------------------------------
+---
 
-Lorenz System 
---------------------------------------------------------------------------------
+## Lorenz System
 
-  $$
-  \begin{array}{lll}
-  \dot{x} &=& \sigma (y - x) \\
-  \dot{y} &=& x (\rho - z) \\
-  \dot{z} &=& xy - \beta z 
-  \end{array}
-  $$
+$$
+\begin{array}{lll}
+\dot{x} &=& \sigma (y - x) \\
+\dot{y} &=& x (\rho - z) \\
+\dot{z} &=& xy - \beta z
+\end{array}
+$$
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-But first, we need to realize that dynamical systems, even when they are 
+But first, we need to realize that dynamical systems, even when they are
 governed by a simple, low-dimensional system of equations,
 may exhibit very complex asymptotic patterns.
 
@@ -150,7 +145,7 @@ example of such system.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 [![](images/static/lorenz-attractor.png)](https://portsmouth.github.io/fibre/?settings=eyJSIjp7InJheUJhdGNoIjoxMjgsIm1heFRpbWVTdGVwcyI6MjI5LCJtYXhJdGVyYXRpb25zIjoxMDAsImludGVncmF0aW9uVGltZSI6MiwiaW50ZWdyYXRlRm9yd2FyZCI6dHJ1ZSwiZ3JpZFNwYWNlIjowLjAzMzA4MjA1NjczMzUyMTgwNCwidHViZVdpZHRoIjowLjAxMzIzMjgyMjY5MzQwODcyMywidHViZVNwcmVhZCI6ZmFsc2UsInJlY29yZF9yZWFsdGltZSI6dHJ1ZSwieG1pbiI6MTguMTI3NTIxNDk3MTg5NjI2LCJ4bWF4IjoyNi43NDEyMjM2ODMyMjY3NzgsInltaW4iOi0xNS4xMDMyMzE2NzQyNjQ5NDUsInltYXgiOi04LjczODI1MzU0Njc5NDE0Mywiem1pbiI6MTkuMjU3MzA2NjExNDgwNjYsInptYXgiOjIxLjU4ODgyMDMyODM4NTQ2MywiY2xpcFRvQm91bmRzIjpmYWxzZSwic2hvd0JvdW5kcyI6dHJ1ZSwiZXhwb3N1cmUiOi0wLjc1MzM5MjIwMzMxNjgyMSwiZ2FtbWEiOjAuOTkyNDYxNzAyMDA1NjU2NSwiY29udHJhc3QiOjEuMTIyMzM0Njk3MzkzOTI2Mywic2F0dXJhdGlvbiI6MS4zODY5OTExNjk1MDI0NzcsInN1YnRyYWN0aXZlQ29sb3IiOmZhbHNlLCJiZ0NvbG9yIjpbMCwwLDBdLCJoYWlyU2hhZGVyIjpmYWxzZSwic3BlY1NoaW5lIjoyMS45NzI4NjIzNzM0NjU0MzIsInNwZWNDb2xvciI6WzAuOTAxOTUzMjc1MDg4MDg4MSwwLjg5MzEwOTkxODYyMzQ5MjEsMC44OTMxMDk5MTg2MjM0OTIxXSwibGlnaHQxX2NvbG9yIjpbMSwwLjksMC44XSwibGlnaHQyX2NvbG9yIjpbMC44LDAuOSwxXSwibGlnaHQxX2RpciI6WzAuNTc3MzUwMjY5MTg5NjI1OCwwLjU3NzM1MDI2OTE4OTYyNTgsMC41NzczNTAyNjkxODk2MjU4XSwibGlnaHQyX2RpciI6Wy0wLjU3NzM1MDI2OTE4OTYyNTgsLTAuNTc3MzUwMjY5MTg5NjI1OCwtMC41NzczNTAyNjkxODk2MjU4XSwiZGVwdGhUZXN0Ijp0cnVlLCJkYXNoX3NwYWNpbmciOjAuNTQwMzQwMjU5OTgwODU3NCwiZGFzaF9zcGVlZCI6MzMuMDgyMDU2NzMzNTIxODksImRhc2hfc2l6ZSI6MC45MTUyNzAyMzYyOTQxMDU1LCJkYXNoZXMiOmZhbHNlLCJzdWJ0cmFjdGl2ZV9jb2xvciI6ZmFsc2UsImhhaXJTaGluZSI6MTAsImhhaXJTcGVjQ29sb3IiOlsxLDEsMV19LCJDIjp7InBvcyI6Wy03LjQyNjkzNjMzNzgzOTcxLC02Ljk5ODI1Mjk3MjIzMzY1OSwxMTcuMTMyNDU3OTg4NDA0MDddLCJ0YXIiOlsxLjE4NTQzMDE1NTUyNDU3NCwtMS4zMzUzOTk3MDQyNDcyNDA1LDI3Ljk0Nzk3NzA0NDE1MDk1N10sIm5lYXIiOjAuMDM0NjQxMDE2MTUxMzc3NTUsImZhciI6MzQ2NDEuMDE2MTUxMzc3NTQ2fSwiRSI6eyJjb2RlIjoiXG4vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBMb3JlbnogYXR0cmFjdG9yXG4vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vXG5cbmNvbnN0IGZsb2F0IGthcHBhID0gZmxvYXQoMS44NCk7XG5jb25zdCBmbG9hdCBhbHBoYSA9IGZsb2F0KDYuNyk7XG5cbiNkZWZpbmUgcmdiIHZlYzNcblxuY29uc3QgdmVjMyBjb2xMbyA9IHJnYigyNTQsNDUsNzMpIC8gMjU1LjA7XG5jb25zdCB2ZWMzIGNvbEhpID0gcmdiKDUsMTM4LDI1NSkgLyAyNTUuMDtcbmNvbnN0IGZsb2F0IG1hZ1NjYWxlID0gZmxvYXQoMC42KTtcblxuY29uc3QgZmxvYXQgcmhvICAgPSBmbG9hdCgyOC4wKTsgICAgIFxuY29uc3QgZmxvYXQgc2lnbWEgPSBmbG9hdCgxMC4wKTtcbmNvbnN0IGZsb2F0IGJldGEgID0gZmxvYXQoOC4wKS9mbG9hdCgzLjApO1xuXG5cbiB2ZWMzIHZlbG9jaXR5KHZlYzMgcCwgZmxvYXQgdClcbiB7XG4gICAgIHZlYzMgdjtcbiAgICAgZmxvYXQgeCA9IHAueDtcbiAgICAgZmxvYXQgeSA9IHAueTtcbiAgICAgZmxvYXQgeiA9IHAuejtcbiAgICAgdi54ID0gc2lnbWEqKHkgLSB4KTtcbiAgICAgdi55ID0geCoocmhvIC0geik7XG4gICAgIHYueiA9IHgqeSAtIGJldGEqejtcbiAgICAgcmV0dXJuIHY7XG4gfSAgICBcbiBcbiBcbnZlYzMgY29sb3IodmVjMyBwLCBmbG9hdCB0KVxue1xuICAgIHZlYzMgdiA9IHZlbG9jaXR5KHAsIHQpO1xuICBcdGZsb2F0IG1hZzIgPSB0L21hZ1NjYWxlO1xuICAgIGZsb2F0IGxlcnAgPSBtYWcyLygxLjArbWFnMik7XG4gICAgcmV0dXJuICgxLjAtbGVycCkqY29sTG8gKyBsZXJwKmNvbEhpO1xufSAgXG4ifX0%3D)
 
@@ -158,29 +153,26 @@ Visualized with [Fibre](https://github.com/portsmouth/fibre)
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-The solutions $x(t)$ of this system, which are global, have no limit when 
-$t \to + \infty$ and don't blow up either but instead oscillates forever 
-between two regions of the state space. This long-term behavior is 
-quantitatively very sensitive to the choice of the initial condition, 
+The solutions $x(t)$ of this system, which are global, have no limit when
+$t \to + \infty$ and don't blow up either but instead oscillates forever
+between two regions of the state space. This long-term behavior is
+quantitatively very sensitive to the choice of the initial condition,
 making long-term predictions about the system practically impossible:
 the system is chaotic.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Hadley System
---------------------------------------------------------------------------------
+## Hadley System
 
-  $$
-  \begin{array}{lll}
-  \dot{x} &=& -y^2 - z^2 - ax + af\\
-  \dot{y} &=& xy - b xz - y + g \\
-  \dot{z} &=& bxy + xz - z
-  \end{array}
-  $$
+$$
+\begin{array}{lll}
+\dot{x} &=& -y^2 - z^2 - ax + af\\
+\dot{y} &=& xy - b xz - y + g \\
+\dot{z} &=& bxy + xz - z
+\end{array}
+$$
 
-
-
---------------------------------------------------------------------------------
+---
 
 [![](images/static/hadley-attractor.png)](https://portsmouth.github.io/fibre/?settings=eyJSIjp7InJheUJhdGNoIjoxMjgsIm1heFRpbWVTdGVwcyI6MzE5LCJtYXhJdGVyYXRpb25zIjoxMDAsImludGVncmF0aW9uVGltZSI6MjAsImludGVncmF0ZUZvcndhcmQiOnRydWUsImdyaWRTcGFjZSI6MC4wMDUsInR1YmVXaWR0aCI6MC4wMTg3NDc4NDI2MTk1ODA5MzIsInR1YmVTcHJlYWQiOmZhbHNlLCJyZWNvcmRfcmVhbHRpbWUiOnRydWUsInhtaW4iOi0xLjg0MjQzOTkxMzY3MjEzMjEsInhtYXgiOi0xLjY5NzQwMDg2MTM5ODUwMjUsInltaW4iOi0wLjc1MDc5Mzc1MTk1Njc2MDIsInltYXgiOi0wLjI5OTU4ODE4NTU3MDA5MzE1LCJ6bWluIjotMC44MTQyMDU1NzE1Mzg3ODkzLCJ6bWF4IjotMC43NTYwODExMDg1OTM5NzI5LCJjbGlwVG9Cb3VuZHMiOmZhbHNlLCJzaG93Qm91bmRzIjp0cnVlLCJleHBvc3VyZSI6LTEuMTc3NDg1ODI2MDc5NTYxLCJnYW1tYSI6MS4wMjU2MTcyNzI3MTgyNTEsImNvbnRyYXN0IjoxLjI5MDI5MjY5NzkzNTg2NDIsInNhdHVyYXRpb24iOjEuNDU1NzE0ODM4Njk2ODcyMywic3VidHJhY3RpdmVDb2xvciI6ZmFsc2UsImJnQ29sb3IiOlswLDAsMF0sImhhaXJTaGFkZXIiOmZhbHNlLCJzcGVjU2hpbmUiOjMxLjg5NzQ4MDA3NzUzNjA3Nywic3BlY0NvbG9yIjpbMSwxLDFdLCJsaWdodDFfY29sb3IiOlsxLDAuOSwwLjhdLCJsaWdodDJfY29sb3IiOlswLjgsMC45LDFdLCJsaWdodDFfZGlyIjpbMC41NzczNTAyNjkxODk2MjU4LDAuNTc3MzUwMjY5MTg5NjI1OCwwLjU3NzM1MDI2OTE4OTYyNThdLCJsaWdodDJfZGlyIjpbLTAuNTc3MzUwMjY5MTg5NjI1OCwtMC41NzczNTAyNjkxODk2MjU4LC0wLjU3NzM1MDI2OTE4OTYyNThdLCJkZXB0aFRlc3QiOnRydWUsImRhc2hfc3BhY2luZyI6MC41NDAzNDAyNTk5ODA4NTc0LCJkYXNoX3NwZWVkIjozMy4wODIwNTY3MzM1MjE4OSwiZGFzaF9zaXplIjowLjkxNTI3MDIzNjI5NDEwNTUsImRhc2hlcyI6ZmFsc2UsInN1YnRyYWN0aXZlX2NvbG9yIjpmYWxzZSwiaGFpclNoaW5lIjoxMCwiaGFpclNwZWNDb2xvciI6WzEsMSwxXX0sIkMiOnsicG9zIjpbLTQuMjgwNDkyMTM4MTY3OTY3NSwwLjg4NDU1MjA5Nzk1NTE3MSwtMy40OTI3MzM4Njc0MzM3ODFdLCJ0YXIiOlswLjQ0MzkwMDY5MjE1MTE1OTUsMC4xMDk3ODc2ODUzODYxNzI1MywtMC4xNDE1NTE2NDc4Mzk3MTEzXSwibmVhciI6MC4wMzQ2NDEwMTYxNTEzNzc1NSwiZmFyIjozNDY0MS4wMTYxNTEzNzc1NDZ9LCJFIjp7ImNvZGUiOiJcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIEhhZGxleSBhdHRyYWN0b3Jcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy9cblxuY29uc3QgZmxvYXQgYSA9IGZsb2F0KDAuMik7XG5jb25zdCBmbG9hdCBiID0gZmxvYXQoNC4wKTtcbmNvbnN0IGZsb2F0IGYgPSBmbG9hdCg4LjApO1xuY29uc3QgZmxvYXQgZyA9IGZsb2F0KDEuMCk7XG5cbiNkZWZpbmUgcmdiIHZlYzNcblxuY29uc3QgdmVjMyBjb2xMbyA9IHJnYigyNTUsNjEsODcpIC8gMjU1LjA7XG5jb25zdCB2ZWMzIGNvbEhpID0gcmdiKDg2LDE3NiwyNTQpIC8gMjU1LjA7XG5jb25zdCBmbG9hdCBtYWdTY2FsZSA9IGZsb2F0KDYpO1xuXG52ZWMzIHZlbG9jaXR5KHZlYzMgcCwgZmxvYXQgdClcbntcbiAgICB2ZWMzIHY7XG4gICAgZmxvYXQgeCA9IHAueDtcbiAgICBmbG9hdCB5ID0gcC55O1xuICAgIGZsb2F0IHogPSBwLno7XG4gICAgdi54ID0gLXkqeSAteip6IC1hKnggKyBhKmY7XG4gICAgdi55ID0geCp5IC0gYip4KnogLSB5ICsgZztcbiAgICB2LnogPSBiKngqeSArIHgqeiAtIHo7XG4gICAgcmV0dXJuIHY7XG59ICAgIFxuIFxudmVjMyBjb2xvcih2ZWMzIHAsIGZsb2F0IHQpXG57XG4gICAgdmVjMyB2ID0gdmVsb2NpdHkocCwgdCk7XG4gICAgZmxvYXQgbWFnMiA9IHQvbWFnU2NhbGU7XG4gICAgZmxvYXQgbGVycCA9IG1hZzIvKDEuMCttYWcyKTtcbiAgICByZXR1cm4gKDEuMC1sZXJwKSpjb2xMbyArIGxlcnAqY29sSGk7XG59ICBcbiJ9fQ%3D%3D)
 
@@ -197,20 +189,18 @@ so that their asymptotic behavior is more acceptable.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-🏷️ Equilibrium
---------------------------------------------------------------------------------
+## 🏷️ Equilibrium
 
 An **equilibrium** of system $\dot{x} = f(x)$ is a state $x_e$
 such that the maximal solution $x(t)$ such that $x(0) = x_e$
 
-  - is global and,
+- is global and,
 
-  - is $x(t) = x_e$ for any $t > 0$.
+- is $x(t) = x_e$ for any $t > 0$.
 
-💎 Equilibrium
---------------------------------------------------------------------------------
+## 💎 Equilibrium
 
-The state $x_e$ is an equilibrium of $\dot{x} = f(x)$ 
+The state $x_e$ is an equilibrium of $\dot{x} = f(x)$
 
 $\Longleftrightarrow$
 
@@ -218,7 +208,7 @@ $f(x_e) = 0$.
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-If $f(x_e) = 0$, then $d x_e / dt = f(x_e) = 0$ and thus the (constant) 
+If $f(x_e) = 0$, then $d x_e / dt = f(x_e) = 0$ and thus the (constant)
 function $t \in \left[0, +\infty \right) \mapsto x_e$ is a global solution
 of the IVP $\dot{x} =f(x)$ and $x_e = 0$.
 
@@ -227,45 +217,38 @@ then $0 = \dot{x}(0) = f(x(0)) = f(x_e)$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
-Stability
---------------------------------------------------------------------------------
+## Stability
 
 About the long-term behavior of solutions.
 
-  - "Stability" subtle concept,
+- "Stability" subtle concept,
 
-  - "Asymptotic Stability" simpler (and stronger),
+- "Asymptotic Stability" simpler (and stronger),
 
-  - "Attractivity" simpler yet, (but often too weak).
+- "Attractivity" simpler yet, (but often too weak).
 
-
-Attractivity
---------------------------------------------------------------------------------
+## Attractivity
 
 **Context:** system $\dot{x} = f(x)$ with equilibrium $x_e$.
 
-🏷️ Global Attractivity
---------------------------------------------------------------------------------
+## 🏷️ Global Attractivity
 
 The equilibrium $x_e$ is **globally attractive** if for every $x_0,$
 the maximal solution $x(t)$ such that $x(0)=x_0$
 
-  - is global and,
+- is global and,
 
-  - $x(t) \to  x_e$ when $t \to +\infty$.
+- $x(t) \to  x_e$ when $t \to +\infty$.
 
-🏷️ Local Attractivity
---------------------------------------------------------------------------------
+## 🏷️ Local Attractivity
 
 The equilibrium $x_e$ is **locally attractive**
-if for every $x_0$ **close enough to $x_e$**, 
+if for every $x_0$ **close enough to $x_e$**,
 the maximal solution $x(t)$ such that $x(0)=x_0$
 
-  - is global and,
+- is global and,
 
-  - $x(t) \to  x_e$ when $t \to +\infty$.
+- $x(t) \to  x_e$ when $t \to +\infty$.
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -276,8 +259,7 @@ $\|x_0 - x_e\| \leq r$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-🔍 Global Attractivity
---------------------------------------------------------------------------------
+## 🔍 Global Attractivity
 
 The system
 
@@ -288,14 +270,13 @@ $$
 \end{array}
 $$
 
-  - is well-posed,
-  
-  - has an equilibrium at $(0, 0)$.
+- is well-posed,
 
-🐍 Vector field
---------------------------------------------------------------------------------
+- has an equilibrium at $(0, 0)$.
 
-``` python
+## 🐍 Vector field
+
+```python
 def f(xy):
     x, y = xy
     dx = -2*x + y
@@ -303,13 +284,12 @@ def f(xy):
     return array([dx, dy])
 ```
 
-📈 Stream plot
---------------------------------------------------------------------------------
+## 📈 Stream plot
 
-``` python
+```python
 figure()
 x = y = linspace(-5.0, 5.0, 1000)
-streamplot(*Q(f, x, y), color="k") 
+streamplot(*Q(f, x, y), color="k")
 plot([0], [0], "k.", ms=20.0)
 axis("square")
 axis("off")
@@ -328,10 +308,9 @@ axis("off")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-``` python
+```python
 import matplotlib.animation as ani
 from matplotlib.colors import to_rgb
 from tqdm import tqdm
@@ -369,7 +348,7 @@ lines = []
 for x, y in xys:
     line = plot(
         [x[0]], [y[0]],
-        lw=3.0, 
+        lw=3.0,
         ms=10.0,
         color=neutral,
         marker="o", markevery=[-1],
@@ -383,7 +362,7 @@ def gamma(x):
     return pow(x, 0.5)
 
 def update(i):
-    j, k = divmod(i, len(t)) 
+    j, k = divmod(i, len(t))
     x, y = xys[j]
     line = lines[j]
     line.set_data(x[:k+1], y[:k+1])
@@ -400,20 +379,19 @@ animation.save("videos/globally-attractive.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
 ```
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 ```{=html}
 <video controls style="width:100vw;">
   <source src="videos/globally-attractive.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> 
+</video>
 ```
 
-🔍 Local Attractivity
---------------------------------------------------------------------------------
-
+## 🔍 Local Attractivity
 
 The system
 
@@ -424,14 +402,13 @@ $$
 \end{array}
 $$
 
-  - is well-posed,
-  
-  - has an equilibrium at $(0, 0)$.
+- is well-posed,
 
-🐍 Vector field
---------------------------------------------------------------------------------
+- has an equilibrium at $(0, 0)$.
 
-``` python
+## 🐍 Vector field
+
+```python
 def f(xy):
     x, y = xy
     dx = -2*x + y**3
@@ -439,18 +416,16 @@ def f(xy):
     return array([dx, dy])
 ```
 
-📈 Stream plot
---------------------------------------------------------------------------------
+## 📈 Stream plot
 
-``` python
+```python
 figure()
 x = y = linspace(-5.0, 5.0, 1000)
-streamplot(*Q(f, x, y), color="k") 
+streamplot(*Q(f, x, y), color="k")
 plot([0], [0], "k.", ms=10.0)
 axis("square")
 axis("off")
 ```
-
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -467,7 +442,7 @@ axis("off")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-``` python
+```python
 import matplotlib.animation as ani
 from matplotlib.colors import to_rgb
 from tqdm import tqdm
@@ -505,7 +480,7 @@ lines = []
 for x, y in xys:
     line = plot(
         [x[0]], [y[0]],
-        lw=3.0, 
+        lw=3.0,
         ms=10.0,
         color=neutral,
         marker="o", markevery=[-1],
@@ -519,7 +494,7 @@ def gamma(x):
     return pow(x, 0.5)
 
 def update(i):
-    j, k = divmod(i, len(t)) 
+    j, k = divmod(i, len(t))
     x, y = xys[j]
     line = lines[j]
     line.set_data(x[:k+1], y[:k+1])
@@ -536,21 +511,19 @@ animation.save("videos/locally-attractive.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
 ```
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 ```{=html}
 <video controls style="width:100vw;">
   <source src="videos/locally-attractive.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> 
+</video>
 ```
-      
 
-🔍 No Attractivity
---------------------------------------------------------------------------------
-
+## 🔍 No Attractivity
 
 The system
 
@@ -561,14 +534,13 @@ $$
 \end{array}
 $$
 
-  - is well-posed,
-  
-  - has a (unique) equilibrium at $(0, 0)$.
+- is well-posed,
 
-🐍 Vector field
---------------------------------------------------------------------------------
+- has a (unique) equilibrium at $(0, 0)$.
 
-``` python
+## 🐍 Vector field
+
+```python
 def f(xy):
     x, y = xy
     dx = -2*x + y
@@ -576,18 +548,16 @@ def f(xy):
     return array([dx, dy])
 ```
 
-📈 Stream plot
---------------------------------------------------------------------------------
+## 📈 Stream plot
 
-``` python
+```python
 figure()
 x = y = linspace(-5.0, 5.0, 1000)
-streamplot(*Q(f, x, y), color="k") 
+streamplot(*Q(f, x, y), color="k")
 plot([0], [0], "k.", ms=10.0)
 axis("square")
 axis("off")
 ```
-
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -604,7 +574,7 @@ axis("off")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-``` python
+```python
 import matplotlib.animation as ani
 from matplotlib.colors import to_rgb
 from tqdm import tqdm
@@ -622,7 +592,7 @@ dt = 1.0 / df
 t_span = t_i, t_f = (0.0, 3.0)
 t = np.arange(t_i, t_f + dt, dt)
 
-y0s = [[-4*0.9659258262890683, -4*0.2588190451025208],  
+y0s = [[-4*0.9659258262890683, -4*0.2588190451025208],
        [-4*0.9659258262890683, -4*0.2588190451025208 + 0.2],
        [0.2*0.9659258262890683, 0.2*0.2588190451025208 - 0.2]]
 colors = [good, bad, bad]
@@ -644,7 +614,7 @@ lines = []
 for x, y in xys:
     line = plot(
         [x[0]], [y[0]],
-        lw=3.0, 
+        lw=3.0,
         ms=10.0,
         color=neutral,
         marker="o", markevery=[-1],
@@ -658,7 +628,7 @@ def gamma(x):
     return pow(x, 0.5)
 
 def update(i):
-    j, k = divmod(i, len(t)) 
+    j, k = divmod(i, len(t))
     x, y = xys[j]
     line = lines[j]
     line.set_data(x[:k+1], y[:k+1])
@@ -675,37 +645,38 @@ animation.save("videos/not-attractive.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
 ```
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 ```{=html}
 <video controls style="width:100vw;">
   <source src="videos/not-attractive.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> 
+</video>
 ```
 
-🎓  Pendulum / Equilibrium
---------------------------------------------------------------------------------
+## 🎓 Pendulum / Equilibrium
 
 **Reminder.** The pendulum is governed by the equation
 
-  $$
-  m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
-  $$
+$$
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+$$
 
 where $m>0$, $\ell>0$, $g>0$ and $b\geq0$.
 
---------------------------------------------------------------------------------
+---
 
-  - ⚙️ Locate the equilibria of this system.
+- ⚙️ Locate the equilibria of this system.
 
-  - ❔ Is any equilibrium **globally** attractive?
+- ❔ Is any equilibrium **globally** attractive?
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 The 2nd-order differential equations are equivalent to the first order system
+
 $$
 \left|
 \begin{array}{rcl}
@@ -714,91 +685,88 @@ $$
 \end{array}
 \right.
 $$
+
 Thus, the system state is $x =(\theta, \omega)$ and is governed by $\dot{x} = f(x)$ with
+
 $$
 f(\theta, \omega) = (\omega, (- b / m \ell^2) \omega - (g /\ell) \sin \theta).
 $$
-Hence, the state $(\theta, \omega)$ is a solution to $f(\theta, \omega) = 0$ 
+
+Hence, the state $(\theta, \omega)$ is a solution to $f(\theta, \omega) = 0$
 if and only if $\omega = 0$ and $\sin \theta = 0$. In other words, the equilibria
 of the system are characterized by $\theta = k \pi$ for some $k \in \mathbb{Z}$
 and $\omega (= \dot{\theta}) = 0$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
---------------------------------------------------------------------------------
+---
 
 Assume that there is some friction ($b>0$)
 
-  - 📈 Make a stream plot of the system with $m=1$, $\ell=1$, $b=1$, $g=9.81$.
+- 📈 Make a stream plot of the system with $m=1$, $\ell=1$, $b=1$, $g=9.81$.
 
-  - ⚙️ Determine which equilibria are locally attractive.
+- ⚙️ Determine which equilibria are locally attractive.
 
---------------------------------------------------------------------------------
+---
 
 Assume that there is no friction ($b=0$)
 
-  - 📈 Make a stream plot of the system.
+- 📈 Make a stream plot of the system.
 
-  - 🧠 Prove that no equilibrium is locally attractive
+- 🧠 Prove that no equilibrium is locally attractive
 
-    🗝️ **Hint:** study how the total mechanical energy $E$
-    $$
-    E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta, \; (J = m\ell^2)
-    $$
-    evolves in time.
+  🗝️ **Hint:** study how the total mechanical energy $E$
 
+  $$
+  E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta, \; (J = m\ell^2)
+  $$
 
-💎 Attractivity (Low-level)
---------------------------------------------------------------------------------
+  evolves in time.
+
+## 💎 Attractivity (Low-level)
 
 The equilibrium $x_e$ is **globally attractive** iff:
 
-  - for any state $x_0$ and for any $\epsilon > 0$ there is a $\tau \geq 0$, 
+- for any state $x_0$ and for any $\epsilon > 0$ there is a $\tau \geq 0$,
 
-  - such that the maximal solution $x(t)$ such that $x(0) = x_0$ is global and,
-    
-  - satisfies:
-
-    $$
-    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
-    $$
-
-⚠️ Warning
---------------------------------------------------------------------------------
-
-  - Very close values of $x_0$ could **theoretically** lead to very different 
-    "speed of convergence" of $x(t)$ towards the equilibrium.
-
-  - This is not contradictory with the well-posedness assumption:
-    continuity w.r.t. the initial condition only works with finite time spans.
-
-
-🔍 (Pathological) Example
---------------------------------------------------------------------------------
+- such that the maximal solution $x(t)$ such that $x(0) = x_0$ is global and,
+- satisfies:
 
   $$
-  \begin{array}{lll}
-  \dot{x} &=& x + xy - (x + y)\sqrt{x^2 + y^2} \\
-  \dot{y} &=& y - x^2 + (x - y) \sqrt{x^2 + y^2}
-  \end{array}
+  \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
   $$
 
---------------------------------------------------------------------------------
+## ⚠️ Warning
+
+- Very close values of $x_0$ could **theoretically** lead to very different
+  "speed of convergence" of $x(t)$ towards the equilibrium.
+
+- This is not contradictory with the well-posedness assumption:
+  continuity w.r.t. the initial condition only works with finite time spans.
+
+## 🔍 (Pathological) Example
+
+$$
+\begin{array}{lll}
+\dot{x} &=& x + xy - (x + y)\sqrt{x^2 + y^2} \\
+\dot{y} &=& y - x^2 + (x - y) \sqrt{x^2 + y^2}
+\end{array}
+$$
+
+---
 
 Equivalently, in polar coordinates:
 
-  $$
-  \begin{array}{lll}
-  \dot{r} &=& r (1 - r) \\
-  \dot{\theta} &=& r (1 - \cos \theta)
-  \end{array}
-  $$
+$$
+\begin{array}{lll}
+\dot{r} &=& r (1 - r) \\
+\dot{\theta} &=& r (1 - \cos \theta)
+\end{array}
+$$
 
-🐍 Vector Field
---------------------------------------------------------------------------------
+## 🐍 Vector Field
 
-``` python
+```python
 def f(xy):
     x, y = xy
     r = sqrt(x*x + y*y)
@@ -807,21 +775,18 @@ def f(xy):
     return array([dx, dy])
 ```
 
+## 📈 Stream Plot
 
-
-📈 Stream Plot
---------------------------------------------------------------------------------
-
-``` python
+```python
 figure()
 x = y = linspace(-2.0, 2.0, 1000)
-streamplot(*Q(f, x, y), color="k") 
+streamplot(*Q(f, x, y), color="k")
 plot([1], [0], "k.", ms=20.0)
 axis("square")
 axis("off")
 ```
 
---------------------------------------------------------------------------------
+---
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -836,11 +801,9 @@ axis("off")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-``` python
+```python
 import matplotlib.animation as ani
 from matplotlib.colors import to_rgb
 from tqdm import tqdm
@@ -877,7 +840,7 @@ lines = []
 for x, y in xys:
     line = plot(
         [x[0]], [y[0]],
-        lw=3.0, 
+        lw=3.0,
         ms=10.0,
         #color=neutral,
         marker="o", markevery=[-1],
@@ -892,8 +855,8 @@ def gamma(x):
 
 def update(i):
   for line, (x, y) in zip(lines, xys):
-      line.set_data(x[:i+1], y[:i+1])  
-    # j, k = divmod(i, len(t)) 
+      line.set_data(x[:i+1], y[:i+1])
+    # j, k = divmod(i, len(t))
     # x, y = xys[j]
     # line = lines[j]
     # line.set_data(x[:k+1], y[:k+1])
@@ -910,49 +873,47 @@ animation.save("videos/pathological.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
 ```
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 ```{=html}
 <video controls style="width:100vw;">
   <source src="videos/pathological.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> 
+</video>
 ```
 
-Asymptotic Stability
---------------------------------------------------------------------------------
+## Asymptotic Stability
 
-Asymptotic stability is a stronger version of attractivity 
+Asymptotic stability is a stronger version of attractivity
 which is by definition robust with respect to the choice of
 the initial state.
 
-🏷️ Global Asympt. Stability
---------------------------------------------------------------------------------
+## 🏷️ Global Asympt. Stability
 
 The equilibrium $x_e$ is **globally asympt. stable** iff:
 
-  - for any state $x_0$ and for any $\epsilon > 0$ there is a $\tau \geq 0$, 
+- for any state $x_0$ and for any $\epsilon > 0$ there is a $\tau \geq 0$,
 
-  - and there is a $r > 0$ such that if $\|x_0' - x_0\| \leq r$, 
+- and there is a $r > 0$ such that if $\|x_0' - x_0\| \leq r$,
 
-  - such that the maximal solution $x(t)$ such that $x(0) = x_0'$ is global and,
-    
-  - satisfies:
+- such that the maximal solution $x(t)$ such that $x(0) = x_0'$ is global and,
+- satisfies:
 
-    $$
-    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
-    $$
+  $$
+  \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+  $$
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Global asymptotic stability is requirement which is very similar to attractivity.
 The only difference is that it requires the time $\tau$ that we should wait
 to be sure that the distance between $x(t)$ and the equilibrium is less that
-$\varepsilon$ should be valid not only for the initial condition $x(0) = x_0$ 
+$\varepsilon$ should be valid not only for the initial condition $x(0) = x_0$
 but also for any other initial condition in an (arbitrary small) neighbourhood
-of $x_0$. There is a common profile for the "speed of convergence" towards the equilibrium between an initial condition and its neighbors ; 
+of $x_0$. There is a common profile for the "speed of convergence" towards the equilibrium between an initial condition and its neighbors ;
 this condition is not always met if we merely have an attractive equilibrium.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -961,11 +922,11 @@ this condition is not always met if we merely have an attractive equilibrium.
 
 --------------------------------------------------------------------------------
 
-Equivalently: 
+Equivalently:
 
-  - **for any $r>0$**, for any $\epsilon > 0$, 
-    there is a $\tau \geq 0$ such the maximal solution $x(t)$ 
-    **such that $\|x(0) - x_e\| \leq r$** exists for all $t \geq 0$ and 
+  - **for any $r>0$**, for any $\epsilon > 0$,
+    there is a $\tau \geq 0$ such the maximal solution $x(t)$
+    **such that $\|x(0) - x_e\| \leq r$** exists for all $t \geq 0$ and
     satisfies:
 
     $$
@@ -981,10 +942,9 @@ the maximal solution $x(t)$ such that $x(0)=x_0$
 
 -->
 
-Set of Initial Conditions
---------------------------------------------------------------------------------
+## Set of Initial Conditions
 
-Let $f: \mathbb{R}^n \to \mathbb{R}^n$ and $X_0 \subset \mathbb{R}^n$. 
+Let $f: \mathbb{R}^n \to \mathbb{R}^n$ and $X_0 \subset \mathbb{R}^n$.
 
 Let $X(t)$ be the image of $X_0$ by the flow at time $t$:
 
@@ -992,25 +952,20 @@ $$
 X(t) := \{x(t) \; | \; \dot{x} = f(x), \; x(0)= x_0, \; x_0 \in X_0 \ \}.
 $$
 
-
-
-💎 Global Asympt. Stability
---------------------------------------------------------------------------------
+## 💎 Global Asympt. Stability
 
 An equilibrium $x_e$ is globally asympt. stable iff
 
-  - for every bounded set $X_0$ and any $x_0 \in X_0$ 
-    the associated maximal solution $x(t)$ is global and,
+- for every bounded set $X_0$ and any $x_0 \in X_0$
+  the associated maximal solution $x(t)$ is global and,
 
-  - $X(t) \to \{x_e\}$ when $t\to +\infty$.
+- $X(t) \to \{x_e\}$ when $t\to +\infty$.
 
-
-🏷️ Limits of Sets
---------------------------------------------------------------------------------
+## 🏷️ Limits of Sets
 
 $$
 X(t) \to \{x_e\}
-$$ 
+$$
 
 to be interpreted as
 
@@ -1018,21 +973,21 @@ $$
 \sup_{x(t) \in X(t)} \|x(t) - x_e\| \to 0.
 $$
 
-🏷️ Hausdorff Distance
---------------------------------------------------------------------------------
+## 🏷️ Hausdorff Distance
 
 $$
 \sup_{x(t) \in X(t)} \|x(t) - x_e\| = d_H(X(t), \{x_e\})
 $$
+
 where $d_H$ is the [**Hausdorff distance**](https://en.wikipedia.org/wiki/Hausdorff_distance) between sets:
 
 $$
 d_H(A, B) := \max \left\{ \sup_{a \in A} d(a, B), \sup_{b\in B} d(A, b) \right\}.
 $$
 
-
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-``` python
+
+```python
 
 # Third-Party Libraries
 import numpy as np
@@ -1107,18 +1062,18 @@ mivp.generate_movie(data, filename="videos/gas.mp4", fps=df,
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 ```{=html}
 <video controls style="width:100vw;">
   <source src="videos/gas.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> 
+</video>
 ```
 
-
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-``` python
+
+```python
 
 # Third-Party Libraries
 import numpy as np
@@ -1194,65 +1149,62 @@ mivp.generate_movie(data, filename="videos/movie.mp4", fps=df,
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
 ```{=html}
 <video controls style="width:100vw;">
   <source src="videos/movie.mp4" type="video/mp4">
   Your browser does not support the video tag.
-</video> 
+</video>
 ```
 
-🏷️ Local Asymptotic Stability
---------------------------------------------------------------------------------
+## 🏷️ Local Asymptotic Stability
 
 The equilibrium $x_e$ is **locally asympt. stable** iff:
 
-  - there is a $r>0$ such that for any $\epsilon > 0$,
-  
-  - there is a $\tau \geq 0$ such that,
+- there is a $r>0$ such that for any $\epsilon > 0$,
 
-  - if $\|x_0 - x_e\| \leq r$, the maximal solution $x(t)$ such that $x(0) = x_0$ 
-    is global and satisfies:
+- there is a $\tau \geq 0$ such that,
 
-    $$
-    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
-    $$
+- if $\|x_0 - x_e\| \leq r$, the maximal solution $x(t)$ such that $x(0) = x_0$
+  is global and satisfies:
 
-💎 Local Asympt. Stability
---------------------------------------------------------------------------------
+  $$
+  \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+  $$
 
-An equilibrium $x_e$ is globally asympt. stable iff:
+## 💎 Local Asympt. Stability {#LAS-ppty}
 
-  - there is a $r>0$ such that for every set $X_0$ such that 
-    
-    $$
-    X_0 \subset \{x \; | \; \|x - x_e\| \leq r \},
-    $$
+An equilibrium $x_e$ is locally asympt. stable iff:
 
-  - and for and any $x_0 \in X_0$, the associated maximal solution 
-    $x(t)$ is global and
+There is a $r>0$ such that for every set $X_0$ such that
 
-    $$
-    X(t) \to \{x_e\} \mbox{ when } t\to +\infty.
-    $$
+$$
+X_0 \subset \{x \; | \; \|x - x_e\| \leq r \},
+$$
 
-🏷️ Stability
---------------------------------------------------------------------------------
+and for any $x_0 \in X_0$, the associated maximal solution
+$x(t)$ is global and
+
+$$
+X(t) \to \{x_e\} \mbox{ when } t\to +\infty.
+$$
+
+## 🏷️ Stability
 
 An equilibrium $x_e$ is **stable** iff:
 
-  - for any $r>0$, 
-  
-  - there is a $\rho \leq r$ such that if $|x(0) - x_e| \leq \rho$, then 
+- for any $r>0$,
 
-  - the solution $x(t)$ is global,
+- there is a $\rho \leq r$ such that if $|x(0) - x_e| \leq \rho$, then
 
-  - for any $t\geq 0$, $|x(t) - x_e| \leq r$.
+- the solution $x(t)$ is global,
 
+- for any $t\geq 0$, $|x(t) - x_e| \leq r$.
 
-🎓 Asympt. Stability / Vinograd System
---------------------------------------------------------------------------------        
+## 🎓 Vinograd System
+
+---
 
 Consider the system:
 
@@ -1263,31 +1215,28 @@ $$
 \end{array}
 $$
 
+## 🐍 Vector field
 
-🐍 Vector field
---------------------------------------------------------------------------------
-
-``` python
+```python
 def f(xy):
     x, y = xy
-    q = x**2 + y**2 * (1 + (x**2 + y**2)**2) 
+    q = x**2 + y**2 * (1 + (x**2 + y**2)**2)
     dx = (x**2 * (y - x) + y**5) / q
     dy = y**2 * (y - 2*x) / q
     return array([dx, dy])
 ```
 
-📈 Stream plot
---------------------------------------------------------------------------------
+## 📈 Stream plot
 
-``` python
+```python
 figure()
 x = y = linspace(-1.0, 1.0, 1000)
-streamplot(*Q(f, x, y), color="k") 
+streamplot(*Q(f, x, y), color="k")
 xticks([-1, 0, 1])
 plot([0], [0], "k.", ms=10.0)
 axis("square")
 axis("off")
-``` 
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1302,98 +1251,314 @@ axis("off")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
+---
 
-  - ⚙️ Show that the origin $(0, 0)$ is an equilibrium.
+### Question 1 🧮 {#vinograd-1}
 
-  - 📈 Does it seems to be attractive ?
+Show that the origin $(0, 0)$ is the unique equilibrium.
 
+[$\to$ Solution](#vinograd-solution-1)
 
---------------------------------------------------------------------------------
+---
 
-  - 🧠 Show that: asympt. stable $\Rightarrow$ stable.
-  
-  - 📈 Does the origin seem to be stable ? Conclude.
+### Question 2 📈🔬 {#vinograd-2}
+
+Does this equilibrium seem to be attractive (graphically) ?
+
+[$\to$ Solution](#vinograd-solution-2)
+
+---
+
+### Question 3 🧠 {#vinograd-3}
+
+Show that for any equilibrium of a well-posed system:
+
+**💎 (locally) asymptotically stable $\Rightarrow$ stable**
+
+[$\to$ Solution](#vinograd-solution-3)
+
+---
+
+### Question 4 🧪📈 {#vinograd-4}
+
+Does the origin seem to be stable (experimentally ?)
+
+Conclude accordingly.
+
+---
+
+## 🎓 Vinograd System: Answers
+
+## Answer 1 {#vinograd-solution-1}
+
+$(x,y)$ is an equilibrium of the Vinograd system iff
+
+$$
+\begin{array}{rcl}
+(x^2 (y-x) +y^5) / (x^2 + y^2 (1 + (x^2 + y^2)^2 )) &=& 0 \\
+y^2 (y - 2x) / (x^2 + y^2 (1 + (x^2 + y^2)^2 )) &=& 0
+\end{array}
+$$
+
+or equivalently
+
+$$
+y^2 (y - 2x) = 0 \; \mbox{ and } \; x^2 (y-x) +y^5 = 0.
+$$
+
+---
+
+If we assume that $y=0$, then:
+
+- $y^2 (y - 2x) = 0$ is satisfied and
+
+- $x^2 (y-x) +y^5 = 0  \, \Leftrightarrow \, -x^3 = 0 \, \Leftrightarrow \, x=0.$
+
+**Under this assumption, $(0,0)$ is the only equilibrium.**
+
+---
+
+Otherwise (if $y\neq 0$),
+
+- $y^2 (y - 2x) = 0$ yields $y = 2x$,
+
+- The substitution of $y$ by $2x$ in $x^2 (y-x) +y^5 = 0$ yields
+  $$x^3(1+32x^2)=0$$
+  and therefore $x=0$.
+
+- $y^2 (y - 2x) = 0$ becomes $y^3=0$ and thus $y=0$.
+
+The initial assumption cannot hold.
+
+---
+
+**Conclusion:**
+
+The Vinograd system has a single equilibrium: $(0, 0)$.
+
+[$\leftarrow$ Back to question 1](#vinograd-1)
+
+---
+
+## Answer 2 {#vinograd-solution-2}
+
+Yes, the origin seems to be (globally) attractive.
+
+As far as we can tell, the streamplot displays trajectories
+that ultimately all converge towards the origin.
+
+[$\leftarrow$ Back to question 2](#vinograd-2)
+
+## Answer 3 {#vinograd-solution-3}
+
+Let's assume that $x_e$ is a (locally) asymptotically stable of a well-posed system.
+
+Let $r>0$ such that [this property](#LAS-ppty) is satisfied and let
+
+$$
+B := \{x \in \mathbb{R}^n \; | \; \|x - x_e\| \leq r \} \subset \mathrm{dom} \, f.
+$$
+
+---
+
+The set $x(t, B)$ is defined for any $t\geq 0$
+and since $B$ is a neighbourhood of $x_e$,
+there is $\tau \geq 0$ such that for any $t \geq \tau$,
+the image of $B$ by $x(t, \cdot)$ is included in $B$.
+
+$$
+t\geq \tau \, \Rightarrow \, x(t, B) \subset B.
+$$
+
+---
+
+Additionally, the system is well-posed.
+
+Hence there is a $r' > 0$ such that for any $x_0$ in the closed ball $B'$
+of radius $r'$ centered at $x_e$ and any $t \in [0, \tau]$, we have
+
+$$
+\|x(x_0, t) - x(x_e, t) \| \leq r.
+$$
+
+---
+
+Since $x_e$ is an equilibrium, $x(t, x_e) = x_e$, thus
+$\|x(x_0, t) - x_e \| \leq r.$ Equivalently,
+
+$$
+0\leq t \leq \tau \, \Rightarrow \, x(t, B') \subset B.
+$$
+
+Note that since $x(0, B') = B'$, this inclusion yields $B' \subset B$.
+Thus, for any $t \geq 0$, either $t\in [0, \tau]$
+and $x(t, B') \subset B$ or $t\geq \tau$ and
+since $B' \subset B$,
+
+$$x(t, B') \subset x(t, B) \subset B.$$
+
+---
+
+**Conclusion:** we have established that there is a $r > 0$
+such that $B \subset \mathrm{dom} \, f$ and a $r'>0$ such that
+$r' \leq r$ and
+
+$$
+t\geq 0 \, \Rightarrow x(t, B') \subset B.
+$$
+
+In other words, **the system is stable!** 🎉
+
+[$\leftarrow$ Back to question 3](#vinograd-3)
+
+## Answer 4 {#vinograd-solution-4}
+
+No! We can pick initial states $(0, \varepsilon)$, with $\varepsilon >0$
+which are just above the origin and still the distance of
+their trajectory to the origin will exceed $1.0$ at some point:
+
+```python
+def fun(t, xy):
+    return f(xy)
+eps = 1e-10
+xy0 = (0, 1e-10)
+sol = solve_ivp(fun=fun, y0=xy0, t_span=(0.0, 100.0), dense_output=True)["sol"]
+t = linspace(0.0, 100.0, 10000)
+xt, yt = sol(t)
+figure()
+x = y = linspace(-1.0, 1.0, 1000)
+grey_4 = to_rgb("#ced4da")
+streamplot(*Q(f, x, y), color=grey_4)
+xticks([-1, 0, 1])
+plot([0], [0], "k.", ms=10.0)
+plot(xt, yt)
+plot(xt, yt)
+axis("square")
+axis("off")
+save("images/unstable")
+```
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/unstable.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+---
+
+[$\leftarrow$ Back to question 4](#vinograd-4)
 
 <style>
 
+.reveal p {
+  text-align: left;
+}
+
 .reveal section img {
-  border:0;
-  height:50vh;
-  width:auto;
+border:0;
+height:50vh;
+width:auto;
 
 }
 
 .reveal section img.medium {
-  border:0;
-  max-width:50vh;
+border:0;
+max-width:50vh;
 }
 
 .reveal section img.icon {
-  display:inline;
-  border:0;
-  width:1em;
-  margin:0em;
-  box-shadow:none;
-  vertical-align:-10%;
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
 }
 
 .reveal code {
-  font-family: Inconsolata, monospace;
+font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
-  font-size: 1.5em;
-  line-height: 1.5em;
-  /* max-height: 80wh; won't work, overriden */
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
 }
 
-/*
+/_
 .reveal .slides .left {
-  text-align: left;
+text-align: left;
 }
-*/
+_/
 
 input {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  font-size: 42px;
-  line-height: 54.6px;
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
 }
 
 code span.kw {
-  color: inherit;
-  font-weight: normal;
+color: inherit;
+font-weight: normal;
 }
 
-code span.cf { /* return */
-  color: inherit;
-  font-weight: normal;
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
 }
 
-code span.fl { /* floats */
-  color: inherit;
+code span.fl { /_ floats _/
+color: inherit;
 }
 
-code span.dv { /* ints */
-  color: inherit;
+code span.dv { /_ ints _/
+color: inherit;
 }
 
-code span.co { /* comments */
-  font-style: normal;
-  color: #adb5bd; /* gray 5 */}
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
 
-code span.st { /* strings */
-  color: inherit;
+code span.st { /_ strings _/
+color: inherit;
 }
 
-code span.op { /* +, = */
-  color: inherit;
+code span.op { /_ +, = _/
+color: inherit;
 }
 
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
 
 
 </style>
 
-<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
