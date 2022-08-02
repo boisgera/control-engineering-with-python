@@ -657,7 +657,9 @@ bar.close()
 </video>
 ```
 
-## 🎓 Pendulum / Equilibrium
+## 🎓 Pendulum
+
+---
 
 **Reminder.** The pendulum is governed by the equation
 
@@ -669,13 +671,62 @@ where $m>0$, $\ell>0$, $g>0$ and $b\geq0$.
 
 ---
 
-- ⚙️ Locate the equilibria of this system.
+#### Q1 -- Equilibria 🧮
 
-- ❔ Is any equilibrium **globally** attractive?
+Compute the equilibria of this system.
 
-::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+---
 
-The 2nd-order differential equations are equivalent to the first order system
+#### Q2 -- Attractivity 🧠
+
+Can any of these equilibria be **globally** attractive?
+
+---
+
+Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
+
+#### Q3 -- Stream Plot 📈
+
+Make a stream plot of the system.
+
+#### Q4 -- Attractivity 🔬
+
+Determine which equilibria are locally attractive.
+
+---
+
+Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
+
+#### Q5 -- Stream Plot 📈
+
+Make a stream plot of the system.
+
+#### Q6 -- Attractivity 🧮 🧠
+
+Prove that no equilibrium is locally attractive ([Hint 🗝️](#hint-la)).
+
+---
+
+#### Hint 🗝️ {#hint-la}
+
+Study how the total mechanical energy $E$
+
+$$
+E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta, \; (J = m\ell^2)
+$$
+
+evolves in time.
+
+---
+
+### 🎓 Pendulum: Answers
+
+---
+
+#### Q1
+
+The 2nd-order differential equations of the pendulum are equivalent to
+the first order system
 
 $$
 \left|
@@ -685,6 +736,8 @@ $$
 \end{array}
 \right.
 $$
+
+---
 
 Thus, the system state is $x =(\theta, \omega)$ and is governed by $\dot{x} = f(x)$ with
 
@@ -697,31 +750,73 @@ if and only if $\omega = 0$ and $\sin \theta = 0$. In other words, the equilibri
 of the system are characterized by $\theta = k \pi$ for some $k \in \mathbb{Z}$
 and $\omega (= \dot{\theta}) = 0$.
 
+---
+
+#### Q2
+
+Since there are several equilibria, none of them can be globally attractive.
+
+Indeed let $x_1$ be a globally attractive equilibrium and assume that $x_2$ is
+any other equilibrium.
+By definition, the maximal solution $x(t)$ such that
+$x(0) = x_2$ is $x(t) = x_2$ for every $t\geq0$.
+On the other hand, since $x_1$ is globally attractive, it also satisfies $x(t) \to x_1$ when $t\to +\infty$, hence there is a contradiction.
+
+Thus, $x_1$ is the only possible equilibrium.
+
+---
+
+#### Q3
+
+```python
+m = l = b = 1; g=9.81
+
+def f(theta_omega):
+    theta, omega = theta_omega
+    d_theta = omega
+    d_omega = - b / (m * l * l) * omega
+    d_omega +=  (g / l) * sin(theta)
+    return (d_theta, d_omega)
+```
+
+---
+
+```python
+figure()
+theta = linspace(-2*pi*(1.2), 2*pi*(1.2), 1000)
+d_theta = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(f, theta, d_theta), color="k")
+plot([-2*pi, -pi, 0 ,pi, 2*pi], 5*[0.0], "r.", ms=20.0)
+#axis("square")
+#axis("off")
+xticks([-2*pi, -pi, 0 ,pi, 2*pi])
+grid(True)
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-friction")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/pendulum-friction.svg" data-background-size="contain"}
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ---
 
-Assume that there is some friction ($b>0$)
-
-- 📈 Make a stream plot of the system with $m=1$, $\ell=1$, $b=1$, $g=9.81$.
-
-- ⚙️ Determine which equilibria are locally attractive.
+#### Q4
 
 ---
 
-Assume that there is no friction ($b=0$)
+#### Q5
 
-- 📈 Make a stream plot of the system.
+---
 
-- 🧠 Prove that no equilibrium is locally attractive
-
-  🗝️ **Hint:** study how the total mechanical energy $E$
-
-  $$
-  E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta, \; (J = m\ell^2)
-  $$
-
-  evolves in time.
+#### Q6
 
 ## 💎 Attractivity (Low-level)
 
@@ -1417,12 +1512,23 @@ No! We can pick initial states $(0, \varepsilon)$, with $\varepsilon >0$
 which are just above the origin and still the distance of
 their trajectory to the origin will exceed $1.0$ at some point:
 
+---
+
 ```python
 def fun(t, xy):
     return f(xy)
 eps = 1e-10
-xy0 = (0, 1e-10)
-sol = solve_ivp(fun=fun, y0=xy0, t_span=(0.0, 100.0), dense_output=True)["sol"]
+xy0 = (0, eps)
+sol = solve_ivp(
+  fun=fun,
+  y0=xy0,
+  t_span=(0.0, 100.0),
+  dense_output=True)["sol"]
+```
+
+---
+
+```python
 t = linspace(0.0, 100.0, 10000)
 xt, yt = sol(t)
 figure()
