@@ -1,7 +1,9 @@
 #!/bin/bash
 
 ./build.py intro.md
-./build.py odes.md
+./build.py models.md
+./build.py simulation.md
+./build.py well-posedness.md
 ./build.py asymptotic.md
 ./build.py linear-systems.md
 ./build.py controllability.md
