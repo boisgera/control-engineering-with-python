@@ -4,23 +4,15 @@
 
 ### Notations
 
-| Symbol | Meaning       |
-| ------ | ------------- |
-| 🏷️     | Definition    |
-| 💎     | Theorem       |
-| 📝     | Remark        |
-| ℹ️     | Information   |
-| ⚠️     | Warning       |
-| 🐍     | Code          |
-| 📈     | Graph         |
-| 🔍     | Example       |
-| 🧩     | Exercise      |
-| 🗝️     | Hint          |
-| 🔓     | Solution      |
-| 🧠     | Theory        |
-| 🧮     | Computation   |
-| 💻     | Computation   |
-| 🔬     | Investigation |
+| Symbol | Meaning     | Symbol | Meaning                |
+| ------ | ----------- | ------ | ---------------------- |
+| 🏷️     | Definition  | 🔍     | Example                |
+| 💎     | Theorem     | 🧩     | Exercise               |
+| 📝     | Remark      | 💻     | Computation (Computer) |
+| ℹ️     | Information | 🧮     | Computation (Hand)     |
+| ⚠️     | Warning     | 🧠     | Theory                 |
+| 🐍     | Code        | 🗝️     | Hint                   |
+| 📈     | Graph       | 🔓     | Solution               |
 
 ### :books: Program & Slides
 
