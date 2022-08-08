@@ -1,14 +1,39 @@
-% Ordinary Differential Equations
-% [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), MINES ParisTech, PSL University
+---
+title: Models
+author:
+  - "🧙‍♂️ [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) -- 🏦 Mines Paris -- PSL"
+licence:
+  - "[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)"
+---
 
-## Preamble
+## Control Engineering with Python
+
+- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
+
+## Notations
+
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Example                |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Computation (Computer) |
+| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
+
+## 🐍 Imports
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    from numpy import *
-    from numpy.linalg import *
-    from matplotlib.pyplot import *
-    from mpl_toolkits.mplot3d import *
+```python
+from numpy import *
+from numpy.linalg import *
+from matplotlib.pyplot import *
+from mpl_toolkits.mplot3d import *
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -43,7 +68,10 @@
 
     # TODO: also reconsider line width and markersize stuff "for the web
     #       settings".
-    fontsize = 35
+    fontsize = 10
+
+    width = 345 / 72.27
+    height = width / (16/9)
 
     rc = {
         "text.usetex": True,
@@ -59,6 +87,8 @@
         "figure.max_open_warning": 100,
         #"savefig.dpi": 300,
         #"figure.dpi": 300,
+        "figure.figsize": [width, height],
+        "lines.linewidth": 1.0,
     }
     mpl.rcParams.update(rc)
 
@@ -78,17 +108,33 @@
         pp.gcf().set_size_inches((width_in, height_in))
         pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
 
+    width
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## 🏷️ Ordinary Differential Equation (ODE)
+
+The "simple" version:
+
+$$
+\dot{x} = f(x)
+$$
+
+where:
+
+- **State:** $x \in \mathbb{R}^n$
+
+- **Vector field:** $f:\mathbb{R}^n \to \mathbb{R}^n$.
 
 ## Vector Field
 
-Let $n \in \mathbb{N}^*$ and $f:\mathbb{R}^n \to \mathbb{R}^n$.
+- Visualize $f(x)$ as an arrow with origin the point $x$.
 
-Visualize $f(x)$ as an arrow with origin the point $x$.
+- Visualize $f$ as a field of such arrows.
 
-In the plane ($n=2$), use [quiver](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.quiver.html) (Matplotlib).
+- In the plane ($n=2$), use [quiver](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.quiver.html) (Matplotlib).
 
-## Q Helper
+## 🐍 Stream Plot Helper
 
     def Q(f, xs, ys):
         X, Y = meshgrid(xs, ys)
@@ -96,20 +142,28 @@ In the plane ($n=2$), use [quiver](https://matplotlib.org/3.1.1/api/_as_gen/matp
         fy = vectorize(lambda x, y: f([x, y])[1])
         return X, Y, fx(X, Y), fy(X, Y)
 
-## <i class="fa fa-eye"></i> Vector Field / Rotation
+## 🔍 Rotation
 
 Consider $f(x,y) = (-y, x).$
 
-    def f(xy):
-        x, y = xy
-        return array([-y, x])
+```python
+def f(xy):
+    x, y = xy
+    return array([-y, x])
+```
 
-## <i class="fa fa-area-chart"></i>
+---
 
-    figure()
-    x = y = linspace(-1.0, 1.0, 20)
-    gca().set_aspect(1.0); grid(True)
-    quiver(*Q(f, x, y))
+### 📈 Vector Field
+
+```python
+figure()
+x = y = linspace(-1.0, 1.0, 20)
+ticks = [-1.0, 0.0, 1.0]
+xticks(ticks); yticks(ticks)
+gca().set_aspect(1.0)
+quiver(*Q(f, x, y))
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -123,9 +177,9 @@ Consider $f(x,y) = (-y, x).$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Ordinary Differential Equations (ODEs)
+## 🏷️ ODE Solution
 
-A solution of $\dot{x} = f(x)$ is
+A **solution** of $\dot{x} = f(x)$ is
 
 - a function $x:I \to \mathbb{R}^n$,
 
@@ -135,12 +189,12 @@ A solution of $\dot{x} = f(x)$ is
 
   $$\dot{x}(t) = dx(t)/dt = f(x(t)).$$
 
-## <i class="fa fa-area-chart"></i>
+## 📈
 
 ```python
 figure()
 x = y = linspace(-1.0, 1.0, 20)
-gca().set_aspect(1.0); grid(True)
+gca().set_aspect(1.0)
 streamplot(*Q(f, x, y), color="k")
 ```
 
@@ -156,7 +210,7 @@ streamplot(*Q(f, x, y), color="k")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Initial Value Problem (IVP)
+## 🏷️ Initial Value Problem (IVP)
 
 Solutions $x(t)$, for $t\geq t_0$, of
 
@@ -170,7 +224,7 @@ $$
 x(t_0) = x_0 \in \mathbb{R}^n.
 $$
 
----
+## 🏷️
 
 The **initial condition** $(t_0, x_0)$ is made of
 
@@ -181,34 +235,46 @@ The **initial condition** $(t_0, x_0)$ is made of
 The set $\mathbb{R}^n$ is the **state space**,  
 $x(t)$ the **state at time** $t$.
 
-## Higher-Order ODEs
+## 🏷️ Higher-Order ODEs
 
-Scalar differential equations structured as
-
-$$
-x^{(n)}(t) = f(x, \dot{x}, \ddot{x}, \dots, x^{(n-1)})
-$$
-
-can be converted to the standard form with the state
+(Scalar) differential equations whose structure is
 
 $$
-y = (x, \dot{x}, \ddot{x}, \dots, x^{(n-1)}) \in \mathbb{R}^n
+y^{(n)}(t) = g(y, \dot{y}, \ddot{y}, \dots, y^{(n-1)})
 $$
 
----
+where $n > 1$.
+
+## 💎 Higher-Order ODEs
+
+The previous $n$-th order ODE is equivalent to the first-order ODE
+
+$$
+x = f(x), \, x \in \mathbb{R}^n
+$$
+
+with
+
+$$
+f(y_0, \dots, y_{n-2}, y_{n-1}) := (y_1, \dots, y_{n-1}, g(y_0, \dots, y_{n-1})).
+$$
+
+## 🗝️
+
+The result is more obvious if we expand the first-order equation:
 
 $$
 \begin{array}{ccl}
+\dot{y}_0 &=& y_1 \\
 \dot{y}_1 &=& y_2 \\
-\dot{y}_2 &=& y_3 \\
 \vdots &\vdots& \vdots \\
-\dot{y}_n &=& f(y_1, y_2, \dots, y_{n-1})
+\dot{y}_n &=& g(y_0, y_1, \dots, y_{n-1})
 \end{array}
 $$
 
-## <i class="fa fa-eye"></i> Pendulum
+## 🧩 Pendulum
 
-![](images/static/pendulum.svg)
+![](images/static/pendulum.svg){style="display: block; margin: auto;"}
 
 ---
 
@@ -226,7 +292,7 @@ def Q(f, xs, ys):
     fy = vectorize(lambda x, y: f([x, y])[1])
     return X, Y, fx(X, Y), fy(X, Y)
 
-m=1.0; b=0.0; l=1.0; g=9.81
+m=1.0; b=1.0; l=1.0; g=9.81
 def f(theta_d_theta):
     theta, d_theta = theta_d_theta
     J = m * l * l
@@ -302,27 +368,102 @@ bar.close()
 </video>
 ```
 
-## <i class="fa fa-question-circle-o"></i> -- Model / Pendulum
+---
 
-- [</i><i class="fa fa-gear"></i>, </i><i class="fa fa-superscript"></i>]
-  Establish the equations governing the pendulum dynamics
-  when the mechanical energy of the system is constant.
+**Q1 🧠 🧮.**
 
-- [</i><i class="fa fa-gear"></i>, </i><i class="fa fa-superscript"></i>]
-  Generalize the dynamics when there is a friction torque
-  $c = -b \dot{\theta}$ for some $b \geq 0$.
+Establish the equations governing the pendulum dynamics.
 
-### <i class="fa fa-key"></i> -- Result
+**Q2 🧠 🧮.**
+
+Generalize the dynamics when there is a friction torque
+$c = -b \dot{\theta}$ for some $b \geq 0$.
+
+---
+
+We denote $\omega$ the pendulum **angular velocity**:
+
+$$\omega := \dot{\theta}.$$
+
+**Q3 🧠 🧮.**
+
+Transform the dynamics into a first-order ODE with state $x = (\theta, \omega)$.
+
+**Q4 📈.**
+
+Draw the system stream plot when $m=1$, $\ell=1$, $g=9.81$ and $b=0$.
+
+---
+
+**Q5 🧠 🧮.**
+Determine least possible angular velocity
+$\omega_0 > 0$ such that when $\theta(0) = 0$ and
+$\dot{\theta}(0) = \omega_0$, the pendulum reaches (or overshoots)
+$\theta(t) = \pi$ for some $t>0$.
+
+---
+
+### 🔓 Solution
+
+**Q1 🔓.** The pendulum **total mechanical energy** $E$ is the sum of its
+**kinetic energy** $K$ and its **potential energy** $V$:
 
 $$
-m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+E = K + V.
 $$
 
 ---
 
-Introduce the rotational frequency $\omega = \dot{\theta}$ in rad/sec.
+The kinetic energy depends on the mass velocity $v$:
 
-The pendulum dynamics is equivalent to:
+$$
+K = \frac{1}{2} m v^2 = \frac{1}{2} m \ell^2 \dot{\theta}^2
+$$
+
+The potential energy mass depends on the pendulum elevation $y$.
+If we set the reference $y=0$ when the pendulum is horizontal, we have
+
+$$
+V = mg y = - mg \ell \cos \theta
+$$
+
+---
+
+$$
+\Rightarrow \; E = K+V = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \cos \theta.
+$$
+
+If the system evolves without any energy dissipation,
+
+$$
+\begin{split}
+\dot{E}
+&= \frac{d}{dt} \left(\frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \cos \theta\right) \\
+&= m \ell^2 \dot{\theta}\ddot{\theta} + m g \ell (\sin \theta) \dot{\theta} \\&= 0
+\end{split}
+$$
+
+$$
+\Rightarrow \; m \ell^2 \ddot{\theta} + m g \ell \sin \theta = 0.
+$$
+
+---
+
+**Q2 🔓.** When there is an additional dissipative torque $c=-b\theta$, we have instead
+
+$$
+\dot{E} = c \dot{\theta} = - b\dot{\theta}^2
+$$
+
+and thus
+
+$$
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0.
+$$
+
+---
+
+**Q3 🔓.** With $\omega := \dot{\theta}$, the dynamics becomes
 
 $$
 \begin{array}{lll}
@@ -333,169 +474,188 @@ $$
 
 ---
 
-    m=1.0; b=0.0; l=1.0; g=9.81
-    def f(theta_d_theta):
-        theta, d_theta = theta_d_theta
-        J = m * l * l
-        d2_theta  = - b / J * d_theta
-        d2_theta += - g / l * sin(theta)
-        return array([d_theta, d2_theta])
+**Q4 🔓.**
 
-## <i class="fa fa-area-chart"></i>
+```python
+m=1.0; b=0.0; l=1.0; g=9.81
+def f(theta_d_theta):
+    theta, d_theta = theta_d_theta
+    J = m * l * l
+    d2_theta  = - b / J * d_theta
+    d2_theta += - g / l * sin(theta)
+    return array([d_theta, d2_theta])
+```
 
-    width = 345 / 72.27
-    height = width / (16 / 9)
-    figure(figsize=(width, height))
-    theta = linspace(-1.5 * pi, 1.5 * pi, 100)
-    d_theta = linspace(-5.0, 5.0, 100)
-    grid(True)
-    xticks([-pi, 0, pi], [r"$-\pi$", "$0$", r"$\pi$"], fontsize=10)
-    yticks(fontsize=10)
+## 📈
 
-    streamplot(*Q(f, theta, d_theta), color="k", linewidth=1.0)
+```python
+figure()
+theta = linspace(-1.5 * pi, 1.5 * pi, 100)
+d_theta = linspace(-5.0, 5.0, 100)
+labels =  [r"$-\pi$", "$0$", r"$\pi$"]
+xticks([-pi, 0, pi], labels)
+yticks([-5, 0, 5])
+streamplot(*Q(f, theta, d_theta), color="k")
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    save("images/streamplot_pendulum")
+```python
+save("images/sstreamplot_pendulum")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## {.section data-background="images/streamplot_pendulum.svg" data-background-size="contain"}
+## {.section data-background="images/sstreamplot_pendulum.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+---
 
-```python
-# import matplotlib.animation as ani
-# from matplotlib.colors import to_rgb
-# from scipy.integrate import solve_ivp
-# from tqdm import tqdm
+**Q5 🔓.** In the top vertical configuration, the total mechanical energy of
+the pendulum is
 
+$$
+E_{\top} = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \cos \pi = \frac{1}{2} m \ell^2 \dot{\theta}^2 + mg \ell.
+$$
 
-# neutral = grey_4 = to_rgb("#ced4da")
-# blue_5 = to_rgb("#339af0")
-# #grey_5 = to_rgb("#adb5bd")
-# #grey_8 = to_rgb("#343a40")
-# good = to_rgb("#51cf66")
-# bad = to_rgb("#ff6b6b")
+Hence we have at least $E_{\top} \geq mg \ell$.
 
-# ft = lambda t, y: f(y)
-# fps = df = 60.0
-# dt = 1.0 / df
-# t_span = t_i, t_f = (0.0, 10.0)
-# t = np.arange(t_i, t_f + 0.1*dt, dt)
+---
 
-# y0s = [[-pi/2+0.01, 0]]
-# colors = [good]
-# xys = []
-# for y0 in tqdm(y0s):
-#     r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
-#     xys.append(r.y)
+On the other hand, in the bottom configuration,
 
+$$
+E_{\bot} = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \cos 0 = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell.
+$$
 
-# fig = figure()
-# x = linspace(-1.1*pi/2, 1.1*pi/2, 1000)
-# y = linspace(-5.0, 5.0, 1000)
-# streamplot(*Q(f, x, y), color=grey_4)
-# plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
-#         markeredgecolor="white", color=neutral)
-# axis("square")
-# axis("off")
+Hence, without any loss of energy, the initial velocity must satisfy
+$E_{\bot} \geq E_{\top}$ for the mass to reach the top position.
 
-# lines = []
-# for x, y in xys:
-#     line = plot(
-#         [x[0]], [y[0]],
-#         lw=3.0,
-#         ms=10.0,
-#         color=blue_5,
-#         marker="o", markevery=[-1],
-#         markeredgecolor="white")[0]
-#     lines.append(line)
-# tight_layout()
+---
 
-# num_frames = len(t) * len(lines)
+That is
 
-# def gamma(x):
-#     return pow(x, 0.5)
+$$
+E_{\bot} = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \geq - mg \ell = E_{\top}
+$$
 
-# def update(i):
-#     j, k = divmod(i, len(t))
-#     x, y = xys[j]
-#     line = lines[j]
-#     line.set_data(x[:k+1], y[:k+1])
+which leads to:
 
-# animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
-# writer = ani.FFMpegWriter(fps=fps)
-# bar = tqdm(total=num_frames)
-# animation.save("videos/pendulum2.mp4", writer=writer, dpi=300,
-# progress_callback = lambda i, n: bar.update(1))
-# bar.close()
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-<!--
-```{=html}
-<video style="width:100vw;" controls>
-  <source src="videos/pendulum2.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-```
--->
-
-## <i class="fa fa-question-circle-o"></i> -- Model / Pendulum
-
-- [<i class="fa fa-flask"></i>, <i class="fa fa-area-chart"></i>]
-  Determine an approximation of the least possible angular velocity
-  $\omega_0 > 0$ such that when $\theta(0) = 0$ and
-  $\dot{\theta}(0) = \omega_0$, the pendulum reaches (or overshoots)
-  $\theta(t) = \pi$ for some $t>0$.
-
-- [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>]
-  Answer the same question analytically.
+$$
+|\dot{\theta}| \geq \sqrt{2 \frac{g}{\ell}}.
+$$
 
 <style>
 
+.reveal p {
+  text-align: left;
+}
+
 .reveal section img {
-  border:0;
-  height:50vh;
-  width:auto;
+border:0;
+height:50vh;
+width:auto;
 
 }
 
 .reveal section img.medium {
-  border:0;
-  max-width:50vh;
+border:0;
+max-width:50vh;
 }
 
 .reveal section img.icon {
-  display:inline;
-  border:0;
-  width:1em;
-  margin:0em;
-  box-shadow:none;
-  vertical-align:-10%;
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
 }
 
 .reveal code {
-  font-family: Inconsolata, monospace;
+font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
-  font-size: 1.5em;
-  line-height: 1.5em;
-  /* max-height: 80wh; won't work, overriden */
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
 }
 
-input {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  font-size: 42px;
-  line-height: 54.6px;
+/_
+.reveal .slides .left {
+text-align: left;
 }
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
 
 </style>
 
