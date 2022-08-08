@@ -6,13 +6,13 @@
 
 | Symbol | Meaning     | Symbol | Meaning                |
 | ------ | ----------- | ------ | ---------------------- |
-| 🏷️     | Definition  | 🔍     | Example                |
-| 💎     | Theorem     | 🧩     | Exercise               |
-| 📝     | Remark      | 💻     | Computation (Computer) |
-| ℹ️     | Information | 🧮     | Computation (Hand)     |
-| ⚠️     | Warning     | 🧠     | Theory                 |
-| 🐍     | Code        | 🗝️     | Hint                   |
-| 📈     | Graph       | 🔓     | Solution               |
+| 🐍     | Code        | 🔍     | Example                |
+| 📈     | Graph       | 🧩     | Exercise               |
+| 🏷️     | Definition  | 💻     | Computation (Computer) |
+| 💎     | Theorem     | 🧮     | Computation (Hand)     |
+| 📝     | Remark      | 🧠     | Theory                 |
+| ℹ️     | Information | 🗝️     | Hint                   |
+| ⚠️     | Warning     | 🔓     | Solution               |
 
 ### :books: Program & Slides
 
