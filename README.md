@@ -2,6 +2,14 @@
 
 [![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) [![Join the chat at https://gitter.im/control-engineering-with-python/community](https://badges.gitter.im/control-engineering-with-python/community.svg)](https://gitter.im/control-engineering-with-python/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+### Notations
+
+| Symbol | Meaning    |
+| ------ | ---------- |
+| 🐍     | Code       |
+| 🏷️     | Definition |
+| 💎     | Theorem    |
+
 ### :books: Program & Slides
 
 0.  **Introduction to Control Engineering** (30 min)
