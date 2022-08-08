@@ -23,10 +23,9 @@
       [PDF](https://boisgera.github.io/control-engineering-with-python/well-posedness.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=well-posedness.ipynb))
 
-    **Asymptotic Behavior**
-    ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic.html),
-    [PDF](https://boisgera.github.io/control-engineering-with-python/asymptotic.pdf),
-    [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic.ipynb))
+    - Asymptotic Behavior ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic.html),
+      [PDF](https://boisgera.github.io/control-engineering-with-python/asymptotic.pdf),
+      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic.ipynb))
 
 2.  **Linear-Time Invariant Systems**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
