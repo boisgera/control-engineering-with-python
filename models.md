@@ -34,7 +34,6 @@ from numpy.linalg import *
 from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import *
 ```
-
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
