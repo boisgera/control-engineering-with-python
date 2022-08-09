@@ -136,11 +136,13 @@ where:
 
 ## 🐍 Stream Plot Helper
 
-    def Q(f, xs, ys):
-        X, Y = meshgrid(xs, ys)
-        fx = vectorize(lambda x, y: f([x, y])[0])
-        fy = vectorize(lambda x, y: f([x, y])[1])
-        return X, Y, fx(X, Y), fy(X, Y)
+```python
+def Q(f, xs, ys):
+    X, Y = meshgrid(xs, ys)
+    fx = vectorize(lambda x, y: f([x, y])[0])
+    fy = vectorize(lambda x, y: f([x, y])[1])
+    return X, Y, fx(X, Y), fy(X, Y)
+```
 
 ## 🔍 Rotation
 
