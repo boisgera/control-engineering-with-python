@@ -125,7 +125,7 @@ Make sure that a system is "sane" (not "pathological"):
 
 We will define and study each one in the sequel.
 
-## Preamble: Local vs Global
+## 🔍 Local vs Global
 
 So far, we have only dealt with **global** solutions $x(t)$ of IVPs,
 defined for any $t \geq t_0$.
@@ -138,7 +138,9 @@ Consider for example:
 
 $\dot{x} = x^2$ and $x(0)=1.$
 
-## 🐍 💻 📈
+---
+
+### 🐍 💻 📈
 
 ```python
 def fun(t, y):
@@ -163,7 +165,9 @@ xlim(t0, tf); xlabel("$t$"); ylabel("$x(t)$")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🏷️ Global & Local Solution
+---
+
+### 🏷️ Local vs Global
 
 Ouch.
 
@@ -190,7 +194,9 @@ $$
 
 But it's defined only for $t<1.$
 
-## 🐍 💻 📈
+---
+
+### 🐍 💻 📈
 
 ```python
 tf = 1.0
@@ -231,22 +237,63 @@ solution
 
 - whose restriction to $[0, \tau[$ is $x$.
 
-## 🧩 Local/Maximal Solution
+## 🧩 Maximal Solutions
 
-**Q1 🧮.**
+### 1. 🧮
 
-Find a local solution $x(t)$ of $\dot{x} = x^2$ such that $x(0) = x_0$
-under the assumption that $x(t) \neq 0$ when $t\geq 0$.
+Find a solution $x(t)$ of
 
-🗝️ **Hint:** compute $d(1/x(t))/dt.$
+$$
+\dot{x} = x^2, \; x(0) \neq 0.
+$$
+
+🗝️ **Hint:** assume that $x(t) \neq 0$ then compute
+
+$$
+\frac{d}{dt} \frac{1}{x(t)}.
+$$
 
 ---
 
-**Q2 🧠.**
+### 2. 🧠
 
-Find for every $x_0 \neq 0$ a maximal solution.
+Make sure that your solution is maximal.
 
-When is it global?
+## 🔓 Maximal Solutions
+
+### 1. 🔓
+
+As long as $x(t) \neq 0$,
+
+$$
+\frac{d}{dt} \frac{1}{x} =
+- \frac{\dot{x}}{x^2} = 1.
+$$
+
+---
+
+By integration, this leads to
+
+$$
+\frac{1}{x(t)} - \frac{1}{x(0)} = -t
+$$
+
+and thus provides
+
+$$
+x(t) = \frac{1}{\frac{1}{x(0)} - t} = \frac{x(0)}{1 - x(0) t}.
+$$
+
+which is indeed a solution as long as the denominator is not zero.
+
+---
+
+### 2. 🔓
+
+If $x(0) < 0$, this solution is valid for all $t\geq 0$ and thus maximal.
+
+If $x(0) > 0$, the solution is defined until $t=1/x(0)$ where it blows up.
+Thus, this solution is also maximal.
 
 ## 🙁 Bad News (1/3)
 
@@ -264,6 +311,8 @@ f(x_1,x_2) =
 (-1,0) & \mbox{if } \; x_1 \geq 0.
 \end{array}
 \right.
+
+
 $$
 
 ## 📈 No Local Solution
@@ -306,11 +355,14 @@ This system has no solution, not even a local one, when $x(0) = (0,0)$.
 
 - Consequently, $\dot{x}(t) = +1$ and thus by integration
 
-  $$
-  x(\epsilon) =  x(0) + \int_0^{\epsilon} \dot{x}(t) \, dt = \epsilon > 0,
-  $$
+$$
 
-  which is a contradiction.
+x(\epsilon) = x(0) + \int_0^{\epsilon} \dot{x}(t) \, dt = \epsilon > 0,
+
+
+$$
+
+which is a contradiction.
 
 ## 🙂 Good News (1/3)
 
@@ -347,7 +399,7 @@ Let's assume that a local maximal solution exists.
 
 You wonder if this solution is defined in $[t_0, t_f[$ or blows up before $t_f$.
 
-For example, you wonder if a solution is global  
+For example, you wonder if a solution is global
 (if $t_f = +\infty$ or $t_f < +\infty$.)
 
 ## 🧠 Prove existence
@@ -366,7 +418,10 @@ solution does exist, its domain is $[0, t_{\infty}[$ with $t_{\infty} \geq t_f$.
 Consider
 
 $$
+
 \dot{x} = \frac{1}{1 + e^{-x}} \mbox{ with } x(0) = x_0 \in \mathbb{R}
+
+
 $$
 
 **Q1 🧮.**
@@ -382,13 +437,19 @@ Show that any such solution is global.
 Consider the pendulum, subject to a torque $c$
 
 $$
+
 ml^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = c(\theta, \dot{\theta})
+
+
 $$
 
 We assume that the torque provides a bounded power:
 
 $$
+
 P = c(\theta, \dot{\theta}) \dot{\theta} \leq M < +\infty.
+
+
 $$
 
 ---
@@ -402,7 +463,10 @@ a solution to the IVP which is global.
 🗝️ **Hint.** Compute the derivative with respect to $t$ of
 
 $$
+
 E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta
+
+
 $$
 
 ## 🧩 Linear Systems
@@ -410,7 +474,10 @@ $$
 Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
 
 $$
+
 \dot{x} = A x \; \mbox{ and } \; x(0) = x_0
+
+
 $$
 
 ---
@@ -448,13 +515,16 @@ has several maximal (global) solutions.
 For any $\tau \geq 0$, $x_{\tau}$ is a solution:
 
 $$
-x_{\tau}(t) =
+
+x\_{\tau}(t) =
 \left|
 \begin{array}{ll}
 0 & \mbox{if} \; t \leq \tau, \\
 1/4 \times (t-\tau)^2 & \mbox{if} \; t > \tau.
 \end{array}
 \right.
+
+
 $$
 
 ## 🙂 Good News (2/3)
@@ -464,21 +534,27 @@ However, uniqueness of maximal solution holds under mild assumptions.
 ## 🏷️ Jacobian Matrix
 
 $$
+
 x=(x_1, \dots, x_n), \;f(x) = (f_1(x), \dots, f_n(x)).
+
+
 $$
 
 **Jacobian matrix** of $f$:
 
 $$
+
 \frac{\partial f}{\partial x}
 :=
 \left[
-  \begin{array}{ccc}
-  \frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
-  \vdots & \vdots & \vdots \\
-  \frac{\partial f_n}{\partial x_1} & \cdots & \frac{\partial f_n}{\partial x_n} \\
-  \end{array}
+\begin{array}{ccc}
+\frac{\partial f_1}{\partial x_1} & \cdots & \frac{\partial f_1}{\partial x_n} \\
+\vdots & \vdots & \vdots \\
+\frac{\partial f_n}{\partial x_1} & \cdots & \frac{\partial f_n}{\partial x_n} \\
+\end{array}
 \right]
+
+
 $$
 
 ## 💎 Uniqueness
@@ -502,7 +578,10 @@ dependency w.r.t. the initial state.
 if $x(t, x_0)$ is defined on $[t_0, \tau]$ and $t\in [t_0, \tau]$:
 
 $$
+
 x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
+
+
 $$
 
 and that this convergence is uniform w.r.t. $t$.
@@ -522,10 +601,13 @@ Then the dynamical system is continous w.r.t. the initial state.
 Let
 
 $$
+
 \begin{array}{rcl}
 \dot{x} &=& \alpha x - \beta xy \\
 \dot{y} &=& \delta x y - \gamma y \\
 \end{array}
+
+
 $$
 
 with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
@@ -632,7 +714,7 @@ Then, solve it again for $x_0 = 0.1$, $x_0=0.01$, etc.
 **Q2 🔬.**
 Does the solution seem to be continuous with respect to the initial value?
 
-**Q3 🧠.**  
+**Q3 🧠.**
 Explain this experimental result.
 
 ## 🧩 Prey-Predator
@@ -640,10 +722,13 @@ Explain this experimental result.
 Let
 
 $$
+
 \begin{array}{rcl}
 \dot{x} &=& \alpha x - \beta xy \\
 \dot{y} &=& \delta x y - \gamma y \\
 \end{array}
+
+
 $$
 
 with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
@@ -655,7 +740,10 @@ with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
 **Hint 🗝️.** Compute
 
 $$
+
 d/dt(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
+
+
 $$
 
 <style>
@@ -772,3 +860,4 @@ details[open] summary ~ * {
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+$$
