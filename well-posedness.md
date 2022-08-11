@@ -450,12 +450,13 @@ save("images/sigmoid")
 ### 1. 🧮 Existence
 
 Show that there is a (at least one) maximal solution to each initial condition.
+[🔓][1. 🔓 Existence]
 
 ---
 
 ### 2. 🧮 Global
 
-Show that any such solution is global.
+Show that any such solution is global. [🔓][2. 🔓 Global]
 
 ---
 
@@ -468,7 +469,7 @@ Show that any such solution is global.
 The sigmoid function $\sigma$ is continuous.
 
 Consequently, [💎 Existence] proves the existence of a (at least one)
-maximal solution.
+maximal solution. [🔙][1. 🧮 Existence]
 
 ---
 
@@ -487,8 +488,8 @@ $$
 |x(t)| \leq |x(0)| + t
 $$
 
-Thus, it cannot blow-up in finite time; by [💎 Maximal Solutions], it is global.
-
+Thus, it cannot blow-up in finite time; by [💎 Maximal Solutions], it is global. 
+[🔙][2. 🧮 Global]
 
 
 ## 🧩 Pendulum
@@ -505,18 +506,22 @@ $$
 P := c(\theta, \dot{\theta}) \dot{\theta} \leq P_M < +\infty.
 $$
 
+
 ---
 
 ### 1. 🧮
 
 Show that for any initial state, 
-there is a global solution $(\theta, \dot{\theta})$.
+there is a global solution $(\theta, \dot{\theta})$. [🔓][1. 🔓]
 
 🗝️ **Hint.** Compute the derivative with respect to $t$ of
 
 $$
 E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta.
 $$
+
+## 🔓 Pendulum
+
 
 ---
 
@@ -575,27 +580,130 @@ $$
 
 $\theta(t)$ cannot blow-up in finite time either. 
 
-By [💎 Maximal Solutions], any maximal solution is global.
+By [💎 Maximal Solutions], any maximal solution is global. [🔙][1. 🧮]
 
 
-## 🧩 Linear Systems
+## 🧩 Linear Systems {data-background-color="#ebfbee"}
 
-Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
+Let $A \in \mathbb{R}^{n \times n}$. 
+
+Consider the dynamical system
 
 $$
-\dot{x} = A x \; \mbox{ and } \; x(0) = x_0
+\dot{x} = A x , \; x \in \mathbb{R}^n.
 $$
 
----
+## {#ls1 data-background-color="#ebfbee"}
 
-**Q1 🧮.** Show that $y(t) = \|x(t)\|^2$ is differentiable and
-satisfies $y(t) \geq 0$ and
-$\dot{y}(t) \leq \alpha y(t)$ for some $\alpha \geq 0$.
+### 1. 🧮
 
-**Q2 🧮.** Compute the derivative of $y(t) e^{-\alpha t}$ and conclude that
-$0 \leq y(t) \leq y(0) e^{\alpha t}$.
+Show that 
 
-**Q3 🧮.** Prove that any maximal solution $x(t)$ of the initial IVP is global.
+$$
+y(t) := \|x(t)\|^2
+$$ 
+
+is differentiable and satisfies
+
+$$
+\dot{y}(t) \leq \alpha y(t)
+$$ 
+
+for some $\alpha \geq 0$. [🔓](#als1)
+
+## {#ls2 data-background-color="#ebfbee"}
+
+### 2. 🧮 
+
+Let 
+
+$$
+z(t) := y(t) e^{-\alpha t}.
+$$
+
+Compute $\dot{z}(t)$ and deduce that
+
+$$
+0 \leq y(t) \leq y(0) e^{\alpha t}.
+$$
+
+[🔓](#als2)
+
+## {#ls3 data-background-color="#ebfbee"}
+
+### 3. 🧮 
+
+Prove that for any initial state $x(0) \in \mathbb{R}^n$ there is a 
+corresponding global solution $x(t)$. [🔓](#als3)
+
+## 🔓 Linear Systems {data-background-color="#fff9db"}
+
+## {#als1 data-background-color="#fff9db"}
+
+### 1. 🔓 
+
+By definition of $y(t)$ and since $\dot{x}(t) = Ax(t)$,
+
+$$
+\begin{split}
+\dot{y}(t) &= \frac{d}{dt} \|x(t)\|^2 \\
+           &= \frac{d}{dt} x(t)^t x(t) \\
+           &= \dot{x}(t)^t x(t) + x(t)^t x(t) \\
+           &= x(t)^t A^t x(t) x(t) + x(t)^t A x(t).
+\end{split}
+$$ 
+
+## {data-background-color="#fff9db"}
+
+Let $\|A|$ denote the largest [singular value](https://en.wikipedia.org/wiki/Singular_value) of $A$
+
+$$
+\|A\| := \sigma_{\rm max} (A).
+$$
+
+For any vector $u \in \mathbb{R}^n$, we have
+$$
+\|A u\| \leq \|A\| \|u\|.
+$$
+
+## {data-background-color="#fff9db"}
+
+
+By the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality) and the [Cauchy-Schwarz inequality](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality), we obtain
+
+$$
+\begin{split}
+\dot{y}(t)
+  &= \|x(t)^t A^t x(t) x(t) + x(t)^t A x(t)\| \\
+  &\leq \|(Ax(t))^t  x(t)\| + \|x(t)^t (A x(t))\| \\ 
+  &\leq \|A x(t)\|\|x(t)\| + \|x(t)\|\|A x(t)\| \\
+  &\leq \|A\| \|x(t)\|\|x(t)\| + \|x(t)\|\|A\|\|x(t)\| \\
+  &= 2 \|A\| y(t) \\
+\end{split}
+$$
+
+and thus $\dot{y}(t) \leq \alpha y(t)$ with $\alpha := 2 \|A\|.$ [🔙](#ls1)
+
+
+## {#als2 data-background-color="#fff9db"}
+
+### 2. 🔓
+
+We have 
+
+$$
+\begin{split}
+\dot{z}(t) = \frac{d}{dt} y(t) e^{-alpha t}  = \dot{y}(t) e^{-\alpha t} + y(t) \alpha e^{-alpha t}
+\end{split}
+$$
+
+[🔙](#ls2)
+
+## {#als3 data-background-color="#fff9db"}
+
+### 3. 🔓
+
+[🔙](#ls2)
 
 ## 🏷️ Uniqueness
 
