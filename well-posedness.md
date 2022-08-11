@@ -502,22 +502,81 @@ $$
 We assume that the torque provides a bounded power:
 
 $$
-P = c(\theta, \dot{\theta}) \dot{\theta} \leq M < +\infty.
+P := c(\theta, \dot{\theta}) \dot{\theta} \leq P_M < +\infty.
 $$
 
 ---
 
-**Q1 🧮.**
+### 1. 🧮
 
-Show that for any initial condition $t_0$,
-$\theta(t_0) = \theta_0$ and $\dot{\theta}(t_0) = \omega_0$, there is
-a solution to the IVP which is global.
+Show that for any initial state, 
+there is a global solution $(\theta, \dot{\theta})$.
 
 🗝️ **Hint.** Compute the derivative with respect to $t$ of
 
 $$
-E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta
+E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta.
 $$
+
+---
+
+### 1. 🔓
+
+Since the system vector field 
+
+$$
+(\theta, \dot{\theta}) 
+\to 
+\left(
+  \dot{\theta}, 
+  (-b/m\ell^2) \dot{\theta} - (g / \ell) \sin \theta + c(\theta, \dot{\theta})/m\ell^2 \right)
+$$
+
+is continuous, [💎 Existence] yields the existence of a (at least one)
+maximal solution.
+
+---
+
+Additionally,
+
+$$
+\begin{split}
+\dot{E} 
+&= 
+\frac{d}{dt} \left( \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta \right) \\
+&=
+-b \dot{\theta}^2 + c(\theta,\dot{\theta}) \dot{\theta} \\
+&\leq P_M < +\infty.
+\end{split}
+$$
+
+---
+
+By integration
+
+$$
+E(t) = \frac{1}{2} m\ell^2 \dot{\theta}^2(t) - m g \ell \cos \theta(t)
+\leq E(0) + P_M t
+$$
+
+Hence, since $|\cos \theta(t)| \leq 1$,
+
+$$
+|\dot{\theta}(t)| \leq \sqrt{\frac{2E(0)}{m\ell^2} + \frac{2g}{\ell} +\frac{2P_M}{m\ell^2}t}
+$$
+
+---
+
+Thus, $\dot{\theta}(t)$ cannot blow-up in finite time. Since
+
+$$
+|\theta(t)| \leq |\theta(0)| + \int_0^t |\dot{\theta}(s)| \, ds,
+$$
+
+$\theta(t)$ cannot blow-up in finite time either. 
+
+By [💎 Maximal Solutions], any maximal solution is global.
+
 
 ## 🧩 Linear Systems
 
