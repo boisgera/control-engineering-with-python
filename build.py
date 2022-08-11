@@ -164,7 +164,13 @@ def make_slides_doc(doc):
 
 slides_doc = make_slides_doc(doc)
 
-options = ["--standalone", "-V", "theme:white", "--mathjax", "-V", "slideNumber:true"]
+options = [
+    "--standalone", 
+    "-V", "theme:white", 
+    "--mathjax", 
+    "-V", "slideNumber:true",
+    "-V", "history:true",
+]
 
 pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=options)
 
