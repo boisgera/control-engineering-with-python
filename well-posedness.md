@@ -311,8 +311,6 @@ f(x_1,x_2) =
 (-1,0) & \mbox{if } \; x_1 \geq 0.
 \end{array}
 \right.
-
-
 $$
 
 ## 📈 No Local Solution
@@ -355,12 +353,9 @@ This system has no solution, not even a local one, when $x(0) = (0,0)$.
 
 - Consequently, $\dot{x}(t) = +1$ and thus by integration
 
-$$
-
-x(\epsilon) = x(0) + \int_0^{\epsilon} \dot{x}(t) \, dt = \epsilon > 0,
-
-
-$$
+  $$
+  x(\epsilon) = x(0) + \int_0^{\epsilon} \dot{x}(t) \, dt = \epsilon > 0,
+  $$
 
 which is a contradiction.
 
@@ -415,41 +410,99 @@ solution does exist, its domain is $[0, t_{\infty}[$ with $t_{\infty} \geq t_f$.
 
 ## 🧩 Sigmoid
 
-Consider
+Consider the dynamical system
 
 $$
-
-\dot{x} = \frac{1}{1 + e^{-x}} \mbox{ with } x(0) = x_0 \in \mathbb{R}
-
-
+\dot{x} = \sigma(x) := \frac{1}{1 + e^{-x}}.
 $$
 
-**Q1 🧮.**
+---
 
-Show that there is a (at least one) maximal solution.
 
-**Q2 🧮.**
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+def sigma(x):
+  return 1 / (1 + exp(-x))
+figure()
+x = linspace(-7.0, 7.0, 1000)
+xlim(-5, 5)
+plot(x, sigma(x), color="k", label="$y=\sigma(x)$")
+xticks([-5.0, 0.0, 5.0])
+yticks([0.0, 0.5, 1.0])
+xlabel("$x$")
+ylabel("$y$")
+legend()
+pp.gcf().subplots_adjust(bottom=0.2)
+save("images/sigmoid")
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/sigmoid.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+---
+
+### 1. 🧮 Existence
+
+Show that there is a (at least one) maximal solution to each initial condition.
+
+---
+
+### 2. 🧮 Global
 
 Show that any such solution is global.
+
+---
+
+## 🔓 Sigmoid
+
+---
+
+### 1. 🔓 Existence
+
+The sigmoid function $\sigma$ is continuous.
+
+Consequently, [💎 Existence] proves the existence of a (at least one)
+maximal solution.
+
+---
+
+### 2. 🔓 Global
+
+Let $x: \left[0, \tau \right[ \to \mathbb{R}$ be a maximal solution to the IVP.
+We have
+
+$$
+0 \leq \dot{x}(t) = \sigma(x(t)) \leq 1, \; 0 \leq t < \tau
+$$
+
+and by integration,
+
+$$
+|x(t)| \leq |x(0)| + t
+$$
+
+Thus, it cannot blow-up in finite time; by [💎 Maximal Solutions], it is global.
+
+
 
 ## 🧩 Pendulum
 
 Consider the pendulum, subject to a torque $c$
 
 $$
-
 ml^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = c(\theta, \dot{\theta})
-
-
 $$
 
 We assume that the torque provides a bounded power:
 
 $$
-
 P = c(\theta, \dot{\theta}) \dot{\theta} \leq M < +\infty.
-
-
 $$
 
 ---
@@ -463,10 +516,7 @@ a solution to the IVP which is global.
 🗝️ **Hint.** Compute the derivative with respect to $t$ of
 
 $$
-
 E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta
-
-
 $$
 
 ## 🧩 Linear Systems
@@ -474,10 +524,7 @@ $$
 Let $A \in \mathbb{R}^{n \times n}$ and $x_0 \in \mathbb{R}^n$. Consider
 
 $$
-
 \dot{x} = A x \; \mbox{ and } \; x(0) = x_0
-
-
 $$
 
 ---
@@ -515,7 +562,6 @@ has several maximal (global) solutions.
 For any $\tau \geq 0$, $x_{\tau}$ is a solution:
 
 $$
-
 x\_{\tau}(t) =
 \left|
 \begin{array}{ll}
@@ -523,8 +569,6 @@ x\_{\tau}(t) =
 1/4 \times (t-\tau)^2 & \mbox{if} \; t > \tau.
 \end{array}
 \right.
-
-
 $$
 
 ## 🙂 Good News (2/3)
@@ -534,16 +578,12 @@ However, uniqueness of maximal solution holds under mild assumptions.
 ## 🏷️ Jacobian Matrix
 
 $$
-
 x=(x_1, \dots, x_n), \;f(x) = (f_1(x), \dots, f_n(x)).
-
-
 $$
 
 **Jacobian matrix** of $f$:
 
 $$
-
 \frac{\partial f}{\partial x}
 :=
 \left[
@@ -553,8 +593,6 @@ $$
 \frac{\partial f_n}{\partial x_1} & \cdots & \frac{\partial f_n}{\partial x_n} \\
 \end{array}
 \right]
-
-
 $$
 
 ## 💎 Uniqueness
@@ -578,10 +616,7 @@ dependency w.r.t. the initial state.
 if $x(t, x_0)$ is defined on $[t_0, \tau]$ and $t\in [t_0, \tau]$:
 
 $$
-
 x(t, y) \to x(t, x_0) \; \mbox{when} \; y \to x_0
-
-
 $$
 
 and that this convergence is uniform w.r.t. $t$.
@@ -601,13 +636,10 @@ Then the dynamical system is continous w.r.t. the initial state.
 Let
 
 $$
-
 \begin{array}{rcl}
 \dot{x} &=& \alpha x - \beta xy \\
 \dot{y} &=& \delta x y - \gamma y \\
 \end{array}
-
-
 $$
 
 with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
@@ -722,13 +754,10 @@ Explain this experimental result.
 Let
 
 $$
-
 \begin{array}{rcl}
 \dot{x} &=& \alpha x - \beta xy \\
 \dot{y} &=& \delta x y - \gamma y \\
 \end{array}
-
-
 $$
 
 with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
@@ -740,10 +769,7 @@ with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
 **Hint 🗝️.** Compute
 
 $$
-
 d/dt(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
-
-
 $$
 
 <style>
