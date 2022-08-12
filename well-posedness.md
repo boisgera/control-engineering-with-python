@@ -87,11 +87,11 @@ from matplotlib.pyplot import *
     # (the "standard" dpi for Web computations) gives 1600 px.
     width_in = 160 / 9
 
-    def save(name):
+    def save(name, **options):
         cwd = os.getcwd()
         root = os.path.dirname(os.path.realpath(__file__))
         os.chdir(root)
-        pp.savefig(name + ".svg")
+        pp.savefig(name + ".svg", **options)
         os.chdir(cwd)
 
     def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
@@ -606,7 +606,7 @@ $$
 is differentiable and satisfies
 
 $$
-\dot{y}(t) \leq \alpha y(t)
+\dot{y}(t) \leq 2\alpha y(t)
 $$ 
 
 for some $\alpha \geq 0$. [🔓](#als1)
@@ -618,13 +618,13 @@ for some $\alpha \geq 0$. [🔓](#als1)
 Let 
 
 $$
-z(t) := y(t) e^{-\alpha t}.
+z(t) := y(t) e^{-2\alpha t}.
 $$
 
 Compute $\dot{z}(t)$ and deduce that
 
 $$
-0 \leq y(t) \leq y(0) e^{\alpha t}.
+0 \leq y(t) \leq y(0) e^{2\alpha t}.
 $$
 
 [🔓](#als2)
@@ -655,10 +655,10 @@ $$
 
 ## {data-background-color="#fff9db"}
 
-Let $\|A|$ denote the largest [singular value](https://en.wikipedia.org/wiki/Singular_value) of $A$
+Let $\alpha$ denote the largest [singular value](https://en.wikipedia.org/wiki/Singular_value) of $A$ (i.e. the operator norm $\|A\|$).
 
 $$
-\|A\| := \sigma_{\rm max} (A).
+\alpha := \sigma_{\rm max} (A) = \|A\|.
 $$
 
 For any vector $u \in \mathbb{R}^n$, we have
@@ -682,20 +682,45 @@ $$
 \end{split}
 $$
 
-and thus $\dot{y}(t) \leq \alpha y(t)$ with $\alpha := 2 \|A\|.$ [🔙](#ls1)
+and thus $\dot{y}(t) \leq 2\alpha y(t)$ with $\alpha := \|A\|.$ [🔙](#ls1)
 
 
 ## {#als2 data-background-color="#fff9db"}
 
 ### 2. 🔓
 
-We have 
+Since $y(t) = \|x(t)\|^2$, the inequality 
+$0 \leq y(t)$ is clear.
+
+Since $z(t) = y(t)e^{-2\alpha t}$, 
 
 $$
 \begin{split}
-\dot{z}(t) = \frac{d}{dt} y(t) e^{-alpha t}  = \dot{y}(t) e^{-\alpha t} + y(t) \alpha e^{-alpha t}
+\dot{z}(t) & = \frac{d}{dt} y(t) e^{-\alpha t}  \\
+           & = \dot{y}(t) e^{-\alpha t} + y(t) (2\alpha e^{-\alpha t}) \\
+           & = (\dot{y}(t) + 2\alpha y(t)) e^{-\alpha t} \\
+           & \leq 0
 \end{split}
 $$
+
+## {data-background-color="#fff9db"}
+
+By integration
+
+$$
+\begin{split}
+y(t) e^{-2\alpha t} = z(t) 
+  & = z(0) + \int_0^t \dot{z}(s) \, ds \\
+  & \leq  z(0) = y(0),
+\end{split}
+$$
+
+hence
+
+$$
+y(t) \leq y(0) e^{2\alpha t}.
+$$
+
 
 [🔙](#ls2)
 
@@ -703,7 +728,25 @@ $$
 
 ### 3. 🔓
 
-[🔙](#ls2)
+The vector field 
+$$
+x \in \mathbb{R}^n \to A x
+$$
+is continuous, thus by [💎 Existence] there is a maximal solution 
+$x:\left[0, t_{\infty}\right[$ for any initial state $x(0).$
+
+## {data-background-color="#fff9db"}
+
+Moreover, 
+
+$$
+\|x(t)\| = \sqrt{\|y(t)\|} 
+   \leq \sqrt{y(0) e^{2\alpha t}} 
+   = \|x(0)\| e^{\alpha t}.
+$$
+
+Hence there is no finite-time blow-up and the maximal solution is global.
+[🔙](#ls3)
 
 ## 🏷️ Uniqueness
 
@@ -729,7 +772,7 @@ has several maximal (global) solutions.
 For any $\tau \geq 0$, $x_{\tau}$ is a solution:
 
 $$
-x\_{\tau}(t) =
+x_{\tau}(t) =
 \left|
 \begin{array}{ll}
 0 & \mbox{if} \; t \leq \tau, \\
@@ -887,38 +930,170 @@ axis([0,2,0,2]); axis("square")
 
 ---
 
-## 🧩 Continuity
+## 🧩 Continuity {data-background-color="#ebfbee"}
 
-Let $h \geq 0$ and $x^h(t)$ be the solution of
+Let $h \geq 0$ and $x^h(t)$ be the solution of the IVP
 
 $$\dot{x} = x, \; x^h(0) = 1+ h.$$
 
-**Q1 🧮.** Let $\epsilon > 0$ and $\tau \geq 0$;
-find the smallest $\delta > 0$ such that
+## {#C1 data-background-color="#ebfbee"}
+
+### 1. 🧮
+
+Let $\epsilon > 0$ and $\tau \geq 0$.
+
+Find the smallest $\delta > 0$ such that
 $|h| < \delta$ ensures that
-$$\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| < \epsilon$$
+$$\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| \leq \epsilon$$
 
-**Q2 🧮.** What is the behavior of $\delta$ when $\tau$ goes to infinity?
+[🔓](#AC1)
 
-## 🧩 Continuity Issues
+## {#C2 data-background-color="#ebfbee"}
 
-Consider
-$$\dot{x} = \sqrt{|x|}, \; x(0)=x_0.$$
+### 2. 🧮
 
-**Q1 💻.** Solve numerically this IVP for $t \in [0,1]$ and $x_0 = 0$.
-Then, solve it again for $x_0 = 0.1$, $x_0=0.01$, etc.
+What is the behavior of $\delta$ when $\tau$ goes to infinity? [🔓](#AC2)
 
----
+## 🔓 Continuity {data-background-color="#fff9db"}
 
-**Q2 🔬.**
+
+## {#AC1 data-background-color="#fff9db"}
+
+### 2. 🔓
+
+The solution $x^h(t)$ to the IVP is 
+$$
+x^h(t) = (1+h) e^{t}.
+$$
+Hence,
+$$
+|x^h(t) - x^0(t)| = |(1+h) e^{t} - e^{t}| = |h| e^{t}
+$$
+$$
+\max_{t \in [0, \tau]} |x^h(t) - x^0(t)| = |h| e^{\tau}.
+$$
+
+## {#AC1 data-background-color="#fff9db"}
+
+
+Thus, the smallest $\delta$ such that $|h| \leq \delta$ yields
+$$
+\max_{t \in [0, \tau]} |x^h(t) - x^0(t)| \leq \epsilon
+$$
+is $\delta = \varepsilon e^{-\tau}.$ [🔙](#C1)
+
+
+## {#AC2 data-background-color="#fff9db"}
+
+### 2. 🔓
+
+For any $\varepsilon > 0$, 
+$$
+\lim_{\tau \to +\infty} \delta = +\infty.
+$$
+
+[🔙](#C2)
+
+
+
+## 🧩 Continuity Issues {data-background-color="#ebfbee"}
+
+Consider the IVP
+$$\dot{x} = \sqrt{|x|}, \; x(0)=x_0 \in \mathbb{R}.$$
+
+## {#CI1 data-background-color="#ebfbee"}
+
+### 1. 💻 📈
+
+Solve numerically this IVP for $t \in [0,1]$ and $x_0 = 0$ and plot the result.
+
+Then, solve it again for $x_0 = 0.1$, $x_0=0.01$, etc. and
+plot the results. [🔓](#ACI1)
+
+## {#CI2 data-background-color="#ebfbee"}
+
+### 2. 🔬
+
 Does the solution seem to be continuous with respect to the initial value?
+[🔓](#ACI2)
 
-**Q3 🧠.**
-Explain this experimental result.
 
-## 🧩 Prey-Predator
+## {#CI3 data-background-color="#ebfbee"}
 
-Let
+### 3. 🧠
+
+Explain this experimental result. [🔓](#ACI3)
+
+
+## 🔓 Continuity Issues {data-background-color="#fff9db"}
+
+## {#ACI1 data-background-color="#fff9db"}
+
+### 1. 🔓
+
+```python
+def fun(t, y):
+  x = y[0]
+  dx = sqrt(abs(y))
+  return [dx]
+tspan = [0.0, 3.0]
+t = linspace(tspan[0], tspan[1], 1000)
+```
+
+## {data-background-color="#fff9db"}
+
+```python
+figure()
+for x0 in [0.1, 0.01, 0.001, 0.0001, 0.0]:
+    r = solve_ivp(fun, tspan, [x0], 
+        dense_output=True)
+    plot(t, r["sol"](t)[0], 
+         label=f"$x_0 = {x0}$")
+xlabel("$t$"); ylabel("$x(t)$")
+legend()
+```
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+pp.gcf().subplots_adjust(bottom=0.2)
+save("images/eps", transparent=True)
+```
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## {data-background-color="#fff9db" data-background="images/eps.svg" data-background-size="contain"}
+
+## {data-background-color="#fff9db"}
+
+[🔙](#CI1)
+
+
+## {#ACI2 data-background-color="#fff9db"}
+
+### 2. 🔓
+
+The solution does not seem to be continuous with respect to the initial value
+since the graph of the solution seems to have a limit when $x_0 \to 0^+$, 
+but this limit is different from $x(t)= 0$ which is the numerical solution
+when $x_0=0$. [🔙](#CI2)
+
+## {#ACI3 data-background-color="#fff9db"}
+
+### 3. 🔓
+
+The jacobian matrix of the vector field is not defined when $x=0$, thus the
+continuity was not guaranted to begin with. 
+Actually, uniqueness of the solution does not even hold here, see [🔍 Non-Uniqueness].
+The function $x(t)=0$ is valid when $x_0=0$, but so is 
+$$
+x(t) = \frac{1}{4}t^2
+$$
+and the numerical solution seems to converge to the second one when $x_0 \to 0^+$.
+[🔙](#CI3)
+
+## 🧩 Prey-Predator {data-background-color="#ebfbee"}
+
+Consider the system
 
 $$
 \begin{array}{rcl}
@@ -927,17 +1102,89 @@ $$
 \end{array}
 $$
 
-with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
+where $\alpha$, $\beta$, $\delta$ and $\gamma$ are positive.
 
----
+## {#PP1 data-background-color="#ebfbee"}
 
-**Q1 🧠.** Show that the system is well-posed.
+### 1. 🧮
+
+Prove that the system is well-posed. [🔓](#APP1)
+
+## {#PP2 data-background-color="#ebfbee"}
+
+### 2. 🧮 🧠
+
+Prove that all maximal solutions such that $x(0) > 0$ and $y(0) > 0$ are global. [🔓](#APP2)
 
 **Hint 🗝️.** Compute
 
 $$
-d/dt(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
+\frac{d}{dt}(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
 $$
+
+## 🔓 Prey-Predator {data-background-color="#fff9db"}
+
+## {#APP1 data-background-color="#fff9db"}
+
+### 🔓 1.
+
+The jacobian matrix of the system vector field
+$$
+f(x, y)= (\alpha x - \beta xy, \delta x y - \gamma y)
+$$
+is defined and continuous:
+$$
+\frac{\partial f}{\partial (x, y)}
+=
+\left[
+\begin{array}{rr}
+\alpha -\beta y & - \beta x \\
+\delta y & \delta x - \gamma \\
+\end{array}
+\right]
+$$
+thus the sytem is well-posed. [🔙](#PP1)
+
+## {#APP2 data-background-color="#fff9db"}
+
+### 🔓 2.
+
+Let $V := \delta x - \gamma \ln x +\beta y - \alpha \ln y.$ We have
+
+$$
+\begin{split}
+\dot{V} 
+  &= \delta \dot{x} - \gamma \frac{\dot{x}}{x} +\beta \dot{y} - \alpha \frac{\dot{y}}{y} \\
+  &= \delta (\alpha x - \beta x y) - \gamma (\alpha - \beta y) \\
+  &\phantom{=} + \beta (\delta x y - \gamma y) - \alpha (\delta x - \gamma) \\
+  & =0
+\end{split}
+$$
+
+## {data-background-color="#fff9db"}
+
+Let $x(0) > 0$, $y(0)>0$ and $x(t)$, $y(t)$ be the corresponding maximal
+solution, defined for $0 \leq t < t_{\infty}$.
+
+On one hand $V(x(t), y(t)) = V(x(0), y(0))$.
+
+On the other hand, **TODO!**
+
+[🔙](#PP2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <style>
 
@@ -1053,4 +1300,4 @@ details[open] summary ~ * {
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
-$$
+
