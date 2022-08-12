@@ -125,20 +125,22 @@ Make sure that a system is "sane" (not "pathological"):
 
 We will define and study each one in the sequel.
 
-## 🔍 Local vs Global
+##  Local vs Global
 
 So far, we have only dealt with **global** solutions $x(t)$ of IVPs,
 defined for any $t \geq t_0$.
 
 This concept is sometimes too stringent.
 
----
+## 🔍 Finite-Time Blow-Up {data-background-color="#f3f0ff"}
 
-Consider for example:
+Consider the IVP
 
-$\dot{x} = x^2$ and $x(0)=1.$
+$$
+\dot{x} = x^2, \; x(0)=1.
+$$
 
----
+## {data-background-color="#f3f0ff"}
 
 ### 🐍 💻 📈
 
@@ -155,21 +157,21 @@ xlim(t0, tf); xlabel("$t$"); ylabel("$x(t)$")
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     tight_layout()
-    save("images/finite-time-blowup")
+    save("images/finite-time-blowup", transparent=True)
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## {.section data-background="images/finite-time-blowup.svg" data-background-size="contain"}
+## {.section data-background-color="#f3f0ff" data-background="images/finite-time-blowup.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ---
 
-### 🏷️ Local vs Global
+##  Local vs Global {data-background-color="#f3f0ff"}
 
-Ouch.
+🤕 Ouch.
 
 There is actually no **global** solution.
 
@@ -177,7 +179,8 @@ However there is **local** solution $x(t)$,
 defined for $t \in \left[t_0, \tau\right[$
 for some $\tau > t_0$.
 
----
+## {data-background-color="#f3f0ff"}
+
 
 Indeed, the function
 
@@ -194,7 +197,8 @@ $$
 
 But it's defined only for $t<1.$
 
----
+## {data-background-color="#f3f0ff"}
+
 
 ### 🐍 💻 📈
 
@@ -218,15 +222,34 @@ xlabel("$t$"); ylabel("$x(t)$")
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## {.section data-background="images/finite-time-blowup-2.svg" data-background-size="contain"}
+## {.section data-background="images/finite-time-blowup-2.svg" data-background-size="contain" data-background-color="#f3f0ff"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
----
+
+## {data-background-color="#f3f0ff"}
+
 
 This local solution is also **maximal**:
 
 You cannot extend this solution beyond $\tau=1.0$.
+
+## 🏷️ Local Solution
+
+A solution $x: I \to \mathbb{R}^n$ of the IVP 
+$$
+\dot{x} = f(x), \; x(t_0) = x_0
+$$
+is (forward and) **local** if $I = \left[t_0, \tau\right[$ for some $\tau$ such that
+$t_0 < \tau \leq +\infty$.
+
+## 🏷️ Global Solution
+
+A solution $x: I \to \mathbb{R}^n$ of the IVP 
+$$
+\dot{x} = f(x), \; x(t_0) = x_0
+$$
+is (forward and) **global** if $I = \left[t_0, +\infty\right[$.
 
 ## 🏷️ Maximal Solution
 
@@ -237,15 +260,19 @@ solution
 
 - whose restriction to $[0, \tau[$ is $x$.
 
-## 🧩 Maximal Solutions
+## 🧩 Maximal Solutions {data-background-color="#ebfbee"}
+
+Consider the IVP
+
+$$
+\dot{x} = x^2, \; x(0)=x_0 \neq 0.
+$$
+
+## {#MS1 data-background-color="#ebfbee"}
 
 ### 1. 🧮
 
-Find a solution $x(t)$ of
-
-$$
-\dot{x} = x^2, \; x(0) \neq 0.
-$$
+Find a closed-formed local solution $x(t)$ of the IVP.
 
 🗝️ **Hint:** assume that $x(t) \neq 0$ then compute
 
@@ -253,47 +280,55 @@ $$
 \frac{d}{dt} \frac{1}{x(t)}.
 $$
 
----
+[🔓](#AMS1)
+
+## {#MS2 data-background-color="#ebfbee"}
 
 ### 2. 🧠
 
-Make sure that your solution is maximal.
+Make sure that your solutions are maximal. [🔓](#AMS2)
 
-## 🔓 Maximal Solutions
+## 🔓 Maximal Solutions {data-background-color="#fff9db"}
+
+## {#AMS1 data-background-color="#fff9db"}
 
 ### 1. 🔓
 
 As long as $x(t) \neq 0$,
 
 $$
-\frac{d}{dt} \frac{1}{x} =
-- \frac{\dot{x}}{x^2} = 1.
+\frac{d}{dt} \frac{1}{x(t)} =
+- \frac{\dot{x}(t)}{x(t)^2} = 1.
 $$
 
----
+## {data-background-color="#fff9db"}
+
 
 By integration, this leads to
 
 $$
-\frac{1}{x(t)} - \frac{1}{x(0)} = -t
+\frac{1}{x(t)} - \frac{1}{x_0} = -t
 $$
 
 and thus provides
 
 $$
-x(t) = \frac{1}{\frac{1}{x(0)} - t} = \frac{x(0)}{1 - x(0) t}.
+x(t) = \frac{1}{\frac{1}{x_0} - t} = \frac{x_0}{1 - x_0 t}.
 $$
 
-which is indeed a solution as long as the denominator is not zero.
+which is indeed a solution as long as the denominator is not zero. [🔙](#MS1)
 
----
+## {#AMS2 data-background-color="#fff9db"}
+
 
 ### 2. 🔓
 
-If $x(0) < 0$, this solution is valid for all $t\geq 0$ and thus maximal.
+  - If $x_0 < 0$, this solution is valid for all $t\geq 0$ and thus maximal.
 
-If $x(0) > 0$, the solution is defined until $t=1/x(0)$ where it blows up.
+  - If $x_0 > 0$, the solution is defined until $t=1/x(0)$ where it blows up.
 Thus, this solution is also maximal.
+
+[🔙](#MS1)
 
 ## 🙁 Bad News (1/3)
 
@@ -322,7 +357,7 @@ def f(x1x2):
     return array([dx1, 0.0])
 figure()
 x1 = x2 = linspace(-1.0, 1.0, 20)
-gca().set_aspect(1.0); grid(True)
+gca().set_aspect(1.0)
 quiver(*Q(f, x1, x2), color="k")
 ```
 
@@ -399,7 +434,7 @@ For example, you wonder if a solution is global
 
 ## 🧠 Prove existence
 
-**TODO.** Show that any solution which defined on some
+**Task.** Show that any solution which defined on some
 sub-interval $[t_0, \tau]$ with $\tau < t_f$ would is bounded.
 
 Then, no solution can be maximal on any
@@ -408,7 +443,7 @@ solution does exist, its domain is $[0, t_{\infty}[$ with $t_{\infty} \geq t_f$.
 
 **$\Rightarrow$ a solution is defined on $[t_0, t_f[$.**
 
-## 🧩 Sigmoid
+## 🧩 Sigmoid {data-background-color="#f3f0ff"}
 
 Consider the dynamical system
 
@@ -416,53 +451,56 @@ $$
 \dot{x} = \sigma(x) := \frac{1}{1 + e^{-x}}.
 $$
 
----
+## {data-background-color="#f3f0ff"}
 
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+### 📈
 
 ```python
 def sigma(x):
   return 1 / (1 + exp(-x))
 figure()
 x = linspace(-7.0, 7.0, 1000)
+plot(x, sigma(x), label="$y=\sigma(x)$")
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+```python
 xlim(-5, 5)
-plot(x, sigma(x), color="k", label="$y=\sigma(x)$")
 xticks([-5.0, 0.0, 5.0])
 yticks([0.0, 0.5, 1.0])
 xlabel("$x$")
 ylabel("$y$")
 legend()
 pp.gcf().subplots_adjust(bottom=0.2)
-save("images/sigmoid")
+save("images/sigmoid", transparent=True)
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## {.section data-background="images/sigmoid.svg" data-background-size="contain"}
+## {.section data-background="images/sigmoid.svg" data-background-size="contain"
+data-background-color="#f3f0ff"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
----
+## {data-background-color="#f3f0ff"}
 
 ### 1. 🧮 Existence
 
 Show that there is a (at least one) maximal solution to each initial condition.
 [🔓][1. 🔓 Existence]
 
----
+## {data-background-color="#f3f0ff"}
 
 ### 2. 🧮 Global
 
 Show that any such solution is global. [🔓][2. 🔓 Global]
 
----
 
-## 🔓 Sigmoid
+## 🔓 Sigmoid {data-background-color="#fff9db"}
 
----
+## {data-background-color="#fff9db"}
 
 ### 1. 🔓 Existence
 
@@ -471,7 +509,8 @@ The sigmoid function $\sigma$ is continuous.
 Consequently, [💎 Existence] proves the existence of a (at least one)
 maximal solution. [🔙][1. 🧮 Existence]
 
----
+## {data-background-color="#fff9db"}
+
 
 ### 2. 🔓 Global
 
@@ -492,7 +531,7 @@ Thus, it cannot blow-up in finite time; by [💎 Maximal Solutions], it is globa
 [🔙][2. 🧮 Global]
 
 
-## 🧩 Pendulum
+## 🧩 Pendulum {data-background-color="#ebfbee"}
 
 Consider the pendulum, subject to a torque $c$
 
@@ -507,12 +546,12 @@ P := c(\theta, \dot{\theta}) \dot{\theta} \leq P_M < +\infty.
 $$
 
 
----
+## {data-background-color="#ebfbee"}
 
-### 1. 🧮
+### 1. 🧮 {#P1}
 
 Show that for any initial state, 
-there is a global solution $(\theta, \dot{\theta})$. [🔓][1. 🔓]
+there is a global solution $(\theta, \dot{\theta})$. [🔓](#AP1)
 
 🗝️ **Hint.** Compute the derivative with respect to $t$ of
 
@@ -520,12 +559,11 @@ $$
 E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta.
 $$
 
-## 🔓 Pendulum
+## 🔓 Pendulum {data-background-color="#fff9db"}
 
+## {data-background-color="#fff9db"}
 
----
-
-### 1. 🔓
+### 1. 🔓 {#AP1}
 
 Since the system vector field 
 
@@ -540,7 +578,7 @@ $$
 is continuous, [💎 Existence] yields the existence of a (at least one)
 maximal solution.
 
----
+## {data-background-color="#fff9db"}
 
 Additionally,
 
@@ -555,7 +593,7 @@ $$
 \end{split}
 $$
 
----
+## {data-background-color="#fff9db"}
 
 By integration
 
@@ -570,7 +608,7 @@ $$
 |\dot{\theta}(t)| \leq \sqrt{\frac{2E(0)}{m\ell^2} + \frac{2g}{\ell} +\frac{2P_M}{m\ell^2}t}
 $$
 
----
+## {data-background-color="#fff9db"}
 
 Thus, $\dot{\theta}(t)$ cannot blow-up in finite time. Since
 
@@ -580,7 +618,7 @@ $$
 
 $\theta(t)$ cannot blow-up in finite time either. 
 
-By [💎 Maximal Solutions], any maximal solution is global. [🔙][1. 🧮]
+By [💎 Maximal Solutions], any maximal solution is global. [🔙](#ls2)
 
 
 ## 🧩 Linear Systems {data-background-color="#ebfbee"}
@@ -1116,10 +1154,14 @@ Prove that the system is well-posed. [🔓](#APP1)
 
 Prove that all maximal solutions such that $x(0) > 0$ and $y(0) > 0$ are global. [🔓](#APP2)
 
-**Hint 🗝️.** Compute
-
+**Hint 🗝️.** Let $g(x,y)=\delta x - \gamma \ln x +\beta y - \alpha \ln y$. 
+Show that for any $c\in \mathbb{R}$, the set
 $$
-\frac{d}{dt}(\delta x - \gamma \ln x +\beta y - \alpha \ln y)
+\{(x,y) \; | \; x >0, \, y>0 \, \mbox{ and } g(x, y) = c \,\}
+$$
+is closed and bounded in $\mathbb{R}^2$, then compute
+$$
+\frac{d}{dt} g(x(t), y(t)).
 $$
 
 ## 🔓 Prey-Predator {data-background-color="#fff9db"}
@@ -1149,17 +1191,31 @@ thus the sytem is well-posed. [🔙](#PP1)
 
 ### 🔓 2.
 
-Let $V := \delta x - \gamma \ln x +\beta y - \alpha \ln y.$ We have
+**TODO.**
+
+## {data-background-color="#fff9db"}
+
+## {data-background-color="#fff9db"}
 
 $$
 \begin{split}
-\dot{V} 
+\frac{d}{dt}{g(x(t), y(t))} 
   &= \delta \dot{x} - \gamma \frac{\dot{x}}{x} +\beta \dot{y} - \alpha \frac{\dot{y}}{y} \\
   &= \delta (\alpha x - \beta x y) - \gamma (\alpha - \beta y) \\
   &\phantom{=} + \beta (\delta x y - \gamma y) - \alpha (\delta x - \gamma) \\
   & =0
 \end{split}
 $$
+
+## {data-background-color="#fff9db"}
+
+Let $(x, y): \left[0, t_{\infty}\right[$ be a maximal solution such that
+$x(0)>0$ and $y(0)>0$. Let $c:=g(x(0), y(0)) = c$; 
+since $(d/dt)g(x(t), y(t)) = 0$, the maximal solution belongs to the set
+$$
+...
+$$
+which is bounded and closed.
 
 ## {data-background-color="#fff9db"}
 
@@ -1218,6 +1274,7 @@ font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
+background-color: white;
 font-size: 1.5em;
 line-height: 1.5em;
 /_ max-height: 80wh; won't work, overriden _/
