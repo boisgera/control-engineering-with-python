@@ -1152,17 +1152,14 @@ Prove that the system is well-posed. [🔓](#APP1)
 
 ### 2. 🧮 🧠
 
-Prove that all maximal solutions such that $x(0) > 0$ and $y(0) > 0$ are global. [🔓](#APP2)
+Prove that all maximal solutions such that $x(0) > 0$ and $y(0) > 0$ are global
+and satify $x(t)>0$ and $y(t)>0$ for every $t\geq 0$. [🔓](#APP2)
 
-**Hint 🗝️.** Let $g(x,y)=\delta x - \gamma \ln x +\beta y - \alpha \ln y$. 
-Show that for any $c\in \mathbb{R}$, the set
+**Hint 🗝️.** Compute the ODE satisfied by $u=\ln x$ and $v= \ln y$ and then
+the derivative w.r.t. time of 
 $$
-\{(x,y) \; | \; x >0, \, y>0 \, \mbox{ and } g(x, y) = c \,\}
-$$
-is closed and bounded in $\mathbb{R}^2$, then compute
-$$
-\frac{d}{dt} g(x(t), y(t)).
-$$
+V := \delta e^u - \gamma u +\beta e^v - \alpha v.
+$$ 
 
 ## 🔓 Prey-Predator {data-background-color="#fff9db"}
 
@@ -1189,44 +1186,75 @@ thus the sytem is well-posed. [🔙](#PP1)
 
 ## {#APP2 data-background-color="#fff9db"}
 
-### 🔓 2.
+### 🔓 2. {data-background-color="#fff9db"}
 
-**TODO.**
+The (continuously differentiable) change of variable 
+$$
+F: (x, y) \mapsto (u, v) := (\ln x, \ln y) 
+$$
+is a bijection between $\left]0, +\infty\right[^2$
+and $\mathbb{R}^2$.
+
+
+## {data-background-color="#fff9db"}
+Since 
+$$
+\frac{d}{dt} \ln x = \frac{\dot{x}}{x}, \;
+\frac{d}{dt} \ln y = \frac{\dot{y}}{y}
+$$
+the prey-predator ODE is equivalent to
+$$
+\begin{array}{rcl}
+\dot{u} &=& \alpha - \beta e^v \\
+\dot{v} &=& \delta e^u - \gamma \\
+\end{array}
+$$
+
 
 ## {data-background-color="#fff9db"}
 
-## {data-background-color="#fff9db"}
-
+Accordingly,
 $$
 \begin{split}
-\frac{d}{dt}{g(x(t), y(t))} 
-  &= \delta \dot{x} - \gamma \frac{\dot{x}}{x} +\beta \dot{y} - \alpha \frac{\dot{y}}{y} \\
-  &= \delta (\alpha x - \beta x y) - \gamma (\alpha - \beta y) \\
-  &\phantom{=} + \beta (\delta x y - \gamma y) - \alpha (\delta x - \gamma) \\
+\frac{d}{dt}{V} 
+  &= \delta e^u \dot{u} - \gamma \dot{u} +\beta e^v \dot{v} - \alpha \dot{v} \\
+  &= (\delta e^u - \gamma) \dot{u} + (\beta e^v - \alpha \dot{v}) \\
+  &= (\delta e^u   - \gamma) (\alpha - \beta e^v) 
+     + (\beta e^v - \alpha) (\delta e^u - \gamma) \\
   & =0
 \end{split}
 $$
 
-## {data-background-color="#fff9db"}
-
-Let $(x, y): \left[0, t_{\infty}\right[$ be a maximal solution such that
-$x(0)>0$ and $y(0)>0$. Let $c:=g(x(0), y(0)) = c$; 
-since $(d/dt)g(x(t), y(t)) = 0$, the maximal solution belongs to the set
-$$
-...
-$$
-which is bounded and closed.
+Therefore $V(u(t), v(t))$ is constant.
 
 ## {data-background-color="#fff9db"}
 
-Let $x(0) > 0$, $y(0)>0$ and $x(t)$, $y(t)$ be the corresponding maximal
-solution, defined for $0 \leq t < t_{\infty}$.
+Now, the function
+$$
+\phi(u) := \delta e^u - \gamma u, \;
+\psi(v) := \beta e^v - \alpha v
+$$
+are continuous and 
+$$
+\lim_{|u| \to +\infty} \phi(u) = +\infty, \;
+\lim_{|v| \to +\infty} \phi(v) = +\infty.
+$$
+As $V(u, v) = \phi(u) + \psi(v)$,
+$$
+\lim_{\|(u, v)\| \to +\infty} V(u, v) = +\infty.
+$$
 
-On one hand $V(x(t), y(t)) = V(x(0), y(0))$.
+## {data-background-color="#fff9db"}
 
-On the other hand, **TODO!**
+Consequently, since $V(x(t), y(t))$ is constant, the solution $(u(t), v(t))$
+**cannot** blow up (either in finite or infinite time). 
 
-[🔙](#PP2)
+Therefore the solution $(u(t), v(t))$ is global as is the solution 
+in the original variables $(x(t), y(t))$. 
+
+Since $(x, y) = F^{-1}(u, v)$
+and the domain of $F$ is $\left]0, +\infty\right[^2$, $x(t)>0$ and $y(t)>0$
+for any $t\geq 0$. [🔙](#PP2)
 
 
 
