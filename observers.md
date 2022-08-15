@@ -1,27 +1,43 @@
-% Observers
-% [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), MINES ParisTech, PSL University
+---
+title: Observers
+author:
+  - "🧙‍♂️ [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) -- 🏦 Mines Paris -- PSL"
+licence:
+  - "[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)"
+---
 
-Preamble
-================================================================================
+## Control Engineering with Python
 
---------------------------------------------------------------------------------
+- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-    from numpy import *
-    from numpy.linalg import *
-    from numpy.testing import *
-    from matplotlib.pyplot import *
-    from scipy.integrate import *
+- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
 
+## Notations
 
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Example                |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Computation (Computer) |
+| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
 
-    from numpy import *
-    import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib notebook
-    from matplotlib.pyplot import *
+## 🐍 Imports
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+from numpy import *
+from numpy.linalg import *
+from scipy.integrate import solve_ivp
+from scipy.linalg import solve_continuous_are
+from matplotlib.pyplot import *
+from numpy.testing import *
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -42,18 +58,21 @@ Preamble
     #
     # Matplotlib Configuration & Helper Functions
     # --------------------------------------------------------------------------
-    
+
     # TODO: also reconsider line width and markersize stuff "for the web
     #       settings".
-    fontsize = 35
+    fontsize = 10
+
+    width = 345 / 72.27
+    height = width / (16/9)
 
     rc = {
         "text.usetex": True,
-        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}", 
+        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}",
         #"font.family": "serif",
         "font.serif": [],
         #"font.sans-serif": [],
-        "legend.fontsize": fontsize, 
+        "legend.fontsize": fontsize,
         "axes.titlesize":  fontsize,
         "axes.labelsize":  fontsize,
         "xtick.labelsize": fontsize,
@@ -61,18 +80,20 @@ Preamble
         "figure.max_open_warning": 100,
         #"savefig.dpi": 300,
         #"figure.dpi": 300,
+        "figure.figsize": [width, height],
+        "lines.linewidth": 1.0,
     }
     mpl.rcParams.update(rc)
 
-    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi
     # (the "standard" dpi for Web computations) gives 1600 px.
-    width_in = 160 / 9 
+    width_in = 160 / 9
 
-    def save(name):
+    def save(name, **options):
         cwd = os.getcwd()
         root = os.path.dirname(os.path.realpath(__file__))
         os.chdir(root)
-        pp.savefig(name + ".svg")
+        pp.savefig(name + ".svg", **options)
         os.chdir(cwd)
 
     def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
@@ -80,10 +101,22 @@ Preamble
         pp.gcf().set_size_inches((width_in, height_in))
         pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
 
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+## 🐍 Stream Plot Helper
+
+```python
+def Q(f, xs, ys):
+    X, Y = meshgrid(xs, ys)
+    fx = vectorize(lambda x, y: f([x, y])[0])
+    fy = vectorize(lambda x, y: f([x, y])[1])
+    return X, Y, fx(X, Y), fy(X, Y)
+```
+
 Observability
-================================================================================
+--------------------------------------------------------------------------------
+
 
 Motivation
 --------------------------------------------------------------------------------
@@ -100,7 +133,7 @@ Control engineers call these software devices **observers**.
 
 First we adress the mathematical feasibility of observers: **observability**.
 
-Definition
+🏷️ Observability
 --------------------------------------------------------------------------------
 
 The system 
@@ -118,7 +151,7 @@ is **observable** if the knowledge of $y(t) = g(x(t))$
 on some finite time span $[0, \tau]$ 
 determines uniquely the initial condition $x(0)$. 
 
-Remarks
+📝 Remarks
 --------------------------------------------------------------------------------
 
   - The knowledge of $x(0)$ determines uniquely $x(t)$ via the system dynamics.
@@ -187,7 +220,7 @@ and deduce $x(0)$ at this stage.
 --------------------------------------------------------------------------------
 
 
-<i class="fa fa-eye"></i> Observability / Car
+🔍 Observability / Car
 --------------------------------------------------------------------------------
 
 The position $x$ (in meters) of a car of mass $m$ (in kg) on a straight road
@@ -219,12 +252,17 @@ Thus the system is observable.
 
 --------------------------------------------------------------------------------
 
-But what if we measure instead the speed $y(t) = \dot{x}(t)$ ?
+### 🤔 What if?
 
-The system dynamics $m \ddot{x}(t) = u(t) = 0$ yields
+What if we measure the speed instead of the location ?
+
 $$
-x(t) = x(0) + \dot{x}(0) t
+y(t) = \dot{x}(t)
 $$
+
+--------------------------------------------------------------------------------
+
+The system dynamics $m \ddot{x}(t) = u(t) = 0$ yields $x(t) = x(0) + \dot{x}(0) t$
 thus
 $$
 \dot{x}(t) = \dot{x}(0)
@@ -234,7 +272,7 @@ and any $x(0)$ is consistent with a measure of a constant speed.
 We can't deduce the position of the car from the measure of its speed;
 the system is not observable.
 
-Kalman Criterion
+💎 Kalman Criterion
 --------------------------------------------------------------------------------
 
 The system $\dot{x} = Ax, \, y = C x$ is observable iff:
@@ -253,30 +291,46 @@ The system $\dot{x} = Ax, \, y = C x$ is observable iff:
 
 $[C; \dots; C A^{n-1}]$ is the **Kalman observability matrix**.
 
-("$;$" denotes the column concatenation of matrices)
 
-Duality
+Notation
 --------------------------------------------------------------------------------
 
-Since
+  - "$,$" row concatenation of matrices.
+
+  - "$;$" column concatenation of matrices.
+
+We have
 
 $$
-[C; \dots; C A^{n-1}]^t = [C^t, \dots, (A^t)^{n-1}C^t],
+[C; \cdots; C A^{n-1}]^t = [C^t, \cdots, (A^t)^{n-1}C^t].
 $$
 
-the system $\dot{x} = A x, \; y = Cx$ is observable iff
-the system $\dot{x} = A^t x + C^t u$ is controllable.
-
-
-<i class="fa fa-question-circle-o"></i> Fully Measured System
+💎 Duality
 --------------------------------------------------------------------------------
 
-Consider $\dot{x} = A x, \; y = Cx$ with $x \in \mathbb{R}^n$, $y \in\mathbb{R}^p$ and $\mathrm{rank} \, C = n$.
+The system $\dot{x} = A x, \; y = Cx$ is observable 
 
-  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-    Is the system observable ?
+$$\Longleftrightarrow$$
 
-<i class="fa fa-question-circle-o"></i> Integrator Chain
+The system $\dot{x} = A^t x + C^t u$ is controllable.
+
+
+🧩 Fully Measured System
+--------------------------------------------------------------------------------
+
+Consider 
+
+$$\dot{x} = A x, \; y = Cx$$ 
+
+with $x \in \mathbb{R}^n$, $y \in\mathbb{R}^p$ and $\mathrm{rank} \, C = n$.
+
+## 
+
+### 1. 🧠 🧮 
+
+Is the system observable ?
+
+🧩 Integrator Chain 
 --------------------------------------------------------------------------------
 
 ![](images/static/integrator-chain-2.svg)
@@ -284,12 +338,14 @@ $$\dot{x}_n = 0, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2, \, y=x_1
 
 --------------------------------------------------------------------------------
 
-  -  [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-     Show that the system is observable.
+##
 
-<i class="fa fa-question-circle-o"></i> Heat Equation
+### 1. 🧠 🧮 
+
+Show that the system is observable.
+
+🧩 Heat Equation
 --------------------------------------------------------------------------------
-
 
 ![](images/static/heat-simple.svg)
 
@@ -308,17 +364,24 @@ $$\dot{x}_n = 0, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2, \, y=x_1
 
 --------------------------------------------------------------------------------
 
-  -  [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-     Show that the system is observable.
+### 1. 🧠 🧮
+     
+Show that the system is observable.
 
-  -  [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
-     Is it still true if the four cells are organized as a square and
-     the temperature sensor is in any of the corners ? How many independent 
-     sensors do you need to make the system observable and where can you
-     place them?
+--------------------------------------------------------------------------------
+
+### 2. 🧠 🧮
+
+Is it still true if the four cells are organized as a square and
+the temperature sensor is in any of the corners ? 
+
+How many independent 
+sensors do you need to make the system observable and where can you
+place them?
 
 Observer Design
-================================================================================
+--------------------------------------------------------------------------------
+
 
 --------------------------------------------------------------------------------
 
@@ -331,7 +394,7 @@ y = C x + D u
 \right.
 $$
 
-State Observer v1
+State Observer (Version 1)
 --------------------------------------------------------------------------------
 
 Simulate the system behavior
@@ -351,11 +414,13 @@ $$
 \hat{x}(0) = 0.
 $$
 
-State Estimate Error
+
 --------------------------------------------------------------------------------
 
-Does $\hat{x}(t)$ provide a good asymptotic estimate of $x(t)$ ?
+Is $\hat{x}(t)$ a good asymptotic estimate of $x(t)$?
 
+
+State Estimate Error
 --------------------------------------------------------------------------------
 
 The dynamics of the **state estimate error** $e = \hat{x} - x$ is
@@ -369,7 +434,10 @@ $$
 \end{split}
 $$
 
+💎 State Estimator v1
 --------------------------------------------------------------------------------
+
+### ❌ Failure
 
 The state estimator error $e(t)$, solution of 
 
@@ -377,18 +445,27 @@ $$
 \dot{e} = A e 
 $$
 
-doesn't satisfy  
+doesn't satisfy in general
+
+$$
+\lim_{t \to +\infty} e(t) = 0.
+$$
+
+--------------------------------------------------------------------------------
+
+We have
 
 $$
 \lim_{t \to +\infty} e(t) = 0
 $$
 
-for every value of $e(0) = \hat{x}(0) - x(0)$,
-**unless the eigenvalues of $A$ are in the open left-hand plane**
-(i.e. $\dot{x} = A x$ is asymptotically stable).
+for every value of $e(0) = \hat{x}(0) - x(0)$, if and only if
+$\dot{x} = A x$ is asymptotically stable (i.e. the eigenvalues of $A$ are in the open left-hand plane).
 
 
-State Observer v2
+
+
+State Observer (Version 2)
 --------------------------------------------------------------------------------
 
 Change the observer dynamics to account for differences between 
@@ -406,9 +483,10 @@ $$
 for some **observer gain** matrix $L \in \mathbb{R}^{n \times p}$  
 (to be determined).
 
+
 --------------------------------------------------------------------------------
 
-![](images/static/observer.svg)
+![](images/static/observer.svg){style="display:block;margin:auto;"}
 
 --------------------------------------------------------------------------------
 
@@ -423,12 +501,12 @@ $$
 \end{split}
 $$
 
-Reminder
+📝 Reminder
 --------------------------------------------------------------------------------
 
 The system $\dot{x} = A x, \; y = Cx$ is observable 
 
-$\Longleftrightarrow$
+$$\Longleftrightarrow$$
 
 The system $\dot{x} = A^t x + C^t u$ is commandable.
 
@@ -456,7 +534,7 @@ $$
 \end{split}
 $$
 
-Observers / Pole Assignment
+Pole Assignment (Observers)
 --------------------------------------------------------------------------------
 
 Thus, if we set
@@ -471,9 +549,7 @@ $$
 \sigma(A - L C) = \Lambda
 $$
 
-
-
-<i class="fa fa-eye"></i> Observer/Pole Assignment
+🔍 Pole Assignment
 --------------------------------------------------------------------------------
 
 Consider the double integrator $\ddot{y} = u$ 
@@ -500,82 +576,98 @@ Consider the double integrator $\ddot{y} = u$
 
 (in standard form)
 
+🐍 💻
 --------------------------------------------------------------------------------
 
-    from scipy.signal import place_poles
-    A = array([[0, 1], [0, 0]])
-    C = array([[1, 0]])
-    poles = [-1, -2]
-    K = place_poles(A.T, C.T, poles).gain_matrix
-    L = K.T
-    assert_almost_equal(K, [[3.0, 2.0]])
-
---------------------------------------------------------------------------------
-
-  $$
-  \frac{d}{dt}
-  \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
-  =
-  \left[\begin{array}{cx} 0 & 1 \\ 0 & 0\end{array}\right]
-  \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
-  +
-  \left[\begin{array}{c} 0 \\ 1 \end{array}\right] u
-  - \left[\begin{array}{c} 3 \\2 \end{array}\right] (\hat{y} - y)
-  $$
-
-  $$
-  \hat{y} = 
-  \left[
-  \begin{array}{cc}
-  1 & 0
-  \end{array}
-  \right]
-  \left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
-  $$
-
-<i class="fa fa-flask"></i> 
---------------------------------------------------------------------------------
-
-    def fun(t, X_Xhat):
-        x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
-        y, y_hat = C.dot(x), C.dot(x_hat)
-        dx = A.dot(x)
-        dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
-        return r_[dx, dx_hat]
+```python
+from scipy.signal import place_poles
+A = array([[0, 1], [0, 0]])
+C = array([[1, 0]])
+poles = [-1, -2]
+K = place_poles(A.T, C.T, poles).gain_matrix
+L = K.T
+assert_almost_equal(K, [[3.0, 2.0]])
+```
 
 --------------------------------------------------------------------------------
 
-    y0 = [-2.0, 1.0, 0.0, 0.0]
-    result = solve_ivp(fun=fun, t_span=[0.0, 5.0], y0=y0, max_step=0.1)
+$$
+\frac{d}{dt}
+\left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
+=
+\left[\begin{array}{cx} 0 & 1 \\ 0 & 0\end{array}\right]
+\left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
++
+\left[\begin{array}{c} 0 \\ 1 \end{array}\right] u
+- \left[\begin{array}{c} 3 \\2 \end{array}\right] (\hat{y} - y)
+$$
 
+$$
+\hat{y} = 
+\left[
+\begin{array}{cc}
+1 & 0
+\end{array}
+\right]
+\left[\begin{array}{c} \hat{x}_1 \\ \hat{x}_2 \end{array}\right]
+$$
+
+🐍
 --------------------------------------------------------------------------------
 
-    figure()
-    t = result["t"]
-    y = result["y"]
-    plot(t, y[0], "b", label="$x_1$")
-    plot(t, y[2], "b:", alpha=0.5, label=r"$\hat{x}_1$")
-    plot(t, y[1], "g", label="$x_2$")
-    plot(t, y[3], "g:", alpha=0.5, label=r"$\hat{x}_2$")
-    grid(); legend()
+```python
+def fun(t, X_Xhat):
+    x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
+    y, y_hat = C.dot(x), C.dot(x_hat)
+    dx = A.dot(x)
+    dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
+    return r_[dx, dx_hat]
+```
+
+🐍 💻
+--------------------------------------------------------------------------------
+
+```python
+y0 = [-2.0, 1.0, 0.0, 0.0]
+result = solve_ivp(
+    fun=fun, 
+    t_span=[0.0, 5.0], 
+    y0=y0, 
+    max_step=0.1
+)
+```
+
+🐍 📈
+--------------------------------------------------------------------------------
+
+```python
+figure()
+t = result["t"]
+y = result["y"]
+plot(t, y[0], "b", label="$x_1$")
+plot(t, y[2], "b:", alpha=0.5, label=r"$\hat{x}_1$")
+plot(t, y[1], "g", label="$x_2$")
+plot(t, y[3], "g:", alpha=0.5, label=r"$\hat{x}_2$")
+xlabel("$t$"); grid(); legend()
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    save("images/observer-trajectories")
-
+```python
+pp.gcf().subplots_adjust(bottom=0.2)
+save("images/observer-trajectories")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/observer-trajectories.svg)
+## {.section  data-background="images/observer-trajectories.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 Kalman Filtering
-================================================================================
+--------------------------------------------------------------------------------
 
 Setting
 --------------------------------------------------------------------------------
@@ -634,21 +726,7 @@ If it is known that there is a large state disturbance but small output
 disturbance, it makes sense to reduce the impact of the state disturbance
 in the composition of $J$, hence to select a small $Q$ wrt $R$.
 
-<!--
-
---------------------------------------------------------------------------------
-
-To balance the impact of the state disturbance and output disturbance error,
-one may set:
-
-$$
-Q^{-1} = \mathbb{E} v(t)^t v(t),
-R^{-1} = \mathbb{E} w(t)^t w(t).
-$$
-
--->
-
-Optimal Solution
+💎 Optimal Solution
 --------------------------------------------------------------------------------
 
 Assume that $\dot{x} = A x, \; y = Cx$ is observable.
@@ -668,20 +746,20 @@ $$
 The dynamics of the corresponding estimation error 
 $e(t) = \hat{x}(t) - x(t)$ is asymptotically stable.
 
-Algebraic Riccati Equation
+💎 Algebraic Riccati Equation
 --------------------------------------------------------------------------------
 
 The gain matrix $L$ is given by
 
   $$
-  L = \Sigma C^t R,
+  L = \Pi C^t R,
   $$
   
- where $\Sigma \in \mathbb{R}^{n \times n}$ is the unique matrix such that
- $\Sigma^t = \Sigma$, $\Sigma > 0$ and
+ where $\Pi \in \mathbb{R}^{n \times n}$ is the unique matrix such that
+ $\Pi^t = \Pi$, $\Pi > 0$ and
 
    $$
-   \Sigma C^t R C \Sigma - \Sigma A^t - A \Sigma - Q^{-1} = 0.
+   \Pi C^t R C \Pi - \Pi A^t - A \Pi - Q^{-1} = 0.
    $$
 
 Optimal Control $\leftrightarrow$ Filter
@@ -693,11 +771,13 @@ $$
 (A, B, Q, R) = (A^t, C^t, Q^{-1}, R^{-1})
 $$
 
-then
+then define
 
-$\Sigma = \Pi^t$ and $L = K^t.$
+$$
+L := \Pi  C^t  R
+$$
 
-<i class="fa fa-eye"></i> Kalman Filter
+🔍 Kalman Filter
 --------------------------------------------------------------------------------
 
 Consider the system 
@@ -717,7 +797,7 @@ $$
 
 --------------------------------------------------------------------------------
 
-With $\Sigma = [\sigma]$, the filtering Ricatti equation becomes
+With $\Pi = [\sigma]$, the filtering Ricatti equation becomes
 
 $$
 \sigma^2 - 2\sigma  - 1 = 0
@@ -747,7 +827,7 @@ $$
 
 
 
-<i class="fa fa-eye"></i> Stabilization/Kalman Filter
+🔍 Stabilization/Kalman Filter
 --------------------------------------------------------------------------------
 
 Consider the double integrator $\ddot{x} = 0,$ $y=x$.
@@ -767,30 +847,49 @@ Consider the double integrator $\ddot{x} = 0,$ $y=x$.
 
 (in standard form)
 
+🐍
 --------------------------------------------------------------------------------
 
-    from scipy.linalg import solve_continuous_are
-    A = array([[0, 1], [0, 0]])
-    B = array([[0], [1]])
-    Q = array([[1, 0], [0, 1]]); R = array([[1]])
-    Sigma = solve_continuous_are(A.T, C.T, inv(Q), inv(R))
-    L = Sigma @ C.T @ R
-    eigenvalues, _ = eig(A - L @ C)
-    assert all([real(s) < 0 for s in eigenvalues])
+```python
+A = array([[0, 1], [0, 0]])
+B = array([[0], [1]])
+Q = array([[1, 0], [0, 1]])
+R = array([[1]])
+```
 
-<i class="fa fa-area-chart"></i>
+🐍 💻
 --------------------------------------------------------------------------------
 
-    figure()
-    x = [real(s) for s in eigenvalues]
-    y = [imag(s) for s in eigenvalues]
-    plot(x, y, "kx", ms=12.0)
-    xticks([-2, -1, 0, 1, 2])
-    yticks([-2, -1, 0, 1, 2])
-    plot([0, 0], [-2, 2], "k")
-    plot([-2, 2], [0, 0], "k")   
-    grid(True)
-    title("Eigenvalues")
+```python
+sca = solve_continuous_are
+Sigma = sca(A.T, C.T, inv(Q), inv(R))
+L = Sigma @ C.T @ R
+
+eigenvalues, _ = eig(A - L @ C)
+assert all([real(s) < 0 for s in eigenvalues])
+```
+
+🐍 📈
+--------------------------------------------------------------------------------
+
+```python
+figure()
+x = [real(s) for s in eigenvalues]
+y = [imag(s) for s in eigenvalues]
+plot(x, y, "kx")
+```
+
+🐍 📈
+--------------------------------------------------------------------------------
+
+```python
+xticks([-2, -1, 0, 1, 2])
+yticks([-2, -1, 0, 1, 2])
+plot([0, 0], [-2, 2], "k")
+plot([-2, 2], [0, 0], "k")   
+grid(True)
+title("Eigenvalues")
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -800,172 +899,180 @@ Consider the double integrator $\ddot{x} = 0,$ $y=x$.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/poles-Kalman.svg)
+## {.section  data-background="images/poles-Kalman.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+🐍
 --------------------------------------------------------------------------------
 
+```python
+def fun(t, X_Xhat):
+    x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
+    y, y_hat = C.dot(x), C.dot(x_hat)
+    dx = A.dot(x)
+    dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
+    return r_[dx, dx_hat]
+```
 
-<i class="fa fa-flask"></i> 
+🐍 💻
 --------------------------------------------------------------------------------
 
-    def fun(t, X_Xhat):
-        x, x_hat = X_Xhat[0:2], X_Xhat[2:4]
-        y, y_hat = C.dot(x), C.dot(x_hat)
-        dx = A.dot(x)
-        dx_hat = A.dot(x_hat) - L.dot(y_hat - y)
-        return r_[dx, dx_hat]
+```python
+y0 = [-2.0, 1.0, 0.0, 0.0]
+result = solve_ivp(
+    fun=fun, 
+    t_span=[0.0, 5.0], 
+    y0=y0, 
+    max_step=0.1
+)
+```
 
+🐍 📈
 --------------------------------------------------------------------------------
 
-    y0 = [-2.0, 1.0, 0.0, 0.0]
-    result = solve_ivp(fun=fun, t_span=[0.0, 5.0], y0=y0, max_step=0.1)
-
---------------------------------------------------------------------------------
-
-    figure()
-    t = result["t"]
-    y = result["y"]
-    plot(t, y[0], "b", label="$x_1$")
-    plot(t, y[2], "b:", alpha=0.5, label=r"$\hat{x}_1$")
-    plot(t, y[1], "g", label="$x_2$")
-    plot(t, y[3], "g:", alpha=0.5, label=r"$\hat{x}_2$")
-    grid(); legend()
+```python
+figure()
+t = result["t"]; y = result["y"]
+plot(t, y[0], "C0", label="$x_1$")
+plot(t, y[2], "C0--", label=r"$\hat{x}_1$")
+plot(t, y[1], "C1", label="$x_2$")
+plot(t, y[3], "C1--", label=r"$\hat{x}_2$")
+xlabel("$t$")
+grid(); legend()
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    save("images/observer-Kalman-trajectories")
+```python
+pp.gcf().subplots_adjust(bottom=0.2)
+save("images/observer-Kalman-trajectories")
+```
 
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/observer-Kalman-trajectories.svg)
+## {.section  data-background="images/observer-Kalman-trajectories.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-<!--
-
---------------------------------------------------------------------------------
-
-    def f(t, y):
-        return 0.0
-    def g(y):
-        return y
-
-    y0 = [10.0]
-    tspan = [0.0, 20.0]
-    result = solve_ivp(f, tspan, y0, dense_output=True)
-    t = linspace(tspan[0], tspan[-1], 1000)
-    x = result["sol"](t)[0]
-
---------------------------------------------------------------------------------
-
-    figure()
-    plot(t, x, "k", label=r"$x(t)$")
-    output = lambda t: g(result["sol"](t)[0])
-    plot(t, output(t), "k--", label=r"$y(t)$")
-    grid(True)
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    save("images/K")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
---------------------------------------------------------------------------------
-
-![](images/K.svg)
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
---------------------------------------------------------------------------------
-
-    def f(t, y):
-        return - (1+ sqrt(2)) * (y[0] - output(t))
-
-    y0 = [1.0]
-    result2 = solve_ivp(f, tspan, y0, dense_output=True)
-    t = linspace(tspan[0], tspan[-1], 1000)
-    x_hat = result2["sol"](t)[0]
-
-
---------------------------------------------------------------------------------
-
-    figure()
-    plot(t, x, "k", label=r"$x(t)$")
-    plot(t, output(t), "k--", label=r"$y(t)$")
-    plot(t, x_hat, "g")
-    grid(True)
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    save("images/K2")
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
---------------------------------------------------------------------------------
-
-![](images/K2.svg)
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
--->
 
 <style>
 
+.reveal p {
+  text-align: left;
+}
+
 .reveal section img {
-  border:0;
-  height:50vh;
-  width:auto;
+border:0;
+height:50vh;
+width:auto;
 
 }
 
 .reveal section img.medium {
-  border:0;
-  max-width:50vh;
+border:0;
+max-width:50vh;
 }
 
 .reveal section img.icon {
-  display:inline;
-  border:0;
-  width:1em;
-  margin:0em;
-  box-shadow:none;
-  vertical-align:-10%;
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
 }
 
 .reveal code {
-  font-family: Inconsolata, monospace;
+font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
-  font-size: 1.5em;
-  line-height: 1.5em;
-  /* max-height: 80wh; won't work, overriden */
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
 }
 
-input {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  font-size: 42px;
-  line-height: 54.6px;
+/_
+.reveal .slides .left {
+text-align: left;
 }
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
 
 </style>
 
-<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">

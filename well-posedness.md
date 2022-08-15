@@ -1256,20 +1256,6 @@ Since $(x, y) = F^{-1}(u, v)$
 and the domain of $F$ is $\left]0, +\infty\right[^2$, $x(t)>0$ and $y(t)>0$
 for any $t\geq 0$. [🔙](#PP2)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <style>
 
 .reveal p {

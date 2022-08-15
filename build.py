@@ -165,11 +165,14 @@ def make_slides_doc(doc):
 slides_doc = make_slides_doc(doc)
 
 options = [
-    "--standalone", 
-    "-V", "theme:white", 
-    "--mathjax", 
-    "-V", "slideNumber:true",
-    "-V", "history:true",
+    "--standalone",
+    "-V",
+    "theme:white",
+    "--mathjax",
+    "-V",
+    "slideNumber:true",
+    "-V",
+    "history:true",
 ]
 
 pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=options)
@@ -226,7 +229,7 @@ for elt, path in pandoc.iter(notebook_doc, path=True):
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(io.StringIO(content), parser)
             html = tree.getroot()
-            #print(f"{tree = }, {html =}, {parser = }")
+            # print(f"{tree = }, {html =}, {parser = }")
             if html is not None and len(html):
                 videos = list(html.iter("video"))
                 if videos:
