@@ -330,6 +330,27 @@ with $x \in \mathbb{R}^n$, $y \in\mathbb{R}^p$ and $\mathrm{rank} \, C = n$.
 
 Is the system observable ?
 
+🔓 Fully Measured System
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+Yes! The rank of its observability matrix
+  $$
+  \left[
+  \begin{array}{c}
+  C \\
+  CA \\ 
+  \vdots \\
+  C A^{n-1}
+  \end{array}
+  \right]
+  $$
+is at most $n$ and at least the rank of $C$, which is also $n$. Thus by
+the [💎 Kalman Criterion], the system is observable.
+
 🧩 Integrator Chain 
 --------------------------------------------------------------------------------
 
@@ -343,6 +364,42 @@ $$\dot{x}_n = 0, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2, \, y=x_1
 ### 1. 🧠 🧮 
 
 Show that the system is observable.
+
+🔓 Integrator Chain
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The standard form of the dynamics associated to the state 
+$x = (x_1, \dots, x_n)$ is characterized by
+
+$$
+A = \left[ 
+\begin{array}{ccccc}
+0 & 1 & 0 & \cdots &0 \\
+0 & 0 & 1 & \ddots & \vdots\\
+\vdots  & \ddots & \ddots & \ddots & 0 \\
+\vdots  & \ddots &\ddots & 0 & 1 \\
+0  & \cdots  &  \cdots      & 0 & 0
+\end{array}  
+\right], \;
+C = \left[1, 0, 0, \dots, 0 \right]
+$$
+
+--------------------------------------------------------------------------------
+
+Thus, 
+$$
+\begin{array}{rl}
+C &=& \left[1, 0, 0, \dots, 0 \right] \\
+CA &=& \left[0, 1,0, \dots, 0 \right] \\
+\vdots &=& \vdots \\
+CA^{n-1} &=& \left[0, 0, 0, \dots, 1 \right]
+\end{array}
+$$
+The observability matrix has rank $n$ and hence the system of observable.
 
 🧩 Heat Equation
 --------------------------------------------------------------------------------
@@ -370,14 +427,202 @@ Show that the system is observable.
 
 --------------------------------------------------------------------------------
 
-### 2. 🧠 🧮
+### 2. 🧮
+
+![](images/static/heat-square.svg){style="display:block;margin:auto;"}
+
 
 Is it still true if the four cells are organized as a square and
 the temperature sensor is in any of the corners ? 
 
-How many independent 
-sensors do you need to make the system observable and where can you
-place them?
+--------------------------------------------------------------------------------
+
+### 3. 🧠 🧮
+
+Can you make the system observable with two (adequatly located) sensors?
+
+🔓 Heat Equation
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The standard form of the dynamics associated to the state 
+$T = (T_1, T_2, T_3, T4)$ is characterized by
+
+$$
+A = \left[ 
+\begin{array}{cccc}
+-1 & 1 & 0 & 0 \\
+1 & -2 & 1 & 0 \\
+0 & 1 & -2 & 1 \\
+0 & 0 & 1 & -1
+\end{array}  
+\right], \;
+C = \left[0, 0, 0, 1 \right]
+$$
+
+--------------------------------------------------------------------------------
+
+Therefore the observability matrix is 
+$$
+\left[
+\begin{array}{rrrr}
+0 & 0 & 0 & 1 \\
+0 & 0 & 1 & -1 \\
+0 & 1 & -3 & 2 \\
+1 & -5 & 9 & 5
+\end{array}
+\right]
+$$
+whose rank is 4: the system is observable.
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+In the square configuration, there is no way to get observability with a 
+single thermometer.
+
+
+![](images/static/heat-square-sol.svg){style="display:block;margin:auto;"}
+
+
+--------------------------------------------------------------------------------
+
+Indeed the new $A$ matrix would be
+$$
+A = \left[ 
+\begin{array}{rrrr}
+-2 &  1 &  1 &  0 \\
+ 1 & -2 &  0 &  1 \\
+-1 &  0 & -2 &  1 \\
+ 0 &  1 &  1 & -2
+\end{array}  
+\right]
+$$
+
+and the new $C$ matrix one of
+$$
+\left[1, 0, 0, 0 \right], \;
+\left[0, 1, 0, 0 \right], \;
+\left[0, 0, 1, 0 \right], \;
+\left[0, 0, 0, 1 \right]
+$$
+
+--------------------------------------------------------------------------------
+
+The corresponding observability matrices are 
+
+$$
+\left[
+\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+-2 & 1 & 1 & 0 \\
+4 & -4 & -4 & 2 \\
+4 & -4 & -4 & 2
+\end{array}
+\right], \;
+\left[
+\begin{array}{rrrr}
+0 & 1 & 0 & 0 \\
+1 & -2 & 0 & 1 \\
+-4 & 6 & 2 & -4 \\
+-4 & 6 & 2 & -4
+\end{array}
+\right],
+$$
+
+
+$$
+\left[
+\begin{array}{rrrr}
+0 & 0 & 1 & 0 \\
+-1 & 0 & -2 & 1 \\
+4 & 0 & 4 & -4 \\
+4 & 0 & 4 & -4
+\end{array}
+\right], \;
+\left[
+\begin{array}{rrrr}
+0 & 0 & 0 & 1 \\
+0 & 1 & 1 & -2 \\
+0 & -4 & -4 & 6 \\
+0 & -4 & -4 & 6
+\end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+All the possible observability matrices in this case have rank 3 < 4.
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+With 2 sensors, "it depends" (on the location of the sensors). For example:
+
+![](images/static/heat-square-2.svg){style="display:block;margin:auto;"}
+
+--------------------------------------------------------------------------------
+
+The first case corresponds to
+
+$$
+C = \left[
+\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1
+\end{array}
+\right]
+$$
+
+the second one to
+
+$$
+C = \left[
+\begin{array}{rrrr}
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1
+\end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+The observability matrices are
+
+$$
+\left[
+\begin{array}{rrrr}
+1 & 0 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+-2 & 1 & 1 & 0 \\
+0 & 1 & 1 & -2 \\
+4 & -4 & -4 & 2 \\
+0 & -4 & -4 & 6 \\
+4 & -4 & -4 & 2 \\
+0 & -4 & -4 & 6 \\
+\end{array}
+\right], \;
+\left[
+\begin{array}{rrrr}
+0 & 1 & 0 & 0 \\
+0 & 0 & 0 & 1 \\
+-1 & -2 & 0 & 1 \\
+0 & 1 & 1 & -2 \\
+-4 & 6 & 2 & -4 \\
+0 & -4 & -4 & 6 \\
+-4 & 6 & 2 & -4 \\
+0 & -4 & -4 & 6 \\
+\end{array}
+\right]
+$$
+
+The first has rank 3, the second rank 4.
+
 
 Observer Design
 --------------------------------------------------------------------------------
@@ -537,6 +782,8 @@ $$
 Pole Assignment (Observers)
 --------------------------------------------------------------------------------
 
+### ✔️ Success
+
 Thus, if we set
 
 $$
@@ -644,10 +891,10 @@ result = solve_ivp(
 figure()
 t = result["t"]
 y = result["y"]
-plot(t, y[0], "b", label="$x_1$")
-plot(t, y[2], "b:", alpha=0.5, label=r"$\hat{x}_1$")
-plot(t, y[1], "g", label="$x_2$")
-plot(t, y[3], "g:", alpha=0.5, label=r"$\hat{x}_2$")
+plot(t, y[0], "C0", label="$x_1$")
+plot(t, y[2], "C0--", label=r"$\hat{x}_1$")
+plot(t, y[1], "C1", label="$x_2$")
+plot(t, y[3], "C1--", label=r"$\hat{x}_2$")
 xlabel("$t$"); grid(); legend()
 ```
 
