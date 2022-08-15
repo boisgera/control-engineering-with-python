@@ -12,7 +12,7 @@ import lxml.etree
 
 # Pandoc
 import pandoc
-from pandoc.types import CodeBlock, Div, Format, Header, RawBlock
+from pandoc.types import CodeBlock, Div, Format, Header, HorizontalRule, RawBlock
 
 # ------------------------------------------------------------------------------
 # TODO: reconsider all flags wrt use cases and simplification of the document.
@@ -162,7 +162,53 @@ def make_slides_doc(doc):
     return doc
 
 
+COLOR_THEME = {
+    "🔍": "#f3f0ff",
+    "🧩": "#ebfbee",
+    "🔓": "#fff9db",
+    "🐍": None,
+    "🏷️": None,
+    "📝": None,
+    "💎": None,
+    "🧭": None,
+}
+
+
+def colorize(doc):
+    doc = copy.deepcopy(doc)
+
+    # Replace rules with empty level 2 headers
+    rules = []
+    for elt, path in pandoc.iter(doc, path=True):
+        if isinstance(elt, HorizontalRule):
+            holder, index = path[-1]
+            rules.append((elt, holder, index))
+    for _, holder, index in reversed(rules):
+        empty_header = Header(2, ("", [], []), [])
+        holder[index] = empty_header
+
+    # Colors
+    color = None
+    for block in doc[1]:
+        if isinstance(block, Header):
+            header = block
+            lvl, attr, inlines = header[:]
+            if lvl == 2:
+                id_, classes, kvs = attr
+                title = pandoc.write(inlines)
+                for emoji in COLOR_THEME:
+                    if emoji in title:
+                        color = f"{COLOR_THEME[emoji]}"
+                        break
+                if color is not None:
+                    kvs.append(("data-background-color", color))
+
+    return doc
+
+
 slides_doc = make_slides_doc(doc)
+slides_doc = colorize(slides_doc)
+
 
 options = [
     "--standalone",
@@ -229,7 +275,6 @@ for elt, path in pandoc.iter(notebook_doc, path=True):
             parser = lxml.etree.HTMLParser()
             tree = lxml.etree.parse(io.StringIO(content), parser)
             html = tree.getroot()
-            # print(f"{tree = }, {html =}, {parser = }")
             if html is not None and len(html):
                 videos = list(html.iter("video"))
                 if videos:
@@ -343,13 +388,21 @@ def notebookify(doc):
             cells.append(code_cell)
         else:
             wrapper = Pandoc(Meta({}), [block])
-            options = ["-t", "markdown-smart-raw_attribute"]
+            options = ["-t", "markdown-smart-raw_attribute-simple_tables"]
+            # markdown-smart-raw_attribute variant
+            # ------------------------------------------------------------------
             # -smart needed for en-dashes for example: we don't expect Jupyter
             # cells to be smart, so we *disable* the smart output so that
-            # '–' won't get represented as '--'.
+            # '–' won't get represented as '--'. Doesn't work in metadata (?)
             # -raw_attribute so that raw html is output as HTML, not as
             # the non-standard markdown syntax `<p>Hello</p>`{=html} that
             # the Jupyter notebooks do not understand.
+            # ------------------------------------------------------------------
+            # UPDATE: replace this markdown variant by github-flavored
+            # markdown (for example to get a proper rendering of tables
+            # in notebooks). Arf, no, would fuck up the math. Need to
+            # find selectively what kind of tables are allowed.
+            # UPDATE: ok, the removal of simple_tables works.
             source = pandoc.write(wrapper, options=options)
 
             merge_markdown = False
