@@ -27,6 +27,7 @@
 ```python
 from numpy import *
 from numpy.linalg import *
+from scipy.linalg import *
 from matplotlib.pyplot import *
 from mpl_toolkits.mplot3d import *
 from scipy.integrate import solve_ivp
@@ -1576,9 +1577,9 @@ Exponential Matrix
 If $M \in \mathbb{C}^{n \times n}$,
 the **exponential** is defined as:
 
-  $$
-  e^{M} = \sum_{k=0}^{+\infty} \frac{M^k}{k !} \in \mathbb{C}^{n \times n}
-  $$
+$$
+e^{M} = \sum_{k=0}^{+\infty} \frac{M^k}{k !} \in \mathbb{C}^{n \times n}
+$$
 
 --------------------------------------------------------------------------------
 
@@ -1625,13 +1626,13 @@ $$
 
 ### 2. 🐍 💻 🔬 
 
-Compute: 
+Compute numerically: 
 
   - `exp(M)` (`numpy`) 
   
   - `expm(M)` (`scipy.linalg`)
 
-then explain the results.
+and check the results consistency.
 
 🔓 Exponential Matrix
 --------------------------------------------------------------------------------
@@ -1640,11 +1641,105 @@ then explain the results.
 
 ### 1. 🔓
 
+We have 
+
+$$
+M = 
+\left[
+\begin{array}{cc}
+0 & 1 \\
+1 & 0
+\end{array}
+\right], \;
+M^2 = 
+\left[
+\begin{array}{cc}
+1 & 0 \\
+0 & 1
+\end{array}
+\right]
+= I
+$$
+
+and hence for any $j \in \mathbb{N}$,
+
+$$
+M^{2j+1} = 
+\left[
+\begin{array}{cc}
+0 & 1 \\
+1 & 0
+\end{array}
+\right], \;
+M^{2j} = 
+\left[
+\begin{array}{cc}
+1 & 0 \\
+0 & 1
+\end{array}
+\right]
+= I.
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+\begin{split}
+e^{M} 
+  &= \sum_{k=0}^{+\infty} \frac{M^k}{k !} \\
+  &= \left( \sum_{j=0}^{+\infty} \frac{1}{(2j) !} \right)I 
+   + \left(\sum_{j=0}^{+\infty} \frac{1}{(2j+1) !} \right)M \\
+  &= \left(\sum_{k=0}^{+\infty} \frac{1^k + (-1)^k}{2(k !)} \right)I 
+   + \left(\sum_{k=0}^{+\infty} \frac{1^k - (-1)^k}{2(k !)} \right)M \\   
+  &= (\cosh 1)I + (\sinh 1)M
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+Thus, 
+
+$$
+e^M = 
+\left[
+\begin{array}{cc}
+\cosh 1 & \sinh 1 \\
+\sinh 1 & \cosh 1
+\end{array}
+\right].
+$$
+
 --------------------------------------------------------------------------------
 
 ### 2. 🔓
 
+```python
+>>> M = [[0.0, 1.0], [1.0, 0.0]]
+>>> exp(M)
+array([[1.        , 2.71828183],
+       [2.71828183, 1.        ]])
+>>> expm(M)
+array([[1.54308063, 1.17520119],
+       [1.17520119, 1.54308063]])
+```
+
 --------------------------------------------------------------------------------
+
+These results are consistent since
+
+```python
+>>> array([[exp(0.0), exp(1.0)], 
+...        [exp(1.0), exp(0.0)]])
+array([[1.        , 2.71828183],
+       [2.71828183, 1.        ]])
+>>> array([[cosh(1.0), sinh(1.0)], 
+...        [sinh(1.0), cosh(1.0)]])
+array([[1.54308063, 1.17520119],
+       [1.17520119, 1.54308063]])
+```
+
+## 📝
+
 
 Note that
 
@@ -1666,7 +1761,7 @@ $$
 = A (e^{At} x_0)
 $$
 
-Internal Dynamics
+💎 Internal Dynamics
 --------------------------------------------------------------------------------
 
 The solution of
@@ -1682,14 +1777,14 @@ x(t) = e^{A t} x_0.
 $$
 
 
-Stability Criteria
+💎 Stability Criteria
 --------------------------------------------------------------------------------
 
 Let $A \in \mathbb{C}^{n \times n}$.
 
 The origin of $\dot{x} = A x$ is globally asymptotically stable 
 
-$\Longleftrightarrow$
+$$\Longleftrightarrow$$
    
 all eigenvalues of $A$ have a negative real part.
 
@@ -1697,8 +1792,124 @@ all eigenvalues of $A$ have a negative real part.
 🧩 G.A.S. $\Leftrightarrow$ L.A.
 --------------------------------------------------------------------------------
 
-Show that for a linear systems $\dot{x} = Ax$, it is enough that the origin
-is locally attractive for the system to be globally asymptotically stable.
+📝 For any dynamical system, if the origin is a globally asymptotically stable 
+equilibrium, then it is a locally attractive equilbrium.
+
+💎 **For linear systems**, the converse result also holds. 
+
+🚀 Let's prove this!
+
+--------------------------------------------------------------------------------
+
+### 1. 🧠
+
+Show that for any linear system $\dot{x} = A x$, if the origin is locally
+attractive, then it is also globally attractive. 
+
+
+--------------------------------------------------------------------------------
+
+### 2. 🧠
+
+Show that linear system $\dot{x} = A x$, if the origin is globally attractive,
+then it is also globally asymptotically stable.
+
+🗝️ **Hint:** Consider the solutions $e_k(t) := e^{At}e_k$ associated to 
+$e_k(0)=e_k$ where $(e_1, \dots, e_n)$ is the canonical basis of the 
+state space.
+
+
+🔓 G.A.S. $\Leftrightarrow$ L.A.
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+If the origin is locally attractive, then there is a $\varepsilon > 0$ such 
+that for any $x_0 \in \mathbb{R}^n$ such that $\|x_0\| \leq \varepsilon$,
+
+$$
+\lim_{t \to +\infty} e^{At} x_0 = 0.
+$$
+
+--------------------------------------------------------------------------------
+
+Now, let any $x_0 \in \mathbb{R}^n$. Since the norm of $\varepsilon x_0 /\|x_0\|$
+is $\varepsilon$, and by linearity of $e^{At}$, we obtain
+
+$$
+\begin{split}
+  \lim_{t \to +\infty} e^{At} x_0 
+    &= \lim_{t \to +\infty} e^{At} \left(\frac{\|x_0\|}{\varepsilon} \varepsilon \frac{x_0}{\|x_0\|} \right) \\
+    &= \frac{\|x_0\|}{\varepsilon} \lim_{t \to +\infty} e^{At} \left(\varepsilon \frac{x_0}{\|x_0\|} \right)\\
+    &= 0.
+\end{split}
+$$
+
+Thus the origin is globally attractive.
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+Let $X_0$ be a bounded set of $\mathbb{R}^n$. Since 
+$$
+x_0 = \sum_{k=1}^n x_{0k} e_k,
+$$
+
+the solution $x(t)$ of $\dot{x}=Ax$, $x(0)=x_0$ satisfies
+$$
+\begin{split}
+x(t)
+&= e^{At} x_0 = e^{At} \left(\sum_{k=1}^n x_{0k} e_k\right) 
+= \sum_{k=1}^n x_{0k} e^{At} e_k.
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+\begin{split}
+\|x(t)\|
+  &= \left\| \sum_{k=1}^n x_{0k} e^{At} e_k \right\| \\
+  &\leq \sum_{k=1}^n |x_{0k}| \left\| e^{At} e_k \right\| \\
+  &= \sum_{k=1}^n |x_{0k}| \left\| e_k(t) \right\| \\
+  &\leq \left(\sum_{k=1}^n |x_{0k}|\right) \max_{k=1, \dots, n} \|e_k(t)\|
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+Since $X_0$ is bounded, there is a $\alpha > 0$ such that for any $x_0 = (x_{01}, \dots, x_{0n})$ in $X_0$,
+
+$$
+\|x_0\|_1 := \sum_{k=1}^n |x_{0k}| \leq \alpha.
+$$
+
+Since for every $k=1, \dots, n$, $\lim_{t\to +\infty} \|e_k(t)\| =0$,
+
+$$
+\lim_{t\to +\infty} \max_{k=1, \dots, n} \|e_k(t)\| =0.
+$$
+
+--------------------------------------------------------------------------------
+
+Finally
+
+$$
+\begin{split}
+\|x(t, x_0)\|
+  &\leq \left(\sum_{k=1}^n |x_{0k}| \right) \max_{k=1, 
+  \dots, n} \|e_k(t)\| \\
+    &\leq \alpha \max_{k=1, \dots, n} \|e_k(t)\| \\
+\end{split}
+$$
+
+Thus $\|x(t, x_0)\| \to 0$ when $t \to \infty$, uniformly w.r.t. $x_0 \in X_0$.
+In other words, the origin is globally asymptotically stable.
+
 
 --------------------------------------------------------------------------------
 
@@ -2130,8 +2341,8 @@ x(s) &= \int_0^{+\infty} e^{at} e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \,
 \end{split}
 $$
 
-(If $\mathrm{Re} (s) \geq  \mathrm{Re} \, (a) +\epsilon$, then
-$|e^{(a-s)t}| \leq e^{-\epsilon t}$)
+(If $\mathrm{Re} (s) \geq  \mathrm{Re} \, (a) +\varepsilon$, then
+$|e^{(a-s)t}| \leq e^{-\varepsilon t}$)
 
 
 Symbolic Computations
@@ -2246,10 +2457,10 @@ By the way, what's an impulse?
 🔍 Impulses Approximations
 --------------------------------------------------------------------------------
 
-Pick a time constant $\epsilon > 0$ and define
+Pick a time constant $\varepsilon > 0$ and define
 
 $$
-\delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
+\delta_{\varepsilon}(t) = \frac{1}{\varepsilon} e^{-t/\varepsilon} e(t)
 $$
 
 
@@ -2267,10 +2478,10 @@ def delta(t, eps=1.0):
 ```python
 figure()
 t = linspace(-1,4,1000)
-plot(t, delta(t, eps=1.0), "k:", label="$\epsilon=1.0$")
-plot(t, delta(t, eps=0.5), "k--", label="$\epsilon=0.5$")
-plot(t, delta(t, eps=0.25), "k", label="$\epsilon=0.25$")
-xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
+plot(t, delta(t, eps=1.0), "k:", label="$\varepsilon=1.0$")
+plot(t, delta(t, eps=0.5), "k--", label="$\varepsilon=0.5$")
+plot(t, delta(t, eps=0.25), "k", label="$\varepsilon=0.25$")
+xlabel("$t$"); title("$\delta_{\varepsilon}(t)$") 
 legend()
 ```
 
@@ -2296,29 +2507,29 @@ Impulses in the Laplace Domain
 
 $$
 \begin{split}
-\delta_{\epsilon}(s) 
-  &= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
-  &= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
-  &= \frac{1}{\epsilon} 
+\delta_{\varepsilon}(s) 
+  &= \int_{-\infty}^{+\infty} \delta_{\varepsilon}(t) e^{-st} \, dt \\
+  &= \frac{1}{\varepsilon} \int_{0}^{+\infty} e^{-(s + 1/\varepsilon)t} \, dt \\
+  &= \frac{1}{\varepsilon} 
       \left[ 
-      \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
-      \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
+      \frac{e^{-(s+1/\varepsilon)t}}{-(s+1/\varepsilon)} 
+      \right]^{+\infty}_0 = \frac{1}{1 + \varepsilon s}\\
 \end{split}
 $$
 
-(assuming that $\mathrm{Re}(s) > -1/\epsilon$)
+(assuming that $\mathrm{Re}(s) > -1/\varepsilon$)
 
 --------------------------------------------------------------------------------
 
-  - The "limit" of the signal $\delta_{\epsilon}(t)$ when $\epsilon \to 0$
+  - The "limit" of the signal $\delta_{\varepsilon}(t)$ when $\varepsilon \to 0$
     is not defined *as a function* (issue for $t=0$) but as a *generalized
     function* $\delta(t)$, the **unit impulse**. 
 
   - This technicality can be avoided in the Laplace domain where
       $$
-      \delta(s) = \lim_{\epsilon \to 0} \delta_{\epsilon}(s)
+      \delta(s) = \lim_{\varepsilon \to 0} \delta_{\varepsilon}(s)
       =
-      \lim_{\epsilon \to 0} \frac{1}{1 + \epsilon s} = 1.
+      \lim_{\varepsilon \to 0} \frac{1}{1 + \varepsilon s} = 1.
       $$
 
 --------------------------------------------------------------------------------
