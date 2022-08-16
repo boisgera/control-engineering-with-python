@@ -1,101 +1,108 @@
 % Linear Systems
 % 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr)
-  🏦 MINES ParisTech, PSL University
+  🏦 Mines Paris, PSL University
 % ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
 
-Preamble (Code)
---------------------------------------------------------------------------------
+## Control Engineering with Python
 
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-    from numpy import *
-    from numpy.linalg import *
-    from matplotlib.pyplot import *
-    from mpl_toolkits.mplot3d import *
-    from scipy.integrate import solve_ivp
+- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+## Notations
 
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Example                |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Computation (Computer) |
+| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
 
-    from numpy import *
-    import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib notebook
-    from matplotlib.pyplot import *
-    from mpl_toolkits.mplot3d import *
-    from scipy.integrate import solve_ivp
+## 🐍 Imports
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+```python
+from numpy import *
+from numpy.linalg import *
+from matplotlib.pyplot import *
+from mpl_toolkits.mplot3d import *
+from scipy.integrate import solve_ivp
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    # Python 3.x Standard Library
-    import gc
-    import os
+```python
+# Python 3.x Standard Library
+import gc
+import os
 
-    # Third-Party Packages
-    from numpy import *
-    from matplotlib.pyplot import *
-    from mpl_toolkits.mplot3d import *
-    from scipy.linalg import *
-
-    import numpy as np; np.seterr(all="ignore")
-    import numpy.linalg as la
-    import scipy.misc
-    import matplotlib as mpl; mpl.use("Agg")
-    import matplotlib.pyplot as pp
-    import matplotlib.axes as ax
-    import matplotlib.patches as pa
+# Third-Party Packages
+import numpy as np; np.seterr(all="ignore")
+import numpy.linalg as la
+import scipy.misc
+import matplotlib as mpl; mpl.use("Agg")
+import matplotlib.pyplot as pp
+import matplotlib.axes as ax
+import matplotlib.patches as pa
 
 
-    #
-    # Matplotlib Configuration & Helper Functions
-    # --------------------------------------------------------------------------
-    
-    # TODO: also reconsider line width and markersize stuff "for the web
-    #       settings".
-    fontsize = 35
+#
+# Matplotlib Configuration & Helper Functions
+# --------------------------------------------------------------------------
 
-    rc = {
-        "text.usetex": True,
-        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}", 
-        #"font.family": "serif",
-        "font.serif": [],
-        #"font.sans-serif": [],
-        "legend.fontsize": fontsize, 
-        "axes.titlesize":  fontsize,
-        "axes.labelsize":  fontsize,
-        "xtick.labelsize": fontsize,
-        "ytick.labelsize": fontsize,
-        "figure.max_open_warning": 100,
-        #"savefig.dpi": 300,
-        #"figure.dpi": 300,
-    }
-    mpl.rcParams.update(rc)
+# TODO: also reconsider line width and markersize stuff "for the web
+#       settings".
+fontsize = 10
 
-    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi 
-    # (the "standard" dpi for Web computations) gives 1600 px.
-    width_in = 160 / 9 
+width = 345 / 72.27
+height = width / (16/9)
 
-    def save(name):
-        cwd = os.getcwd()
-        root = os.path.dirname(os.path.realpath(__file__))
-        os.chdir(root)
-        pp.savefig(name + ".svg")
-        os.chdir(cwd)
+rc = {
+    "text.usetex": True,
+    "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}",
+    #"font.family": "serif",
+    "font.serif": [],
+    #"font.sans-serif": [],
+    "legend.fontsize": fontsize,
+    "axes.titlesize":  fontsize,
+    "axes.labelsize":  fontsize,
+    "xtick.labelsize": fontsize,
+    "ytick.labelsize": fontsize,
+    "figure.max_open_warning": 100,
+    #"savefig.dpi": 300,
+    #"figure.dpi": 300,
+    "figure.figsize": [width, height],
+    "lines.linewidth": 1.0,
+}
+mpl.rcParams.update(rc)
 
-    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
-        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
-        pp.gcf().set_size_inches((width_in, height_in))
-        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+# Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi
+# (the "standard" dpi for Web computations) gives 1600 px.
+width_in = 160 / 9
+
+def save(name, **options):
+    cwd = os.getcwd()
+    root = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(root)
+    pp.savefig(name + ".svg", **options)
+    os.chdir(cwd)
+
+def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+    height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+    pp.gcf().set_size_inches((width_in, height_in))
+    pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 🐍 Streamplot Helper
 --------------------------------------------------------------------------------
 
-``` python
+```python
 def Q(f, xs, ys):
     X, Y = meshgrid(xs, ys)
     v = vectorize
@@ -115,14 +122,15 @@ It's handy to introduce non-autonomous ODEs.
 
 There are designated as
 
-  $$
-  \dot{x} = f(x, u)
-  $$
+$$
+\dot{x} = f(x, u)
+$$
 
-where $x \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$,
-that is 
+where $x \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$, that is 
 
-$$f: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n.$$
+$$
+f: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n.
+$$
 
 --------------------------------------------------------------------------------
 
@@ -316,7 +324,7 @@ $$
 
 
 
-<i class="fa fa-eye"></i> -- Linear System / Heat Equation
+🔍 Linear System / Heat Equation
 --------------------------------------------------------------------------------
 
 ![](images/static/heat-simple.svg)
@@ -391,18 +399,18 @@ Nonlinear to Linear
 
 Consider the nonlinear system
 
-  $$
-  \begin{array}{ccc}
-  \dot{x} &=& f(x, u) \\
-        y &=& g(x, u)
-  \end{array}
-  $$ 
+$$
+\begin{array}{ccc}
+\dot{x} &=& f(x, u) \\
+      y &=& g(x, u)
+\end{array}
+$$ 
 
 Assume that $x_e$ is an equilibrium when $u=u_e$ (cst):
 
-  $$
-  f(x_e, u_e) = 0
-  $$
+$$
+f(x_e, u_e) = 0
+$$
 
 and let 
   
@@ -424,52 +432,52 @@ Define the error variables
 
 As long as the error variables stay small
 
-  $$
-  f(x, u) 
-  \simeq
-  \overbrace{f(x_e, u_e)}^0 + 
-  \frac{\partial f}{\partial x}(x_e, u_e) \Delta x
-  + \frac{\partial f}{\partial u}(x_e, u_e) \Delta u
-  $$
+$$
+f(x, u) 
+\simeq
+\overbrace{f(x_e, u_e)}^0 + 
+\frac{\partial f}{\partial x}(x_e, u_e) \Delta x
++ \frac{\partial f}{\partial u}(x_e, u_e) \Delta u
+$$
 
-  $$
-  g(x, u) 
-  \simeq
-  \overbrace{g(x_e, u_e)}^{y_e} + 
-  \frac{\partial g}{\partial x}(x_e, u_e) \Delta x
-  + \frac{\partial g}{\partial u}(x_e, u_e) \Delta u
-  $$
+$$
+g(x, u) 
+\simeq
+\overbrace{g(x_e, u_e)}^{y_e} + 
+\frac{\partial g}{\partial x}(x_e, u_e) \Delta x
++ \frac{\partial g}{\partial u}(x_e, u_e) \Delta u
+$$
 
 --------------------------------------------------------------------------------
 
 Hence, the error variables satisfy *approximately*
 
-  $$
-  \begin{array}{c}
-  d(\Delta x)/dt &=& A \Delta x + B \Delta u \\
-  \Delta y       &=& C \Delta x + D \Delta u
-  \end{array}
-  $$
+$$
+\begin{array}{c}
+d(\Delta x)/dt &=& A \Delta x + B \Delta u \\
+\Delta y       &=& C \Delta x + D \Delta u
+\end{array}
+$$
 
 with
 
-  $$
-  \left[
-  \begin{array}{c|c}
-  A &  B \\
-  \hline
-  C &  D
-  \end{array} 
-  \right]
-  = 
-  \left[
-  \begin{array}{c|c}
-  \frac{\partial f}{\partial x} &  \frac{\partial f}{\partial u} \\
-  \hline
-  \frac{\partial g}{\partial x} &  \frac{\partial g}{\partial u}
-  \end{array} 
-  \right](x_e, u_e)
-  $$
+$$
+\left[
+\begin{array}{c|c}
+A &  B \\
+\hline
+C &  D
+\end{array} 
+\right]
+= 
+\left[
+\begin{array}{c|c}
+\frac{\partial f}{\partial x} &  \frac{\partial f}{\partial u} \\
+\hline
+\frac{\partial g}{\partial x} &  \frac{\partial g}{\partial u}
+\end{array} 
+\right](x_e, u_e)
+$$
 
 🔍 Example
 --------------------------------------------------------------------------------
@@ -518,7 +526,7 @@ $$
 🐍 Vector fields
 --------------------------------------------------------------------------------
 
-``` python
+```python
 def f(xy):
     x, y = xy
     dx = -2*x + y**3
@@ -529,7 +537,7 @@ def f(xy):
 --------------------------------------------------------------------------------
 
 
-``` python
+```python
 def fl(xy):
     x, y = xy
     dx = -2*x
@@ -541,7 +549,7 @@ def fl(xy):
 📈 Stream plot
 --------------------------------------------------------------------------------
 
-``` python
+```python
 figure()
 x = y = linspace(-1.0, 1.0, 1000)
 streamplot(*Q(f, x, y), color="k")
@@ -555,8 +563,10 @@ axis("off")
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/linearization")
+```python
+tight_layout()
+save("images/linearization")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -584,11 +594,11 @@ $\Rightarrow$
 The equilibrium $x_e$ is locally asymptotically 
 stable for 
 
-  $$
-  \dot{x} = f(x, u_e)
-  $$
+$$
+\dot{x} = f(x, u_e)
+$$
 
-<i class="fa fa-warning"></i> Converse Result
+⚠️ Converse Result
 --------------------------------------------------------------------------------
 
   - The converse is not true : the nonlinear system may be asymptotically
@@ -605,7 +615,7 @@ stable for
 
 
 
-<i class="fa fa-eye"></i> -- Linearization
+🔍 Linearization
 --------------------------------------------------------------------------------
 
 Consider
@@ -646,11 +656,7 @@ y -1      &=&  (x - 1) + (u - 1)
 $$
 
 
-
-
-
-
-<i class="fa fa-question-circle-o"></i> -- Linearized Dynamics / Pendulum
+🧩 Pendulum
 --------------------------------------------------------------------------------
 
 A pendulum submitted to a torque $c$ is governed by
@@ -659,21 +665,173 @@ $$
 m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
 $$
 
-We assume that only the angle $\theta$ is effectively measured.
+We assume that only the angle $\theta$ is measured.
 
 --------------------------------------------------------------------------------
 
-  - What are the function $f$ and $g$ that determine the nonlinear
-    dynamics of the pendulum when $x=(\theta, \dot{\theta})$,
-    $u=c$ and $y=\theta$?
+### 1. 🧮
 
-  - Show that for any angle $\theta_e$ we can find a constant value $c_e$
-    of the torque such that $x_e = (\theta_e, 0)$ is an equilibrium.
+Let $x=(\theta, \dot{\theta})$, $u=c$ and $y=\theta$.
 
-  - Compute the linearized dynamics of the pendulum around this equilibrium
-    and put it in the standard form (compute $A$, $B$, $C$ and $D$).
+What are the function $f$ and $g$ that determine the nonlinear
+dynamics of the pendulum?
 
+--------------------------------------------------------------------------------
 
+### 2. 🧮
+
+Show that for any angle $\theta_e$ there is a constant value $c_e$
+of the torque such that $x_e = (\theta_e, 0)$ is an equilibrium.
+
+--------------------------------------------------------------------------------
+
+### 3. 🧮
+
+Compute the linearized dynamics of the pendulum around this equilibrium
+and put it in the standard form (compute $A$, $B$, $C$ and $D$).
+
+🔓 Pendulum
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The 2nd-order differential equation
+
+$$
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
+$$
+
+is equivalent to the first-order differential equation
+
+$$
+\frac{d}{dt}
+\left[
+  \begin{array}{c} 
+    \theta \\ 
+    \omega
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{c} 
+    \omega \\ 
+    -(b /m\ell^2)\omega - (g/\ell) \sin \theta + c / m\ell^2 
+  \end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+Hence, with $x=(\theta, \dot{\theta})$, $u=c$ and $y=\theta$, we have
+
+$$
+\begin{array}{ccc}
+\dot{x} &=& f(x, u) \\
+      y &=& g(x, u)
+\end{array}
+$$ 
+
+with 
+
+$$
+\begin{array}{lll}
+f((\theta, \omega), c) &=& \left(\omega, -(b /m\ell^2)\omega - (g/\ell) \sin \theta + c / m\ell^2 \right) \\
+g((\theta, \omega), c) &=& \theta.
+\end{array}
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+Let $\theta_e$ in $\mathbb{R}$. If $c=c_e$, the state 
+$x_e:=(\theta_e, 0)$ is an equilibrium if and only if $f((\theta_e, 0), c_e)=0$, 
+that is
+
+$$
+\left[
+  \begin{array}{c} 
+    0 \\ 
+    0 - (g/\ell) \sin \theta_e + c_e / m\ell^2 
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{c} 
+    0 \\ 
+    0
+  \end{array}
+\right]
+$$
+
+which holds if and only if
+
+$$
+c_e = m g \ell  \sin \theta_e.
+$$
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+We have
+
+$$
+A = \frac{\partial f}{\partial x} (x_e, c_e)
+=
+\left[
+  \begin{array}{rr}
+    0 & 
+    1 \\
+    - (g/\ell) \cos \theta_e & 
+    -(b /m\ell^2) \\
+  \end{array}
+\right]
+$$
+
+$$
+B = \frac{\partial f}{\partial u} (x_e, u_e) =
+\left[
+  \begin{array}{c}
+    0 \\
+    1/m\ell^2
+    \end{array}
+\right]
+$$
+
+$$
+C = \frac{\partial g}{\partial x_e} (x_e, u_e)
+= 
+\left[
+  \begin{array}{cc}
+    1 \\
+    0
+  \end{array}
+\right],
+\;
+D = \frac{\partial g}{\partial u_e} (x_e, u_e)
+=
+0
+$$
+
+--------------------------------------------------------------------------------
+
+Thus,
+
+$$
+\begin{split}
+\frac{d}{dt}\Delta \theta & \approx \Delta \omega \\
+\frac{d}{dt}\Delta \omega & \approx -(g/\ell) \cos (\theta_e) \Delta \theta -(b/m\ell^2) \Delta \omega + \Delta c /m \ell^2 \\
+\end{split}
+$$
+
+and obviously, as far as the output goes,
+
+$$
+\Delta \theta \approx \Delta \theta.
+$$
 
 
 Internal Dynamics
@@ -692,18 +850,18 @@ We try to get some understanding with the simplest cases first.
 Scalar Case, Real-Valued
 --------------------------------------------------------------------------------
 
-  $$
-  \dot{x} = a x
-  $$
+$$
+\dot{x} = a x
+$$
 
 $a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
 
 --------------------------------------------------------------------------------
 
 **Solution:**
-  $$
-  x(t) = e^{a t} x_0
-  $$
+$$
+x(t) = e^{a t} x_0
+$$
 
 **Proof:**
 $$
@@ -714,20 +872,24 @@ $$
 x(0) = e^{a \times 0} x_0 = x_0.
 $$
 
-<i class="fa fa-area-chart"></i> Trajectory
+📈 Trajectory
 --------------------------------------------------------------------------------
     
-    a = 2.0; x0 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a*t)*x0, "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
+```python    
+a = 2.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, "k")
+xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-2")
+```python
+tight_layout()
+save("images/scalar-LTI-2")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -738,25 +900,28 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-2-poles")
+```python
+tight_layout() 
+save("images/scalar-LTI-2-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -769,20 +934,24 @@ $$
 
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
     
-    a = 1.0; x0 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a*t)*x0, "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
+```python
+a = 1.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, "k")
+xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-1")
+```python
+tight_layout()
+save("images/scalar-LTI-1")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -793,25 +962,27 @@ $$
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
-
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-1-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-1-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -821,22 +992,24 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
-    
-    a = 0.0; x0 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a*t)*x0, "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
 
-
+```python
+a = 0.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, "k")
+xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-0")
+```python
+tight_layout()
+save("images/scalar-LTI-0")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -846,25 +1019,27 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
-
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-0-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-0-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -874,21 +1049,24 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    a = -1.0; x0 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a*t)*x0, "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
-
+```python
+a = -1.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, "k")
+xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-m1")
+```python
+tight_layout()
+save("images/scalar-LTI-m1")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -899,25 +1077,27 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
-
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-m1-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-m1-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -928,21 +1108,24 @@ $$
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
-    
-    a = -2.0; x0 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    plot(t, exp(a*t)*x0, "k")
-    xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
 
+```python
+a = -2.0; x0 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+plot(t, exp(a*t)*x0, "k")
+xlabel("$t$"); ylabel("$x(t)$"); title(f"$a={a}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-m2")
+```python
+tight_layout()
+save("images/scalar-LTI-m2")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -953,25 +1136,27 @@ $$
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
-
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-m2-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-m2-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -980,8 +1165,6 @@ $$
 ## {.section data-background="images/scalar-LTI-m2-poles.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 
 Analysis
 --------------------------------------------------------------------------------
@@ -1037,24 +1220,28 @@ x(t) =   e^{a_1 t} \left[\begin{array}{c} x_{10} \\ 0 \end{array}\right]
 $$
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    a1 = -1.0; a2 = 2.0; x10 = x20 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
-    xn = sqrt(x1**2 + x2**2)
-    plot(t, xn , "k")
-    plot(t, x1, "k--")
-    plot(t, x2 , "k--")
-    xlabel("$t$"); ylabel("$\|x(t)\|$"); title(f"$a_1={a1}, \; a_2={a2}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
+```python
+a1 = -1.0; a2 = 2.0; x10 = x20 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
+xn = sqrt(x1**2 + x2**2)
+plot(t, xn , "k")
+plot(t, x1, "k--")
+plot(t, x2 , "k--")
+xlabel("$t$"); ylabel("$\|x(t)\|$"); title(f"$a_1={a1}, \; a_2={a2}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-m1p2")
+```python
+tight_layout()
+save("images/scalar-LTI-m1p2")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1065,25 +1252,28 @@ $$
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a1), imag(a1), "x", color="k", ms=10.0)
-    plot(real(a2), imag(a2), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a_1={a1}, \; a_2={a2}$")
-    grid(True)
+```python
+figure()
+plot(real(a1), imag(a1), "x", color="k", ms=10.0)
+plot(real(a2), imag(a2), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a_1={a1}, \; a_2={a2}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-m1p2-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-m1p2-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1093,24 +1283,28 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    a1 = -1.0; a2 = -2.0; x10 = x20 = 1.0
-    figure()
-    t = linspace(0.0, 3.0, 1000)
-    x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
-    xn = sqrt(x1**2 + x2**2)
-    plot(t, xn , "k")
-    plot(t, x1, "k--")
-    plot(t, x2 , "k--")
-    xlabel("$t$"); ylabel("$\|x(t)\|$"); title(f"$a_1={a1}, \; a_2={a2}$")
-    grid(); axis([0.0, 2.0, 0.0, 10.0])
+```python
+a1 = -1.0; a2 = -2.0; x10 = x20 = 1.0
+figure()
+t = linspace(0.0, 3.0, 1000)
+x1 = exp(a1*t)*x10; x2 = exp(a2*t)*x20
+xn = sqrt(x1**2 + x2**2)
+plot(t, xn , "k")
+plot(t, x1, "k--")
+plot(t, x2 , "k--")
+xlabel("$t$"); ylabel("$\|x(t)\|$"); title(f"$a_1={a1}, \; a_2={a2}$")
+grid(); axis([0.0, 2.0, 0.0, 10.0])
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-m1m2")
+```python
+tight_layout()
+save("images/scalar-LTI-m1m2")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1120,25 +1314,28 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a1), imag(a1), "x", color="k", ms=10.0)
-    plot(real(a2), imag(a2), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a_1={a1}, \; a_2={a2}$")
-    grid(True)
+```python
+figure()
+plot(real(a1), imag(a1), "x", color="k", ms=10.0)
+plot(real(a2), imag(a2), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a_1={a1}, \; a_2={a2}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-m1m2-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-m1m2-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1156,14 +1353,12 @@ Analysis
   - The origin is globally asymptotically stable 
     only when every $a_i$ is in the open left-hand plane.
 
-
-
 Scalar Case, Complex-Valued
 --------------------------------------------------------------------------------
 
-  $$
-  \dot{x} = a x
-  $$
+$$
+\dot{x} = a x
+$$
 
 $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 
@@ -1183,21 +1378,25 @@ $$
 |x(t)| = |x_0| e^{\sigma t} \, \mbox{ and } \, \angle x(t) = \angle x_0 + \omega t.
 $$
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    a = 1.0j; x0=1.0
-    figure()
-    t = linspace(0.0, 20.0, 1000)
-    plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
-    plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
-    xlabel("$t$")
-    legend(); grid()
+```python
+a = 1.0j; x0=1.0
+figure()
+t = linspace(0.0, 20.0, 1000)
+plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
+plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
+xlabel("$t$")
+legend(); grid()
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-alt-1")
+```python
+tight_layout()
+save("images/scalar-LTI-alt-1")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1209,19 +1408,23 @@ $$
 
 --------------------------------------------------------------------------------
 
-    fig = figure()
-    ax = fig.add_subplot(111, projection="3d")
-    zticks = ax.set_zticks
-    ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
-    xticks([0.0, 20.0]); yticks([]); zticks([])
-    ax.set_xlabel("$t$")
-    ax.set_ylabel("$\mathrm{Re}(x(t))$")
-    ax.set_zlabel("$\mathrm{Im}(x(t))$")
+```python
+fig = figure()
+ax = fig.add_subplot(111, projection="3d")
+zticks = ax.set_zticks
+ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
+xticks([0.0, 20.0]); yticks([]); zticks([])
+ax.set_xlabel("$t$")
+ax.set_ylabel("$\mathrm{Re}(x(t))$")
+ax.set_zlabel("$\mathrm{Im}(x(t))$")
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-3d")
+```python
+tight_layout()
+save("images/scalar-LTI-3d")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1231,26 +1434,27 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-1j-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-1j-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1261,21 +1465,25 @@ $$
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    a = -0.5 + 1.0j; x0=1.0
-    figure()
-    t = linspace(0.0, 20.0, 1000)
-    plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
-    plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
-    xlabel("$t$")
-    legend(); grid()
+```python
+a = -0.5 + 1.0j; x0=1.0
+figure()
+t = linspace(0.0, 20.0, 1000)
+plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
+plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
+xlabel("$t$")
+legend(); grid()
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-alt-2")
+```python
+tight_layout()
+save("images/scalar-LTI-alt-2")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1286,22 +1494,26 @@ $$
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    fig = figure()
-    ax = fig.add_subplot(111, projection="3d")
-    zticks = ax.set_zticks
-    ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
-    xticks([0.0, 20.0]); yticks([]); zticks([])
-    ax.set_xlabel("$t$")
-    ax.set_ylabel("$\mathrm{Re}(x(t))$")
-    ax.set_zlabel("$\mathrm{Im}(x(t))$")
+```python
+fig = figure()
+ax = fig.add_subplot(111, projection="3d")
+zticks = ax.set_zticks
+ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
+xticks([0.0, 20.0]); yticks([]); zticks([])
+ax.set_xlabel("$t$")
+ax.set_ylabel("$\mathrm{Re}(x(t))$")
+ax.set_zlabel("$\mathrm{Im}(x(t))$")
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/scalar-LTI-3d-2")
+```python
+tight_layout()
+save("images/scalar-LTI-3d-2")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1311,24 +1523,27 @@ $$
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    plot(real(a), imag(a), "x", color="k", ms=10.0)
-    gca().set_aspect(1.0)
-    xlim(-3,3); ylim(-3,3); 
-    plot([-3,3], [0,0], "k")
-    plot([0, 0], [-3, 3], "k")
-    xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-    title(f"$a={a}$")
-    grid(True)
+```python
+figure()
+plot(real(a), imag(a), "x", color="k", ms=10.0)
+gca().set_aspect(1.0)
+xlim(-3,3); ylim(-3,3); 
+plot([-3,3], [0,0], "k")
+plot([0, 0], [-3, 3], "k")
+xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
+title(f"$a={a}$")
+grid(True)
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    
-    save("images/scalar-LTI-m11j-poles")
+```python
+tight_layout()
+save("images/scalar-LTI-m11j-poles")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -1368,7 +1583,7 @@ the **exponential** is defined as:
 --------------------------------------------------------------------------------
 
 
-### <i class="fa fa-warning"></i>
+### ⚠️
 
 The exponential of a matrix $M$ is *not* 
 the matrix with elements $e^{M_{ij}}$ (the elementwise exponential).
@@ -1378,67 +1593,67 @@ the matrix with elements $e^{M_{ij}}$ (the elementwise exponential).
   - exponential: **`expm`** (`scipy.linalg` module).
 
 
-<i class="fa fa-question-circle-o"></i> Exponential Matrix
+🧩 Exponential Matrix
 --------------------------------------------------------------------------------
 
 Let 
   
-  $$
-  M = 
-  \left[
-  \begin{array}{cc}
-  0 & 1 \\
-  1 & 0
-  \end{array}
-  \right]
-  $$
+$$
+M = 
+\left[
+\begin{array}{cc}
+0 & 1 \\
+1 & 0
+\end{array}
+\right]
+$$
 
-  - [<i class="fa fa-superscript"></i>] Compute the exponential of $M$.
+  - 🧮 Compute the exponential of $M$.
 
-    <i class="fa fa-key"></i> **Hint:**
+    🗝️ **Hint:**
     $\cosh x = \frac{e^x + e^{-x}}{2},$
     $\sinh x = \frac{e^x - e^{-x}}{2}.$
 
-  - [<i class="fa fa-flask"></i>] Check the results with `expm`.
+  - 🔬 Check the results with `expm`.
 
 
 --------------------------------------------------------------------------------
 
 Note that
 
-  $$
-  \begin{align}
-  \frac{d}{dt} e^{A t} &= \frac{d}{dt} \sum_{n=0}^{+\infty} \frac{A^n}{n!} t^n \\ 
-  &= \sum_{n=1}^{+\infty} \frac{A^{n}}{(n-1)!} t^{n-1} \\
-  &= A \sum_{n=1}^{+\infty} \frac{A^{n-1}}{(n-1)!} t^{n-1} 
-  = A e^{A t}
-  \end{align}
-  $$
+$$
+\begin{align}
+\frac{d}{dt} e^{A t} &= \frac{d}{dt} \sum_{n=0}^{+\infty} \frac{A^n}{n!} t^n \\ 
+&= \sum_{n=1}^{+\infty} \frac{A^{n}}{(n-1)!} t^{n-1} \\
+&= A \sum_{n=1}^{+\infty} \frac{A^{n-1}}{(n-1)!} t^{n-1} 
+= A e^{A t}
+\end{align}
+$$
 
 --------------------------------------------------------------------------------
 
 Thus, for any $A \in \mathbb{C}^{n\times n}$ and $x_0 \in \mathbb{C}^n$, 
 
-  $$
-  \frac{d}{dt} (e^{A t} x_0) 
-  = A (e^{At} x_0)
-  $$
-
+$$
+\frac{d}{dt} (e^{A t} x_0) 
+= A (e^{At} x_0)
+$$
 
 Internal Dynamics
 --------------------------------------------------------------------------------
 
 The solution of
 
-  $$
-  \dot{x} = A x\; \mbox{ and } \; x(0) = x_0
-  $$
+$$
+\dot{x} = A x\; \mbox{ and } \; x(0) = x_0
+$$
 
 is
 
-  $$
-  x(t) = e^{A t} x_0.
-  $$
+$$
+x(t) = e^{A t} x_0.
+$$
+
 
 Stability Criteria
 --------------------------------------------------------------------------------
@@ -1452,7 +1667,7 @@ $\Longleftrightarrow$
 all eigenvalues of $A$ have a negative real part.
 
 
-<i class="fa fa-question-circle-o"></i> G.A.S. $\Leftrightarrow$ L.A.
+🧩 G.A.S. $\Leftrightarrow$ L.A.
 --------------------------------------------------------------------------------
 
 Show that for a linear systems $\dot{x} = Ax$, it is enough that the origin
@@ -1471,86 +1686,86 @@ $\{\lambda_1, \dots, \lambda_n\}$.
 
 Then, there is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
 
-  $$
-  P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
-  \left[
-  \begin{array}{cccc}
-  \lambda_1 & 0         & \cdots & 0 \\
-  0         & \lambda_2 & \cdots & 0 \\
-  \vdots    & \vdots    & \vdots & \vdots \\
-  0         & \cdots    & \cdots & \lambda_n
-  \end{array}
-  \right] 
-  $$
+$$
+P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
+\left[
+\begin{array}{cccc}
+\lambda_1 & 0         & \cdots & 0 \\
+0         & \lambda_2 & \cdots & 0 \\
+\vdots    & \vdots    & \vdots & \vdots \\
+0         & \cdots    & \cdots & \lambda_n
+\end{array}
+\right] 
+$$
 
 --------------------------------------------------------------------------------
 
 Thus, if $y = P^{-1} x$, $\dot{x} = A x$ is equivalent to
 
-  $$
-  \left|
-  \begin{array}{ccc}
-  \dot{y}_1 &=& \lambda_1 y_1 \\
-  \dot{y}_2 &=& \lambda_2 y_2 \\
-  \vdots &=& \vdots \\
-  \dot{y}_n &=& \lambda_n y_n \\
-  \end{array}
-  \right.
-  $$
+$$
+\left|
+\begin{array}{ccc}
+\dot{y}_1 &=& \lambda_1 y_1 \\
+\dot{y}_2 &=& \lambda_2 y_2 \\
+\vdots &=& \vdots \\
+\dot{y}_n &=& \lambda_n y_n \\
+\end{array}
+\right.
+$$
 
 The system is G.A.S. iff each component of the system is, 
 which holds iff $\mathrm{Re} \lambda_i < 0$ for each $i$.
 
-<i class="fa fa-question-circle-o"></i> Stability / 2nd-order system
+🧩 Stability / 2nd-order system
 --------------------------------------------------------------------------------
 
 Consider the scalar ODE 
 
-  $$
-  \ddot{x} + k x = 0, \; \mbox{ with } k > 0
-  $$
+$$
+\ddot{x} + k x = 0, \; \mbox{ with } k > 0
+$$
 
-  - [<i class="fa fa-superscript"></i>] 
+  - 🧮 
     Determine the representation of this system 
     as a first-order ODE with state $(x, \dot{x})$.
 
-  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+  - 🧠 🧮 
     Is this system asymptotically stable? 
     
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+  - 🧠 🧮
     If its solutions oscillate,
     determine its (rotational) frequency $\omega$?
 
-  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+  - 🧠 🧮 
     Characterize the asymptotic behavior of $x(t)$ when
     $\ddot{x} + b \dot{x} + k x = 0$ for some $b>0$.
 
 
-<i class="fa fa-question-circle-o"></i> Stability / Integrators
+🧩 Stability / Integrators
 --------------------------------------------------------------------------------
 
 Consider the system
 
-  $$
-  \dot{x} = J x 
-  \; \mbox{ with } \; 
-  J = 
-  \left[
-  \begin{array}{cccc}
-  0 & 1 & 0 & \dots & 0 \\
-  0 & 0 & 1 & \dots & 0 \\
-  \vdots & \vdots & \vdots & \vdots & \vdots \\
-  0 & 0 & 0 & \dots & 1 \\
-  0 & 0 & 0 & \dots & 0
-  \end{array}
-  \right]
-  $$
+$$
+\dot{x} = J x 
+\; \mbox{ with } \; 
+J = 
+\left[
+\begin{array}{cccc}
+0 & 1 & 0 & \dots & 0 \\
+0 & 0 & 1 & \dots & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots \\
+0 & 0 & 0 & \dots & 1 \\
+0 & 0 & 0 & \dots & 0
+\end{array}
+\right]
+$$
 
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+  - 🧠 🧮 
     Compute the solution when 
 
       $$
@@ -1568,11 +1783,11 @@ Consider the system
 
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-lightbulb-o"></i>, <i class="fa fa-superscript"></i>] 
+  - 🧠 🧮 
     Same questions when $\dot{x} = (\lambda I + J)x$ 
     for some $\lambda \in \mathbb{C}$. 
 
-  - [<i class="fa fa-lightbulb-o"></i>] Is the system asymptotically stable ? 
+  - [🧠] Is the system asymptotically stable ? 
     Why does it matter in general?
 
 
@@ -1629,10 +1844,10 @@ $$
 H(t) = (C e^{At} B) \times e(t) + D \delta(t) \in \mathbb{R}^{p \times m}
 $$
 
-<i class="fa fa-sticky-note"></i> works for general or **MIMO** systems.  
+📝 works for general or **MIMO** systems.  
 MIMO = multiple-input & multiple-output systems.
 
-<i class="fa fa-sticky-note"></i> $\delta(t)$ is the **unit impulse**, 
+📝 $\delta(t)$ is the **unit impulse**, 
 we'll get back to it (in the meantime, you may assume that $D=0$).
 
 SISO Systems
@@ -1640,7 +1855,9 @@ SISO Systems
 
 When 
 
-$$p = m = 1$$ 
+$$
+p = m = 1
+$$ 
 
 (single-input & single-output or **SISO** systems),
 
@@ -1655,21 +1872,21 @@ $$
 
 Then, we have:
 
-  $$
-  y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau
-  $$
+$$
+y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau
+$$
 
 and denote $\ast$ this operation
 between $H$ and $u$:
 
-  $$
-  y(t) = (H \ast u) (t)
-  $$
+$$
+y(t) = (H \ast u) (t)
+$$
 
 It's called a **convolution**.
 
 
-<i class="fa fa-eye"></i> Impulse Response
+🔍 Impulse Response
 --------------------------------------------------------------------------------
 
 Consider the SISO system
@@ -1714,10 +1931,10 @@ $$
 
 --------------------------------------------------------------------------------
 
-<i class="fa fa-question-circle-o"></i> Impulse Response / Integrator
+🧩 Impulse Response / Integrator
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-superscript"></i>] Compute the impulse response of the 
+  - 🧮 Compute the impulse response of the 
     system
   
     $$
@@ -1732,10 +1949,10 @@ $$
 where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
 
 
-<i class="fa fa-question-circle-o"></i> Impulse Response / Double Integrator
+🧩 Impulse Response / Double Integrator
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-superscript"></i>] Compute the impulse response of the 
+  - 🧮 Compute the impulse response of the 
     system
   
     $$
@@ -1752,10 +1969,10 @@ where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
 
 
 
-<i class="fa fa-question-circle-o"></i> Impulse Response / Gain
+🧩 Impulse Response / Gain
 --------------------------------------------------------------------------------
 
-  - [<i class="fa fa-superscript"></i>] Compute the impulse response of the 
+  - 🧮 Compute the impulse response of the 
     system
   
     $$
@@ -1766,11 +1983,10 @@ where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
     $K \in \mathbb{R}^{p \times m}$.
 
 
-
-<i class="fa fa-question-circle-o"></i> Impulse Response / MIMO System
+🧩 Impulse Response / MIMO System
 --------------------------------------------------------------------------------
 
- -  [<i class="fa fa-superscript"></i>] 
+ -  🧮 
     Find a linear system with matrices $A$, $B$, $C$, $D$ 
     whose impulse response is
 
@@ -1783,7 +1999,7 @@ where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
   \right]
   $$
 
- -  [<i class="fa fa-superscript"></i>] 
+ -  🧮 
     Is there another set of matrices $A$, $B$, $C$, $D$ with the same
     impulse response? With a matrix $A$ of a different size?
 
@@ -1802,7 +2018,7 @@ $$
 defined when $\mathrm{Re} \, (s) > \sigma$ if $\|x(t)\| \leq K e^{\sigma t}$.
 
 
-<i class="fa fa-warning"></i> Notation
+⚠️ Notation
 --------------------------------------------------------------------------------
 
 We use the same symbol (here "$x$") to denote: 
@@ -1833,13 +2049,13 @@ are computed elementwise.
 
 --------------------------------------------------------------------------------
 
-  $$
-  x_{i}(s) = \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
-  $$
+$$
+x_{i}(s) = \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
+$$
 
-  $$
-  X_{ij}(s) = \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
-  $$
+$$
+X_{ij}(s) = \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
+$$
 
 
 Rational & Causal Signals
@@ -1863,7 +2079,7 @@ where:
   
     $x(t) = 0$ when $t < 0$. 
 
-    <i class="fa fa-sticky-note"></i> Causality $\Leftrightarrow$ $\deg n(s) \leq \deg d(s)$.
+    📝 Causality $\Leftrightarrow$ $\deg n(s) \leq \deg d(s)$.
 
 
   - They are **rational** since
@@ -1875,7 +2091,7 @@ where:
     where $n(s)$ and $d(s)$ are polynomials.
 
 
-<i class="fa fa-eye"></i> Laplace Transform / Exponential
+🔍 Laplace Transform / Exponential
 --------------------------------------------------------------------------------
 
 Set $x(t) = e(t) e^{a t}$
@@ -1894,19 +2110,23 @@ $|e^{(a-s)t}| \leq e^{-\epsilon t}$)
 Symbolic Computations
 --------------------------------------------------------------------------------
 
+```python
     import sympy
     from sympy.abc import t, s, a
     from sympy.integrals.transforms import laplace_transform    
     def L(f):
         return laplace_transform(f, t, s)[0]
+```
 
 --------------------------------------------------------------------------------
 
-    xt = sympy.exp(a*t)
-    xs = L(xt) # 1/(-a + s)
+```python
+xt = sympy.exp(a*t)
+xs = L(xt) # 1/(-a + s)
+```
 
 
-<i class="fa fa-question-circle-o"></i> Laplace Transform / Ramp
+🧩 Laplace Transform / Ramp
 --------------------------------------------------------------------------------
 
 Compute the Laplace Transform of
@@ -1935,11 +2155,11 @@ Operational Calculus
 
 The Laplace transform turns convolution into products:
 
-  $$
-  y(t) = (H \ast u)(t)
-  \; \Longleftrightarrow \;
-  y(s) = H(s) \times u(s)
-  $$
+$$
+y(t) = (H \ast u)(t)
+\; \Longleftrightarrow \;
+y(s) = H(s) \times u(s)
+$$
 
 
 Graphical Language
@@ -1953,7 +2173,7 @@ dynamical systems, with
   - "wires" to route output signals to inputs signals.
 
 
-<i class="fa fa-eye"></i> Block-Diagram / Feedback
+🔍 Block-Diagram / Feedback
 --------------------------------------------------------------------------------
 
 ![](images/static/feedback-alt.svg)  
@@ -1980,7 +2200,7 @@ Equivalent Systems
 ![](images/static/equivalent-systems.svg)  
 
 
-<i class="fa fa-question-circle-o"></i> Block-Diagram / Feedback
+🧩 Block-Diagram / Feedback
 --------------------------------------------------------------------------------
 
 Compute the transfer function $H(s)$ of the system depicted 
@@ -1996,37 +2216,43 @@ Why refer to $h(t)$ as the system "impulse response"?
 By the way, what's an impulse?
 
 
-<i class="fa fa-eye"></i> Impulses Approximations
+🔍 Impulses Approximations
 --------------------------------------------------------------------------------
 
 Pick a time constant $\epsilon > 0$ and define
 
-  $$
-  \delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
-  $$
+$$
+\delta_{\epsilon}(t) = \frac{1}{\epsilon} e^{-t/\epsilon} e(t)
+$$
 
 
 --------------------------------------------------------------------------------
 
-    def delta(t, eps=1.0):
-        return exp(-t / eps) / eps * (t >= 0)
+```python
+def delta(t, eps=1.0):
+    return exp(-t / eps) / eps * (t >= 0)
+```
 
 
-<i class="fa fa-area-chart"></i>
+📈
 --------------------------------------------------------------------------------
 
-    figure()
-    t = linspace(-1,4,1000)
-    plot(t, delta(t, eps=1.0), "k:", label="$\epsilon=1.0$")
-    plot(t, delta(t, eps=0.5), "k--", label="$\epsilon=0.5$")
-    plot(t, delta(t, eps=0.25), "k", label="$\epsilon=0.25$")
-    xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
-    legend()
+```python
+figure()
+t = linspace(-1,4,1000)
+plot(t, delta(t, eps=1.0), "k:", label="$\epsilon=1.0$")
+plot(t, delta(t, eps=0.5), "k--", label="$\epsilon=0.5$")
+plot(t, delta(t, eps=0.25), "k", label="$\epsilon=0.25$")
+xlabel("$t$"); title("$\delta_{\epsilon}(t)$") 
+legend()
+```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    tight_layout()
-    save("images/impulses")
+```python
+tight_layout()
+save("images/impulses")
+```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -2041,17 +2267,17 @@ Pick a time constant $\epsilon > 0$ and define
 Impulses in the Laplace Domain
 --------------------------------------------------------------------------------
 
-  $$
-  \begin{split}
-  \delta_{\epsilon}(s) 
-    &= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
-    &= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
-    &= \frac{1}{\epsilon} 
-       \left[ 
-       \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
-       \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
-  \end{split}
-  $$
+$$
+\begin{split}
+\delta_{\epsilon}(s) 
+  &= \int_{-\infty}^{+\infty} \delta_{\epsilon}(t) e^{-st} \, dt \\
+  &= \frac{1}{\epsilon} \int_{0}^{+\infty} e^{-(s + 1/\epsilon)t} \, dt \\
+  &= \frac{1}{\epsilon} 
+      \left[ 
+      \frac{e^{-(s+1/\epsilon)t}}{-(s+1/\epsilon)} 
+      \right]^{+\infty}_0 = \frac{1}{1 + \epsilon s}\\
+\end{split}
+$$
 
 (assuming that $\mathrm{Re}(s) > -1/\epsilon$)
 
@@ -2101,7 +2327,7 @@ $$
 There is a bound on the amplification of the input signal that the system
 can provide.
 
-<i class="fa fa-sticky-note"></i>
+📝
 Also called **BIBO-stability** (for "bounded input, bounded output")
 
 
@@ -2159,49 +2385,119 @@ Thus, in this case, asymptotic stability and I/O-stability are equivalent.
 
 This equivalence holds under much weaker conditions.
 
-
-
 <style>
 
+.reveal p {
+  text-align: left;
+}
+
 .reveal section img {
-  border:0;
-  height:50vh;
-  width:auto;
+border:0;
+height:50vh;
+width:auto;
 
 }
 
 .reveal section img.medium {
-  border:0;
-  max-width:50vh;
+border:0;
+max-width:50vh;
 }
 
 .reveal section img.icon {
-  display:inline;
-  border:0;
-  width:1em;
-  margin:0em;
-  box-shadow:none;
-  vertical-align:-10%;
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
 }
 
 .reveal code {
-  font-family: Inconsolata, monospace;
+font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
-  font-size: 1.5em;
-  line-height: 1.5em;
-  /* max-height: 80wh; won't work, overriden */
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
 }
 
-input {
-  font-family: "Source Sans Pro", Helvetica, sans-serif;
-  font-size: 42px;
-  line-height: 54.6px;
+/_
+.reveal .slides .left {
+text-align: left;
 }
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
 
 </style>
 
-<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"> 
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
