@@ -53,7 +53,10 @@ doc = pandoc.read(file=doc_file)
 # That would be handy to flag some small portions of the documents as
 # slides-only, such as images, without a big div wrap.
 
+# TODO: detect prompt, remove the prompt 1 and 2, get rid of results.
 
+# TODO: need to perform the same transformation into the document used
+#       for the notebook backend.
 def exec_code(doc):
     """
     Execute all code blocks not flagged as "notebook" (and not in "notebook" div).
@@ -83,7 +86,7 @@ def exec_code(doc):
             code = elt
             attr, text = code[:]  # CodeBlock(Attr, Text)
             _, classes, _ = attr[:]  # Attr = (Text, [Text], [(Text, Text)])
-            if "notebook" not in classes:
+            if "notebook" not in classes and "no-exec" not in classes:
                 src += text + "\n"
     with open(".tmp.py", "w") as output:
         output.write(src)
