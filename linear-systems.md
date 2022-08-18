@@ -1827,19 +1827,6 @@ $$
 x(t) = e^{A t} x_0.
 $$
 
-
-💎 Stability Criteria
---------------------------------------------------------------------------------
-
-Let $A \in \mathbb{C}^{n \times n}$.
-
-The origin of $\dot{x} = A x$ is globally asymptotically stable 
-
-$$\Longleftrightarrow$$
-   
-all eigenvalues of $A$ have a negative real part.
-
-
 🧩 G.A.S. $\Leftrightarrow$ L.A.
 --------------------------------------------------------------------------------
 
@@ -1961,19 +1948,69 @@ $$
 Thus $\|x(t, x_0)\| \to 0$ when $t \to \infty$, uniformly w.r.t. $x_0 \in X_0$.
 In other words, the origin is globally asymptotically stable.
 
+🏷️ Eigenvalue & Eigenvector
+--------------------------------------------------------------------------------
+
+Let $A \in \mathbb{C}^n$. If $x \neq 0 \in \mathbb{C}^n$, $s\in \mathbb{C}$
+and
+
+$$
+A x = s x
+$$
+
+$x$ is an **eigenvector of $A$**, $s$ is an **eigenvalue** of $A$.
+
+The **spectrum** of $A$ is the set of its eigenvalues.   
+It is  characterized by:
+
+$$
+\sigma(A) := \{s \in \mathbb{C} \; | \; \det (sI -A) = 0\}.
+$$
+
+
+🏷️ Modes & Poles
+--------------------------------------------------------------------------------
+
+Consider the system $\dot{x} = Ax$.
+
+  - a **mode** of the system is an eigenvector of $A$,
+
+  - a **pole** of the system is an eigenvalue of $A$.
+
+💎 Stability Criteria
+--------------------------------------------------------------------------------
+
+Let $A \in \mathbb{C}^{n \times n}$.
+
+The origin of $\dot{x} = A x$ is globally asymptotically stable 
+
+$$\Longleftrightarrow$$
+   
+all eigenvalues of $A$ have a negative real part.
+
+$$\Longleftrightarrow$$
+
+$$
+\max \{\Re \, s \; | \; s \in \sigma(A)\} < 0.
+$$
 
 --------------------------------------------------------------------------------
 
 ### Why does this criteria work?
 
-Assume that $A$ is diagonalizable with eigenvalues 
-$\{\lambda_1, \dots, \lambda_n\}$.
+Assume that: 
 
-(Very likely unless $A$ has some special structure)
+  - **$A$ is diagonalizable.**
+    
+
+(📝 very likely unless $A$ has some special structure.)
+
 
 --------------------------------------------------------------------------------
 
-Then, there is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
+Let $\sigma(A) = \{\lambda_1, \dots, \lambda_n\}.$ 
+
+There is an invertible matrix $P \in \mathbb{C}^{n \times n}$ such that
 
 $$
 P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
@@ -2005,7 +2042,7 @@ $$
 The system is G.A.S. iff each component of the system is, 
 which holds iff $\mathrm{Re} \lambda_i < 0$ for each $i$.
 
-🧩 Stability / 2nd-order system
+🧩 Spring-Mass System
 --------------------------------------------------------------------------------
 
 Consider the scalar ODE 
@@ -2014,22 +2051,233 @@ $$
 \ddot{x} + k x = 0, \; \mbox{ with } k > 0
 $$
 
-  - 🧮 
-    Determine the representation of this system 
-    as a first-order ODE with state $(x, \dot{x})$.
-
-  - 🧠 🧮 
-    Is this system asymptotically stable? 
-    
 --------------------------------------------------------------------------------
 
-  - 🧠 🧮
-    If its solutions oscillate,
-    determine its (rotational) frequency $\omega$?
+###  1. 🧮 
 
-  - 🧠 🧮 
-    Characterize the asymptotic behavior of $x(t)$ when
-    $\ddot{x} + b \dot{x} + k x = 0$ for some $b>0$.
+Represent this system as a first-order ODE.
+
+--------------------------------------------------------------------------------
+
+### 2. 🧠 🧮 
+  
+Is this system asymptotically stable? 
+
+--------------------------------------------------------------------------------
+
+### 3. 🧠 🧮
+
+Do the solutions have oscillatory components?
+
+Find the set of associated rotational frequencies.
+
+--------------------------------------------------------------------------------
+
+### 4. 🧠 🧮 
+
+Same set of questions (1., 2., 3.) for
+
+$$
+\ddot{x} + b \dot{x} + k x = 0
+$$ 
+
+when $b>0$.
+
+
+🔓 Spring-Mass System
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+$$
+\frac{d}{dt}
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{rr}
+  0  & 1 \\
+  -k & 0
+  \end{array}
+\right]
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+= A 
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+We have
+
+$$
+\max \{\Re \, s \; | \; s \in \sigma(A)\} = 0,
+$$
+
+hence the system is not globally asymptotically stable.
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+
+Since
+
+$$
+\det (sI -A) 
+=
+\det 
+  \left(
+    \begin{array}{rr}
+    s  & -1 \\
+    k & s
+  \end{array}
+  \right)
+=s^2 +k,
+$$
+
+the spectrum of $A$ is 
+
+$$
+\sigma (A) 
+= \{s \in \mathbb{C} \; | \; \det (sI -A) = 0\} 
+= \left\{ i\sqrt{k}, -i \sqrt{k} \right\}.
+$$
+
+--------------------------------------------------------------------------------
+
+The system poles are $\pm i\sqrt{k}$. 
+
+The general solution $x(t)$ can be decomposed as
+$$
+x(t) = x_+ e^{i\sqrt{k} t} + x_- e^{-i\sqrt{k}t}.
+$$
+
+Thus the components of $x(t)$ oscillate at the rotational frequency
+
+$$
+\omega = \sqrt{k}.
+$$
+
+
+
+--------------------------------------------------------------------------------
+
+### 4. 🔓
+
+
+$$
+\frac{d}{dt}
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{rr}
+  0  & 1 \\
+  -k & -b
+  \end{array}
+\right]
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+= A 
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+\det (sI -A) 
+=
+\det 
+  \left(
+    \begin{array}{rr}
+    s  & -1 \\
+    k & s +b
+  \end{array}
+  \right)
+=s^2 + bs+ k,
+$$
+
+--------------------------------------------------------------------------------
+
+Let $\Delta := b^2 - 4k$. If $b \geq 2\sqrt{k}$, then $\Delta \geq 0$ and
+
+$$
+\sigma(A) = \left\{ \frac{-b +\sqrt{\Delta}}{2}, \frac{-b - \sqrt{\Delta}}{2} \right\}.
+$$
+
+Otherwise,
+
+$$
+\sigma(A) = \left\{ \frac{-b + i \sqrt{-\Delta}}{2}, \frac{-b - i \sqrt{-\Delta}}{2} \right\}.
+$$
+
+--------------------------------------------------------------------------------
+
+Thus, if $b \geq 2\sqrt{k}$,
+
+$$
+\max \{\Re \, s \; | \; s \in \sigma(A)\} 
+= \frac{-b +\sqrt{b^2 - 4k}}{2}
+< 0
+$$
+
+and otherwise
+
+$$
+\max \{\Re \, s \; | \; s \in \sigma(A)\} 
+= -\frac{b}{2} < 0.
+$$
+
+In each case, the system is globally asymptotically stable.
+
+--------------------------------------------------------------------------------
+
+If $b \geq 2\sqrt{k}$, the poles are real-valued; 
+the components of the solution do not oscillate.
+
+If $0 < b < 2\sqrt{k}$, the imaginary part of the poles is
+
+$$
+\pm \frac{\sqrt{4k - b^2}}2 = \pm \sqrt{k - (b/2)^2},
+$$
+
+thus the solution components oscillate at the rotational frequency
+
+$$
+\omega = \sqrt{k - (b/2)^2}.
+$$
 
 
 🧩 Stability / Integrators
