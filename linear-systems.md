@@ -2280,7 +2280,7 @@ $$
 $$
 
 
-🧩 Stability / Integrators
+🧩 Integrator Chain
 --------------------------------------------------------------------------------
 
 Consider the system
@@ -2291,41 +2291,75 @@ $$
 J = 
 \left[
 \begin{array}{cccc}
-0 & 1 & 0 & \dots & 0 \\
-0 & 0 & 1 & \dots & 0 \\
-\vdots & \vdots & \vdots & \vdots & \vdots \\
-0 & 0 & 0 & \dots & 1 \\
-0 & 0 & 0 & \dots & 0
+0 & 1 & 0 & \cdots & 0 \\
+0 & 0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \vdots & \ddots & \vdots \\
+0 & 0 & 0 & \cdots & 1 \\
+0 & 0 & 0 & \cdots & 0
 \end{array}
 \right]
 $$
 
 --------------------------------------------------------------------------------
 
-  - 🧠 🧮 
-    Compute the solution when 
+### 1. 🧮 
 
-      $$
-      x(0) =
-      \left[
-      \begin{array}{c}
-      0 \\
-      \vdots \\
-      0 \\
-      1
-      \end{array}
-      \right],$$
+Compute the solution $x(t)$ when 
 
-    then for any initial condition.
+  $$
+  x(0) =
+  \left[
+  \begin{array}{c}
+  0 \\
+  \vdots \\
+  0 \\
+  1
+  \end{array}
+  \right].$$
+
 
 --------------------------------------------------------------------------------
 
-  - 🧠 🧮 
-    Same questions when $\dot{x} = (\lambda I + J)x$ 
-    for some $\lambda \in \mathbb{C}$. 
+### 2. 🦊 🧮 
 
-  - [🧠] Is the system asymptotically stable ? 
-    Why does it matter in general?
+
+Compute the solution when 
+
+  $$
+  x(0) =
+  \left[
+  \begin{array}{c}
+  x_{1} \\
+  \vdots \\
+  \vdots \\
+  x_{n}
+  \end{array}
+  \right].$$
+
+
+--------------------------------------------------------------------------------
+
+### 3. 🧮 
+
+Same questions for the system 
+
+$$
+\dot{x} = (\lambda I + J)x
+$$ 
+
+for some $\lambda \in \mathbb{C}$. 
+
+--------------------------------------------------------------------------------
+
+### 4. 🧮
+
+Is the system asymptotically stable ? 
+
+--------------------------------------------------------------------------------
+
+### 5. 🧠
+
+Why does the stability analysis of this system matter ?
 
 
 I/O Behavior
