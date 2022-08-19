@@ -1386,7 +1386,7 @@ $$
 a = 1.0j; x0=1.0
 figure()
 t = linspace(0.0, 20.0, 1000)
-plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
+plot(t, real(exp(a*t)*x0), label="$\Re(x(t))$")
 plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
 xlabel("$t$")
 legend(); grid()
@@ -1416,7 +1416,7 @@ zticks = ax.set_zticks
 ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
 xticks([0.0, 20.0]); yticks([]); zticks([])
 ax.set_xlabel("$t$")
-ax.set_ylabel("$\mathrm{Re}(x(t))$")
+ax.set_ylabel("$\Re(x(t))$")
 ax.set_zlabel("$\mathrm{Im}(x(t))$")
 ```
 
@@ -1473,7 +1473,7 @@ save("images/scalar-LTI-1j-poles")
 a = -0.5 + 1.0j; x0=1.0
 figure()
 t = linspace(0.0, 20.0, 1000)
-plot(t, real(exp(a*t)*x0), label="$\mathrm{Re}(x(t))$")
+plot(t, real(exp(a*t)*x0), label="$\Re(x(t))$")
 plot(t, imag(exp(a*t)*x0), label="$\mathrm{Im}(x(t))$")
 xlabel("$t$")
 legend(); grid()
@@ -1505,7 +1505,7 @@ zticks = ax.set_zticks
 ax.plot(t, real(exp(a*t)*x0), imag(exp(a*t)*x0))
 xticks([0.0, 20.0]); yticks([]); zticks([])
 ax.set_xlabel("$t$")
-ax.set_ylabel("$\mathrm{Re}(x(t))$")
+ax.set_ylabel("$\Re(x(t))$")
 ax.set_zlabel("$\mathrm{Im}(x(t))$")
 ```
 
@@ -1559,7 +1559,7 @@ Analysis
 --------------------------------------------------------------------------------
 
   - the origin is globally asymptotically stable if $a$ is in the open left-hand plane:
-    $$\mathrm{Re} (a) < 0$$
+    $$\Re (a) < 0$$
 
   - if $a= \sigma + i \omega$,
 
@@ -2040,7 +2040,7 @@ $$
 $$
 
 The system is G.A.S. iff each component of the system is, 
-which holds iff $\mathrm{Re} \lambda_i < 0$ for each $i$.
+which holds iff $\Re \lambda_i < 0$ for each $i$.
 
 🧩 Spring-Mass System
 --------------------------------------------------------------------------------
@@ -2593,19 +2593,19 @@ Thus, the result of the previous question allows to prove the
 [💎 Stability Criteria] in the general case.
 
 
-I/O Behavior
+🧭 I/O Behavior
 ================================================================================
 
-Context
+🧭 Context
 --------------------------------------------------------------------------------
 
-  - Assume that the system is "initially at rest":
+  - Assume that the system is **initially at rest**:
 
     $$
     x(0) = 0
     $$
 
-  - Forget about the state $x(t)$ (may be unknown)
+  - Forget about the state $x(t)$ (may be unknown).
 
   - Study the input/output (I/O) relationship:
 
@@ -2618,7 +2618,7 @@ Context
 In this context, we have:
 
   $$
-  y(t) = \int_0^{t} C e^{A(t-\tau)} B u(\tau) \, d\tau + D u(t)
+  y(t) = \int_0^{t} C e^{A(t-\tau)} B u(\tau) \, d\tau + D u(t).
   $$
 
 Causal Signals
@@ -2731,82 +2731,105 @@ y(t)
 $$
 
 
+🧩 Integrator
 --------------------------------------------------------------------------------
 
-🧩 Impulse Response / Integrator
---------------------------------------------------------------------------------
+Let 
 
-  - 🧮 Compute the impulse response of the 
-    system
-  
-    $$
-    \left| 
-    \begin{array}{ccc}
-    \dot{x} &=& u \\
-    y &=& x \\
-    \end{array}
-    \right.
-    $$
+$$
+\left| 
+\begin{array}{ccc}
+\dot{x} &=& u \\
+y &=& x \\
+\end{array}
+\right.
+$$
 
 where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
 
 
-🧩 Impulse Response / Double Integrator
 --------------------------------------------------------------------------------
 
-  - 🧮 Compute the impulse response of the 
-    system
+### 1. 🧮 
+
+Compute the impulse response of the system.
   
-    $$
-    \left| 
-    \begin{array}{ccc}
-    \dot{x}_1 &=& x_2 \\
-    \dot{x}_2 &=& u \\
-    y &=& x_1 \\
-    \end{array}
-    \right.
-    $$
 
-    where $u \in \mathbb{R}$, $x=(x_1, x_2) \in \mathbb{R}^2$ and $y \in \mathbb{R}$.
-
-
-
-🧩 Impulse Response / Gain
+🧩 Double Integrator
 --------------------------------------------------------------------------------
 
-  - 🧮 Compute the impulse response of the 
-    system
+Let 
+
+$$
+\left| 
+\begin{array}{ccc}
+\dot{x}_1 &=& x_2 \\
+\dot{x}_2 &=& u \\
+y &=& x_1 \\
+\end{array}
+\right.
+$$
+
+where $u \in \mathbb{R}$, $x=(x_1, x_2) \in \mathbb{R}^2$ and $y \in \mathbb{R}$.
+
+--------------------------------------------------------------------------------
+
+### 1. 🧮 
+
+Compute the impulse response of the system.
   
-    $$
-    y = K u
-    $$
 
-    where $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$ and 
-    $K \in \mathbb{R}^{p \times m}$.
-
-
-🧩 Impulse Response / MIMO System
+🧩 Gain
 --------------------------------------------------------------------------------
 
- -  🧮 
-    Find a linear system with matrices $A$, $B$, $C$, $D$ 
-    whose impulse response is
+Let 
 
-  $$
-  H(t) = 
-  \left[
-  \begin{array}{cc}
-  e^{t} e(t) & e^{-t} e(t)
-  \end{array}
-  \right]
-  $$
+$$
+y = K u
+$$
 
- -  🧮 
-    Is there another set of matrices $A$, $B$, $C$, $D$ with the same
-    impulse response? With a matrix $A$ of a different size?
+where $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$ and 
+$K \in \mathbb{R}^{p \times m}$.
+
+--------------------------------------------------------------------------------
+
+### 1. 🧮 
+
+Compute the impulse response of the system.
+  
+  
+🧩 MIMO System
+--------------------------------------------------------------------------------
+
+Let 
+$$
+H(t) := 
+\left[
+\begin{array}{cc}
+e^{t} e(t) & e^{-t} e(t)
+\end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+### 1. 🧮 
+
+Find a linear system with matrices $A$, $B$, $C$, $D$ 
+whose impulse response is $H(t)$.
 
 
-Laplace Transform
+--------------------------------------------------------------------------------
+
+### 2. 🧮 
+
+Is there another 4-uple of matrices $A$, $B$, $C$, $D$ with the same
+impulse response? 
+
+Same question but with a matrix $A$ of a different size?
+
+
+🏷️ Laplace Transform
 --------------------------------------------------------------------------------
 
 Associate to a scalar signal $x(t) \in \mathbb{R}$, 
@@ -2817,7 +2840,7 @@ $$
 x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
 $$
 
-defined when $\mathrm{Re} \, (s) > \sigma$ if $\|x(t)\| \leq K e^{\sigma t}$.
+defined when $\Re \, (s) > \sigma$ if $\|x(t)\| \leq K e^{\sigma t}$.
 
 
 ⚠️ Notation
@@ -2852,15 +2875,15 @@ are computed elementwise.
 --------------------------------------------------------------------------------
 
 $$
-x_{i}(s) = \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
+x_{i}(s) := \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
 $$
 
 $$
-X_{ij}(s) = \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
+X_{ij}(s) := \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
 $$
 
 
-Rational & Causal Signals
+🏷️ Rational & Causal Signals
 --------------------------------------------------------------------------------
 
 We will only deal with **rational & causal** signals:
@@ -2875,28 +2898,31 @@ where:
 
   - for every $\lambda \in \Lambda$, $p_{\lambda}(t)$ is a polynomial in $t$.
 
+
+📝
 --------------------------------------------------------------------------------
 
-  - Such signals are **causal** since 
-  
-    $x(t) = 0$ when $t < 0$. 
+Such signals are **causal** since $x(t) = 0$ when $t < 0$. 
 
-    📝 Causality $\Leftrightarrow$ $\deg n(s) \leq \deg d(s)$.
+Causality: 
+
+$$
+\Leftrightarrow \deg n(s) \leq \deg d(s).
+$$
+
+They are **rational** since
+
+  $$
+  x(s) = \frac{n(s)}{d(s)}
+  $$
+
+where $n(s)$ and $d(s)$ are polynomials.
 
 
-  - They are **rational** since
-
-      $$
-      x(s) = \frac{n(s)}{d(s)}
-      $$
-
-    where $n(s)$ and $d(s)$ are polynomials.
-
-
-🔍 Laplace Transform / Exponential
+🔍 Exponential
 --------------------------------------------------------------------------------
 
-Set $x(t) = e(t) e^{a t}$
+Set $x(t) = e(t) e^{a t}$.
 
 $$
 \begin{split}
@@ -2905,7 +2931,7 @@ x(s) &= \int_0^{+\infty} e^{at} e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \,
 \end{split}
 $$
 
-(If $\mathrm{Re} (s) \geq  \mathrm{Re} \, (a) +\varepsilon$, then
+(If $\Re (s) \geq  \Re \, (a) +\varepsilon$, then
 $|e^{(a-s)t}| \leq e^{-\varepsilon t}$)
 
 
@@ -2914,19 +2940,38 @@ Symbolic Computations
 
 ```python
 import sympy
-from sympy.abc import t, s, a
-from sympy.integrals.transforms import laplace_transform    
+from sympy.abc import t, s
+from sympy.integrals.transforms \
+    import laplace_transform    
+
 def L(f):
     return laplace_transform(f, t, s)[0]
 ```
 
 --------------------------------------------------------------------------------
 
-```python
-xt = sympy.exp(a*t)
-xs = L(xt) # 1/(-a + s)
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```{.no-exec lang=python}
+>>> from sympy.abc import a
+>>> xt = sympy.exp(a*t)
+>>> xs = L(xt)
+>>> xs
+1/(-a + s)
 ```
 
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+from sympy.abc import a
+xt = sympy.exp(a*t)
+xs = L(xt)
+xs
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 🧩 Laplace Transform / Ramp
 --------------------------------------------------------------------------------
@@ -2967,7 +3012,7 @@ $$
 Graphical Language
 --------------------------------------------------------------------------------
 
-Control engineers used *block diagrams* to describe (combinations of) 
+Control engineers used **block diagrams** to describe (combinations of) 
 dynamical systems, with
 
   - "boxes" to determine the relation between input signals and output signals and
@@ -3081,7 +3126,7 @@ $$
 \end{split}
 $$
 
-(assuming that $\mathrm{Re}(s) > -1/\varepsilon$)
+(assuming that $\Re(s) > -1/\varepsilon$)
 
 --------------------------------------------------------------------------------
 
