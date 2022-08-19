@@ -2599,45 +2599,66 @@ Thus, the result of the previous question allows to prove the
 🧭 Context
 --------------------------------------------------------------------------------
 
-  - Assume that the system is **initially at rest**:
+ 1. Assume that the system is **initially at rest**:
 
     $$
-    x(0) = 0
+    x(0) = 0.
     $$
 
-  - Forget about the state $x(t)$ (may be unknown).
+ 2. Forget about the state $x(t)$ (it may be unknown).
 
-  - Study the input/output (I/O) relationship:
+ 3. Study the input/output (I/O) relationship:
 
     $$
-    u \to y
+    u \to y.
     $$
 
 --------------------------------------------------------------------------------
 
-In this context, we have:
+The [variation of constants method](https://en.wikipedia.org/wiki/Variation_of_parameters) yields
 
   $$
   y(t) = \int_0^{t} C e^{A(t-\tau)} B u(\tau) \, d\tau + D u(t).
   $$
 
-Causal Signals
+🏷️ Signals & Causality
 --------------------------------------------------------------------------------
 
-   - extend $u(t)$ and $y(t)$ by $0$ when $t<0$ (as **causal signals**).
+A **signal** is a time-dependent function 
 
-   - introduce the **Heaviside function** defined by
+$$
+x(t) \in \mathbb{R}^n, \; t \in \mathbb{R}.
+$$
 
-     $$
-     e(t) = \left|
-     \begin{array}{c}
-     1 & \mbox{if } \; t\geq 0, \\
-     0 & \mbox{if } \; t < 0.
-     \end{array}
-     \right.
-     $$
+It is **causal** if
 
-Impulse Response
+$$
+t< 0 \; \Rightarrow \; x(t) = 0.
+$$
+
+📝 Convention
+--------------------------------------------------------------------------------
+
+In the sequel, we will implicitly extend time-dependent functions 
+defined when $t\geq 0$ by $0$ when $t<0$, so that they become causal
+signals.
+
+
+🏷️ Heaviside function
+--------------------------------------------------------------------------------
+
+The **Heaviside function** is the signal defined by
+
+$$
+e(t) = \left|
+\begin{array}{c}
+1 & \mbox{if } \; t\geq 0, \\
+0 & \mbox{if } \; t < 0.
+\end{array}
+\right.
+$$
+
+🏷️ Impulse Response
 --------------------------------------------------------------------------------
 
 The system **impulse response** is defined by:
@@ -2646,13 +2667,18 @@ $$
 H(t) = (C e^{At} B) \times e(t) + D \delta(t) \in \mathbb{R}^{p \times m}
 $$
 
-📝 works for general or **MIMO** systems.  
-MIMO = multiple-input & multiple-output systems.
+📝 Notes
+--------------------------------------------------------------------------------
 
-📝 $\delta(t)$ is the **unit impulse**, 
-we'll get back to it (in the meantime, you may assume that $D=0$).
+- the formula is valid works for general or **MIMO** systems.  
 
-SISO Systems
+  MIMO = multiple-input & multiple-output systems.
+
+- $\delta(t)$ is the **unit impulse** signal, 
+  we'll get back to it (in the meantime, you may assume that $D=0$).
+
+
+📝 SISO Systems
 --------------------------------------------------------------------------------
 
 When 
@@ -2670,22 +2696,33 @@ H(t) = [h(t)]
 $$
 
 
+
+💎 I/O Behavior
+--------------------------------------------------------------------------------
+$$
+\left|
+  \begin{array}{rcl}
+  \dot{x}(t) &=& A x(t) + B u(t) \\
+        y(t) &=& C x(t) + Du(t)
+  \end{array}
+\right.,
+\, t\geq 0
+\; \mbox{ and } \;
+x(0) = 0,
+$$
+
+$$
+\Longrightarrow
+$$
+
+$$
+y(t) = (H \ast u) (t) := \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau .
+$$
+
+🏷️ Convolution
 --------------------------------------------------------------------------------
 
-Then, we have:
-
-$$
-y(t) = \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau
-$$
-
-and denote $\ast$ this operation
-between $H$ and $u$:
-
-$$
-y(t) = (H \ast u) (t)
-$$
-
-It's called a **convolution**.
+The operation $\ast$ is called a **convolution**.
 
 
 🔍 Impulse Response
@@ -2832,15 +2869,21 @@ Same question but with a matrix $A$ of a different size?
 🏷️ Laplace Transform
 --------------------------------------------------------------------------------
 
-Associate to a scalar signal $x(t) \in \mathbb{R}$, 
-$t\in \mathbb{R}$,
-the function of a complex argument $s \in \mathbb{C}$:
+Let $x(t)$ be a scalar causal signal.
+
+The **Laplace transform** of $x(t)$ is the function:
 
 $$
 x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
 $$
 
-defined when $\Re \, (s) > \sigma$ if $\|x(t)\| \leq K e^{\sigma t}$.
+If $|x(t)| \leq K e^{\sigma t}$, $x(s)$ is well defined when 
+
+$$
+s \in \mathbb{C} \; \mbox{ and } \; \Re (s) > \sigma.
+$$
+
+ 
 
 
 ⚠️ Notation
@@ -2868,7 +2911,7 @@ The Laplace transform
 
   - of a vector-valued signal $x(t) \in \mathbb{R}^n$ or
 
-  - of a matrix-valued signals $X(t) \in \mathbb{R}^{m \times n}$ 
+  - of a matrix-valued signal $X(t) \in \mathbb{R}^{m \times n}$ 
   
 are computed elementwise.
 
@@ -2883,10 +2926,10 @@ X_{ij}(s) := \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
 $$
 
 
-🏷️ Rational & Causal Signals
+🏷️ Rational Signals
 --------------------------------------------------------------------------------
 
-We will only deal with **rational & causal** signals:
+We will only deal with **rational** (and causal) signals:
 
   $$
   x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda t} \right) e(t)
