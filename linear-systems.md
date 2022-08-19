@@ -2306,16 +2306,17 @@ $$
 
 Compute the solution $x(t)$ when 
 
-  $$
-  x(0) =
-  \left[
-  \begin{array}{c}
-  0 \\
-  \vdots \\
-  0 \\
-  1
-  \end{array}
-  \right].$$
+$$
+x(0) =
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+0 \\
+1
+\end{array}
+\right].
+$$
 
 
 --------------------------------------------------------------------------------
@@ -2323,18 +2324,18 @@ Compute the solution $x(t)$ when
 ### 2. 🦊 🧮 
 
 
-Compute the solution when 
+Compute the solution for an arbitrary $x(0)$
 
-  $$
-  x(0) =
-  \left[
-  \begin{array}{c}
-  x_{1} \\
-  \vdots \\
-  \vdots \\
-  x_{n}
-  \end{array}
-  \right].$$
+$$
+x(0) =
+\left[
+\begin{array}{c}
+x_{1}(0) \\
+\vdots \\
+\vdots \\
+x_{n}(0)
+\end{array}
+\right].$$
 
 
 --------------------------------------------------------------------------------
@@ -2349,6 +2350,8 @@ $$
 
 for some $\lambda \in \mathbb{C}$. 
 
+🗝️ **Hint:** Find the ODE satisfied by $y(t):= x(t)e^{-\lambda t}$.
+
 --------------------------------------------------------------------------------
 
 ### 4. 🧮
@@ -2360,6 +2363,234 @@ Is the system asymptotically stable ?
 ### 5. 🧠
 
 Why does the stability analysis of this system matter ?
+
+
+🔓 Integrator Chain
+--------------------------------------------------------------------------------
+
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+Let $x=(x_1, \dots, x_n)$.
+
+The ODE $\dot{x} = J x$ is equivalent to:
+$$
+\begin{array}{lcl}
+\dot{x}_1 &=& x_2 \\
+\dot{x}_2 &=& x_3 \\
+\vdots &\vdots & \vdots \\
+\dot{x}_{n-1} &=& x_n \\
+\dot{x}_n &=& 0.
+\end{array}
+$$
+
+--------------------------------------------------------------------------------
+
+When $x(0) = (0, \dots, 0, 1)$, 
+
+  - $\dot{x}_n=0$ yields $x_n(t) = 1$, then
+
+  - $\dot{x}_{n-1}=x_n$ yields $x_{n-1}(t) = t$, 
+  
+  - ...
+
+  - $\dot{x}_{k} = x_{k+1}$ yields 
+    $$
+    x_{k}(t) = \frac{t^{n-k}}{(n-k)!}. 
+    $$
+
+-------------------------------------------------------------------------------- 
+
+To summarize:
+$$
+x(t) =
+\left[
+\begin{array}{c}
+t^{n-1} / (n-1)! \\
+\vdots \\
+t^{n-1-k}/(n-1-k)! \\
+\vdots \\
+t \\
+1
+\end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+We note that
+
+$$
+x(0)
+=
+x_1(0)
+\left[
+\begin{array}{c}
+1 \\
+\vdots \\
+0 \\
+0
+\end{array}
+\right]
++
+\dots
++
+x_{n-1}(0)
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+1 \\
+0
+\end{array}
+\right]
++
+x_n(0)
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+0 \\
+1
+\end{array}
+\right].$$
+
+--------------------------------------------------------------------------------
+
+Similarly to the previous question, we find that:
+
+$$
+x(0) 
+=
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+0 \\
+1 \\
+0
+\end{array}
+\right]
+\; \to \;
+x(t) =
+\left[
+\begin{array}{c}
+t^{n-2} / (n-2)! \\
+\vdots \\
+t  \\
+1 \\
+0
+\end{array}
+\right] 
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+x(0) 
+=
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+1 \\
+0 \\
+0
+\end{array}
+\right]
+\; \to \;
+x(t) =
+\left[
+\begin{array}{c}
+t^{n-3} / (n-3)! \\
+\vdots \\
+1 \\
+0 \\
+0
+\end{array}
+\right] 
+$$
+
+--------------------------------------------------------------------------------
+
+And more generally, by linearity:
+
+$$
+x(t)
+=
+\left[
+\begin{array}{c}
+\displaystyle x_1(0) + \dots +  x_{n-1}(0) \frac{t^{n-2}}{(n-2)!} + x_n(0) \frac{t^{n-1}}{(n-1)!} \\
+\vdots \\
+\displaystyle x_{n-2}(0) + x_{n-1}(0) t + x_{n}(0) \frac{t^2}{2} \\
+x_{n-1}(0) + x_n(0) t \\
+x_n(0)
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+If $\dot{x}(t) = (\lambda I + J) x(t)$ and $y(t) = x(t)e^{-\lambda t}$, then
+
+$$
+\begin{split}
+\dot{y}(t) 
+  &= \dot{x}(t) e^{-\lambda t} + x(t) (-\lambda e^{-\lambda t}) \\
+  &= (\lambda I + J)x(t)  e^{-\lambda t} - \lambda I x(t)  e^{-\lambda t} \\
+  &= J  x(t) e^{-\lambda t} \\
+  &= J y(t).
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+Since $y(0) = x(0) e^{-\lambda 0} = x(0)$ we get
+
+$$
+x(t)
+=
+\left[
+\begin{array}{c}
+\displaystyle x_1(0) + \dots  + x_n(0) \frac{t^{n-1}}{(n-1)!} \\
+\vdots \\
+x_{n-1}(0) + x_n(0) t \\
+x_n(0)
+\end{array}
+\right] e^{\lambda t}.
+$$
+
+--------------------------------------------------------------------------------
+
+### 4. 🔓
+
+The structure of $x(t)$ shows that
+
+  - If $\Re \lambda < 0$, then the system is asymptotically stable.
+
+  - If $\Re \lambda \geq 0$, then the system is not.
+
+    For example when $x(0)= (1, 0, \dots, 0)$, we have
+    $$
+    x(t) = (1, 0, \dots, 0).
+    $$
+
+--------------------------------------------------------------------------------
+
+### 5. 🔓
+
+Every square complex matrix $A$, **even if it is not diagonalizable**,
+can be decomposed into a block-diagonal matrix
+where each block has the structure $\lambda I + J$.
+
+Thus, the result of the previous question allows to prove the 
+[💎 Stability Criteria] in the general case.
 
 
 I/O Behavior
