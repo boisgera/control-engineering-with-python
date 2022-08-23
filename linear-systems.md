@@ -17,7 +17,7 @@
 | 🐍  | Code        | 🔍  | Example                |
 | 📈  | Graph       | 🧩  | Exercise               |
 | 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 💎  | Theorem     | 🧮  | Computation (Analytic) |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -2599,18 +2599,14 @@ Thus, the result of the previous question allows to prove the
 🧭 Context
 --------------------------------------------------------------------------------
 
- 1. Assume that the system is **initially at rest**:
+ 1. **System initially at rest.** $x(0) = 0.$
+
+ 2. **Black box.** The system state $x(t)$ is unknown.
+
+ 3. **Input/Output (I/O).** The input determines the output:
 
     $$
-    x(0) = 0.
-    $$
-
- 2. Forget about the state $x(t)$ (it may be unknown).
-
- 3. Study the input/output (I/O) relationship:
-
-    $$
-    u \to y.
+    u(t), \, t\geq 0  \; \to \; y(t), \, t\geq 0.
     $$
 
 --------------------------------------------------------------------------------
@@ -2639,15 +2635,26 @@ $$
 📝 Convention
 --------------------------------------------------------------------------------
 
-In the sequel, we will implicitly extend time-dependent functions 
-defined when $t\geq 0$ by $0$ when $t<0$, so that they become causal
-signals.
+In the sequel, we will assume that time-dependent functions defined only 
+for non-negative times
+
+$$
+x(t), \, t \geq 0
+$$
+
+are zero for negative times
+
+$$
+x(t) = 0, \; t < 0.
+$$
+
+With this convention, they become causal signals.
 
 
 🏷️ Heaviside function
 --------------------------------------------------------------------------------
 
-The **Heaviside function** is the signal defined by
+The **Heaviside function** is the causal signal defined by
 
 $$
 e(t) = \left|
@@ -2657,6 +2664,8 @@ e(t) = \left|
 \end{array}
 \right.
 $$
+
+🏷️ Synonym: **(unit) step signal.**
 
 🏷️ Impulse Response
 --------------------------------------------------------------------------------
@@ -2670,9 +2679,9 @@ $$
 📝 Notes
 --------------------------------------------------------------------------------
 
-- the formula is valid works for general or **MIMO** systems.  
+- the formula is valid for general (**MIMO**) systems.  
 
-  MIMO = multiple-input & multiple-output systems.
+  🏷️ **MIMO** = multiple-input & multiple-output.
 
 - $\delta(t)$ is the **unit impulse** signal, 
   we'll get back to it (in the meantime, you may assume that $D=0$).
@@ -2681,24 +2690,26 @@ $$
 📝 SISO Systems
 --------------------------------------------------------------------------------
 
-When 
+When $u(t) \in \mathbb{R}$ and $y(t) \in \mathbb{R}$ the system is
+**SISO**.
+
+🏷️ **SISO** = single-input & single-output.
+
+Then $H(t)$ is a $1 \times 1$ matrix.
+
+We identify it with its unique coefficient $h(t)$:
 
 $$
-p = m = 1
-$$ 
-
-(single-input & single-output or **SISO** systems),
-
-the $1 \times 1$ matrix $H(t)$ is identified with a scalar $h(t)$:
-
-$$
-H(t) = [h(t)]
+H(t) \in \mathbb{R}^{1\times 1} = [h(t)], \; h(t) \in \mathbb{R}.
 $$
 
 
 
 💎 I/O Behavior
 --------------------------------------------------------------------------------
+
+Let $u(t)$, $x(t)$, $y(t)$ be causal signals such that:
+
 $$
 \left|
   \begin{array}{rcl}
@@ -2708,12 +2719,10 @@ $$
 \right.,
 \, t\geq 0
 \; \mbox{ and } \;
-x(0) = 0,
+x(0) = 0.
 $$
 
-$$
-\Longrightarrow
-$$
+Then
 
 $$
 y(t) = (H \ast u) (t) := \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau .
@@ -2790,7 +2799,21 @@ where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
 ### 1. 🧮 
 
 Compute the impulse response of the system.
-  
+
+🔓 Integrator
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+$$
+\begin{split}
+H(t) &= (C e^{At} B) \times e(t) + D \delta(t)\\
+     &= [1]e^{[0]t} [1] e(t) + [0] \delta(t) \\
+     &= [e(t)]
+\end{split}
+$$
 
 🧩 Double Integrator
 --------------------------------------------------------------------------------
@@ -2809,12 +2832,41 @@ $$
 
 where $u \in \mathbb{R}$, $x=(x_1, x_2) \in \mathbb{R}^2$ and $y \in \mathbb{R}$.
 
+
+
 --------------------------------------------------------------------------------
 
 ### 1. 🧮 
 
 Compute the impulse response of the system.
   
+
+🔓 Double Integrator
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+$$
+\begin{split}
+H(t) &= (C \exp(At) B) \times e(t) + D \delta(t)\\
+     &= \displaystyle \left[\begin{array}{cc} 1 & 0 \end{array}\right]
+        \exp \left(
+        \left[\begin{array}{cc}
+        0 & 1 \\
+        0 & 0
+        \end{array}\right]
+         t \right) \left[\begin{array}{c} 0 \\ 1 \end{array}\right] e(t)  + [0] \delta(t) \\
+     &= \displaystyle \left[\begin{array}{cc} 1 & 0 \end{array}\right]
+        \left[\begin{array}{cc}
+        1 & t \\
+        0 & 1
+        \end{array}\right]
+        \left[\begin{array}{c} 0 \\ 1 \end{array}\right] e(t) \\
+&= [t e(t)]
+\end{split}
+$$
 
 🧩 Gain
 --------------------------------------------------------------------------------
@@ -2834,7 +2886,25 @@ $K \in \mathbb{R}^{p \times m}$.
 
 Compute the impulse response of the system.
   
+
+🔓 Gain
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
   
+The I/O behavior can be represented by $\dot{x} = 0x+0u$ and $y= 0 \times x + K u$
+(for example). Thus,
+
+$$
+\begin{split}
+H(t) &= (C \exp(At) B) \times e(t) + D \delta(t)\\
+     &= 0 + K \delta(t)\\
+     &= K \delta(t) 
+\end{split}
+$$
+
 🧩 MIMO System
 --------------------------------------------------------------------------------
 
@@ -2863,29 +2933,174 @@ whose impulse response is $H(t)$.
 Is there another 4-uple of matrices $A$, $B$, $C$, $D$ with the same
 impulse response? 
 
+
+--------------------------------------------------------------------------------
+
+### 3. 🧮 
+
 Same question but with a matrix $A$ of a different size?
+
+🔓 MIMO System
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+Since
+
+$$
+\exp
+\left(
+  \left[
+\begin{array}{rr}
+  +1 & 0 \\
+  0 & -1
+  \end{array}
+\right] t
+\right)
+= 
+\left[
+  \begin{array}{rr}
+  e^{+t} & 0 \\
+  0 & e^{-t}
+  \end{array}
+\right],
+$$
+
+the following matrices work:
+
+$$
+A = \left[
+  \begin{array}{rr}
+  +1 & 0 \\
+  0 & -1
+  \end{array}
+\right], \;
+B = \left[
+  \begin{array}{cc}
+  1 & 0 \\
+  0 & 1
+  \end{array}
+\right], \;
+C= \left[
+  \begin{array}{cc}
+  1 & 1 \\
+  \end{array}
+\right], \;
+D = \left[
+  \begin{array}{cc}
+  0 & 0 \\
+  \end{array}
+\right].
+$$
+
+
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+Since
+$$
+\begin{split}
+H(t) &= (C \exp(At) B) \times e(t) + D \delta(t)\\
+     &= ((-C) \exp(At) (-B)) \times e(t) + D \delta(t)
+\end{split}
+$$
+changing $B$ and $C$ to be
+$$
+B = \left[
+  \begin{array}{rr}
+  -1 & 0 \\
+  0 & -1
+  \end{array}
+\right], \;
+C= \left[
+  \begin{array}{rr}
+  -1 & -1 \\
+  \end{array}
+\right], \;
+$$
+doesn't change the impulse response.
+
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+We can also easily add a scalar dynamics (say $\dot{x}_3 = 0$)
+that doesn't influence the impulse response. 
+
+The following matrices also work
+
+$$
+A = \left[
+  \begin{array}{rrr}
+  +1 & 0 & 0\\
+  0 & -1 & 0 \\
+  0 & 0  & 0
+  \end{array}
+\right], \;
+B = \left[
+  \begin{array}{cc}
+  1 & 0\\
+  0 & 1\\
+  0 & 0
+  \end{array}
+\right], $$
+
+$$
+C= \left[
+  \begin{array}{cc}
+  1 & 1 & 0 \\
+  \end{array}
+\right], \;
+D = \left[
+  \begin{array}{cc}
+  0 & 0\\
+  \end{array}
+\right].
+$$
 
 
 🏷️ Laplace Transform
 --------------------------------------------------------------------------------
 
-Let $x(t)$ be a scalar causal signal.
+Let $x(t)$, $t\in\mathbb{R}$ be a scalar signal.
 
-The **Laplace transform** of $x(t)$ is the function:
+It **Laplace transform** is the function of $s$ given by:
 
 $$
 x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
 $$
 
-If $|x(t)| \leq K e^{\sigma t}$, $x(s)$ is well defined when 
+Domain & Codomain
+--------------------------------------------------------------------------------
+
+The Laplace transform of a signal is a complex-valued function; 
+its domain is a subset of the complex plane.
 
 $$
-s \in \mathbb{C} \; \mbox{ and } \; \Re (s) > \sigma.
+s \in D \, \Rightarrow \, x(s) \in \mathbb{C}.
+$$
+
+--------------------------------------------------------------------------------
+
+If $x(t)$ is a causal signal of **sub-exponential growth**
+
+$$
+|x(t)| \leq k e^{\sigma t} e(t), \, t \in \mathbb{R}, 
+$$ 
+
+($k \geq 0$ and $\sigma \in \mathbb{R}$), 
+its Laplace transform is defined on an open half-plane:
+
+$$
+\Re (s) > \sigma \; \Rightarrow \; x(s) \in \mathbb{C}.
 $$
 
  
-
-
 ⚠️ Notation
 --------------------------------------------------------------------------------
 
@@ -2945,40 +3160,51 @@ where:
 📝
 --------------------------------------------------------------------------------
 
-Such signals are **causal** since $x(t) = 0$ when $t < 0$. 
-
-Causality: 
-
-$$
-\Leftrightarrow \deg n(s) \leq \deg d(s).
-$$
-
-They are **rational** since
+They are called **rational** since
 
   $$
   x(s) = \frac{n(s)}{d(s)}
   $$
 
-where $n(s)$ and $d(s)$ are polynomials.
+where $n(s)$ and $d(s)$ are polynomials; also
+
+$$
+\deg n(s) \leq \deg d(s).
+$$
 
 
 🔍 Exponential
 --------------------------------------------------------------------------------
 
-Set $x(t) = e(t) e^{a t}$.
+Let 
+
+$$
+x(t) = e^{a t} e(t), \; t\in \mathbb{R}
+$$ 
+for some $a \in \mathbb{R}$. Then
 
 $$
 \begin{split}
-x(s) &= \int_0^{+\infty} e^{at} e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \, dt \\
-&= \left[\frac{e^{(a-s) t}}{a-s} \right]^{+\infty}_0 = \frac{1}{s-a}
+x(s) &= \int_{-\infty}^{+\infty} e^{at} e(t) e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \, dt. \\
 \end{split}
 $$
 
-(If $\Re (s) \geq  \Re \, (a) +\varepsilon$, then
-$|e^{(a-s)t}| \leq e^{-\varepsilon t}$)
+--------------------------------------------------------------------------------
 
 
-Symbolic Computations
+If $\Re(s) > a$, then 
+$$
+\left|e^{(a-s) t}\right| \leq e^{-(\Re (s) -a) t};
+$$
+the function $t \in \left[0, +\infty\right[ \mapsto e^{(a-s) t}$ is integrable
+and
+
+$$
+x(s) = \left[\frac{e^{(a-s) t}}{a-s} \right]^{+\infty}_0 = \frac{1}{s-a}.
+$$
+
+
+💻 Symbolic Computation
 --------------------------------------------------------------------------------
 
 ```python
@@ -3016,34 +3242,88 @@ xs
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-🧩 Laplace Transform / Ramp
+🧩 Ramp
 --------------------------------------------------------------------------------
 
-Compute the Laplace Transform of
+Let
 
 $$
-x(t) = t e(t)
+x(t) = t e(t), \; t\in\mathbb{R}.
 $$
 
+--------------------------------------------------------------------------------
+
+### 1. 🧮
+
+Compute analytically the Laplace Transform of $x(t)$.
+
+--------------------------------------------------------------------------------
+
+### 2. 💻
+
+Compute symbolically the Laplace Transform of $x(t)$.
+
+🔓 Ramp
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+$$
+\begin{split}
+x(s) 
+ &= \int_{-\infty}^{+\infty} t e(t) e^{-s t} \, dt \\
+ &= \int_0^{+\infty} t e^{-s t} \, dt. \\
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+By integration by parts,
+$$
+\begin{split}
+x(s) 
+  &= \left[t\frac{e^{-st}}{-s} \right]^{+\infty}_0 - \int_0^{+\infty} \frac{e^{-s t}}{-s} \, dt \\
+  &= \frac{1}{s} \int_0^{+\infty} e^{-s t} \, dt \\
+  &= \frac{1}{s} \left[\frac{e^{-st}}{-s} \right]^{+\infty}_0 \\
+  &= \frac{1}{s^2}
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+With SymPy, we have accordingly:
+
+```{.no-exec lang=python}
+>>> xt = t
+>>> xs = L(xt)
+>>> xs
+s**(-2)
+```
 
 
-Convolution & Laplace 
+🏷️ Transfer Function 
 --------------------------------------------------------------------------------
 
 Let $H(t)$ be the impulse response of a system.
 
-Its Laplace transform $H(s)$ is called the system **transfer function**.
+Its Laplace transform $H(s)$ is the system **transfer function**.
 
-For LTI systems in standard form, we have
 
-$$
-H(s) = C [sI - A]^{-1} B + D
-$$
-
-Operational Calculus
+💎
 --------------------------------------------------------------------------------
 
-The Laplace transform turns convolution into products:
+For LTI systems in standard form,
+
+$$
+H(s) = C [sI - A]^{-1} B + D.
+$$
+
+💎 Operational Calculus
+--------------------------------------------------------------------------------
 
 $$
 y(t) = (H \ast u)(t)
@@ -3063,7 +3343,7 @@ dynamical systems, with
   - "wires" to route output signals to inputs signals.
 
 
-🔍 Block-Diagram / Feedback
+Feedback Block-Diagram
 --------------------------------------------------------------------------------
 
 ![](images/static/feedback-alt.svg)  
@@ -3076,13 +3356,13 @@ dynamical systems, with
 
 --------------------------------------------------------------------------------
 
-  - **LTI systems** can be specified with:
+  - **LTI systems** can be specified by:
 
       - (differential) equations,
 
       - the impulse response,
 
-      - the transfer function,
+      - the transfer function.
 
 Equivalent Systems
 --------------------------------------------------------------------------------
@@ -3090,15 +3370,58 @@ Equivalent Systems
 ![](images/static/equivalent-systems.svg)  
 
 
-🧩 Block-Diagram / Feedback
+🧩 Feedback Block-Diagram
 --------------------------------------------------------------------------------
 
-Compute the transfer function $H(s)$ of the system depicted 
-in the feedback block-diagram example.
+Consider the system depicted 
+in the [Feedback Block-Diagram] picture.
+
+
+--------------------------------------------------------------------------------
+
+### 1. 🧮
+
+Compute its transfer function.
+
+🔓 Feedback Block-Diagram
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The diagram logic translates into:
+
+$$
+y(s) = \frac{1}{s} \left(u(s) - k y(s)\right),
+$$
+
+and thus
+
+$$
+\left(1 - \frac{k}{s}\right) y(s) =\frac{1}{s} u(s)
+$$
+
+--------------------------------------------------------------------------------
+
+or equivalently
+
+$$
+y(s) = \frac{1}{s- k} u(s).
+$$
+
+Thus, the transfer function of this SISO system is
+
+$$
+h(s) = \frac{1}{s- k}.
+$$
 
 
 
-Impulse Response
+
+
+
+🤔 Impulse Response
 --------------------------------------------------------------------------------
 
 Why refer to $h(t)$ as the system "impulse response"?
@@ -3106,20 +3429,20 @@ Why refer to $h(t)$ as the system "impulse response"?
 By the way, what's an impulse?
 
 
-🔍 Impulses Approximations
+Impulses Approximations
 --------------------------------------------------------------------------------
 
 Pick a time constant $\varepsilon > 0$ and define
 
 $$
-\delta_{\varepsilon}(t) = \frac{1}{\varepsilon} e^{-t/\varepsilon} e(t)
+\delta_{\varepsilon}(t) := \frac{1}{\varepsilon} e^{-t/\varepsilon} e(t).
 $$
 
-
+🐍
 --------------------------------------------------------------------------------
 
 ```python
-def delta(t, eps=1.0):
+def delta(t, eps):
     return exp(-t / eps) / eps * (t >= 0)
 ```
 
@@ -3129,10 +3452,10 @@ def delta(t, eps=1.0):
 
 ```python
 figure()
-t = linspace(-1,4,1000)
-plot(t, delta(t, eps=1.0), "k:", label=r"$\varepsilon=1.0$")
-plot(t, delta(t, eps=0.5), "k--", label=r"$\varepsilon=0.5$")
-plot(t, delta(t, eps=0.25), "k", label=r"$\varepsilon=0.25$")
+t = linspace(-1, 4, 1000)
+for eps in [1.0, 0.5, 0.25]:
+    plot(t, delta(t, eps), 
+         label=rf"$\varepsilon={eps}$")
 xlabel("$t$"); title(r"$\delta_{\varepsilon}(t)$") 
 legend()
 ```
@@ -3146,15 +3469,15 @@ save("images/impulses")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
---------------------------------------------------------------------------------
-
-![](images/impulses.svg)
+## {.section data-background="images/impulses.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Impulses in the Laplace Domain
+
+In the Laplace Domain
 --------------------------------------------------------------------------------
 
 $$
@@ -3174,8 +3497,8 @@ $$
 --------------------------------------------------------------------------------
 
   - The "limit" of the signal $\delta_{\varepsilon}(t)$ when $\varepsilon \to 0$
-    is not defined *as a function* (issue for $t=0$) but as a *generalized
-    function* $\delta(t)$, the **unit impulse**. 
+    is not defined *as a function* (issue for $t=0$) but as a **generalized
+    function** $\delta(t)$, the **unit impulse**. 
 
   - This technicality can be avoided in the Laplace domain where
       $$
@@ -3199,29 +3522,28 @@ the impulse response $h(t)$ is the output of the system when
 the input is the unit impulse $\delta(t)$.
 
 
-I/O Stability
+🏷️ I/O Stability
 --------------------------------------------------------------------------------
 
 A system is **I/O-stable** if there is a $K \geq 0$ such that
 
 $$
-\mbox{for any } t\geq, \|y(t)\| \leq K M
+\|u(t)\| \leq M, \, t\geq 0
 $$
 
-whenever
-
 $$
-\mbox{for any } t\geq, \|u(t)\| \leq M
+\Rightarrow
 $$
 
-There is a bound on the amplification of the input signal that the system
-can provide.
 
-📝
-Also called **BIBO-stability** (for "bounded input, bounded output")
+$$
+\|y(t)\| \leq K M, \, t\geq 0. 
+$$
+
+🏷️ More precisely, **BIBO-stability** ("bounded input, bounded output").
 
 
-Transfer Function Poles
+🏷️ Transfer Function Poles
 --------------------------------------------------------------------------------
 
 A **pole** of the transfer function $H(s)$ is a $s \in \mathbb{C}$ such that
@@ -3231,17 +3553,17 @@ $$
 |H_{ij}(s)| = +\infty.
 $$
 
-I/O-Stability Criteria
+💎 I/O-Stability Criteria
 --------------------------------------------------------------------------------
 
 A system is I/O-stable if and only if all its poles are in the open left-plane,
 i.e. such that
 
 $$
-\mbox{Re}(s) < 0.
+\Re (s)< 0.
 $$
 
-Internal Stability vs I/O-Stability
+💎 Internal Stability $\Rightarrow$ I/O-Stability
 --------------------------------------------------------------------------------
 
 If the system $\dot{x} = A x$ is asymptotically stable,
@@ -3256,7 +3578,7 @@ $$
 
 is I/O-stable.
 
-Fully Actuated & Measured System
+🔍 Fully Actuated & Measured System
 --------------------------------------------------------------------------------
 
 If $B=I$, $C=I$ and $D=0$, that is
@@ -3273,7 +3595,7 @@ Therefore, $s$ is a pole of $H$ iff it's an eigenvalue of $A$.
 
 Thus, in this case, asymptotic stability and I/O-stability are equivalent.
 
-This equivalence holds under much weaker conditions.
+(This equivalence actually holds under much weaker conditions.)
 
 <style>
 
