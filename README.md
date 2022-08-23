@@ -41,7 +41,7 @@
 
 2.  **Linear-Time Invariant Systems**
 
-    - LTI System Models ([HTML](https://boisgera.github.io/control-engineering-with-python/LTI-models.html),
+    - LTI Models ([HTML](https://boisgera.github.io/control-engineering-with-python/LTI-models.html),
       [PDF](https://boisgera.github.io/control-engineering-with-python/LTI-models.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=LTI-models.ipynb))
 
