@@ -16,7 +16,7 @@
 
 ### :books: Program & Slides
 
-0.  **Introduction to Control Engineering** (30 min)
+0.  **Introduction to Control Engineering** 
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
     [PDF](https://boisgera.github.io/control-engineering-with-python/intro.pdf),
     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=intro.ipynb))
@@ -40,15 +40,18 @@
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic.ipynb))
 
 2.  **Linear-Time Invariant Systems**
-    ([HTML](https://boisgera.github.io/control-engineering-with-python/linear-systems.html),
-    [PDF](https://boisgera.github.io/control-engineering-with-python/linear-systems.pdf),
-    [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=linear-systems.ipynb))
 
-    - Linearization, state-space model (30 min)
+    - LTI System Models ([HTML](https://boisgera.github.io/control-engineering-with-python/LTI-models.html),
+      [PDF](https://boisgera.github.io/control-engineering-with-python/LTI-models.pdf),
+      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=LTI-models.ipynb))
 
-    - Solutions of LTI systems, asymptotic stability (30 min)
+    - Internal dynamics ([HTML](https://boisgera.github.io/control-engineering-with-python/internal-dynamics.html),
+      [PDF](https://boisgera.github.io/control-engineering-with-python/internal-dynamics.pdf),
+      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=IO-dynamics.ipynb))
 
-    - I/O Behavior, Laplace domain, I/O stability (30 min)
+    - I/O behavior ([HTML](https://boisgera.github.io/control-engineering-with-python/IO-dynamics.html),
+      [PDF](https://boisgera.github.io/control-engineering-with-python/IO-dynamics.pdf),
+      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=IO-dynamics.ipynb))
 
 3.  **Controller Design**
 
@@ -69,11 +72,11 @@
     [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf),
     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
 
-    - Observability (1h)
+    - Observability 
 
-    - Observer design: pole assignment & optimal filtering (1h)
+    - Observer design: pole assignment & optimal filtering 
 
-5.  **Application to mobile robotics** (3h)
+5.  **Application to mobile robotics** 
 
     - Lagrangian mechanics
 

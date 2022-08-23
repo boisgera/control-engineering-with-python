@@ -5,7 +5,9 @@
 ./build.py simulation.md
 ./build.py well-posedness.md
 ./build.py asymptotic.md
-./build.py linear-systems.md
+./build.py LTI-models.md
+./build.py internal-dynamics.md
+./build.py IO-dynamics.md
 ./build.py controllability.md
 ./build.py asymptotic-stabilization.md
 ./build.py optimal-control.md
