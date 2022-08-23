@@ -1,4 +1,4 @@
-% Linear Systems
+% Internal Dynamics
 % 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr)
   🏦 Mines Paris, PSL University
 % ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
@@ -112,759 +112,33 @@ def Q(f, xs, ys):
     return X, Y, fx(X, Y), fy(X, Y)
 ```
 
-
-Preamble
-================================================================================
-
-Inputs
+🧭
 --------------------------------------------------------------------------------
 
-It's handy to introduce non-autonomous ODEs.
-
-There are designated as
-
-$$
-\dot{x} = f(x, u)
-$$
-
-where $x \in \mathbb{R}^n$ and $u \in \mathbb{R}^m$, that is 
-
-$$
-f: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n.
-$$
-
---------------------------------------------------------------------------------
-
-The vector-valued $u$ is the **system input**.
-
-This quantity may depend on the time $t$
- 
-$$
-u: t \in \mathbb{R} \mapsto u(t) \in \mathbb{R}^m,
-$$
-
-(actually it may also depend on some state, but we will adress this later).
-
---------------------------------------------------------------------------------
-
-A solution of 
-
-$\dot{x} = f(x, u)$ and $x(t_0) = x_0$ 
-
-is merely a solution of 
-
-$\dot{x} = h(t,x)$ and $x(t_0) = x_0$, 
-
-where
-
-$h(t, x) = f(x, u(t))$.
-
-
-Outputs
---------------------------------------------------------------------------------
-
-We may complement the system dynamics with an equation
-
-$$
-y = g(x, u) \in \mathbb{R}^p
-$$
-
-The vector $y$ refers to the **systems output**, usually the quantities that
-we can effectively measure in a system (the state $x$ itself may be unknown).
-
-
-What Are Linear Systems?
-================================================================================
-
-Standard Form
---------------------------------------------------------------------------------
-
-Input $u \in \mathbb{R}^m$, state $x \in \mathbb{R}^n$, 
-output $y \in \mathbb{R}^p$.
-
-  $$
-  \begin{array}{c}
-  \dot{x} &=& A x + B u \\
-  y       &=& C x + D u
-  \end{array}
-  $$
-
-
-Matrix Size
---------------------------------------------------------------------------------
-
-$A \in \mathbb{R}^{n \times n}$, $B \in \mathbb{R}^{n\times m}$,
-$C \in \mathbb{R}^{p \times n}$, $D \in \mathbb{R}^{p \times m}$.
-
-  $$
-  \left[
-  \begin{array}{c|c}
-  A &  B \\
-  \hline
-  C &  D
-  \end{array} 
-  \right]
-  $$
-
-Well-Posedness 
---------------------------------------------------------------------------------
-
-When $u=0$, 
-
-$$
-\dot{x} = A x =: f(x) 
-\; \Rightarrow \;
-\frac{\partial f}{\partial x}(x) = A
-$$
-
-The vector field $f$ is continuously differentiable
-
-$\Rightarrow$
-
-The system is well-posed.
-
-Equilibrium 
---------------------------------------------------------------------------------
-
-When $u=0$, since
-
-$$
-\dot{x} = A x =: f(x)
-$$
-
-$$
-f(0) = A 0 = 0
-$$
-
-$\Rightarrow$ the origin $x_e=0$ is always an equilibrium  
-(the only one in the state space if $A$ is invertible).
-
-
-Why "Linear" ?
---------------------------------------------------------------------------------
-
-Assume that:
-
-  - $\dot{x}_1 = A x_1 + B u_1$, $x_1(0) = x_{10}$,
-
-  - $\dot{x}_2 = A x_2 + B u_2$, $x_2(0) = x_{20}$,
-
---------------------------------------------------------------------------------
-
-Set
-  
-  - $u_3 = \lambda u_1 + \mu u_2$ and
-
-  - $x_{30} = \lambda x_{10} + \mu x_{20}$.
-
-for some $\lambda$ and $\mu$.
-
-
---------------------------------------------------------------------------------
-
-Then, if 
-
-$$x_3 = \lambda x_1 + \mu x_2,$$
-
-we have
-
-$$
-\dot{x}_3 = A x_3 + B u_3, \; x_3(0) = x_{30}.
-$$
-
-
-Internal + External Dynamics
---------------------------------------------------------------------------------
-
-**Corollary:** Since $(x_0, u) = (x_0, 0) + (0, u)$ the solution of 
-
-$$
-\dot{x} = A x + Bu, \; x(0) = x_0
-$$
-
-is the sum of the solutions $x_1$ and $x_2$ of:
-
---------------------------------------------------------------------------------
-
-the **internal dynamics**
-
-$$
-\dot{x}_1 = A x_1, \; x_1(0) = x_0
-$$
-
-(behavior controlled by the initial value only, no input)
-
-and the **external dynamics**:
-
-$$
-\dot{x}_2 = A x_2 + Bu, \; x_2(0) = 0
-$$
-
-(behavior controlled by the input, the systems is initially at rest)
-
-
-
-   
-LTI Systems
---------------------------------------------------------------------------------
-
-They are actually referred to as **linear time-invariant (LTI)** 
-systems: 
-
-When $x(t)$ is a solution of
-
-$$
-\dot{x} = A x + Bu, \; x(0) = x_0,
-$$
-
-then $x(t- t_0)$ is a solution of 
-
-$$
-\dot{x} = A x + Bu(t-t_0), \; x(t_0) = x_0.
-$$
-
-
-
-🔍 Linear System / Heat Equation
---------------------------------------------------------------------------------
-
-![](images/static/heat-simple.svg)
-
-Simplified Model
---------------------------------------------------------------------------------
-
-  - Four cells numbered 1 to 4 are arranged in a row.
-
-  - The first cell has a heat source, the last one a temperature sensor.
-
-  - The heat sink/source is increasing the temperature of its cell 
-    of $u$ degrees by second.
-
-  - If the temperature of a cell is $T$ and the one of a neighbor is
-    $T_n$, $T$ increases of $T_n - T$ by second.
-
---------------------------------------------------------------------------------
-
-Given the geometric layout:
-
-  - $d T_1/dt = u + (T_2 - T_1)$
-
-  - $d T_2/dt = (T_1 - T_2) + (T_3 - T_2)$
-
-  - $d T_3/dt = (T_2 - T_3) + (T_4 - T_3)$
-
-  - $d T_4/dt = (T_3 - T_4)$
-
-  - $y = T_4$
-
---------------------------------------------------------------------------------
-
-Set $x = (T_1, T_2, T_3, T_4)$. 
-
-The model is linear and its standard matrices are:
-
-$$
-A = \left[
-  \begin{array}{rrrr}
--1 & 1 & 0 & 0   \\
-1  & -2 & 1 & 0 \\
-0 & 1 & -2 & 1  \\
-0 & 0 & 1 & -1 
-\end{array}
-\right]
-$$
-
---------------------------------------------------------------------------------
-
-$$
-B = \left[
-  \begin{array}{c}
-  1 \\ 0 \\ 0 \\ 0
-  \end{array} 
-  \right], \;
-C = 
-\left[ 
-\begin{array}{cccc}
-0 & 0 & 0 & 1
-\end{array}
-\right],
-\; D = [0]
-$$
-
-
-Linearization
-================================================================================
-
-Nonlinear to Linear
---------------------------------------------------------------------------------
-
-Consider the nonlinear system
-
-$$
-\begin{array}{ccc}
-\dot{x} &=& f(x, u) \\
-      y &=& g(x, u)
-\end{array}
-$$ 
-
-Assume that $x_e$ is an equilibrium when $u=u_e$ (cst):
-
-$$
-f(x_e, u_e) = 0
-$$
-
-and let 
-  
-  $$
-  y_e = g(x_e, u_e)
-  $$
-
---------------------------------------------------------------------------------
-
-Define the error variables 
-
-  - $\Delta x = x - x_e$, 
-  
-  - $\Delta u = u - u_e$ and
-
-  - $\Delta y = y - y_e$.
-
---------------------------------------------------------------------------------
-
-As long as the error variables stay small
-
-$$
-f(x, u) 
-\simeq
-\overbrace{f(x_e, u_e)}^0 + 
-\frac{\partial f}{\partial x}(x_e, u_e) \Delta x
-+ \frac{\partial f}{\partial u}(x_e, u_e) \Delta u
-$$
-
-$$
-g(x, u) 
-\simeq
-\overbrace{g(x_e, u_e)}^{y_e} + 
-\frac{\partial g}{\partial x}(x_e, u_e) \Delta x
-+ \frac{\partial g}{\partial u}(x_e, u_e) \Delta u
-$$
-
---------------------------------------------------------------------------------
-
-Hence, the error variables satisfy *approximately*
-
-$$
-\begin{array}{c}
-d(\Delta x)/dt &=& A \Delta x + B \Delta u \\
-\Delta y       &=& C \Delta x + D \Delta u
-\end{array}
-$$
-
-with
-
-$$
-\left[
-\begin{array}{c|c}
-A &  B \\
-\hline
-C &  D
-\end{array} 
-\right]
-= 
-\left[
-\begin{array}{c|c}
-\frac{\partial f}{\partial x} &  \frac{\partial f}{\partial u} \\
-\hline
-\frac{\partial g}{\partial x} &  \frac{\partial g}{\partial u}
-\end{array} 
-\right](x_e, u_e)
-$$
-
-🔍 Example
---------------------------------------------------------------------------------
-
-The system
-
-$$
-\begin{array}{cc}
-\dot{x} &=& -2x + y^3 \\
-\dot{y} &=& -2y + x^3
-\end{array}
-$$
-  
-has an equilibrium at $(0, 0)$.
-
---------------------------------------------------------------------------------
-
-The corresponding error variables satisfy  
-$\Delta x = x$ and $\Delta y = y$, thus
-$$
-\frac{d \Delta x}{dt} =\dot{x} = -2 x + y^3 = -2 \Delta x + (\Delta y)^3 \approx -2 \Delta x
-$$
-$$
-\frac{d \Delta y}{dt} =\dot{y} = -2 y + x^3 = -2 \Delta y + (\Delta x)^3 \approx -2 \Delta y
-$$
-
---------------------------------------------------------------------------------
-
-$$
-\begin{array}{cc}
-\dot{x} &=& -2x + y^3 \\
-\dot{y} &=& -2y + x^3
-\end{array}
-$$
-
-$\to$
-
-$$
-\begin{array}{cc}
-\dot{x} &\approx& -2x  \\
-\dot{y} &\approx& -2y 
-\end{array}
-$$
-
-
-🐍 Vector fields
---------------------------------------------------------------------------------
-
-```python
-def f(xy):
-    x, y = xy
-    dx = -2*x + y**3
-    dy = -2*y + x**3
-    return array([dx, dy])
-```
-
---------------------------------------------------------------------------------
-
-
-```python
-def fl(xy):
-    x, y = xy
-    dx = -2*x
-    dy = -2*y
-    return array([dx, dy])
-```
-
-
-📈 Stream plot
---------------------------------------------------------------------------------
-
-```python
-figure()
-x = y = linspace(-1.0, 1.0, 1000)
-streamplot(*Q(f, x, y), color="k")
-blue_5 = "#339af0"
-streamplot(*Q(fl, x, y), color=blue_5) 
-plot([0], [0], "k.", ms=10.0)
-axis("square")
-axis("off")
-```
-
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-```python
-tight_layout()
-save("images/linearization")
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-## {.section data-background="images/linearization.svg" data-background-size="contain"}
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-Asymptotic Stability
---------------------------------------------------------------------------------
-
-The equilibrium $0$ is locally 
-asymptotically stable for 
-
-$$
-\frac{d \Delta x}{dt} = A \Delta x
-$$ 
-
-where $A = \partial f (x_e, u_e) / \partial x.$
-
-$\Rightarrow$
-
-The equilibrium $x_e$ is locally asymptotically 
-stable for 
-
-$$
-\dot{x} = f(x, u_e)
-$$
-
-⚠️ Converse Result
---------------------------------------------------------------------------------
-
-  - The converse is not true : the nonlinear system may be asymptotically
-    stable but not its linearized approximation (e.g. consider $\dot{x} = -x^3$).
-
-  - If we replace local *asymptotic stability* with local *exponential stability*,
-    the requirement that locally
-
-    $$
-    \|x(t) - x_e\| \leq A e^{-\sigma t} \|x(0) - x_e\|
-    $$
-    
-    for some $A >0$ and $\sigma > 0$, then it works.
-
-
-
-🔍 Linearization
---------------------------------------------------------------------------------
-
-Consider
-
-$$
-\dot{x} = -x^2 + u, \; y = x u
-$$
-
-If we set $u_e = 1$, the system has an equilibrium at $x_e = 1$
-(and also $x_e = -1$ but we focus on the former) and the corresponding
-$y$ is $y_e = x_e u_e = 1$.
-
---------------------------------------------------------------------------------
-
-Around this configuration $(x_e, u_e) = (1, 1)$, we have
-
-$$
-\frac{\partial (-x^2+u)}{\partial x} = -2x_e = -2,
-\; \frac{\partial (-x^2+u)}{\partial u} = 1,
-$$
-
-and
-
-$$
-\frac{\partial x u }{\partial x} = u_e = 1,
-\; \frac{\partial x u}{\partial u} = x_e = 1.
-$$
-
---------------------------------------------------------------------------------
-
-Thus, the approximate, linearized dynamics around this equilibrium is
-
-$$
-\begin{array}{rcr}
-d(x-1)/dt &=& -2 (x - 1) + (u - 1) \\
-y -1      &=&  (x - 1) + (u - 1)
-\end{array}
-$$
-
-
-🧩 Pendulum
---------------------------------------------------------------------------------
-
-A pendulum submitted to a torque $c$ is governed by
-
-$$
-m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
-$$
-
-We assume that only the angle $\theta$ is measured.
-
---------------------------------------------------------------------------------
-
-### 1. 🧮
-
-Let $x=(\theta, \dot{\theta})$, $u=c$ and $y=\theta$.
-
-What are the function $f$ and $g$ that determine the nonlinear
-dynamics of the pendulum?
-
---------------------------------------------------------------------------------
-
-### 2. 🧮
-
-Show that for any angle $\theta_e$ there is a constant value $c_e$
-of the torque such that $x_e = (\theta_e, 0)$ is an equilibrium.
-
---------------------------------------------------------------------------------
-
-### 3. 🧮
-
-Compute the linearized dynamics of the pendulum around this equilibrium
-and put it in the standard form (compute $A$, $B$, $C$ and $D$).
-
-🔓 Pendulum
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-
-The 2nd-order differential equation
-
-$$
-m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
-$$
-
-is equivalent to the first-order differential equation
-
-$$
-\frac{d}{dt}
-\left[
-  \begin{array}{c} 
-    \theta \\ 
-    \omega
-  \end{array}
-\right]
-=
-\left[
-  \begin{array}{c} 
-    \omega \\ 
-    -(b /m\ell^2)\omega - (g/\ell) \sin \theta + c / m\ell^2 
-  \end{array}
-\right]
-$$
-
---------------------------------------------------------------------------------
-
-Hence, with $x=(\theta, \dot{\theta})$, $u=c$ and $y=\theta$, we have
-
-$$
-\begin{array}{ccc}
-\dot{x} &=& f(x, u) \\
-      y &=& g(x, u)
-\end{array}
-$$ 
-
-with 
-
-$$
-\begin{array}{lll}
-f((\theta, \omega), c) &=& \left(\omega, -(b /m\ell^2)\omega - (g/\ell) \sin \theta + c / m\ell^2 \right) \\
-g((\theta, \omega), c) &=& \theta.
-\end{array}
-$$
-
---------------------------------------------------------------------------------
-
-### 2. 🔓
-
-Let $\theta_e$ in $\mathbb{R}$. If $c=c_e$, the state 
-$x_e:=(\theta_e, 0)$ is an equilibrium if and only if $f((\theta_e, 0), c_e)=0$, 
-that is
-
-$$
-\left[
-  \begin{array}{c} 
-    0 \\ 
-    0 - (g/\ell) \sin \theta_e + c_e / m\ell^2 
-  \end{array}
-\right]
-=
-\left[
-  \begin{array}{c} 
-    0 \\ 
-    0
-  \end{array}
-\right]
-$$
-
-which holds if and only if
-
-$$
-c_e = m g \ell  \sin \theta_e.
-$$
-
---------------------------------------------------------------------------------
-
-### 3. 🔓
-
-We have
-
-$$
-A = \frac{\partial f}{\partial x} (x_e, c_e)
-=
-\left[
-  \begin{array}{rr}
-    0 & 
-    1 \\
-    - (g/\ell) \cos \theta_e & 
-    -(b /m\ell^2) \\
-  \end{array}
-\right]
-$$
-
-$$
-B = \frac{\partial f}{\partial u} (x_e, u_e) =
-\left[
-  \begin{array}{c}
-    0 \\
-    1/m\ell^2
-    \end{array}
-\right]
-$$
-
-$$
-C = \frac{\partial g}{\partial x_e} (x_e, u_e)
-= 
-\left[
-  \begin{array}{cc}
-    1 \\
-    0
-  \end{array}
-\right],
-\;
-D = \frac{\partial g}{\partial u_e} (x_e, u_e)
-=
-0
-$$
-
---------------------------------------------------------------------------------
-
-Thus,
-
-$$
-\begin{split}
-\frac{d}{dt}\Delta \theta & \approx \Delta \omega \\
-\frac{d}{dt}\Delta \omega & \approx -(g/\ell) \cos (\theta_e) \Delta \theta -(b/m\ell^2) \Delta \omega + \Delta c /m \ell^2 \\
-\end{split}
-$$
-
-and obviously, as far as the output goes,
-
-$$
-\Delta \theta \approx \Delta \theta.
-$$
-
-
-Internal Dynamics
-================================================================================
-
---------------------------------------------------------------------------------
-
-We study the behavior of the solution
+We are interested in the behavior of the solution to
 
 $$
 \dot{x} = A x, \; x(0) = x_0 \in \mathbb{R}^n
 $$
 
-We try to get some understanding with the simplest cases first.
+First, we study some elementary systems in this class.
 
-Scalar Case, Real-Valued
---------------------------------------------------------------------------------
+## Scalar Case, Real-Valued
 
 $$
 \dot{x} = a x
 $$
 
-$a \in \mathbb{R}$, $x(0) = x_0 \in \mathbb{R}$.
+$a \in \mathbb{R}, \; x(0) = x_0 \in \mathbb{R}.$
 
 --------------------------------------------------------------------------------
 
-**Solution:**
+**💎 Solution:**
 $$
 x(t) = e^{a t} x_0
 $$
 
-**Proof:**
+**🔓 Proof:**
 $$
 \frac{d}{dt} e^{at} x_0 = a e^{at} x_0 = a x(t)
 $$
@@ -873,8 +147,8 @@ $$
 x(0) = e^{a \times 0} x_0 = x_0.
 $$
 
-📈 Trajectory
---------------------------------------------------------------------------------
+## 📈 Trajectory
+
     
 ```python    
 a = 2.0; x0 = 1.0
@@ -901,19 +175,18 @@ save("images/scalar-LTI-2")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
 plot([0, 0], [-3, 3], "k")
 xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-title(f"$a={a}$")
-grid(True)
+title(f"$a={a}$"); grid(True)
 ```
 
 
@@ -935,8 +208,8 @@ save("images/scalar-LTI-2-poles")
 
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
     
 ```python
 a = 1.0; x0 = 1.0
@@ -963,19 +236,18 @@ save("images/scalar-LTI-1")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
 plot([0, 0], [-3, 3], "k")
 xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-title(f"$a={a}$")
-grid(True)
+title(f"$a={a}$"); grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -993,8 +265,8 @@ save("images/scalar-LTI-1-poles")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a = 0.0; x0 = 1.0
@@ -1020,19 +292,18 @@ save("images/scalar-LTI-0")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
 plot([0, 0], [-3, 3], "k")
 xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-title(f"$a={a}$")
-grid(True)
+title(f"$a={a}$"); grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1050,8 +321,8 @@ save("images/scalar-LTI-0-poles")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a = -1.0; x0 = 1.0
@@ -1078,19 +349,18 @@ save("images/scalar-LTI-m1")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
 plot([0, 0], [-3, 3], "k")
 xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-title(f"$a={a}$")
-grid(True)
+title(f"$a={a}$"); grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1109,8 +379,8 @@ save("images/scalar-LTI-m1-poles")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a = -2.0; x0 = 1.0
@@ -1137,19 +407,18 @@ save("images/scalar-LTI-m2")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
 plot([0, 0], [-3, 3], "k")
 xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-title(f"$a={a}$")
-grid(True)
+title(f"$a={a}$"); grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1167,30 +436,47 @@ save("images/scalar-LTI-m2-poles")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Analysis
+## 🔬 Analysis
+
+
+The origin is globally asymptotically stable when 
+  
+$$
+a < 0.0
+$$  
+
+i.e. **$a$ is in the open left-hand plane**.
+
 --------------------------------------------------------------------------------
 
-  - The origin is globally asymptotically stable when $a < 0.0$:  
-    $a$ is in the open left-hand plane,
+Let the **time constant** $\tau$ be
+  
+$$
+\tau := 1 / |a|.
+$$
 
-  - In this case, define the time constant $\tau = - 1 / a$:
+When the system is asymptotically stable,
 
-    $$
-    x(t) = e^{at} x_0 = e^{-t/\tau} x_0
-    $$
+$$
+x(t) = e^{-t/\tau} x_0.
+$$
 
+Quantitative Convergence
 --------------------------------------------------------------------------------
 
-$\tau$ controls the time it take for the solution 
-to (almost) reach to the origin:
+$\tau$ controls the speed of convergence to the origin:
 
-  - when $t = \tau$, $|x(t)|$ is $\simeq$ $1/3$ of $|x_0|$;  
+    time $t$        distance to the origin   $|x(t)|$
+------------    -------------------------------------
+$0$             $|x(0)|$
+$\tau$          $\simeq (1/3) |x(0)|$
+$3\tau$         $\simeq (5/100) |x(0)|$
+$\vdots$        $\vdots$
+$+\infty$       $0$
 
-  - when $t = 3 \tau$, $|x(t)|$ is $\simeq$ $5 \%$ of $|x_0|$.
 
+## Vector Case, Diagonal, Real-Valued
 
-Vector Case, Diagonal, Real-Valued
---------------------------------------------------------------------------------
 
 $$
 \dot{x}_1 = a_1 x_1, \; x_1(0) = x_{10}
@@ -1213,7 +499,7 @@ $$
 
 --------------------------------------------------------------------------------
 
-**Solution:** by linearity
+**🔓 Solution:** by linearity
 
 $$
 x(t) =   e^{a_1 t} \left[\begin{array}{c} x_{10} \\ 0 \end{array}\right] 
@@ -1221,8 +507,8 @@ x(t) =   e^{a_1 t} \left[\begin{array}{c} x_{10} \\ 0 \end{array}\right]
 $$
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a1 = -1.0; a2 = 2.0; x10 = x20 = 1.0
@@ -1253,13 +539,13 @@ save("images/scalar-LTI-m1p2")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a1), imag(a1), "x", color="k", ms=10.0)
-plot(real(a2), imag(a2), "x", color="k", ms=10.0)
+plot(real(a1), imag(a1), "x", color="k")
+plot(real(a2), imag(a2), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
@@ -1284,8 +570,8 @@ save("images/scalar-LTI-m1p2-poles")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a1 = -1.0; a2 = -2.0; x10 = x20 = 1.0
@@ -1315,13 +601,13 @@ save("images/scalar-LTI-m1m2")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a1), imag(a1), "x", color="k", ms=10.0)
-plot(real(a2), imag(a2), "x", color="k", ms=10.0)
+plot(real(a1), imag(a1), "x", color="k")
+plot(real(a2), imag(a2), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
@@ -1346,16 +632,17 @@ save("images/scalar-LTI-m1m2-poles")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-Analysis
---------------------------------------------------------------------------------
+## 🔬 Analysis
 
-  - The rightmost $a_i$ determines the asymptotic behavior,
 
-  - The origin is globally asymptotically stable 
-    only when every $a_i$ is in the open left-hand plane.
+  - 💎 The rightmost $a_i$ determines the asymptotic behavior,
 
-Scalar Case, Complex-Valued
---------------------------------------------------------------------------------
+  - 💎 The origin is globally asymptotically stable 
+    if and only if
+
+    **every $a_i$ is in the open left-hand plane.**
+
+## Scalar Case, Complex-Valued
 
 $$
 \dot{x} = a x
@@ -1365,7 +652,7 @@ $a \in \mathbb{C}$, $x(0) = x_0 \in \mathbb{C}$.
 
 --------------------------------------------------------------------------------
 
-**Solution:** formally, the same old solution
+**🔓 Solution:** formally, the same old solution
 
 $$
 x(t) = e^{at} x_0
@@ -1379,8 +666,8 @@ $$
 |x(t)| = |x_0| e^{\sigma t} \, \mbox{ and } \, \angle x(t) = \angle x_0 + \omega t.
 $$
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a = 1.0j; x0=1.0
@@ -1435,19 +722,18 @@ save("images/scalar-LTI-3d")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
 plot([0, 0], [-3, 3], "k")
 xticks([-2,-1,0,1,2]); yticks([-2,-1,0,1,2])
-title(f"$a={a}$")
-grid(True)
+title(f"$a={a}$"); grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -1466,8 +752,8 @@ save("images/scalar-LTI-1j-poles")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 a = -0.5 + 1.0j; x0=1.0
@@ -1495,8 +781,8 @@ save("images/scalar-LTI-alt-2")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 fig = figure()
@@ -1524,12 +810,12 @@ save("images/scalar-LTI-3d-2")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-📈
---------------------------------------------------------------------------------
+## 📈
+
 
 ```python
 figure()
-plot(real(a), imag(a), "x", color="k", ms=10.0)
+plot(real(a), imag(a), "x", color="k")
 gca().set_aspect(1.0)
 xlim(-3,3); ylim(-3,3); 
 plot([-3,3], [0,0], "k")
@@ -1555,27 +841,24 @@ save("images/scalar-LTI-m11j-poles")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-Analysis
---------------------------------------------------------------------------------
+## 🔬 Analysis
 
-  - the origin is globally asymptotically stable if $a$ is in the open left-hand plane:
-    $$\Re (a) < 0$$
 
-  - if $a= \sigma + i \omega$,
+  - 💎 The origin is globally asymptotically stable iff 
+  
+    **$a$ is in the open left-hand plane: ** $\Re (a) < 0$.
 
-      - $\tau = -1 /\sigma$ is the time constant related of the speed of convergence,
+  - 💎 If $a =: \sigma + i \omega$,
 
-      - $\omega$ the (rotational) frequency of the (damped) oscillations.
+      - 🏷️ $\tau = 1 /|\sigma|$ is the **time constant**.
 
---------------------------------------------------------------------------------
+      - 🏷️ $\omega$ the **rotational frequency** of the oscillations.
 
-Only one step left before the (almost) general case ...
+## 🏷️ Exponential Matrix
 
-Exponential Matrix
---------------------------------------------------------------------------------
 
 If $M \in \mathbb{C}^{n \times n}$,
-the **exponential** is defined as:
+its **exponential** is defined as:
 
 $$
 e^{M} = \sum_{k=0}^{+\infty} \frac{M^k}{k !} \in \mathbb{C}^{n \times n}
@@ -1586,12 +869,12 @@ $$
 
 ### ⚠️
 
-The exponential of a matrix $M$ is *not* 
+The exponential of a matrix $M$ is **not** 
 the matrix with elements $e^{M_{ij}}$ (the elementwise exponential).
 
-  - elementwise exponential: **`exp`** (`numpy` module),
+  - 🐍 elementwise exponential: **`exp`** (`numpy` module),
 
-  - exponential: **`expm`** (`scipy.linalg` module).
+  - 🐍 exponential: **`expm`** (`scipy.linalg` module).
 
 
 🧩 Exponential Matrix
@@ -2592,1010 +1875,6 @@ where each block has the structure $\lambda I + J$.
 Thus, the result of the previous question allows to prove the 
 [💎 Stability Criteria] in the general case.
 
-
-🧭 I/O Behavior
-================================================================================
-
-🧭 Context
---------------------------------------------------------------------------------
-
- 1. **System initially at rest.** $x(0) = 0.$
-
- 2. **Black box.** The system state $x(t)$ is unknown.
-
- 3. **Input/Output (I/O).** The input determines the output:
-
-    $$
-    u(t), \, t\geq 0  \; \to \; y(t), \, t\geq 0.
-    $$
-
---------------------------------------------------------------------------------
-
-The [variation of constants method](https://en.wikipedia.org/wiki/Variation_of_parameters) yields
-
-  $$
-  y(t) = \int_0^{t} C e^{A(t-\tau)} B u(\tau) \, d\tau + D u(t).
-  $$
-
-🏷️ Signals & Causality
---------------------------------------------------------------------------------
-
-A **signal** is a time-dependent function 
-
-$$
-x(t) \in \mathbb{R}^n, \; t \in \mathbb{R}.
-$$
-
-It is **causal** if
-
-$$
-t< 0 \; \Rightarrow \; x(t) = 0.
-$$
-
-📝 Convention
---------------------------------------------------------------------------------
-
-In the sequel, we will assume that time-dependent functions defined only 
-for non-negative times
-
-$$
-x(t), \, t \geq 0
-$$
-
-are zero for negative times
-
-$$
-x(t) = 0, \; t < 0.
-$$
-
-With this convention, they become causal signals.
-
-
-🏷️ Heaviside function
---------------------------------------------------------------------------------
-
-The **Heaviside function** is the causal signal defined by
-
-$$
-e(t) = \left|
-\begin{array}{c}
-1 & \mbox{if } \; t\geq 0, \\
-0 & \mbox{if } \; t < 0.
-\end{array}
-\right.
-$$
-
-🏷️ Synonym: **(unit) step signal.**
-
-🏷️ Impulse Response
---------------------------------------------------------------------------------
-
-The system **impulse response** is defined by:
-
-$$
-H(t) = (C e^{At} B) \times e(t) + D \delta(t) \in \mathbb{R}^{p \times m}
-$$
-
-📝 Notes
---------------------------------------------------------------------------------
-
-- the formula is valid for general (**MIMO**) systems.  
-
-  🏷️ **MIMO** = multiple-input & multiple-output.
-
-- $\delta(t)$ is the **unit impulse** signal, 
-  we'll get back to it (in the meantime, you may assume that $D=0$).
-
-
-📝 SISO Systems
---------------------------------------------------------------------------------
-
-When $u(t) \in \mathbb{R}$ and $y(t) \in \mathbb{R}$ the system is
-**SISO**.
-
-🏷️ **SISO** = single-input & single-output.
-
-Then $H(t)$ is a $1 \times 1$ matrix.
-
-We identify it with its unique coefficient $h(t)$:
-
-$$
-H(t) \in \mathbb{R}^{1\times 1} = [h(t)], \; h(t) \in \mathbb{R}.
-$$
-
-
-
-💎 I/O Behavior
---------------------------------------------------------------------------------
-
-Let $u(t)$, $x(t)$, $y(t)$ be causal signals such that:
-
-$$
-\left|
-  \begin{array}{rcl}
-  \dot{x}(t) &=& A x(t) + B u(t) \\
-        y(t) &=& C x(t) + Du(t)
-  \end{array}
-\right.,
-\, t\geq 0
-\; \mbox{ and } \;
-x(0) = 0.
-$$
-
-Then
-
-$$
-y(t) = (H \ast u) (t) := \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \, d\tau .
-$$
-
-🏷️ Convolution
---------------------------------------------------------------------------------
-
-The operation $\ast$ is called a **convolution**.
-
-
-🔍 Impulse Response
---------------------------------------------------------------------------------
-
-Consider the SISO system
-  
-$$
-\left| 
-\begin{array}{ccl}
-\dot{x} &=& ax + u \\
-y &=& x \\
-\end{array}
-\right.
-$$
-
-where $a \neq 0$.
-
---------------------------------------------------------------------------------
-
-We have
-
-$$
-\begin{split}
-H(t) &= (C e^{At} B) \times e(t) + D \delta(t)\\
-     &= [1]e^{[a]t} [1] e(t) + [0] \delta(t) \\
-     &= [e(t)e^{at}]
-\end{split}
-$$
-
---------------------------------------------------------------------------------
-
-When $u(t) = e(t)$ for example,
-
-$$
-\begin{split}
-y(t) 
-  &= \int_{-\infty}^{+\infty} e(t - \tau)e^{a(t-\tau)} e(\tau) \, d\tau \\
-  &= \int_{0}^{t} e^{a(t- \tau)} \, d\tau \\
-  &= \int_{0}^{t} e^{a \tau} \, d\tau  \\
-  &= \frac{1}{a} \left(e^{a t} - 1 \right)
-\end{split} 
-$$
-
-
-🧩 Integrator
---------------------------------------------------------------------------------
-
-Let 
-
-$$
-\left| 
-\begin{array}{ccc}
-\dot{x} &=& u \\
-y &=& x \\
-\end{array}
-\right.
-$$
-
-where $u \in \mathbb{R}$, $x \in \mathbb{R}$ and $y \in \mathbb{R}$.
-
-
---------------------------------------------------------------------------------
-
-### 1. 🧮 
-
-Compute the impulse response of the system.
-
-🔓 Integrator
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-
-$$
-\begin{split}
-H(t) &= (C e^{At} B) \times e(t) + D \delta(t)\\
-     &= [1]e^{[0]t} [1] e(t) + [0] \delta(t) \\
-     &= [e(t)]
-\end{split}
-$$
-
-🧩 Double Integrator
---------------------------------------------------------------------------------
-
-Let 
-
-$$
-\left| 
-\begin{array}{ccc}
-\dot{x}_1 &=& x_2 \\
-\dot{x}_2 &=& u \\
-y &=& x_1 \\
-\end{array}
-\right.
-$$
-
-where $u \in \mathbb{R}$, $x=(x_1, x_2) \in \mathbb{R}^2$ and $y \in \mathbb{R}$.
-
-
-
---------------------------------------------------------------------------------
-
-### 1. 🧮 
-
-Compute the impulse response of the system.
-  
-
-🔓 Double Integrator
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-
-$$
-\begin{split}
-H(t) &= (C \exp(At) B) \times e(t) + D \delta(t)\\
-     &= \displaystyle \left[\begin{array}{cc} 1 & 0 \end{array}\right]
-        \exp \left(
-        \left[\begin{array}{cc}
-        0 & 1 \\
-        0 & 0
-        \end{array}\right]
-         t \right) \left[\begin{array}{c} 0 \\ 1 \end{array}\right] e(t)  + [0] \delta(t) \\
-     &= \displaystyle \left[\begin{array}{cc} 1 & 0 \end{array}\right]
-        \left[\begin{array}{cc}
-        1 & t \\
-        0 & 1
-        \end{array}\right]
-        \left[\begin{array}{c} 0 \\ 1 \end{array}\right] e(t) \\
-&= [t e(t)]
-\end{split}
-$$
-
-🧩 Gain
---------------------------------------------------------------------------------
-
-Let 
-
-$$
-y = K u
-$$
-
-where $u \in \mathbb{R}^m$, $y \in \mathbb{R}^p$ and 
-$K \in \mathbb{R}^{p \times m}$.
-
---------------------------------------------------------------------------------
-
-### 1. 🧮 
-
-Compute the impulse response of the system.
-  
-
-🔓 Gain
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-  
-The I/O behavior can be represented by $\dot{x} = 0x+0u$ and $y= 0 \times x + K u$
-(for example). Thus,
-
-$$
-\begin{split}
-H(t) &= (C \exp(At) B) \times e(t) + D \delta(t)\\
-     &= 0 + K \delta(t)\\
-     &= K \delta(t) 
-\end{split}
-$$
-
-🧩 MIMO System
---------------------------------------------------------------------------------
-
-Let 
-$$
-H(t) := 
-\left[
-\begin{array}{cc}
-e^{t} e(t) & e^{-t} e(t)
-\end{array}
-\right]
-$$
-
---------------------------------------------------------------------------------
-
-### 1. 🧮 
-
-Find a linear system with matrices $A$, $B$, $C$, $D$ 
-whose impulse response is $H(t)$.
-
-
---------------------------------------------------------------------------------
-
-### 2. 🧮 
-
-Is there another 4-uple of matrices $A$, $B$, $C$, $D$ with the same
-impulse response? 
-
-
---------------------------------------------------------------------------------
-
-### 3. 🧮 
-
-Same question but with a matrix $A$ of a different size?
-
-🔓 MIMO System
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-
-Since
-
-$$
-\exp
-\left(
-  \left[
-\begin{array}{rr}
-  +1 & 0 \\
-  0 & -1
-  \end{array}
-\right] t
-\right)
-= 
-\left[
-  \begin{array}{rr}
-  e^{+t} & 0 \\
-  0 & e^{-t}
-  \end{array}
-\right],
-$$
-
-the following matrices work:
-
-$$
-A = \left[
-  \begin{array}{rr}
-  +1 & 0 \\
-  0 & -1
-  \end{array}
-\right], \;
-B = \left[
-  \begin{array}{cc}
-  1 & 0 \\
-  0 & 1
-  \end{array}
-\right], \;
-C= \left[
-  \begin{array}{cc}
-  1 & 1 \\
-  \end{array}
-\right], \;
-D = \left[
-  \begin{array}{cc}
-  0 & 0 \\
-  \end{array}
-\right].
-$$
-
-
-
---------------------------------------------------------------------------------
-
-### 2. 🔓
-
-Since
-$$
-\begin{split}
-H(t) &= (C \exp(At) B) \times e(t) + D \delta(t)\\
-     &= ((-C) \exp(At) (-B)) \times e(t) + D \delta(t)
-\end{split}
-$$
-changing $B$ and $C$ to be
-$$
-B = \left[
-  \begin{array}{rr}
-  -1 & 0 \\
-  0 & -1
-  \end{array}
-\right], \;
-C= \left[
-  \begin{array}{rr}
-  -1 & -1 \\
-  \end{array}
-\right], \;
-$$
-doesn't change the impulse response.
-
-
---------------------------------------------------------------------------------
-
-### 3. 🔓
-
-We can also easily add a scalar dynamics (say $\dot{x}_3 = 0$)
-that doesn't influence the impulse response. 
-
-The following matrices also work
-
-$$
-A = \left[
-  \begin{array}{rrr}
-  +1 & 0 & 0\\
-  0 & -1 & 0 \\
-  0 & 0  & 0
-  \end{array}
-\right], \;
-B = \left[
-  \begin{array}{cc}
-  1 & 0\\
-  0 & 1\\
-  0 & 0
-  \end{array}
-\right], $$
-
-$$
-C= \left[
-  \begin{array}{cc}
-  1 & 1 & 0 \\
-  \end{array}
-\right], \;
-D = \left[
-  \begin{array}{cc}
-  0 & 0\\
-  \end{array}
-\right].
-$$
-
-
-🏷️ Laplace Transform
---------------------------------------------------------------------------------
-
-Let $x(t)$, $t\in\mathbb{R}$ be a scalar signal.
-
-It **Laplace transform** is the function of $s$ given by:
-
-$$
-x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
-$$
-
-Domain & Codomain
---------------------------------------------------------------------------------
-
-The Laplace transform of a signal is a complex-valued function; 
-its domain is a subset of the complex plane.
-
-$$
-s \in D \, \Rightarrow \, x(s) \in \mathbb{C}.
-$$
-
---------------------------------------------------------------------------------
-
-If $x(t)$ is a causal signal of **sub-exponential growth**
-
-$$
-|x(t)| \leq k e^{\sigma t} e(t), \, t \in \mathbb{R}, 
-$$ 
-
-($k \geq 0$ and $\sigma \in \mathbb{R}$), 
-its Laplace transform is defined on an open half-plane:
-
-$$
-\Re (s) > \sigma \; \Rightarrow \; x(s) \in \mathbb{C}.
-$$
-
- 
-⚠️ Notation
---------------------------------------------------------------------------------
-
-We use the same symbol (here "$x$") to denote: 
-
-  - a signal $x(t)$ and
-
-  - its Laplace transform $x(s)$
- 
-They are two equivalent representations of the same "object", 
-but different mathematical "functions". 
-
-If you fear some ambiguity, use named variables, e.g.:
-
-  $$
-  x(t=1) \, \mbox{ or } \, x(s=1) \, \mbox{ instead of } \, x(1).
-  $$
-
-Vector/Matrix-Valued Signals
---------------------------------------------------------------------------------
-
-The Laplace transform 
-
-  - of a vector-valued signal $x(t) \in \mathbb{R}^n$ or
-
-  - of a matrix-valued signal $X(t) \in \mathbb{R}^{m \times n}$ 
-  
-are computed elementwise.
-
---------------------------------------------------------------------------------
-
-$$
-x_{i}(s) := \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
-$$
-
-$$
-X_{ij}(s) := \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
-$$
-
-
-🏷️ Rational Signals
---------------------------------------------------------------------------------
-
-We will only deal with **rational** (and causal) signals:
-
-  $$
-  x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda t} \right) e(t)
-  $$
-
-where: 
-
-  - $\Lambda$ is a finite subset of $\mathbb{C}$,
-
-  - for every $\lambda \in \Lambda$, $p_{\lambda}(t)$ is a polynomial in $t$.
-
-
-📝
---------------------------------------------------------------------------------
-
-They are called **rational** since
-
-  $$
-  x(s) = \frac{n(s)}{d(s)}
-  $$
-
-where $n(s)$ and $d(s)$ are polynomials; also
-
-$$
-\deg n(s) \leq \deg d(s).
-$$
-
-
-🔍 Exponential
---------------------------------------------------------------------------------
-
-Let 
-
-$$
-x(t) = e^{a t} e(t), \; t\in \mathbb{R}
-$$ 
-for some $a \in \mathbb{R}$. Then
-
-$$
-\begin{split}
-x(s) &= \int_{-\infty}^{+\infty} e^{at} e(t) e^{-s t} \, dt = \int_0^{+\infty} e^{(a-s) t} \, dt. \\
-\end{split}
-$$
-
---------------------------------------------------------------------------------
-
-
-If $\Re(s) > a$, then 
-$$
-\left|e^{(a-s) t}\right| \leq e^{-(\Re (s) -a) t};
-$$
-the function $t \in \left[0, +\infty\right[ \mapsto e^{(a-s) t}$ is integrable
-and
-
-$$
-x(s) = \left[\frac{e^{(a-s) t}}{a-s} \right]^{+\infty}_0 = \frac{1}{s-a}.
-$$
-
-
-💻 Symbolic Computation
---------------------------------------------------------------------------------
-
-```python
-import sympy
-from sympy.abc import t, s
-from sympy.integrals.transforms \
-    import laplace_transform    
-
-def L(f):
-    return laplace_transform(f, t, s)[0]
-```
-
---------------------------------------------------------------------------------
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-```{.no-exec lang=python}
->>> from sympy.abc import a
->>> xt = sympy.exp(a*t)
->>> xs = L(xt)
->>> xs
-1/(-a + s)
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-```python
-from sympy.abc import a
-xt = sympy.exp(a*t)
-xs = L(xt)
-xs
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-🧩 Ramp
---------------------------------------------------------------------------------
-
-Let
-
-$$
-x(t) = t e(t), \; t\in\mathbb{R}.
-$$
-
---------------------------------------------------------------------------------
-
-### 1. 🧮
-
-Compute analytically the Laplace Transform of $x(t)$.
-
---------------------------------------------------------------------------------
-
-### 2. 💻
-
-Compute symbolically the Laplace Transform of $x(t)$.
-
-🔓 Ramp
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-
-$$
-\begin{split}
-x(s) 
- &= \int_{-\infty}^{+\infty} t e(t) e^{-s t} \, dt \\
- &= \int_0^{+\infty} t e^{-s t} \, dt. \\
-\end{split}
-$$
-
---------------------------------------------------------------------------------
-
-By integration by parts,
-$$
-\begin{split}
-x(s) 
-  &= \left[t\frac{e^{-st}}{-s} \right]^{+\infty}_0 - \int_0^{+\infty} \frac{e^{-s t}}{-s} \, dt \\
-  &= \frac{1}{s} \int_0^{+\infty} e^{-s t} \, dt \\
-  &= \frac{1}{s} \left[\frac{e^{-st}}{-s} \right]^{+\infty}_0 \\
-  &= \frac{1}{s^2}
-\end{split}
-$$
-
---------------------------------------------------------------------------------
-
-### 2. 🔓
-
-With SymPy, we have accordingly:
-
-```{.no-exec lang=python}
->>> xt = t
->>> xs = L(xt)
->>> xs
-s**(-2)
-```
-
-
-🏷️ Transfer Function 
---------------------------------------------------------------------------------
-
-Let $H(t)$ be the impulse response of a system.
-
-Its Laplace transform $H(s)$ is the system **transfer function**.
-
-
-💎
---------------------------------------------------------------------------------
-
-For LTI systems in standard form,
-
-$$
-H(s) = C [sI - A]^{-1} B + D.
-$$
-
-💎 Operational Calculus
---------------------------------------------------------------------------------
-
-$$
-y(t) = (H \ast u)(t)
-\; \Longleftrightarrow \;
-y(s) = H(s) \times u(s)
-$$
-
-
-Graphical Language
---------------------------------------------------------------------------------
-
-Control engineers used **block diagrams** to describe (combinations of) 
-dynamical systems, with
-
-  - "boxes" to determine the relation between input signals and output signals and
-
-  - "wires" to route output signals to inputs signals.
-
-
-Feedback Block-Diagram
---------------------------------------------------------------------------------
-
-![](images/static/feedback-alt.svg)  
-
---------------------------------------------------------------------------------
-
-  - **Triangles** denote **gains** (scalar or matrix multipliers),
-
-  - **Adders** sum (or substract) signals.
-
---------------------------------------------------------------------------------
-
-  - **LTI systems** can be specified by:
-
-      - (differential) equations,
-
-      - the impulse response,
-
-      - the transfer function.
-
-Equivalent Systems
---------------------------------------------------------------------------------
-
-![](images/static/equivalent-systems.svg)  
-
-
-🧩 Feedback Block-Diagram
---------------------------------------------------------------------------------
-
-Consider the system depicted 
-in the [Feedback Block-Diagram] picture.
-
-
---------------------------------------------------------------------------------
-
-### 1. 🧮
-
-Compute its transfer function.
-
-🔓 Feedback Block-Diagram
---------------------------------------------------------------------------------
-
---------------------------------------------------------------------------------
-
-### 1. 🔓
-
-The diagram logic translates into:
-
-$$
-y(s) = \frac{1}{s} \left(u(s) - k y(s)\right),
-$$
-
-and thus
-
-$$
-\left(1 - \frac{k}{s}\right) y(s) =\frac{1}{s} u(s)
-$$
-
---------------------------------------------------------------------------------
-
-or equivalently
-
-$$
-y(s) = \frac{1}{s- k} u(s).
-$$
-
-Thus, the transfer function of this SISO system is
-
-$$
-h(s) = \frac{1}{s- k}.
-$$
-
-
-
-
-
-
-🤔 Impulse Response
---------------------------------------------------------------------------------
-
-Why refer to $h(t)$ as the system "impulse response"?
-
-By the way, what's an impulse?
-
-
-Impulses Approximations
---------------------------------------------------------------------------------
-
-Pick a time constant $\varepsilon > 0$ and define
-
-$$
-\delta_{\varepsilon}(t) := \frac{1}{\varepsilon} e^{-t/\varepsilon} e(t).
-$$
-
-🐍
---------------------------------------------------------------------------------
-
-```python
-def delta(t, eps):
-    return exp(-t / eps) / eps * (t >= 0)
-```
-
-
-📈
---------------------------------------------------------------------------------
-
-```python
-figure()
-t = linspace(-1, 4, 1000)
-for eps in [1.0, 0.5, 0.25]:
-    plot(t, delta(t, eps), 
-         label=rf"$\varepsilon={eps}$")
-xlabel("$t$"); title(r"$\delta_{\varepsilon}(t)$") 
-legend()
-```
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-```python
-tight_layout()
-save("images/impulses")
-```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-## {.section data-background="images/impulses.svg" data-background-size="contain"}
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-In the Laplace Domain
---------------------------------------------------------------------------------
-
-$$
-\begin{split}
-\delta_{\varepsilon}(s) 
-  &= \int_{-\infty}^{+\infty} \delta_{\varepsilon}(t) e^{-st} \, dt \\
-  &= \frac{1}{\varepsilon} \int_{0}^{+\infty} e^{-(s + 1/\varepsilon)t} \, dt \\
-  &= \frac{1}{\varepsilon} 
-      \left[ 
-      \frac{e^{-(s+1/\varepsilon)t}}{-(s+1/\varepsilon)} 
-      \right]^{+\infty}_0 = \frac{1}{1 + \varepsilon s}\\
-\end{split}
-$$
-
-(assuming that $\Re(s) > -1/\varepsilon$)
-
---------------------------------------------------------------------------------
-
-  - The "limit" of the signal $\delta_{\varepsilon}(t)$ when $\varepsilon \to 0$
-    is not defined *as a function* (issue for $t=0$) but as a **generalized
-    function** $\delta(t)$, the **unit impulse**. 
-
-  - This technicality can be avoided in the Laplace domain where
-      $$
-      \delta(s) = \lim_{\varepsilon \to 0} \delta_{\varepsilon}(s)
-      =
-      \lim_{\varepsilon \to 0} \frac{1}{1 + \varepsilon s} = 1.
-      $$
-
---------------------------------------------------------------------------------
-
-Thus, if $y(t) = (h \ast u)(t)$ and
-
- 1. $u(t) = \delta(t)$ then
-
- 2. $y(s) = h(s) \times \delta(s) = h(s) \times 1 = h(s)$
-
- 3. and thus $y(t) = h(t)$.
-
-**Conclusion:**
-the impulse response $h(t)$ is the output of the system when
-the input is the unit impulse $\delta(t)$.
-
-
-🏷️ I/O Stability
---------------------------------------------------------------------------------
-
-A system is **I/O-stable** if there is a $K \geq 0$ such that
-
-$$
-\|u(t)\| \leq M, \, t\geq 0
-$$
-
-$$
-\Rightarrow
-$$
-
-
-$$
-\|y(t)\| \leq K M, \, t\geq 0. 
-$$
-
-🏷️ More precisely, **BIBO-stability** ("bounded input, bounded output").
-
-
-🏷️ Transfer Function Poles
---------------------------------------------------------------------------------
-
-A **pole** of the transfer function $H(s)$ is a $s \in \mathbb{C}$ such that
-for at least one element $H_{ij}(s)$,
-
-$$
-|H_{ij}(s)| = +\infty.
-$$
-
-💎 I/O-Stability Criteria
---------------------------------------------------------------------------------
-
-A system is I/O-stable if and only if all its poles are in the open left-plane,
-i.e. such that
-
-$$
-\Re (s)< 0.
-$$
-
-💎 Internal Stability $\Rightarrow$ I/O-Stability
---------------------------------------------------------------------------------
-
-If the system $\dot{x} = A x$ is asymptotically stable,
-then for any matrices $B$, $C$, $D$ of appropriate sizes,
-
-$$
-\begin{split}
-\dot{x} &= A x + B u \\
-y &= C x + Du
-\end{split}
-$$
-
-is I/O-stable.
-
-🔍 Fully Actuated & Measured System
---------------------------------------------------------------------------------
-
-If $B=I$, $C=I$ and $D=0$, that is
-
-  $$
-  \dot{x} = A x +u, \; y = x
-  $$
-
-then $H(s) = [sI-A]^{-1}$. 
-
---------------------------------------------------------------------------------
-
-Therefore, $s$ is a pole of $H$ iff it's an eigenvalue of $A$.
-
-Thus, in this case, asymptotic stability and I/O-stability are equivalent.
-
-(This equivalence actually holds under much weaker conditions.)
 
 <style>
 
