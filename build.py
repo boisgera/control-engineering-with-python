@@ -175,6 +175,7 @@ COLOR_THEME = {
     "💎": None,
     "🧭": None,
     "🤔": None,
+    "⚠️": None,
 }
 
 
