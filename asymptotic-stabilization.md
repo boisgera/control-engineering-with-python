@@ -4,6 +4,24 @@
 % ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
 
 
+## Control Engineering with Python
+
+- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
+
+## Notations
+
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Example                |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Computation (Computer) |
+| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
+
 🐍 Imports
 --------------------------------------------------------------------------------
 
@@ -492,32 +510,180 @@ $$
 Numerical Values: 
 
 $$
-m = 1.0, \, l = 1.0, \, b = 0.1,\, g = 9.81
+m = 1.0, \, \ell = 1.0, \, b = 0.1,\, g = 9.81
 $$
 
 --------------------------------------------------------------------------------
 
-  - 🧮
-    Compute the linearized dynamics of the system around the equilibrium 
-    $\theta=\pi$ and $\dot{\theta} = 0$.
+### 1. 🧮
+    
+Compute the linearized dynamics of the system around the equilibrium 
+$\theta=\pi$ and $\dot{\theta} = 0$ ($u=0$).
 
-  - 🧮
-    Design a control law
-    $$
-    u = -k_{1} (\theta - \pi) - k_{2} \dot{\theta}
-    $$
-    such that the closed-loop linear system is asymptotically stable,
-    with a time constant smaller than $10$ sec.
+--------------------------------------------------------------------------------
 
+### 2. 💻
 
+Design a control law
+$$
+u = -k_{1} (\theta - \pi) - k_{2} \dot{\theta}
+$$
+such that the closed-loop linear system is asymptotically stable,
+with a time constant equal to $10$ sec.
 
 ---------------------------------------------------------------------------------
 
+### 3. 💻 🧮
 
-  - 💻
-    Simulate this control law on the nonlinear systems when 
-    $\theta(0) = 0$ and $\dot{\theta}(0) = 0$; compare with
-    the open-loop strategy that we have already considered.
+Simulate this control law on the nonlinear systems when 
+$\theta(0) = 0.9 \pi$ and $\dot{\theta}(0) = 0$.
+
+🔓 Pendulum
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+Let $\Delta \theta = \theta - \pi$, $\omega = \dot{\theta}$,
+$\Delta \omega = \omega$, $\Delta u = u$. 
+
+We notice that
+$$
+\begin{split}
+\sin \theta 
+  &= \sin (\pi + \Delta \theta) \\
+  &= -\sin \Delta \theta \\
+  &\approx -\Delta \theta 
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+The system dynamics can be approximated around $(\theta,\omega) = (\pi , 0)$ by
+
+$$
+(d/dt) \Delta \theta = \Delta \omega
+$$
+and
+$$
+m \ell^2 (d/dt) \Delta \omega + b \Delta \omega - mg \ell \Delta \theta = \Delta u.
+$$
+
+--------------------------------------------------------------------------------
+
+or in standard form
+
+$$
+\frac{d}{dt}
+\left[
+\begin{array}{c}
+\Delta \theta \\
+\Delta \omega
+\end{array}
+\right]
+=
+\left[
+\begin{array}{cc}
+0        & 1 \\
+g / \ell & - b / (m \ell^2)
+\end{array}
+\right]
+\left[
+\begin{array}{c}
+\Delta \theta \\
+\Delta \omega
+\end{array}
+\right]
++
+\left[
+\begin{array}{c}
+0 \\
+1 / (m \ell^2)
+\end{array}
+\right]
+\Delta u
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+```python
+m = 1.0 
+l = 1.0
+b = 0.1
+g = 9.81
+```
+
+--------------------------------------------------------------------------------
+
+```python
+A = array([[  0,            1],
+           [g/l , - b/(m*l*l)]])
+B = array([[        0],
+           [1/(m*l*l)]])
+t1, t2 = 10.0, 5.0
+poles = [-1/t1, -1/t2]
+K = place_poles(A, B, poles).gain_matrix
+```
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+
+```python
+def fun(t, theta_omega):
+    theta, omega = theta_omega
+    Δtheta, Δomega = theta - pi, omega
+    Δu = - K @ [Δtheta, Δomega] 
+    u = Δu[0]  # Δu has a (1,) shape
+    dtheta = omega
+    domega = - (g/l)*sin(theta) - b/(m*l*l)*omega \
+             + 1.0/(m*l*l)*u
+    return array([dtheta, domega])
+```
+
+--------------------------------------------------------------------------------
+
+```python
+t_span = [0.0, 30.0]
+y0 = [0.9*pi, 0.0]
+r = solve_ivp(fun, t_span, y0, dense_output=True)
+t = linspace(t_span[0], t_span[-1], 1000)
+thetat, omega_t = r["sol"](t)
+```
+
+--------------------------------------------------------------------------------
+
+
+```python
+figure()
+plot(t, thetat, label=r"$\theta(t)$")
+xlabel("$t$")
+yticks([0.9*pi, pi, 1.1*pi], 
+       [r"$0.9\pi$", r"$\pi$", r"$1.1\pi$"])
+grid(True); legend()
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+gcf().subplots_adjust(bottom=0.2)
+save("images/inverted-pendulum")
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/inverted-pendulum.svg" data-background-size="contain"}
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 
 🧩 Double Spring System
@@ -537,16 +703,35 @@ $$
 m_1 = m_2 = 1, \; k_1 = 1, k_2 = 100, \; b_1 = 0, \; b_2 = 20
 $$
 
+
 --------------------------------------------------------------------------------
 
-  - 💻
-    Compute the poles of the system. Is it asymptotically stable?
+### 1. 💻
+    
+Compute the poles of the system. 
 
-  - 💻
-    Use a linear feedback to kill the oscillatory behavior of
-    the solutions and "speed up" the eigenvalues associated to
-    a slow behavior.
+Is the origin asymptotically stable?
 
+--------------------------------------------------------------------------------
+
+### 3. 💻
+
+Use a linear feedback to: 
+
+  - kill the oscillatory behavior of the solutions 
+  
+  - "speed up" the eigenvalues associated to a slow behavior.
+
+🔓 Double Spring System
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
 
 <style>
 
