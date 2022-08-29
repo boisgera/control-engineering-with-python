@@ -87,11 +87,75 @@ Overlaps with and complements:
 
 
 
-## 🧭 Examples
+## 🧭 Applications
 
-## Robotic Arms
+## {data-background="images/static/possessed-photography-dRMQiAubdws-unsplash.jpg"}
+
+
+<h2 style="background-color:#ffffff90">
+Robotics
+</h2>
+
+
+<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://unsplash.com/@possessedphotography?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Possessed Photography</a> on <a href="https://unsplash.com/s/photos/robotics?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+  )</p>
+
+## 🤖 or 🧑?
+
+Consider:
+
+  - 💸 Cost analysis
+
+  - 🎨 Creative/complex work?
+
+  - 🦾 Strength, speed, precision
+
+  - 🏜️ Hostile work environment
+
+## Manufacturing
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## {data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg"}
+
+<h2 style="background-color:#ffffff90">
+Eurofighter Typhoon
+</h2>
+
+
+  
+
+<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://unsplash.com/es/@raymondo600?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ray Harrington</a> on <a href="https://unsplash.com/s/photos/eurofighter-typhoon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>)</p>
+
+--------------------------------------------------------------------------------
+
+  - twin-engine, canard delta wing, multirole fighter
+
+  - air superiority fighter / agile / dogfighter
+
+  - ⚠️ **aerodynamically unstable in subsonic flight!**
+
+--------------------------------------------------------------------------------
+
+"The design of the Typhoon is such that without input to any control surfaces the aircraft will pitch up during flight extremely quickly."
+
+"Although this improves the agility of the aircraft it also requires a system to enable controlled flight to be maintained." 
+
+--------------------------------------------------------------------------------
+
+"This is achieved through the Fly By Wire **🏷️ Flight Control System** [...]." 
+
+"With this system the pilot has no direct link to any of the aircraft's control surfaces."
+
+"Instead, **all movements of the throttle, stick or pedals are interpreted by the FCS and an appropriate control response taken.**"
+
+## Learn More
+
+  - 📖 [Negative Stability (Aerodynamics)](https://en.wikipedia.org/wiki/Relaxed_stability)
+
+  - 📖 [Eurofighter Typhoon FCS](https://web.archive.org/web/20110901224810/http://typhoon.starstreak.net/Eurofighter/flight-sys.html)
+
+  - 🖼️ [Eurofighter Typhoon Photos](https://unsplash.com/s/photos/eurofighter-typhoon)
 
 ## {data-background="images/static/640px-20180825_SP-LVD_Radom_Air_Show_1111_4948_DxO.jpg"}
 
@@ -101,50 +165,107 @@ Boeing 737 MAX
 
 <p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://commons.wikimedia.org/wiki/User:Jakubhal">Jakub Hałun</a>,<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC-BY-SA 4.0</a>)</p>
 
-## <i class="fa fa-plane"></i> Aircrafts
+## Boeing 737 MAX
 
-- [Boeing 737 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
+4th generation of Boeing 737. 
 
-- [The Dangerous Flaw in Boeing's Automated System](https://www.nytimes.com/interactive/2019/03/29/business/boeing-737-max-8-flaws.html)
+**Larger and more powerful engines**.
 
-- Accident Preliminary Report: [<i class="fa fa-file-pdf-o"></i>](http://www.ecaa.gov.et/documents/20435/0/Preliminary+Report+B737-800MAX+%2C%28ET-AVJ%29.pdf)
+$\to$ ⛽ fuel consumption reduced by 14%  
 
-- [What is the Boeing 737 Max MACS?](https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/)
+$\to$ 💸 profit!
 
-- [Boeing 737 Max adjustable stabilizer](https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg)
+--------------------------------------------------------------------------------
 
-- [Boeing 737 Max cleared to fly again 'too early'](https://www.bbc.com/news/business-55751150)
+$\to$ ⚠️ engines located further forward and higher 
 
-- [Eurofighter Typhoon](https://www.eurofighter.com/advantages)
+$\to$ ⚠️ pitch-up tendency that needs to be controlled
 
-## <i class="fa fa-car"></i> Tomorrow's Vehicles
+$\to$ 🏷️ **Maneuvering Characteristics Augmentation System (MCAS)**
 
-Typically : vehicles with self-driving capabilities.
 
-- [Waymo](https://waymo.com/) ("Google Car"),
+## Fatal Crashes
 
-- [Tesla](https://www.tesla.com): [Autopilot](https://www.tesla.com/en_EU/autopilot?redirect=no),
-  [Semi (truck)](https://en.wikipedia.org/wiki/Tesla_Semi),
+✈️ **Lion Air Flight 610**  (2018, Indonesia) 
+    
+"MCAS pushing the aircraft into a dive due to data from a faulty angle-of-attack sensor."
 
-- [Uber](https://www.uber.com): [ATG](https://www.uber.com/info/atg/)
 
-- ...
+✈️ **Ethiopian Airlines Flight 302** (2019, Ethiopia)
 
-## <i class="fa fa-car"></i> Today's cars
+"Evidence suggests, that [...] the aircraft was configured to dive, similar to Lion Air Flight 610."
 
-ADAS = Advanced Driver-Assistance Systems
+$\to$ 🛑 **global 737 MAX groundings.**
 
-1.  Collision avoidance systems (CAS) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Collision_avoidance_system)
 
-2.  Cruise control (CC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Cruise_control)
+## Learn More
 
-Adaptative cruise control = CAS + CC [(<i class="fa fa-youtube"></i> : IIHS)](https://www.youtube.com/watch?v=GInSPWZRFRM)
+- 📖 [Boeing 737 Max (Wikipedia)](https://en.wikipedia.org/wiki/Boeing_737_MAX)
 
----
+- 📖 [Boeing MCAS](https://www.boeing.com/737-max-updates/mcas/)
 
-3.  Electronic stability control (ESC) [(<i class="fa fa-wikipedia-w"></i>)](https://en.wikipedia.org/wiki/Electronic_stability_control)
+- 📰 [Boeing 737 Max Plane Crashes](https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons)
 
-Video: [<i class="fa fa-youtube"></i>](https://www.youtube.com/watch?v=ie0Icbo6jJ8)
+- 📰 [What is the Boeing 737 Max MACS?](https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/)
+
+- 📰 [Boeing 737 Max adjustable stabilizer](https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg)
+
+
+## Self-Driving Cars
+
+ 📆 **2022:** despite [marketing stunts](https://www.tesla.com/autopilot), not there yet.
+
+
+## ADAS Levels
+
+🏷️ **Advanced Driver-Assistance Systems**
+
+  - **Level 0:** ~ No automation
+
+  - **Level 1:** ~ Hands on
+
+  - **Level 2**: ~ Hands off $\leftarrow$ Telsa Autopilot
+
+  - **Level 3:** ~ Eyes off $\leftarrow$ Mercedes Drive Pilot (2021)
+
+  - **Level 4:** ~ Mind off
+
+  - **Level 5:** ~ **🚀 Self-driving**
+
+
+
+## Level 1 ADAS
+
+Single feature automation.
+
+  - **🏷️CAS: Collision avoidance systems**
+
+  - **🏷️ CC: Cruise control** 
+
+
+## 🏷️ ACC: CAS + CC 
+
+### Adaptative Cruise Control
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GInSPWZRFRM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+## 🏷️ ESC/ESP
+
+### Electronic stability control
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+## Learn More
+
+- 📰 [Tesla’s self-driving technology fails to detect children [...]](https://www.theguardian.com/technology/2022/aug/09/tesla-self-driving-technology-safety-children>)
+
+- 📰 [Mercedes Drive Pilot Beats Tesla Autopilot By Taking Legal Responsibility](https://www.roadandtrack.com/news/a39481699/what-happens-if-mercedes-drivepilot-causes-a-crash/)
+
+- 📰 [Mercedes-Benz Wins World's First Approval For Level 3 Autonomous Cars](https://www.slashgear.com/782536/mercedes-benz-wins-worlds-first-approval-for-level-3-autonomous-cars-whats-that-mean/)
+
+- 📖 [ADAS](https://en.wikipedia.org/wiki/Advanced_driver-assistance_system), [CAS](https://en.wikipedia.org/wiki/Collision_avoidance_system), [CC](https://en.wikipedia.org/wiki/Cruise_control), [ACC](https://en.wikipedia.org/wiki/Adaptive_cruise_control), [ESC/ESP](https://en.wikipedia.org/wiki/Electronic_stability_control).
+
 
 <style>
 
