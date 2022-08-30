@@ -1,25 +1,107 @@
----
-title: Asymptotic Behavior
-author:
-  - "👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr)
-    🏦 MINES Paris, PSL University"
-date: ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
----
+% Asymptotic Behavior
+% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr)
+  🏦 Mines Paris, PSL University
+% ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+
+
+## Control Engineering with Python
+
+- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
+
+## Notations
+
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Example                |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Computation (Computer) |
+| 💎  | Theorem     | 🧮  | Computation (Analytic) |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
 
 ## 🐍 Imports
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ```python
 from numpy import *
 from numpy.linalg import *
-from scipy.integrate import solve_ivp
+from scipy.linalg import *
 from matplotlib.pyplot import *
+from mpl_toolkits.mplot3d import *
+from scipy.integrate import solve_ivp
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+# Python 3.x Standard Library
+import gc
+import os
+
+# Third-Party Packages
+import numpy as np; np.seterr(all="ignore")
+import numpy.linalg as la
+import scipy.misc
+import matplotlib as mpl; mpl.use("Agg")
+import matplotlib.pyplot as pp
+import matplotlib.axes as ax
+import matplotlib.patches as pa
+
+
+#
+# Matplotlib Configuration & Helper Functions
+# --------------------------------------------------------------------------
+
+# TODO: also reconsider line width and markersize stuff "for the web
+#       settings".
+fontsize = 10
+
+width = 345 / 72.27
+height = width / (16/9)
+
+rc = {
+    "text.usetex": True,
+    "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}",
+    #"font.family": "serif",
+    "font.serif": [],
+    #"font.sans-serif": [],
+    "legend.fontsize": fontsize,
+    "axes.titlesize":  fontsize,
+    "axes.labelsize":  fontsize,
+    "xtick.labelsize": fontsize,
+    "ytick.labelsize": fontsize,
+    "figure.max_open_warning": 100,
+    #"savefig.dpi": 300,
+    #"figure.dpi": 300,
+    "figure.figsize": [width, height],
+    "lines.linewidth": 1.0,
+}
+mpl.rcParams.update(rc)
+
+# Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi
+# (the "standard" dpi for Web computations) gives 1600 px.
+width_in = 160 / 9
+
+def save(name, **options):
+    cwd = os.getcwd()
+    root = os.path.dirname(os.path.realpath(__file__))
+    os.chdir(root)
+    pp.savefig(name + ".svg", **options)
+    os.chdir(cwd)
+
+def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+    height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+    pp.gcf().set_size_inches((width_in, height_in))
+    pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🐍 Streamplot Helper
+
+🐍 Streamplot Helper
+--------------------------------------------------------------------------------
 
 ```python
 def Q(f, xs, ys):
@@ -29,74 +111,6 @@ def Q(f, xs, ys):
     fy = v(lambda x, y: f([x, y])[1])
     return X, Y, fx(X, Y), fy(X, Y)
 ```
-
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    from numpy import *
-    import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib notebook
-    from matplotlib.pyplot import *
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    # Python 3.x Standard Library
-    import gc
-    import os
-
-    # Third-Party Packages
-    import numpy as np; np.seterr(all="ignore")
-    import numpy.linalg as la
-    import scipy.misc
-    import matplotlib as mpl; mpl.use("Agg")
-    import matplotlib.pyplot as pp
-    import matplotlib.axes as ax
-    import matplotlib.patches as pa
-
-
-    #
-    # Matplotlib Configuration & Helper Functions
-    # --------------------------------------------------------------------------
-
-    # TODO: also reconsider line width and markersize stuff "for the web
-    #       settings".
-    fontsize = 35
-
-    rc = {
-        "text.usetex": True,
-        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}",
-        #"font.family": "serif",
-        "font.serif": [],
-        #"font.sans-serif": [],
-        "legend.fontsize": fontsize,
-        "axes.titlesize":  fontsize,
-        "axes.labelsize":  fontsize,
-        "xtick.labelsize": fontsize,
-        "ytick.labelsize": fontsize,
-        "figure.max_open_warning": 100,
-        #"savefig.dpi": 300,
-        #"figure.dpi": 300,
-    }
-    mpl.rcParams.update(rc)
-
-    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi
-    # (the "standard" dpi for Web computations) gives 1600 px.
-    width_in = 160 / 9
-
-    def save(name):
-        cwd = os.getcwd()
-        root = os.path.dirname(os.path.realpath(__file__))
-        os.chdir(root)
-        pp.savefig(name + ".svg")
-        os.chdir(cwd)
-
-    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
-        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
-        pp.gcf().set_size_inches((width_in, height_in))
-        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## ℹ️ Assumption
 
@@ -118,11 +132,12 @@ We will now turn to the study of such properties specifically.
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
----
+## ⚠️
 
-Asymptotic behavior of dynamical systems can be complex.
+Even simple dynamical systems may exhibit
 
----
+**complex asymptotic behaviors.**
+
 
 ## Lorenz System
 
@@ -202,9 +217,9 @@ such that the maximal solution $x(t)$ such that $x(0) = x_e$
 
 The state $x_e$ is an equilibrium of $\dot{x} = f(x)$
 
-$\Longleftrightarrow$
+$$\Longleftrightarrow$$
 
-$f(x_e) = 0$.
+$$f(x_e) = 0.$$
 
 ::: notes ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -274,7 +289,9 @@ $$
 
 - has an equilibrium at $(0, 0)$.
 
-## 🐍 Vector field
+---
+
+### 🐍 Vector field
 
 ```python
 def f(xy):
@@ -284,7 +301,9 @@ def f(xy):
     return array([dx, dy])
 ```
 
-## 📈 Stream plot
+---
+
+### 📈 Stream plot
 
 ```python
 figure()
@@ -406,7 +425,9 @@ $$
 
 - has an equilibrium at $(0, 0)$.
 
-## 🐍 Vector field
+---
+
+### 🐍 Vector field
 
 ```python
 def f(xy):
@@ -416,7 +437,9 @@ def f(xy):
     return array([dx, dy])
 ```
 
-## 📈 Stream plot
+---
+
+### 📈 Stream plot
 
 ```python
 figure()
@@ -538,7 +561,9 @@ $$
 
 - has a (unique) equilibrium at $(0, 0)$.
 
-## 🐍 Vector field
+---
+
+### 🐍 Vector field
 
 ```python
 def f(xy):
@@ -548,7 +573,9 @@ def f(xy):
     return array([dx, dy])
 ```
 
-## 📈 Stream plot
+---
+
+### 📈 Stream plot
 
 ```python
 figure()
@@ -657,11 +684,9 @@ bar.close()
 </video>
 ```
 
-## 🎓 Pendulum
+## 🧩 Pendulum
 
----
-
-**Reminder.** The pendulum is governed by the equation
+The pendulum is governed by the equation
 
 $$
 m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
@@ -671,59 +696,59 @@ where $m>0$, $\ell>0$, $g>0$ and $b\geq0$.
 
 ---
 
-#### Q1 -- Equilibria 🧮
+### 1. 🧮
 
 Compute the equilibria of this system.
 
 ---
 
-#### Q2 -- Attractivity 🧠
+### 2. 🧠
 
 Can any of these equilibria be **globally** attractive?
 
 ---
 
-Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
 
-#### Q3 -- Stream Plot 📈
+### 3.  📈
+
+Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
 
 Make a stream plot of the system.
 
-#### Q4 -- Attractivity 🔬
+---
+
+### 4. 🔬
 
 Determine which equilibria are locally attractive.
 
 ---
 
-Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
 
-#### Q5 -- Stream Plot 📈
+### 5. 📈
+
+Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
 
 Make a stream plot of the system.
 
-#### Q6 -- Attractivity 🧮 🧠
-
-Prove that no equilibrium is locally attractive ([Hint 🗝️](#hint-la)).
-
 ---
 
-#### Hint 🗝️ {#hint-la}
+### 6. 🧮 🧠
 
-Study how the total mechanical energy $E$
+Prove that no equilibrium is locally attractive.
+
+**🗝️ Hint.** Study how the total mechanical energy $E$
 
 $$
-E = J \dot{\theta}^2 / 2 - m g\ell \cos \theta, \; (J = m\ell^2)
+E = m\ell^2 \dot{\theta}^2 / 2 - m g\ell \cos \theta
 $$
 
 evolves in time.
 
----
-
-### 🎓 Pendulum: Answers
+## 🔓 Pendulum
 
 ---
 
-#### Q1
+### 1. 🔓
 
 The 2nd-order differential equations of the pendulum are equivalent to
 the first order system
@@ -752,7 +777,7 @@ and $\omega (= \dot{\theta}) = 0$.
 
 ---
 
-#### Q2
+### 2. 🔓
 
 Since there are several equilibria, none of them can be globally attractive.
 
@@ -766,7 +791,7 @@ Thus, $x_1$ is the only possible equilibrium.
 
 ---
 
-#### Q3
+### 3. 🔓
 
 ```python
 m = l = b = 1; g=9.81
@@ -786,10 +811,9 @@ figure()
 theta = linspace(-2*pi*(1.2), 2*pi*(1.2), 1000)
 d_theta = linspace(-5.0, 5.0, 1000)
 streamplot(*Q(f, theta, d_theta), color="k")
-plot([-2*pi, -pi, 0 ,pi, 2*pi], 5*[0.0], "r.", ms=20.0)
-#axis("square")
-#axis("off")
-xticks([-2*pi, -pi, 0 ,pi, 2*pi])
+plot([-2*pi, -pi, 0 ,pi, 2*pi], 5*[0.0], "k.")
+xticks([-2*pi, -pi, 0 ,pi, 2*pi],
+[r"$-2\pi$", r"$\pi$", r"$0$", r"$\pi$", r"$2\pi$"])
 grid(True)
 ```
 
@@ -808,15 +832,69 @@ grid(True)
 
 ---
 
-#### Q4
+### 4. 🔓
+
+From the streamplot, we see that the equilibria 
+  
+$$(\theta, \dot{\theta}) = (2k\pi, 0), \; k\in \mathbb{Z}$$ 
+    
+are asymptotically stable, but that the equilibria 
+  
+$$(\theta, \dot{\theta}) = (2(k+1) \pi, 0),\; k\in \mathbb{Z}$$ 
+    
+are not (they are not locally attractive).
 
 ---
 
-#### Q5
+### 5. 🔓
+
+```python
+b = 0
+figure()
+streamplot(*Q(f, theta, d_theta), color="k")
+plot([-2*pi, -pi, 0 ,pi, 2*pi], 5*[0.0], "k.")
+xticks([-2*pi, -pi, 0 ,pi, 2*pi],
+[r"$-2\pi$", r"$\pi$", r"$0$", r"$\pi$", r"$2\pi$"])
+grid(True)
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-no-friction")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/pendulum-no-friction.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ---
 
-#### Q6
+### 6. 🔓
+
+$$
+\begin{split}
+\dot{E} 
+  &= \frac{d}{dt} \left(m\ell^2 \dot{\theta}^2 / 2 - m g\ell \cos \theta\right) \\
+  &= m\ell^2 \ddot{\theta}\dot{\theta} + m g \ell (\sin \theta) \dot{\theta} \\
+  &= \left(m\ell^2 \ddot{\theta} + m g \ell \sin \theta \right)\dot{\theta} \\
+  &= \left(- b \dot{\theta}\right)\dot{\theta} \\
+  &= 0
+\end{split}
+$$
+
+--------------------------------------------------------------------------------
+
+Therefore, $E(t)$ is constant. When $\dot{\theta}=0$, 
+the minimum and maximum of $E$ are
+
+$$
+
+\; \mbox{ and } \;
+$$
 
 ## 💎 Attractivity (Low-level)
 
@@ -1554,6 +1632,8 @@ save("images/unstable")
 
 [$\leftarrow$ Back to question 4](#vinograd-4)
 
+
+
 <style>
 
 .reveal p {
@@ -1586,6 +1666,7 @@ font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
+background-color: white;
 font-size: 1.5em;
 line-height: 1.5em;
 /_ max-height: 80wh; won't work, overriden _/
@@ -1668,3 +1749,4 @@ details[open] summary ~ * {
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
 
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+
