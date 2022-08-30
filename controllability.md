@@ -39,21 +39,6 @@ from matplotlib.pyplot import *
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-<!--
-
-🐍 Streamplot Helper
---------------------------------------------------------------------------------
-
-``` python
-def Q(f, xs, ys):
-    X, Y = meshgrid(xs, ys)
-    v = vectorize
-    fx = v(lambda x, y: f([x, y])[0])
-    fy = v(lambda x, y: f([x, y])[1])
-    return X, Y, fx(X, Y), fy(X, Y)
-```
--->
-
 ::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     from numpy import *
@@ -361,6 +346,32 @@ $$
 
 Find a smooth reference trajectory $x_r(t)$, $t\in[0, 1]$ which is not admissible.
 
+🔓 Non-admissible trajectory
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The first line of the vector equation $\dot{x} = A x + Bu$ is
+
+$$
+\dot{x}_1 = x_2.
+$$
+
+Any trajectory $x_r$ that does not satisfy this equation is not
+admissible; for example
+
+$$
+x_r(t) :=
+\left[ 
+  \begin{array}{c}
+  0 \\
+  1
+  \end{array}
+\right].
+$$
+
 
 🧩 Pendulum
 --------------------------------------------------------------------------------
@@ -376,15 +387,24 @@ Consider the pendulum with dynamics:
 ### 1. 🧠 🧮
 
 Find a smooth reference trajectory that leads the
-pendulum from $\theta(0)=0$ and $\dot{\theta}(0) = 0$ to
-$\theta(t_f) = \pi$ and $\dot{\theta}(t_f) = 0$.
+pendulum from the bottom configuration
+
+$$
+\theta(0)=0, \; \dot{\theta}(0) = 0
+$$ 
+
+to the top configuration
+
+$$
+\theta(t_f) = \pi, \; \dot{\theta}(t_f) = 0.
+$$
 
 --------------------------------------------------------------------------------
 
 ### 2. 🧠 🧮 
 
 Show that the reference trajectory is admissible and compute the
-corresponding input $u(t)$ as a function of $t$ and $\theta(t)$.
+corresponding input $u_r(t)$.
 
 --------------------------------------------------------------------------------
 
@@ -393,7 +413,7 @@ corresponding input $u(t)$ as a function of $t$ and $\theta(t)$.
 
 Simulate the result and visualize the solution.
     
-What should theoretically happen after $t=t_f$ if $u(t)=0$ is applied 
+What should theoretically happen at $t=t_f$ if $u(t)=0$ is applied 
 when $t \geq t_f$? What does happen in reality ? Why ? How can we 
 mitigate this issue?
 
@@ -402,6 +422,228 @@ mitigate this issue?
 $$
 m = 1.0, \, l = 1.0, \, b = 0.1,\, g = 9.81, \, t_f = 10.
 $$
+
+🔓 Pendulum
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+
+Since the initial and final conditions form a set of 4 equations,
+we search for an admissible trajectory defined by a 3rd-order polynomial
+
+$$
+\theta_r(t) := a t_f^3 + bt_f^2 + c t_f +d
+$$
+
+with unknown coefficients $a, b, c, d$.
+
+--------------------------------------------------------------------------------
+
+The initial conditions $\theta_r(0)=0$ and $\dot{\theta}_r(0)=0$ are equivalent
+to 
+
+$$
+b = 0, \; c= 0.
+$$
+
+--------------------------------------------------------------------------------
+
+The final condition $\theta_r(t_f) = \pi$ is equivalent to
+
+$$
+at_f^3 + bt_f^2 = \pi
+$$
+
+and $\dot{\theta}_r(t_f) = 0$ to
+
+$$
+3a t_f^2 + 2b t_f = 0.
+$$
+
+--------------------------------------------------------------------------------
+
+The latter equation can be transformed into
+
+$$
+b = -\frac{3}{2} a t_f
+$$
+
+and the former becomes
+
+$$
+at_f^3 - \frac{3}{2} a t_f^3 = \pi
+\; \Leftrightarrow \;
+a = -\frac{2\pi}{t_f^3}
+$$
+
+and thus $b = \frac{3\pi}{t_f^2}.$
+
+--------------------------------------------------------------------------------
+
+Finally, the following trajectory $(\theta_r(t),\dot{\theta}_t(t))$ is smooth 
+and meets the required initial and final conditions:
+
+$$
+\theta_r(t) = -2\pi \left(\frac{t}{t_f}\right)^3 + 3\pi \left(\frac{t}{t_f}\right)^2
+$$
+
+$$
+\dot{\theta}_r(t) = -\frac{6\pi}{t_f} \left(\frac{t}{t_f}\right)^2 + \frac{6\pi}{t_f} \left(\frac{t}{t_f}\right)
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+By construction our reference trajectory meets the initial condition. 
+There is a unique input that makes the solution follows this reference;
+its is defined by
+
+$$
+u_r(t) := m \ell^2 \ddot{\theta}_r(t) + b \dot{\theta}_r(t) + mg \ell \sin \theta_r(t) 
+$$
+
+where
+
+$$
+\ddot{\theta}_r(t) = -\frac{12\pi}{t_f^2} \left(\frac{t}{t_f}\right) + \frac{6\pi}{t_f^2}.
+$$
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+```python
+m = 1.0
+l = 1.0
+b = 0.1
+g = 9.81 
+t0, tf = 0.0, 10.0
+```
+
+--------------------------------------------------------------------------------
+
+```python
+def theta_r(t):
+    s = t/tf
+    return -2*pi*s**3 + 3*pi*s**2
+def dtheta_r(t):
+    s = t/tf
+    return -6*pi/tf*s**2 + 6*pi/tf*s
+```
+
+--------------------------------------------------------------------------------
+
+```python
+def d2theta_r(t):
+    s = t/tf
+    return -12*pi/(tf*tf)*s + 6*pi/(tf*tf)
+def u_r(t):
+    return (m*l*l*d2theta_r(t) + 
+            b*dtheta_r(t) + 
+            m*g*l*sin(theta_r(t)))
+```
+
+--------------------------------------------------------------------------------
+
+```python
+def fun(t, theta_dtheta):
+    theta, dtheta = theta_dtheta
+    d2theta = ((-b*dtheta - m*g*l*sin(theta) + u_r(t)) 
+               / (m * l * l))
+    return dtheta, d2theta
+t_span = [t0, tf]
+y0 = [0.0, 0.0]
+```
+
+---------------------------------------------------------------------------------
+
+```python
+r = solve_ivp(fun, t_span, y0, dense_output=True)
+t = linspace(t0, tf, 1000)
+solt = r["sol"](t)
+thetat, dthetat = solt
+```
+
+--------------------------------------------------------------------------------
+
+```python
+figure()
+plot(t, theta_r(t), "k--", label=r"$\theta_r(t)$")
+plot(t, thetat, label=r"$\theta(t)$")
+yticks([0, 0.5*pi, pi], ["$0$", r"$\pi/2$", r"$\pi$"])
+title(r"Simulation of $\theta(t)$")
+grid(True); legend()
+```
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-miss")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## {.section data-background="images/pendulum-miss.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+Theoretically, we should have $\theta(t_f) = \pi$ and $\dot{\theta}(t_f)=0$,
+but the simulation is quite far from that. 
+
+Since the top equilibrium
+is unstable, small (numerical) errors in the state may cause 
+large deviations of the trajectory.
+
+We may reduce the simulation error thresholds to alleviate this problem.
+
+--------------------------------------------------------------------------------
+
+```python
+rhp = solve_ivp(fun, t_span, y0, 
+                dense_output=True, 
+                rtol=1e-6, atol=1e-9)
+t = linspace(t0, tf, 1000)
+solt_hp = rhp["sol"](t)
+thetat_hp, dthetat_hp = solt_hp
+```
+
+--------------------------------------------------------------------------------
+
+```python
+figure()
+plot(t, theta_r(t), "k--", label=r"$\theta_r(t)$")
+plot(t, thetat, label=r"$\theta(t)$  (standard)")
+plot(t, thetat_hp, label=r"$\theta(t)$ (low error)")
+yticks([0, 0.5*pi, pi], ["$0$", r"$\pi/2$", r"$\pi$"])
+title(r"Simulation of $\theta(t)$")
+grid(True); legend()
+```
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-miss-less")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## {.section data-background="images/pendulum-miss-less.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 💎 Controllability of LTI systems
 --------------------------------------------------------------------------------
@@ -526,6 +768,88 @@ Given $x_0$, $x_f$ and $t_f > 0$, show that any smooth trajectory
 that leads from $x_0$ at time $t_0$ to $x_f$ at time $t_f$ is admissible.
 
 
+🔓 Fully Actuated System
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The shape of $B$ is $n \times m$, thus
+
+$$
+\mbox{rank} \, B \leq \min(n, m).
+$$
+
+By assumption $\mbox{rank} \, B = n$, thus $n \leq m$.
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+The system is controllable since 
+
+$$
+\mbox{rank} \, [B, AB, \dots] \leq \mbox{rank} \, B = n.
+$$
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+Since $\mbox{rank} \, B = n$, matrix $B$ contains a $n \times n$ invertible matrix $R$.
+Let's assume for the sake of simplicity that $R$ is made of the first $n$ 
+columns of $B$ and let
+$$
+S: = 
+\left[
+  \begin{array}{c}
+  R^{-1} \\
+  0
+  \end{array}
+\right] \in \mathbb{R}^{m \times n}.
+$$
+
+Then by construction $B \times S = I \in \mathbb{R}^{n\times n}$. 
+
+--------------------------------------------------------------------------------
+
+
+If we define $u$ as a function of some 
+auxiliary control $v \in \mathbb{R}^n$ by
+$$
+u(t) = S v(t),
+$$
+then
+$$
+\dot{x} = A x + v.
+$$
+
+--------------------------------------------------------------------------------
+
+To join $x_0$ at $t_0$ and $x_f$ at $t_f$, we can apply the control
+$$
+v(t) := -A x_r(t) + \dot{x}_r(t)
+$$
+where 
+$$
+x_r(t) := x_0 + \frac{t-t_0}{t_f-t_0} (x_f - x_0).
+$$
+
+--------------------------------------------------------------------------------
+
+Indeed,  that leads to
+$$
+\dot{x}(t) = A x(t)  - A x_r(t) + \dot{x}_r(t), \; x(t_0) = x_r(t_0)
+$$
+or if we denote $e := x - x_r$,
+$$
+\dot{e}(t) = Ae(t), \; e(t_0) =0
+$$
+and thus yields $x(t) = x_r(t)$ for any $t\geq t_0$.
+
+
+
 🧩 Integrator Chain
 --------------------------------------------------------------------------------
 
@@ -538,6 +862,77 @@ $$\dot{x}_n = u, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2.$$
 ### 1. 🧠 🧮 
 
 Show that the system is controllable
+
+🔓 Integrator Chain
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+We have
+
+$$
+A = \left[
+    \begin{array}{c}
+    0 & 1 &      0 & \cdots & 0\\
+    0 & 0 & 1      & \cdots & 0 \\
+    0 & 0 & \cdots  & \ddots & \vdots \\
+    \vdots & \vdots & \vdots & \vdots & 1 \\
+    0 & 0 & 0      & 0  & 0 \\
+    \end{array}
+  \right],
+  \;
+  B =\left[
+    \begin{array}{c}
+    0 \\
+    0 \\
+    \vdots \\
+    0 \\
+    1
+    \end{array}
+  \right]
+$$
+
+--------------------------------------------------------------------------------
+
+Thus, 
+
+$$
+B =\left[
+\begin{array}{c}
+0 \\
+0 \\
+\vdots \\
+0 \\
+1
+\end{array}
+\right], \;
+AB =\left[
+\begin{array}{c}
+0 \\
+0 \\
+\vdots \\
+1 \\
+0
+\end{array}
+\right], 
+\, \dots, \,
+A^{n-1} B =
+\left[
+\begin{array}{c}
+1 \\
+0 \\
+\vdots \\
+0 \\
+0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+The controllability matrix has full rank and the system is controllable.
 
 🧩 Heat Equation
 --------------------------------------------------------------------------------
@@ -574,6 +969,187 @@ Assume now that the four cells are organized as a square.
 
   - How could you solve this problem?
 
+
+🔓 Heat Equation
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+We have
+
+$$
+A = 
+\left[
+\begin{array}{rrrr}
+-1 &  1 &  0 &  0 \\
+ 1 & -2 &  1 &  0 \\
+ 0 &  1 & -2 &  1 \\
+ 0 &  0 &  1 & -1
+\end{array}
+\right], \;
+B = 
+\left[
+\begin{array}{r}
+1 \\
+0 \\
+0 \\
+0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+A B =
+\left[
+\begin{array}{r}
+-1 \\
+1 \\
+0 \\
+0
+\end{array}
+\right], \;
+A^2 B =
+\left[
+\begin{array}{r}
+2 \\
+-3 \\
+1 \\
+0
+\end{array}
+\right], \;
+A^3 B =
+\left[
+\begin{array}{r}
+-5 \\
+ 9 \\
+-5 \\
+1
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+The controllability matrix
+
+$$
+\left[
+\begin{array}{rrrr}
+ 1 & -1 &  2 & -5 \\
+ 0 &  1 & -3 &  9 \\
+ 0 &  0 &  1 & -5 \\
+ 0 &  0 &  0 &  1
+\end{array}
+\right]
+$$
+
+is full rank, thus the system is controllable.
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+If the system is organized as a square
+
+$$
+A = 
+\left[
+\begin{array}{rrrr}
+-2 &  1 &  1 &  0 \\
+ 1 & -2 &  0 &  1 \\
+ 1 &  0 & -2 &  1 \\
+ 0 &  1 &  1 & -2
+\end{array}
+\right], \;
+B = 
+\left[
+\begin{array}{r}
+1 \\
+0 \\
+0 \\
+0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+The controllability matrix is
+
+$$
+\left[
+\begin{array}{rrrr}
+ 1 & -2 &  6 & -20 \\
+ 0 &  1 & -4 &  16 \\
+ 0 &  1 & -4 &  16 \\
+ 0 &  0 &  2 & -12
+\end{array}
+\right]
+$$
+
+It is **not** full rank since the second and the third rows are equal.
+Thus the system is not controllable.
+
+--------------------------------------------------------------------------------
+
+The lack of controllability is due to symmetry.
+
+If the initial
+temperature in cell 2 and 3 are equal, since they play symmetric role in the
+system, their temperature will be equal for any subsequent time. 
+
+Hence, it will
+be impossible to reach a state with different temperature in cell 2 and 3, no
+matter what the input is.
+
+--------------------------------------------------------------------------------
+
+To break this symmetry and restore controllability, we may for example try to
+add a second independent heat source sink in cell 2.
+
+This leads to
+
+$$
+A = 
+\left[
+\begin{array}{rrrr}
+-2 &  1 &  1 &  0 \\
+ 1 & -2 &  0 &  1 \\
+ 1 &  0 & -2 &  1 \\
+ 0 &  1 &  1 & -2
+\end{array}
+\right], \;
+B = 
+\left[
+\begin{array}{rr}
+1 & 0 \\
+0 & 1 \\
+0 & 0\\
+0 & 0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+and the controllability matrix
+
+$$
+\left[
+\begin{array}{rrrr}
+1 &  0 &  -2 &  1 & 6 & -4 & -20 & 16 \\
+ 0 & 1 &  1 & -2 & -4 & 6 & 16 & -20\\
+ 0 &  0 & 1 &  0 & -4 & 2 & 16 & -12 \\
+ 0 &  0 &  0 & 1 & 2 & -4 & -12 & 16
+\end{array}
+\right]
+$$
+
+which has a full-rank.
 
 <style>
 
