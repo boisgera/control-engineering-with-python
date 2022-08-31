@@ -724,9 +724,9 @@ Determine which equilibria are locally attractive.
 ---
 
 
-### 5. 📈
+### 5. 📈 Frictionless Pendulum
 
-Assume that $m=1$, $\ell=1$, $g=9.81$ and $b=1$.
+Assume now that $b=0$.
 
 Make a stream plot of the system.
 
@@ -734,12 +734,12 @@ Make a stream plot of the system.
 
 ### 6. 🧮 🧠
 
-Prove that no equilibrium is locally attractive.
+Prove that the equilibrium  at $(0,0)$ is not locally attractive.
 
 **🗝️ Hint.** Study how the total mechanical energy $E$
 
 $$
-E = m\ell^2 \dot{\theta}^2 / 2 - m g\ell \cos \theta
+E(\theta,\dot{\theta}) := m\ell^2 \dot{\theta}^2 / 2 - m g\ell \cos \theta
 $$
 
 evolves in time.
@@ -800,7 +800,7 @@ def f(theta_omega):
     theta, omega = theta_omega
     d_theta = omega
     d_omega = - b / (m * l * l) * omega
-    d_omega +=  (g / l) * sin(theta)
+    d_omega -=  (g / l) * sin(theta)
     return (d_theta, d_omega)
 ```
 
@@ -886,15 +886,40 @@ $$
 \end{split}
 $$
 
+Therefore, $E(t)$ is constant. 
+
+
 --------------------------------------------------------------------------------
 
-Therefore, $E(t)$ is constant. When $\dot{\theta}=0$, 
-the minimum and maximum of $E$ are
+
+On the other hand,
 
 $$
-
-\; \mbox{ and } \;
+\min \, \{E(\theta, \dot{\theta}) \; | \; (\theta,\dot{\theta}) \in \mathbb{R}^2\}
+= E(0, 0)
+= -mgl.
 $$
+
+Moreover, this minimum is locally strict. Precisely, for any $0< |\theta| < \pi$,
+$$
+E(0, 0) < E(\theta,\dot{\theta}).
+$$
+
+--------------------------------------------------------------------------------
+
+If the origin was locally attractive, for any $\theta(0)$ and $\dot{\theta}(0)$ small enough, we would have
+$$
+E(\theta(t), \dot{\theta}(t)) \to E(0, 0) 
+\; \mbox{ when } \;
+t\to +\infty
+$$
+(by continuity). But if $0 < |\theta(0)| < \pi$, we have
+
+$$E(\theta(0), \dot{\theta}(0)) > E(0, 0)$$
+
+and that would contradict that $E(t)$ is constant. 
+
+Hence the origin is not locally attractive.
 
 ## 💎 Attractivity (Low-level)
 
@@ -937,7 +962,9 @@ $$
 \end{array}
 $$
 
-## 🐍 Vector Field
+---
+
+###  🐍 Vector Field
 
 ```python
 def f(xy):
@@ -948,7 +975,9 @@ def f(xy):
     return array([dx, dy])
 ```
 
-## 📈 Stream Plot
+---
+
+### 📈 Stream Plot
 
 ```python
 figure()
@@ -959,7 +988,6 @@ axis("square")
 axis("off")
 ```
 
----
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
