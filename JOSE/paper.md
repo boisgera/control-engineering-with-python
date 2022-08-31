@@ -8,15 +8,20 @@ authors:
     orcid: 0000-0003-4685-8099
     affiliation: 1
 affiliations:
- - name: Center for Robotics, MINES ParisTech, PSL University
+ - name: Center for Robotics, Mines Paris, PSL University
    index: 1
-date: 04 October 2021
+date: 31 August 2021
 bibliography: paper.bib
 ---
 
-Test reference: [@Sontag98]
-
 ## Statement of Need
+
+Matlab "detox" ; while suitable for specialist, large cost to incurr for a
+beginner's course. Use Python instead (more likely to be familiar, 
+more transferable knowledge "out").
+
+Theory (inc. some didactic "tricks", visu, videos, Fibre etc.) **AND**
+Practice (algos, Jupyter, etc.), intertwined. Active/interactive learning.
 
 TODO:
 
@@ -24,9 +29,12 @@ TODO:
 
   - Python ecosystem (wider audience, tools more familiar, etc.)
 
+  - open-source tooling, reuse/complement Python knowledge
+
 ## Learning Objectives
 
-The course targets students with a basic knowledge of linear algebra and ordinary differential equations as well as some experience with the Python scientific tools (NumPy, Scipy, Matplotlib, Jupyter notebooks). Expertise in an application domain
+The course targets students with a basic knowledge of linear algebra, 
+and optionally of ordinary differential equations as well as some experience with the Python scientific tools (NumPy, Scipy, Matplotlib, Jupyter notebooks). Expertise in an application domain
 of control engineering, such as mechanical engineering, electrical engineering or process engineering can be useful.
 
 At the end of this course, students will be able to:
@@ -39,16 +47,15 @@ At the end of this course, students will be able to:
 
 ## Experience
 
-TODO: convert links to bibliography?
-
 The course material has been taught:
 
   - in [EMINES engineering cycle](https://www.emines-ingenieur.org/en/education/course-catalog) since 2019. In this context, the course is composed of 
   2 periods of 3 (6-hour) day. The typical student workload is in the 75--90 hour range (including the 36 hours of face-to-face teaching). The second period is
   entirely dedicated to a mobile robotics project.
 
-  - in [MINES ParisTech master's degree in science and executive engineering](https://mines-paristech.eu/Admissions/Master-degree-in-science-and-engineering/), since 2021.
-  Since the format is shorter ($3 \times 3$h plus the 1.5h exam) some subjects are dropped and the robotics project is not included.
+  - in [Mines master's degree in science and executive engineering](https://mines-paristech.eu/Admissions/Master-degree-in-science-and-engineering/), since 2021.
+    Since the format is shorter ($3 \times 3$h plus the 1.5h exam) 
+    some subjects are dropped and the robotics project is not included.
 
 Accordingly, the course is composed of three parts:
 
@@ -146,3 +153,5 @@ JOSE welcomes submissions with diverse educational contexts.
   - [ ] Your submission should probably be around 1000 words (or around two pages).
 
 The goal is that someone reading the JOSE paper has enough information to decide if they’d be interested in adoping the learnig module or software. Readers will want to know how the content/software has been used, and how they would adopt it. They may also want to be persuaded that the authors have put careful work on creating the material, and have experience teaching with it.
+
+## References
