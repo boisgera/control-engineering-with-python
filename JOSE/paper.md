@@ -20,8 +20,8 @@ Matlab "detox" ; while suitable for specialist, large cost to incurr for a
 beginner's course. Use Python instead (more likely to be familiar, 
 more transferable knowledge "out").
 
-Theory (inc. some didactic "tricks", visu, videos, Fibre etc.) **AND**
-Practice (algos, Jupyter, etc.), intertwined. Active/interactive learning.
+Theory (inc. some didactic "tricks", short-form (chunks), visu, videos, Fibre etc.) 
+**AND** Practice (algos, Jupyter, etc.), intertwined. Active/interactive learning.
 
 TODO:
 
