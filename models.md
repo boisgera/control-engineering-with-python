@@ -38,11 +38,12 @@ from mpl_toolkits.mplot3d import *
 
 ::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    from numpy import *
-    import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib notebook
-    from matplotlib.pyplot import *
-
+```python
+from numpy import *
+import matplotlib; matplotlib.use("nbAgg")
+%matplotlib notebook
+from matplotlib.pyplot import *
+```
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -123,17 +124,31 @@ where:
 
 - **State:** $x \in \mathbb{R}^n$
 
+- **State space:** $\mathbb{R}^n$
+
 - **Vector field:** $f:\mathbb{R}^n \to \mathbb{R}^n$.
 
-## Vector Field
+## 🏷️ Vector Field
 
-- Visualize $f(x)$ as an arrow with origin the point $x$.
+- Visualize $f(x)$ as an **arrow** with origin the **point** $x$.
 
 - Visualize $f$ as a field of such arrows.
 
-- In the plane ($n=2$), use [quiver](https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.quiver.html) (Matplotlib).
+- In the plane ($n=2$), use [quiver](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.quiver.html) from Matplotlib.
 
-## 🐍 Stream Plot Helper
+## 🐍 Helper
+
+We define a `Q` function helper whose arguments are
+
+- `f`: the vector field (a function) 
+
+- `xs`, `ys`: the coordinates (two 1d arrays)
+
+and which returns:
+
+  - the tuple of arguments expected by `quiver`.
+
+--------------------------------------------------------------------------------
 
 ```python
 def Q(f, xs, ys):
@@ -143,7 +158,7 @@ def Q(f, xs, ys):
     return X, Y, fx(X, Y), fy(X, Y)
 ```
 
-## 🔍 Rotation
+## 🔍 Rotation Vector Field
 
 Consider $f(x,y) = (-y, x).$
 
@@ -182,7 +197,7 @@ quiver(*Q(f, x, y))
 
 A **solution** of $\dot{x} = f(x)$ is
 
-- a function $x:I \to \mathbb{R}^n$,
+- a (continuously) differentiable function $x:I \to \mathbb{R}^n,\!$
 
 - defined on a (possibly unbounded) interval $I$ of $\mathbb{R}$,
 
@@ -190,7 +205,9 @@ A **solution** of $\dot{x} = f(x)$ is
 
   $$\dot{x}(t) = dx(t)/dt = f(x(t)).$$
 
-## 📈
+## 📈 Stream Plot
+
+When $n=2$, represent a diverse set of solutions in the state space with [streamplot](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.streamplot.html) 
 
 ```python
 figure()
@@ -233,8 +250,7 @@ The **initial condition** $(t_0, x_0)$ is made of
 
 - the **initial value** or **initial state** $x_0 \in \mathbb{R}^n$.
 
-The set $\mathbb{R}^n$ is the **state space**,  
-$x(t)$ the **state at time** $t$.
+The point $x(t)$ is the **state at time** $t$.
 
 ## 🏷️ Higher-Order ODEs
 
@@ -581,6 +597,7 @@ font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
+background-color: white;
 font-size: 1.5em;
 line-height: 1.5em;
 /_ max-height: 80wh; won't work, overriden _/

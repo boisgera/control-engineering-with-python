@@ -127,7 +127,7 @@ We will define and study each one in the sequel.
 
 ##  Local vs Global
 
-So far, we have only dealt with **global** solutions $x(t)$ of IVPs,
+So far, we have mostly dealt with **global** solutions $x(t)$ of IVPs,
 defined for any $t \geq t_0$.
 
 This concept is sometimes too stringent.
@@ -140,7 +140,7 @@ $$
 \dot{x} = x^2, \; x(0)=1.
 $$
 
-## {data-background-color="#f3f0ff"}
+----------------------
 
 ### 🐍 💻 📈
 
@@ -169,36 +169,31 @@ xlim(t0, tf); xlabel("$t$"); ylabel("$x(t)$")
 
 ---
 
-##  Local vs Global {data-background-color="#f3f0ff"}
+###  Local vs Global {data-background-color="#f3f0ff"}
 
 🤕 Ouch.
 
 There is actually no **global** solution.
 
-However there is **local** solution $x(t)$,
-defined for $t \in \left[t_0, \tau\right[$
-for some $\tau > t_0$.
+However there is a **local** solution $x(t)$,
 
-## {data-background-color="#f3f0ff"}
+  - defined for $t \in \left[t_0, \tau\right[$
 
+  - for **some** $\tau > t_0$.
 
-Indeed, the function
+------------------------------------------
 
-$$
-x(t) = \frac{1}{1 - t}
-$$
-
-satisfies
+Indeed, the function $\displaystyle x(t) := \frac{1}{1 - t}$ satisfies
 
 $$
 \dot{x}(t) = \frac{d}{dt} x(t) = -\frac{-1}{(1 - t)^2}
-=  (x(t))^2.
+=  (x(t))^2
 $$
+and $x(0) = 1.$
 
-But it's defined only for $t<1.$
+⚠️ But it's defined (continuously) only for $t<1.$
 
-## {data-background-color="#f3f0ff"}
-
+--------------------------------------
 
 ### 🐍 💻 📈
 
@@ -227,8 +222,7 @@ xlabel("$t$"); ylabel("$x(t)$")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-## {data-background-color="#f3f0ff"}
-
+--------------------------------------
 
 This local solution is also **maximal**:
 
@@ -348,7 +342,9 @@ f(x_1,x_2) =
 \right.
 $$
 
-## 📈 No Local Solution
+--------
+
+### 🐍 📈 No Local Solution
 
 ```python
 def f(x1x2):
@@ -374,11 +370,15 @@ quiver(*Q(f, x1, x2), color="k")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🧠 No Local Solution
+----------
+
+### 💎 No Local Solution
 
 This system has no solution, not even a local one, when $x(0) = (0,0)$.
 
-## Proof
+----------
+
+### 🧠 Proof
 
 - Assume that $x: [0, \tau[ \to \mathbb{R}$ is a local solution.
 
@@ -472,7 +472,7 @@ xlabel("$x$")
 ylabel("$y$")
 legend()
 pp.gcf().subplots_adjust(bottom=0.2)
-save("images/sigmoid", transparent=True)
+save("images/sigmoid")
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -686,8 +686,8 @@ $$
 \begin{split}
 \dot{y}(t) &= \frac{d}{dt} \|x(t)\|^2 \\
            &= \frac{d}{dt} x(t)^t x(t) \\
-           &= \dot{x}(t)^t x(t) + x(t)^t x(t) \\
-           &= x(t)^t A^t x(t) x(t) + x(t)^t A x(t).
+           &= \dot{x}(t)^t x(t) + x(t)^t \dot{x}(t) \\
+           &= x(t)^t A^t x(t)  + x(t)^t A x(t).
 \end{split}
 $$ 
 
@@ -712,7 +712,7 @@ By the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality) 
 $$
 \begin{split}
 \dot{y}(t)
-  &= \|x(t)^t A^t x(t) x(t) + x(t)^t A x(t)\| \\
+  &= \|x(t)^t A^t x(t) + x(t)^t A x(t)\| \\
   &\leq \|(Ax(t))^t  x(t)\| + \|x(t)^t (A x(t))\| \\ 
   &\leq \|A x(t)\|\|x(t)\| + \|x(t)\|\|A x(t)\| \\
   &\leq \|A\| \|x(t)\|\|x(t)\| + \|x(t)\|\|A\|\|x(t)\| \\
@@ -734,14 +734,14 @@ Since $z(t) = y(t)e^{-2\alpha t}$,
 
 $$
 \begin{split}
-\dot{z}(t) & = \frac{d}{dt} y(t) e^{-\alpha t}  \\
-           & = \dot{y}(t) e^{-\alpha t} + y(t) (2\alpha e^{-\alpha t}) \\
-           & = (\dot{y}(t) + 2\alpha y(t)) e^{-\alpha t} \\
-           & \leq 0
+\dot{z}(t) & = \frac{d}{dt} y(t) e^{-2\alpha t}  \\
+           & = \dot{y}(t) e^{-2\alpha t} + y(t) (-2\alpha e^{-\alpha t}) \\
+           & = (\dot{y}(t) - 2\alpha y(t)) e^{-2\alpha t} \\
+           & \leq 0.
 \end{split}
 $$
 
-## {data-background-color="#fff9db"}
+--------------------------------------------------------------------------------
 
 By integration
 
@@ -890,61 +890,81 @@ $$
 \end{array}
 $$
 
-with $\alpha = 2 / 3$, $\beta = 4 / 3$, $\delta = \gamma = 1.0$.
+with $\alpha = 2/3$, $\beta = 4/3$, $\delta = \gamma = 1.0$.
 
-## 🐍
+--------------------------------------------------------------------------------
+
+### 🐍
 
 ```python
 alpha = 2 / 3; beta = 4 / 3; delta = gamma = 1.0
 
-def f(t, y):
+def fun(t, y):
     x, y = y
     u = alpha * x - beta * x * y
     v = delta * x * y - gamma * y
     return array([u, v])
 ```
 
-## 💻
+--------------------------------------------------------------------------------
+
+### 💻
 
 ```python
 tf = 3.0
-result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.5], max_step=0.01)
-x = result["y"][0]
-y = result["y"][1]
+result = solve_ivp(
+  fun, 
+  t_span=(0.0, tf), 
+  y0=[1.5, 1.5], 
+  max_step=0.01)
+x, y = result["y"][0], result["y"][1]
 ```
 
-## 📈
+--------------------------------------------------------------------------------
+
+### 📈
 
 ```python
 def display_streamplot():
     ax = gca()
     xr = yr = linspace(0.0, 2.0, 1000)
-    streamplot(*Q(lambda y: f(0,y), xr, yr), color="grey")
+    def f(y):
+        return fun(0, y)
+    streamplot(*Q(f, xr, yr), color="grey")
 ```
 
-## 📈
+--------------------------------------------------------------------------------
+
+### 📈
 
 ```python
 def display_reference_solution():
-    ax = gca()
     for xy in zip(x, y):
         x_, y_ = xy
-        ax.add_artist(Circle((x_, y_), 0.2, color="#d3d3d3"))
-    ax.add_artist(Circle((x[0], y[0]), 0.1, color="#808080"))
+        gca().add_artist(Circle((x_, y_), 
+                         0.2, color="#d3d3d3"))
+    gca().add_artist(Circle((x[0], y[0]), 0.1, 
+                     color="#808080"))
     plot(x, y, "k")
 ```
 
-## 📈
+--------------------------------------------------------------------------------
+
+### 📈
 
 ```python
 def display_alternate_solution():
-    result = solve_ivp(f, t_span=[0.0, tf], y0=[1.5, 1.575], max_step=0.01)
-    x = result["y"][0]
-    y = result["y"][1]
+    result = solve_ivp(fun, 
+                       t_span=[0.0, tf],
+                       y0=[1.5, 1.575], 
+                       max_step=0.01)
+    x, y = result["y"][0], result["y"][1]
     plot(x, y, "k--")
 ```
 
-## 📈
+--------------------------------------------------------------------------------
+
+### 📈
 
 ```python
 figure()
@@ -965,8 +985,6 @@ axis([0,2,0,2]); axis("square")
 ## {.section data-background="images/continuity.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
----
 
 ## 🧩 Continuity {data-background-color="#ebfbee"}
 

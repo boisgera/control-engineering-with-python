@@ -134,21 +134,23 @@ $$
 x(t + \Delta t)
   & \simeq x(t) + \Delta t \times \dot{x}(t) \\
   & = x(t) + \Delta t \times f(x(t)) \\
+x(t + 2\Delta t)
+  & \simeq x(t+\Delta t) + \Delta t \times \dot{x}(t+ \Delta t) \\
+  & = x(t+\Delta t) + \Delta t \times f(x(t+\Delta t)) \\
+x(t+3\Delta t)
+  & \simeq \cdots
 \end{split}
 $$
 
-to compute a sequence of states $x_k \in \mathbb{R}^n$ such that:
+to compute a sequence of states $x_k \simeq x(t+k \Delta t)$.
 
-$$
-x(t = t_0 + k \Delta t) \simeq x_k.
-$$
 
 ## 🐍 Euler Scheme
 
 ```python
-def basic_solve_ivp(f, tspan, x0, dt):
-    t0, t1 = tspan
-    ts, xs = [t0], [x0]
+def basic_solve_ivp(f, t_span, y0, dt=1e-3):
+    t0, t1 = t_span
+    ts, xs = [t0], [y0]
     while ts[-1] < t1:
         t, x = ts[-1], xs[-1]
         t_next, x_next = t + dt, x + dt * f(x)
@@ -156,19 +158,17 @@ def basic_solve_ivp(f, tspan, x0, dt):
     return (array(ts), array(xs).T)
 ```
 
----
-
-## Usage - Arguments
+## 📖 Usage - Arguments
 
 - `f`, vector field ($n$-dim $\to$ $n$-dim),
 
-- `tspan`, time span `(t0, t1)`,
+- `t_span`, time span `(t0, t1)`,
 
-- `x0`, initial state ($n$-dim),
+- `y0`, initial state ($n$-dim),
 
 - `dt`, time step.
 
-## Usage - Returns
+## 📖 Usage - Returns
 
 - `t`, 1-dim array
 
@@ -196,24 +196,26 @@ x_2(0) = 0
 \right.
 $$
 
----
+-----
+
+### 🐍 💻
 
 ```python
-def f(y):
-    x1, x2 = y
+def f(x):
+    x1, x2 = x
     return array([-x2, x1])
 t0, t1 = 0.0, 5.0
 y0 = array([1.0, 0.0])
-dt = 0.001
-t, y = basic_solve_ivp(f, (t0, t1), y0, dt)
+
+t, x = basic_solve_ivp(f, (t0, t1), y0)
 ```
 
 ## 📈 Trajectories
 
 ```python
 figure()
-plot(t, y[0], label="$x_1$")
-plot(t, y[1], label="$x_2$")
+plot(t, x[0], label="$x_1$")
+plot(t, x[1], label="$x_2$")
 grid(True)
 xlabel("time $t$")
 legend()
@@ -232,9 +234,11 @@ legend()
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 📈Trajectories (State Space)
+------
 
-Display solutions fragments in the background
+### 📈 Trajectories (State Space)
+
+Display a set of solutions in the background
 
 ```python
 figure()
@@ -243,10 +247,12 @@ ys = linspace(-1.5, 1.5, 50)
 streamplot(*Q(f, xs, ys), color="lightgrey")
 ```
 
-## 📈...
+------------
+
+### 📈...
 
 ```python
-x1, x2 = y[0], y[1]
+x1, x2 = x[0], x[1]
 plot(x1, x2, "k");
 plot(x1[0], x2[0], "ko")
 dx1, dx2 = x1[-1] - x1[-2], x2[-1] - x2[-2]
@@ -294,9 +300,8 @@ from scipy.integrate import solve_ivp
 📖 Documentation: [`solve_ivp`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html)
 
 **Features:** time-dependent vector field, error control, dense outputs, multiple
-solvers, etc.
+integration schemes, etc.
 
----
 
 ## 🔍 Rotation
 
@@ -318,28 +323,36 @@ x_2(0) = 0
 \right.
 $$
 
-## 🐍 Rotation
+---------------------
 
-    def fun(t, y):
-        x1, x2 = y
-        return array([-x2, x1])
-    t_span = [0.0, 2*pi]
-    y0 = [1.0, 0.0]
-    result = solve_ivp(fun=fun, t_span=t_span, y0=y0)
+### 🐍 Rotation
 
-## ⚠️ Non-Autonomous Systems
+```python
+def fun(t, y):
+    x1, x2 = y
+    return array([-x2, x1])
+t_span = [0.0, 2*pi]
+y0 = [1.0, 0.0]
+result = solve_ivp(fun=fun, t_span=t_span, y0=y0)
+```
+
+-----------------------
+
+### ⚠️ Non-Autonomous Systems
 
 The solver is designed for time-dependent systems:
 
 $$
-\dot{y} = f(t, y)
+\dot{x} = f(t, x)
 $$
 
 The `t` argument in the definition of `fun` is mandatory,
 even if the returned value doesn't depend on it (when the system is
 effectively time-invariant).
 
-## 🐍 Result "Bunch"
+----------------------------
+
+### 🐍 Result "Bunch"
 
 The `result` is a dictionary-like object with attributes:
 
@@ -351,7 +364,9 @@ The `result` is a dictionary-like object with attributes:
 
 (See 📖 [`solve_ivp` documentation](https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html))
 
-## 🐍
+-----------------------------
+
+### 🐍
 
 ```python
 rt = result["t"]
@@ -359,7 +374,9 @@ x1 = result["y"][0]
 x2 = result["y"][1]
 ```
 
-## 📈
+----------------------
+
+### 📈
 
 ```python
 figure()
@@ -371,7 +388,6 @@ plot(rt, x2, ".-", label="$x_2(t)$")
 xlabel("$t$"); grid(); legend()
 ```
 
----
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -385,6 +401,8 @@ xlabel("$t$"); grid(); legend()
 ## {.section data-background="images/solve_ivp_1.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 ## Variable Step Size
 
@@ -415,12 +433,16 @@ $$
 |e(t)| \leq \mathrm{atol} + \mathrm{rtol} \times |x(t)|
 $$
 
-## 🐍 Solver Options
+-----
+
+### 🐍 Solver Options
+
+**Example:**
 
 ```python
 options = {
     # at least 20 data points
-    "max_step": 2*pi / 20,
+    "max_step": 2*pi/20,
     # standard absolute tolerance
     "atol"    : 1e-6,
     # very large relative tolerance
@@ -428,7 +450,9 @@ options = {
 }
 ```
 
-## 🐍 Simulation
+----------------
+
+### 🐍 Simulation
 
 ```python
 result = solve_ivp(
@@ -440,7 +464,9 @@ x1 = result["y"][0]
 x2 = result["y"][1]
 ```
 
-## 📈 Graph
+------------------
+
+### 📈 Graph
 
 ```python
 figure()
@@ -452,7 +478,6 @@ plot(rt, x2, ".-", label="$x_2(t)$")
 xlabel("$t$"); grid(); legend()
 ```
 
----
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -467,7 +492,9 @@ xlabel("$t$"); grid(); legend()
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## Dense Outputs
+----------
+
+### Dense Outputs
 
 Using a small `max_step` is usually the wrong way to "get more data points"
 since this will trigger many (potentially expensive) evaluations of `fun`.
@@ -478,7 +505,9 @@ the discrete data `result["t"]` and `result["y"]`
 solution `result["sol"]` **as a function of `t`**
 with little extra computations.
 
-## 🐍 Solver Options
+-------------
+
+### 🐍 Solver Options
 
 ```python
 options = {
@@ -486,7 +515,9 @@ options = {
 }
 ```
 
-## 🐍 Simulation
+------------
+
+### 🐍 Simulation
 
 ```python
 result = solve_ivp(
@@ -498,8 +529,9 @@ x1 = result["y"][0]
 x2 = result["y"][1]
 sol = result["sol"]
 ```
+-----------------
 
-## 📈 Graph
+### 📈 Graph
 
 ```python
 figure()
@@ -510,8 +542,6 @@ plot(rt, x1, ".", color="C0")
 plot(rt, x2, ".", color="C1")
 xlabel("$t$"); grid(); legend()
 ```
-
----
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -558,6 +588,7 @@ font-family: Inconsolata, monospace;
 }
 
 .reveal pre code {
+background: white;
 font-size: 1.5em;
 line-height: 1.5em;
 /_ max-height: 80wh; won't work, overriden _/
