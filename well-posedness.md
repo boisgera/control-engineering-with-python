@@ -998,7 +998,7 @@ $$\dot{x} = x, \; x^h(0) = 1+ h.$$
 
 Let $\epsilon > 0$ and $\tau \geq 0$.
 
-Find the smallest $\delta > 0$ such that
+Find the largest $\delta > 0$ such that
 $|h| < \delta$ ensures that
 $$\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| \leq \epsilon$$
 
@@ -1034,7 +1034,7 @@ $$
 
 Thus, the smallest $\delta$ such that $|h| \leq \delta$ yields
 $$
-\max_{t \in [0, \tau]} |x^h(t) - x^0(t)| \leq \epsilon
+\max_{t \in [0, \tau]} |x^h(t) - x^0(t)| \leq \epsilon.
 $$
 is $\delta = \varepsilon e^{-\tau}.$ [🔙](#C1)
 
@@ -1045,7 +1045,7 @@ is $\delta = \varepsilon e^{-\tau}.$ [🔙](#C1)
 
 For any $\varepsilon > 0$, 
 $$
-\lim_{\tau \to +\infty} \delta = +\infty.
+\lim_{\tau \to +\infty} \delta = 0.
 $$
 
 [🔙](#C2)
