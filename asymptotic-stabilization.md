@@ -226,11 +226,11 @@ A :=
 $$
 
 $$
-0 \not \in \sigma(A), \, 1 \in \sigma(A), \, 1 \not \in^2 \sigma(A)
+0 \not \in \sigma(A), \, 1 \in \sigma(A), \, 1 \in^2 \sigma(A), \, 1 \not \in^3 \sigma(A)
 $$
 
 $$
-2 \in \sigma(A), \, 2 \in^2 \sigma(A), \, 2 \not \in^3 \sigma(A)
+2 \in \sigma(A), \, 2 \not \in^2 \sigma(A)
 $$
 
 💎 Pole Assignment
