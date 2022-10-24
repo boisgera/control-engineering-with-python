@@ -1,28 +1,30 @@
----
-title: Observers
-author:
-  - "🧙‍♂️ [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu), 🏦 Mines Paris - PSL"
-licence:
-  - "[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)"
----
+% Observers
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
 
-## Control Engineering with Python
 
-- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+### Control Engineering with Python
 
-- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
+- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
 
-## Notations
+- ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+
+
+
+## Symbols
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
 | 🐍  | Code        | 🔍  | Example                |
 | 📈  | Graph       | 🧩  | Exercise               |
 | 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
+
+
 
 ## 🐍 Imports
 
@@ -110,7 +112,7 @@ def Q(f, xs, ys):
     return X, Y, fx(X, Y), fy(X, Y)
 ```
 
-🧭 Observability {.r-fit-text}
+🧭 Observability 
 --------------------------------------------------------------------------------
 
 
@@ -123,11 +125,12 @@ but measuring every state variable may be impossible (or too expensive).
 Can we reduce the amount of physical sensors and still be able to
 compute the state with "virtual" or "software" sensors ?
 
+🏷️ Observers
 --------------------------------------------------------------------------------
 
 Control engineers call these software devices **observers**.
 
-First we adress the mathematical feasibility of observers: **observability**.
+First we adress their mathematical feasibility.
 
 🏷️ Observability
 --------------------------------------------------------------------------------
@@ -153,9 +156,7 @@ determines uniquely the initial condition $x(0)$.
   - The knowledge of $x(0)$ determines uniquely $x(t)$ via the system dynamics.
 
   - Later, observers will provide merely **asymptotically exact** estimates
-    $\hat{x}(t)$ of $x(t)$, that satisfy
-    
-    $\hat{x}(t) - x(t)$ when $t \to +\infty$.
+    $\hat{x}(t)$ of $x(t)$, that satisfy $\hat{x}(t) - x(t)$ when $t \to +\infty.$
 
 Extension
 --------------------------------------------------------------------------------
@@ -284,7 +285,7 @@ The system $\dot{x} = Ax, \, y = C x$ is observable iff:
 $[C; \dots; C A^{n-1}]$ is the **Kalman observability matrix**.
 
 
-Notation
+🏷️ Notation
 --------------------------------------------------------------------------------
 
   - "$,$" row concatenation of matrices.
@@ -419,7 +420,8 @@ Show that the system is observable.
 
 ### 2. 🧮
 
-![](images/static/heat-square.svg){style="display:block;margin:auto;"}
+
+![](images/static/heat-square.svg)
 
 
 Is it still true if the four cells are organized as a square and
@@ -476,7 +478,7 @@ In the square configuration, there is no way to get observability with a
 single thermometer.
 
 
-![](images/static/heat-square-sol.svg){style="display:block;margin:auto;"}
+![](images/static/heat-square-sol.svg)
 
 
 --------------------------------------------------------------------------------
@@ -554,7 +556,7 @@ All the possible observability matrices in this case have rank 3 < 4.
 
 With 2 sensors, "it depends" (on the location of the sensors). For example:
 
-![](images/static/heat-square-2.svg){style="display:block;margin:auto;"}
+![](images/static/heat-square-2.svg)
 
 --------------------------------------------------------------------------------
 
@@ -614,7 +616,7 @@ $$
 The first has rank 3, the second rank 4.
 
 
-🧭 Observer Design  {.r-fit-text}
+🧭 Observer Design  
 --------------------------------------------------------------------------------
 
 
@@ -715,13 +717,12 @@ $$
 \right.
 $$
 
-for some **observer gain** matrix $L \in \mathbb{R}^{n \times p}$  
-(to be determined).
+for some **observer gain** matrix $L \in \mathbb{R}^{n \times p}$ (to be determined).
 
 
 --------------------------------------------------------------------------------
 
-![](images/static/observer.svg){style="display:block;margin:auto;"}
+![](images/static/observer.svg)
 
 --------------------------------------------------------------------------------
 
@@ -760,7 +761,7 @@ In this case, we can perform arbitrary pole assignment:
 
 --------------------------------------------------------------------------------
 
-Since $\sigma(M) = \sigma(M^t)$ for any square matrix $M$, 
+Since $\sigma(M) = \sigma(M^t)$, for any square matrix $M$, 
 
 $$
 \begin{split}
@@ -911,7 +912,7 @@ save("images/observer-trajectories")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-🧭 Kalman Filter  {.r-fit-text}
+🧭 Kalman Filter  
 --------------------------------------------------------------------------------
 
 Setting
@@ -1070,7 +1071,7 @@ d\hat{x}/dt &= - (1+\sqrt{2})(\hat{y} - y)\\
 $$
 
 
-🔍 Stabilization/Kalman Filter
+🔍 Stabilization / Kalman Filter
 --------------------------------------------------------------------------------
 
 Consider the double integrator $\ddot{x} = 0,$ $y=x$.
@@ -1127,20 +1128,10 @@ assert all([real(s) < 0 for s in eigenvalues])
 figure()
 x = [real(s) for s in eigenvalues]
 y = [imag(s) for s in eigenvalues]
-plot(x, y, "kx")
-```
-
---------------------------------------------------------------------------------
-
-### 🐍 📈
-
-
-```python
-xticks([-2, -1, 0, 1, 2])
-yticks([-2, -1, 0, 1, 2])
-plot([0, 0], [-2, 2], "k")
+plot(x, y, "kx"); xlim(-2, 2); ylim(-2, 2)
+plot([0, 0], [-2, 2], "k"); 
 plot([-2, 2], [0, 0], "k")   
-grid(True)
+grid(True); axis("square")
 title("Eigenvalues")
 ```
 
@@ -1227,11 +1218,16 @@ save("images/observer-Kalman-trajectories")
 }
 
 .reveal section img {
+text-align: center;
 border:0;
 height:50vh;
 width:auto;
-
+display:block;
+margin:auto;
 }
+}
+
+
 
 .reveal section img.medium {
 border:0;
@@ -1328,6 +1324,18 @@ details[open] summary ~ * {
   0%    {opacity: 0}
   100%  {opacity: 1}
 }
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+
 
 
 </style>

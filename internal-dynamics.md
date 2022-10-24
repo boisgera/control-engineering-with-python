@@ -1,23 +1,25 @@
 % Internal Dynamics
-% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr)
-  🏦 Mines Paris, PSL University
-% ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
 
 
-## Control Engineering with Python
+### Control Engineering with Python
 
-- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
 
-- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
+- ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-## Notations
+- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+
+
+
+## Symbols
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
 | 🐍  | Code        | 🔍  | Example                |
 | 📈  | Graph       | 🧩  | Exercise               |
 | 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (Analytic) |
+| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -1983,6 +1985,11 @@ details[open] summary ~ * {
 @keyframes sweep {
   0%    {opacity: 0}
   100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
 }
 
 

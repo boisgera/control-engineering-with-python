@@ -1,25 +1,25 @@
----
-title: Well-Posedness
-author:
-  - "🧙‍♂️ [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) -- 🏦 Mines Paris -- PSL"
-licence:
-  - "[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)"
----
+% Well-Posedness
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
 
-## Control Engineering with Python
 
-- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+### Control Engineering with Python
 
-- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
+- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
 
-## Notations
+- ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+
+
+
+## Symbols
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
 | 🐍  | Code        | 🔍  | Example                |
 | 📈  | Graph       | 🧩  | Exercise               |
 | 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (Hand)     |
+| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -1383,6 +1383,10 @@ details[open] summary ~ * {
   100%  {opacity: 1}
 }
 
+section p.author {
+  text-align: center;
+  margin: auto;
+}
 
 </style>
 

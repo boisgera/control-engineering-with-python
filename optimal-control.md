@@ -1,47 +1,39 @@
 % Optimal Control
-% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr),
-🏦 MINES ParisTech, PSL University
-% ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+
+
+### Control Engineering with Python
+
+- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+
+- ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+
+
+
+## Symbols
+
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Example                |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Computation (Computer) |
+| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
 
 ## 🐍 Imports
-
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ```python
 from numpy import *
 from numpy.linalg import *
-from numpy.testing import *
-from scipy.linalg import *
-from scipy.integrate import *
 from matplotlib.pyplot import *
+from scipy.integrate import solve_ivp
+from scipy.linalg import solve_continuous_are
 ```
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-<!--
-
-🐍 Streamplot Helper
---------------------------------------------------------------------------------
-
-``` python
-def Q(f, xs, ys):
-    X, Y = meshgrid(xs, ys)
-    v = vectorize
-    fx = v(lambda x, y: f([x, y])[0])
-    fy = v(lambda x, y: f([x, y])[1])
-    return X, Y, fx(X, Y), fy(X, Y)
-```
-
--->
-
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-    from numpy import *
-    import matplotlib; matplotlib.use("nbAgg")
-    %matplotlib notebook
-    from matplotlib.pyplot import *
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -65,7 +57,10 @@ def Q(f, xs, ys):
 
     # TODO: also reconsider line width and markersize stuff "for the web
     #       settings".
-    fontsize = 35
+    fontsize = 10
+
+    width = 345 / 72.27
+    height = width / (16/9)
 
     rc = {
         "text.usetex": True,
@@ -81,6 +76,8 @@ def Q(f, xs, ys):
         "figure.max_open_warning": 100,
         #"savefig.dpi": 300,
         #"figure.dpi": 300,
+        "figure.figsize": [width, height],
+        "lines.linewidth": 1.0,
     }
     mpl.rcParams.update(rc)
 
@@ -100,7 +97,10 @@ def Q(f, xs, ys):
         pp.gcf().set_size_inches((width_in, height_in))
         pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
 
+    width
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ## Why Optimal Control?
 
@@ -217,7 +217,7 @@ Assume that $\dot{x} = A x + Bu$ is controllable.
   \Pi B R^{-1} B^t \Pi - \Pi A - A^t \Pi - Q = 0.
   $$
 
-## 🔎 Asymp. Stab. / Optimal Control
+## 🔍 Optimal Control
 
 Consider the double integrator $\ddot{x} = u$
 
@@ -234,7 +234,9 @@ $$
 
 (in standard form)
 
-## 🐍 Problem Data
+--------------------------------------------------------------------------------
+
+### 🐍 Problem Data
 
 ```python
 A = array([[0, 1], [0, 0]])
@@ -243,48 +245,53 @@ Q = array([[1, 0], [0, 1]])
 R = array([[1]])
 ```
 
-## 🐍 Optimal Gain
+--------------------------------------------------------------------------------
+
+
+### 🐍 Optimal Gain
 
 ```python
 Pi = solve_continuous_are(A, B, Q, R)
 K = inv(R) @ B.T @ Pi
 ```
 
-## 🐍 Closed-Loop Asymp. Stab.
+--------------------------------------------------------------------------------
+
+
+
+### 🐍 Closed-Loop Behavior
+
+It is stable:
+
 
 ```python
 eigenvalues, _ = eig(A - B @ K)
 assert all([real(s) < 0 for s in eigenvalues])
 ```
 
-## 📊 Eigenvalues Location
+--------------------------------------------------------------------------------
+
+
+### 📈 Eigenvalues Location
 
 ```python
 figure()
 x = [real(s) for s in eigenvalues]
 y = [imag(s) for s in eigenvalues]
 plot(x, y, "kx", ms=12.0)
-```
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-```python
-xticks(arange(-5, 6)); yticks(arange(-5, 6))
-plot([0, 0], [-5, 5], "k")
-plot([-5, 5], [0, 0], "k")
 grid(True)
 title("Eigenvalues")
+axis("square")
+axis([-5, 5, -5, 5])
 ```
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    axis("square")
-    axis([-5, 5, -5, 5])
+
     save("images/poles-LQ")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -292,7 +299,10 @@ title("Eigenvalues")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🐍 Simulation
+--------------------------------------------------------------------------------
+
+
+### 🐍 Simulation
 
 ```python
 y0 = [1.0, 1.0]
@@ -300,7 +310,10 @@ def f(t, x):
     return (A - B @ K) @ x
 ```
 
-## 🐍 Simulation
+--------------------------------------------------------------------------------
+
+
+### 🐍 Simulation
 
 ```python
 result = solve_ivp(
@@ -312,7 +325,10 @@ x2 = result["y"][1]
 u = - (K @ result["y"]).flatten() # vect. -> scalar
 ```
 
-## 📊 Input & State Evolution
+--------------------------------------------------------------------------------
+
+
+### 📈 Input & State Evolution
 
 ```python
 width = 160 / 9
@@ -332,13 +348,17 @@ legend(loc="lower right")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## {.section data-background="images/poles-LQ-traj.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🐍 Optimal Gain
+--------------------------------------------------------------------------------
+
+### 🐍 Optimal Gain
 
 ```python
 Q = array([[10, 0], [0, 10]])
@@ -347,14 +367,18 @@ Pi = solve_continuous_are(A, B, Q, R)
 K = inv(R) @ B.T @ Pi
 ```
 
-## 🐍 Closed-Loop Asymp. Stab.
+--------------------------------------------------------------------------------
+
+### 🐍 Closed-Loop Asymp. Stab.
 
 ```python
 eigenvalues, _ = eig(A - B @ K)
 assert all([real(s) < 0 for s in eigenvalues])
 ```
 
-## 📊 Eigenvalues Location
+--------------------------------------------------------------------------------
+
+### 📈 Eigenvalues Location
 
 ```python
 figure()
@@ -383,13 +407,18 @@ title("Eigenvalues")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
+
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## {.section data-background="images/poles-LQ-2.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🐍 Simulation
+--------------------------------------------------------------------------------
+
+### 🐍 Simulation
 
 ```python
 result = solve_ivp(
@@ -401,7 +430,10 @@ x2 = result["y"][1]
 u = - (K @ result["y"]).flatten() # vect. -> scalar
 ```
 
-## 📊 Input & State Evolution
+--------------------------------------------------------------------------------
+
+
+### 📈 Input & State Evolution
 
 ```python
 width = 160 / 9
@@ -421,13 +453,18 @@ legend(loc="lower right")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## {.section data-background="images/poles-LQ-2-traj.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🐍 Optimal Gain
+--------------------------------------------------------------------------------
+
+
+### 🐍 Optimal Gain
 
 ```python
 Q = array([[1, 0], [0, 1]])
@@ -436,14 +473,19 @@ Pi = solve_continuous_are(A, B, Q, R)
 K = inv(R) @ B.T @ Pi
 ```
 
-## 🐍 Closed-Loop Asymp. Stab.
+--------------------------------------------------------------------------------
+
+
+### 🐍 Closed-Loop Asymp. Stab.
 
 ```python
 eigenvalues, _ = eig(A - B @ K)
 assert all([real(s) < 0 for s in eigenvalues])
 ```
 
-## 📊 Eigenvalues Location
+--------------------------------------------------------------------------------
+
+### 📈 Eigenvalues Location
 
 ```python
 figure()
@@ -472,13 +514,17 @@ title("Eigenvalues")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## {.section data-background="images/poles-LQ-3.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🐍 Simulation
+--------------------------------------------------------------------------------
+
+
+### 🐍 Simulation
 
 ```python
 result = solve_ivp(
@@ -490,7 +536,9 @@ x2 = result["y"][1]
 u = - (K @ result["y"]).flatten() # vect. -> scalar
 ```
 
-## 📊 Input & State Evolution
+--------------------------------------------------------------------------------
+
+### 📈 Input & State Evolution
 
 ```python
 width = 160 / 9
@@ -503,7 +551,7 @@ xlabel("$t$")
 legend(loc="lower right")
 ```
 
----
+--------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -632,6 +680,7 @@ font-family: Inconsolata, monospace;
 .reveal pre code {
 font-size: 1.5em;
 line-height: 1.5em;
+background-color: white;
 /_ max-height: 80wh; won't work, overriden _/
 }
 
@@ -704,6 +753,11 @@ details[open] summary ~ * {
 @keyframes sweep {
   0%    {opacity: 0}
   100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
 }
 
 

@@ -1,27 +1,29 @@
 % Controllability
-% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@mines-paristech.fr), 
-  🏦 MINES ParisTech, PSL University
-% ©️ [CC-BY 4.0 International](https://creativecommons.org/licenses/by/4.0/)
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+
+
+### Control Engineering with Python
+
+- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+
+- ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
 
 
 
-## Control Engineering with Python
-
-- ©️ License Creative Commons [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
-
-- 🏠 [GitHub Homepage](https://github.com/boisgera/control-engineering-with-python>)
-
-## Notations
+## Symbols
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
 | 🐍  | Code        | 🔍  | Example                |
 | 📈  | Graph       | 🧩  | Exercise               |
 | 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (Human)    |
+| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
+
 
 🐍 Imports
 --------------------------------------------------------------------------------
@@ -1260,6 +1262,10 @@ details[open] summary ~ * {
   100%  {opacity: 1}
 }
 
+section p.author {
+  text-align: center;
+  margin: auto;
+}
 
 </style>
 
