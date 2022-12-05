@@ -10,8 +10,8 @@
 | ------ | ----------- | ------ | ---------------------- |
 | 🐍     | Code        | 🔍     | Worked Example         |
 | 📈     | Graph       | 🧩     | Exercise               |
-| 🏷️     | Definition  | 💻     | Numerical Solution     |
-| 💎     | Theorem     | 🧮     | Analytical Solution    |
+| 🏷️     | Definition  | 💻     | Numerical Method       |
+| 💎     | Theorem     | 🧮     | Analytical Method      |
 | 📝     | Remark      | 🧠     | Theory                 |
 | ℹ️     | Information | 🗝️     | Hint                   |
 | ⚠️     | Warning     | 🔓     | Solution               |
