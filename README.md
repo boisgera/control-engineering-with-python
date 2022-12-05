@@ -8,7 +8,7 @@
 
 | Symbol | Meaning     | Symbol | Meaning                |
 | ------ | ----------- | ------ | ---------------------- |
-| 🐍     | Code        | 🔍     | Workd Example          |
+| 🐍     | Code        | 🔍     | Worked Example         |
 | 📈     | Graph       | 🧩     | Exercise               |
 | 🏷️     | Definition  | 💻     | Numerical Solution     |
 | 💎     | Theorem     | 🧮     | Analytical Solution    |
