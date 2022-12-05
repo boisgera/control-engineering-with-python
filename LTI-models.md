@@ -16,13 +16,14 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
+
 
 
 ## 🐍 Imports

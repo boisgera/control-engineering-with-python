@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -200,8 +200,10 @@ We check that this reference trajectory is **admissible**,
 i.e. that we can find a control $u_r(t)$ such that the solution
 of the IVP is $x(t) = x_r(t)$ when $x(0) = x_r(t)$.
 
-Admissible Trajectory
 --------------------------------------------------------------------------------
+
+### Admissible Trajectory
+
 
 Here, if $d_r$ is smooth and if we apply the control $u(t) = m\ddot{d}_r(t)$,
 
@@ -215,9 +217,9 @@ Here, if $d_r$ is smooth and if we apply the control $u(t) = m\ddot{d}_r(t)$,
 Thus, $d(t) = d_r(t)$ -- and thus $\dot{d}(t) = \dot{d}_r(t)$ -- 
 for every $t\geq 0$.
 
-
-Reference Trajectory
 --------------------------------------------------------------------------------
+
+### Reference Trajectory
 
 We can find $d_r$ as a third-order polynomial in $t$ 
 
@@ -235,8 +237,10 @@ $$
 
 (equivalently, with $u(t)$ as an affine function of $t$).
 
-🐍 Constants
 --------------------------------------------------------------------------------
+
+### 🐍 Constants
+
 
 ``` python
 m = 1500.0
@@ -247,8 +251,9 @@ alpha = vf/tf**2 - 2*xf/tf**3
 beta = 3*xf/tf**2 - vf/tf
 ```
 
-🐍 State & Input Evolution
 --------------------------------------------------------------------------------
+
+### 🐍 State & Input Evolution
 
 ``` python
 def x(t):
@@ -259,10 +264,12 @@ def u(t):
     return m * d2_x(t)
 ```
 
-🐍 💻 Simulation
 --------------------------------------------------------------------------------
 
-```
+### 🐍 💻 Simulation
+
+
+```python
 y0 = [0.0, 0.0]
 def fun(t, y):
     x, d_x = y
@@ -273,8 +280,10 @@ result = solve_ivp(
 )
 ```
 
-📊 Graph of the Distance
 --------------------------------------------------------------------------------
+
+### 📊 Graph of the Distance
+
 
 ``` python
 figure()
@@ -298,8 +307,10 @@ grid(True); xlabel("$t$"); title("$d(t)$")
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
-📊 Graph of the velocity
 --------------------------------------------------------------------------------
+
+### 📊 Graph of the velocity
+
 
 ``` python
 figure()
@@ -691,8 +702,10 @@ B =
 \right]
 $$
 
-🐍 Computation
 --------------------------------------------------------------------------------
+
+### 🐍 Computation
+
 
 ``` python
 def KCM(A, B):
@@ -701,8 +714,10 @@ def KCM(A, B):
     cs = column_stack
     return cs([mp(A, k) @ B for k in range(n)])
 ```
-🐍 LTI System
+
 --------------------------------------------------------------------------------
+
+### 🐍 LTI System
 
 ``` python
 n = 3 
@@ -714,8 +729,10 @@ B = zeros((n, 1))
 B[n-1, 0] = 1.0
 ```
 
-🐍 Rank Condition
 --------------------------------------------------------------------------------
+
+### 🐍 Rank Condition
+
 
 ``` python
 C = KCM(A, B)

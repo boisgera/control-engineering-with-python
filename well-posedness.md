@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -274,17 +274,19 @@ $$
 \frac{d}{dt} \frac{1}{x(t)}.
 $$
 
-[🔓](#AMS1)
 
-## {#MS2 data-background-color="#ebfbee"}
+-----
 
 ### 2. 🧠
 
-Make sure that your solutions are maximal. [🔓](#AMS2)
+Make sure that your solutions are maximal.
 
-## 🔓 Maximal Solutions {data-background-color="#fff9db"}
 
-## {#AMS1 data-background-color="#fff9db"}
+
+
+## 🔓 Maximal Solutions
+
+---
 
 ### 1. 🔓
 
@@ -295,8 +297,7 @@ $$
 - \frac{\dot{x}(t)}{x(t)^2} = 1.
 $$
 
-## {data-background-color="#fff9db"}
-
+---
 
 By integration, this leads to
 
@@ -310,10 +311,9 @@ $$
 x(t) = \frac{1}{\frac{1}{x_0} - t} = \frac{x_0}{1 - x_0 t}.
 $$
 
-which is indeed a solution as long as the denominator is not zero. [🔙](#MS1)
+which is indeed a solution as long as the denominator is not zero. 
 
-## {#AMS2 data-background-color="#fff9db"}
-
+---
 
 ### 2. 🔓
 
@@ -322,7 +322,6 @@ which is indeed a solution as long as the denominator is not zero. [🔙](#MS1)
   - If $x_0 > 0$, the solution is defined until $t=1/x(0)$ where it blows up.
 Thus, this solution is also maximal.
 
-[🔙](#MS1)
 
 ## 🙁 Bad News (1/3)
 
@@ -443,7 +442,7 @@ solution does exist, its domain is $[0, t_{\infty}[$ with $t_{\infty} \geq t_f$.
 
 **$\Rightarrow$ a solution is defined on $[t_0, t_f[$.**
 
-## 🧩 Sigmoid {data-background-color="#f3f0ff"}
+## 🧩 Sigmoid
 
 Consider the dynamical system
 
@@ -451,7 +450,7 @@ $$
 \dot{x} = \sigma(x) := \frac{1}{1 + e^{-x}}.
 $$
 
-## {data-background-color="#f3f0ff"}
+---
 
 ### 📈
 
@@ -472,6 +471,7 @@ xlabel("$x$")
 ylabel("$y$")
 legend()
 pp.gcf().subplots_adjust(bottom=0.2)
+grid(True)
 save("images/sigmoid")
 ```
 
@@ -484,33 +484,31 @@ data-background-color="#f3f0ff"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## {data-background-color="#f3f0ff"}
+---
 
 ### 1. 🧮 Existence
 
 Show that there is a (at least one) maximal solution to each initial condition.
-[🔓][1. 🔓 Existence]
 
-## {data-background-color="#f3f0ff"}
+-----
 
 ### 2. 🧮 Global
 
-Show that any such solution is global. [🔓][2. 🔓 Global]
+Show that any such solution is global.
 
 
-## 🔓 Sigmoid {data-background-color="#fff9db"}
+## 🔓 Sigmoid 
 
-## {data-background-color="#fff9db"}
+---
 
 ### 1. 🔓 Existence
 
 The sigmoid function $\sigma$ is continuous.
 
 Consequently, [💎 Existence] proves the existence of a (at least one)
-maximal solution. [🔙][1. 🧮 Existence]
+maximal solution.
 
-## {data-background-color="#fff9db"}
-
+-----
 
 ### 2. 🔓 Global
 
@@ -528,10 +526,9 @@ $$
 $$
 
 Thus, it cannot blow-up in finite time; by [💎 Maximal Solutions], it is global. 
-[🔙][2. 🧮 Global]
 
 
-## 🧩 Pendulum {data-background-color="#ebfbee"}
+## 🧩 Pendulum
 
 Consider the pendulum, subject to a torque $c$
 
@@ -551,7 +548,7 @@ $$
 ### 1. 🧮 {#P1}
 
 Show that for any initial state, 
-there is a global solution $(\theta, \dot{\theta})$. [🔓](#AP1)
+there is a global solution $(\theta, \dot{\theta})$.
 
 🗝️ **Hint.** Compute the derivative with respect to $t$ of
 
@@ -559,11 +556,11 @@ $$
 E = \frac{1}{2} m\ell^2 \dot{\theta}^2 - m g \ell \cos \theta.
 $$
 
-## 🔓 Pendulum {data-background-color="#fff9db"}
+## 🔓 Pendulum
 
-## {data-background-color="#fff9db"}
+---
 
-### 1. 🔓 {#AP1}
+### 1. 🔓
 
 Since the system vector field 
 
@@ -578,7 +575,7 @@ $$
 is continuous, [💎 Existence] yields the existence of a (at least one)
 maximal solution.
 
-## {data-background-color="#fff9db"}
+---
 
 Additionally,
 
@@ -593,7 +590,7 @@ $$
 \end{split}
 $$
 
-## {data-background-color="#fff9db"}
+---
 
 By integration
 
@@ -608,7 +605,7 @@ $$
 |\dot{\theta}(t)| \leq \sqrt{\frac{2E(0)}{m\ell^2} + \frac{2g}{\ell} +\frac{2P_M}{m\ell^2}t}
 $$
 
-## {data-background-color="#fff9db"}
+---
 
 Thus, $\dot{\theta}(t)$ cannot blow-up in finite time. Since
 
@@ -618,10 +615,10 @@ $$
 
 $\theta(t)$ cannot blow-up in finite time either. 
 
-By [💎 Maximal Solutions], any maximal solution is global. [🔙](#ls2)
+By [💎 Maximal Solutions], any maximal solution is global.
 
 
-## 🧩 Linear Systems {data-background-color="#ebfbee"}
+## 🧩 Linear Systems 
 
 Let $A \in \mathbb{R}^{n \times n}$. 
 
@@ -631,7 +628,7 @@ $$
 \dot{x} = A x , \; x \in \mathbb{R}^n.
 $$
 
-## {#ls1 data-background-color="#ebfbee"}
+---
 
 ### 1. 🧮
 
@@ -649,7 +646,7 @@ $$
 
 for some $\alpha \geq 0$. [🔓](#als1)
 
-## {#ls2 data-background-color="#ebfbee"}
+---
 
 ### 2. 🧮 
 
@@ -665,18 +662,17 @@ $$
 0 \leq y(t) \leq y(0) e^{2\alpha t}.
 $$
 
-[🔓](#als2)
 
-## {#ls3 data-background-color="#ebfbee"}
+---
 
 ### 3. 🧮 
 
 Prove that for any initial state $x(0) \in \mathbb{R}^n$ there is a 
 corresponding global solution $x(t)$. [🔓](#als3)
 
-## 🔓 Linear Systems {data-background-color="#fff9db"}
+## 🔓 Linear Systems 
 
-## {#als1 data-background-color="#fff9db"}
+---
 
 ### 1. 🔓 
 
@@ -691,7 +687,7 @@ $$
 \end{split}
 $$ 
 
-## {data-background-color="#fff9db"}
+---
 
 Let $\alpha$ denote the largest [singular value](https://en.wikipedia.org/wiki/Singular_value) of $A$ (i.e. the operator norm $\|A\|$).
 
@@ -704,8 +700,7 @@ $$
 \|A u\| \leq \|A\| \|u\|.
 $$
 
-## {data-background-color="#fff9db"}
-
+---
 
 By the [triangle inequality](https://en.wikipedia.org/wiki/Triangle_inequality) and the [Cauchy-Schwarz inequality](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Schwarz_inequality), we obtain
 
@@ -720,10 +715,10 @@ $$
 \end{split}
 $$
 
-and thus $\dot{y}(t) \leq 2\alpha y(t)$ with $\alpha := \|A\|.$ [🔙](#ls1)
+and thus $\dot{y}(t) \leq 2\alpha y(t)$ with $\alpha := \|A\|.$
 
 
-## {#als2 data-background-color="#fff9db"}
+---
 
 ### 2. 🔓
 
@@ -760,9 +755,8 @@ y(t) \leq y(0) e^{2\alpha t}.
 $$
 
 
-[🔙](#ls2)
 
-## {#als3 data-background-color="#fff9db"}
+---
 
 ### 3. 🔓
 
@@ -773,7 +767,7 @@ $$
 is continuous, thus by [💎 Existence] there is a maximal solution 
 $x:\left[0, t_{\infty}\right[$ for any initial state $x(0).$
 
-## {data-background-color="#fff9db"}
+---
 
 Moreover, 
 
@@ -784,14 +778,12 @@ $$
 $$
 
 Hence there is no finite-time blow-up and the maximal solution is global.
-[🔙](#ls3)
+
 
 ## 🏷️ Uniqueness
 
 In the current context, **uniqueness** means uniqueness of the maximal solution
 to an IVP.
-
-(why does uniqueness of local solution does not make sense?)
 
 ## 🙁 Bad News (2/3)
 
@@ -986,13 +978,13 @@ axis([0,2,0,2]); axis("square")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## 🧩 Continuity {data-background-color="#ebfbee"}
+## 🧩 Continuity 
 
 Let $h \geq 0$ and $x^h(t)$ be the solution of the IVP
 
 $$\dot{x} = x, \; x^h(0) = 1+ h.$$
 
-## {#C1 data-background-color="#ebfbee"}
+---
 
 ### 1. 🧮
 
@@ -1002,18 +994,15 @@ Find the largest $\delta > 0$ such that
 $|h| < \delta$ ensures that
 $$\mbox{for any $t \in [t_0, \tau]$}, |x^{h}(t) - x^0(t)| \leq \epsilon$$
 
-[🔓](#AC1)
-
-## {#C2 data-background-color="#ebfbee"}
+---
 
 ### 2. 🧮
 
-What is the behavior of $\delta$ when $\tau$ goes to infinity? [🔓](#AC2)
+What is the behavior of $\delta$ when $\tau$ goes to infinity?
 
-## 🔓 Continuity {data-background-color="#fff9db"}
+## 🔓 Continuity
 
-
-## {#AC1 data-background-color="#fff9db"}
+---
 
 ### 2. 🔓
 
@@ -1029,17 +1018,16 @@ $$
 \max_{t \in [0, \tau]} |x^h(t) - x^0(t)| = |h| e^{\tau}.
 $$
 
-## {#AC1 data-background-color="#fff9db"}
-
+---
 
 Thus, the smallest $\delta$ such that $|h| \leq \delta$ yields
 $$
 \max_{t \in [0, \tau]} |x^h(t) - x^0(t)| \leq \epsilon.
 $$
-is $\delta = \varepsilon e^{-\tau}.$ [🔙](#C1)
+is $\delta = \varepsilon e^{-\tau}.$
 
 
-## {#AC2 data-background-color="#fff9db"}
+---
 
 ### 2. 🔓
 
@@ -1048,42 +1036,38 @@ $$
 \lim_{\tau \to +\infty} \delta = 0.
 $$
 
-[🔙](#C2)
 
-
-
-## 🧩 Continuity Issues {data-background-color="#ebfbee"}
+## 🧩 Continuity Issues 
 
 Consider the IVP
 $$\dot{x} = \sqrt{|x|}, \; x(0)=x_0 \in \mathbb{R}.$$
 
-## {#CI1 data-background-color="#ebfbee"}
+---
 
 ### 1. 💻 📈
 
 Solve numerically this IVP for $t \in [0,1]$ and $x_0 = 0$ and plot the result.
 
 Then, solve it again for $x_0 = 0.1$, $x_0=0.01$, etc. and
-plot the results. [🔓](#ACI1)
+plot the results. 
 
-## {#CI2 data-background-color="#ebfbee"}
+---
 
 ### 2. 🔬
 
 Does the solution seem to be continuous with respect to the initial value?
-[🔓](#ACI2)
 
 
-## {#CI3 data-background-color="#ebfbee"}
+---
 
 ### 3. 🧠
 
-Explain this experimental result. [🔓](#ACI3)
+Explain this experimental result.
 
 
-## 🔓 Continuity Issues {data-background-color="#fff9db"}
+## 🔓 Continuity Issues
 
-## {#ACI1 data-background-color="#fff9db"}
+---
 
 ### 1. 🔓
 
@@ -1096,7 +1080,7 @@ tspan = [0.0, 3.0]
 t = linspace(tspan[0], tspan[1], 1000)
 ```
 
-## {data-background-color="#fff9db"}
+---
 
 ```python
 figure()
@@ -1119,21 +1103,16 @@ save("images/eps", transparent=True)
 
 ## {data-background-color="#fff9db" data-background="images/eps.svg" data-background-size="contain"}
 
-## {data-background-color="#fff9db"}
-
-[🔙](#CI1)
-
-
-## {#ACI2 data-background-color="#fff9db"}
+---
 
 ### 2. 🔓
 
 The solution does not seem to be continuous with respect to the initial value
 since the graph of the solution seems to have a limit when $x_0 \to 0^+$, 
 but this limit is different from $x(t)= 0$ which is the numerical solution
-when $x_0=0$. [🔙](#CI2)
+when $x_0=0$. 
 
-## {#ACI3 data-background-color="#fff9db"}
+---
 
 ### 3. 🔓
 
@@ -1145,7 +1124,7 @@ $$
 x(t) = \frac{1}{4}t^2
 $$
 and the numerical solution seems to converge to the second one when $x_0 \to 0^+$.
-[🔙](#CI3)
+
 
 ## 🧩 Prey-Predator {data-background-color="#ebfbee"}
 
@@ -1160,18 +1139,18 @@ $$
 
 where $\alpha$, $\beta$, $\delta$ and $\gamma$ are positive.
 
-## {#PP1 data-background-color="#ebfbee"}
+---
 
 ### 1. 🧮
 
-Prove that the system is well-posed. [🔓](#APP1)
+Prove that the system is well-posed.
 
-## {#PP2 data-background-color="#ebfbee"}
+---
 
 ### 2. 🧮 🧠
 
 Prove that all maximal solutions such that $x(0) > 0$ and $y(0) > 0$ are global
-and satify $x(t)>0$ and $y(t)>0$ for every $t\geq 0$. [🔓](#APP2)
+and satify $x(t)>0$ and $y(t)>0$ for every $t\geq 0$.
 
 **Hint 🗝️.** Compute the ODE satisfied by $u=\ln x$ and $v= \ln y$ and then
 the derivative w.r.t. time of 
@@ -1179,9 +1158,9 @@ $$
 V := \delta e^u - \gamma u +\beta e^v - \alpha v.
 $$ 
 
-## 🔓 Prey-Predator {data-background-color="#fff9db"}
+## 🔓 Prey-Predator
 
-## {#APP1 data-background-color="#fff9db"}
+---
 
 ### 🔓 1.
 
@@ -1200,11 +1179,11 @@ $$
 \end{array}
 \right]
 $$
-thus the sytem is well-posed. [🔙](#PP1)
+thus the sytem is well-posed. 
 
-## {#APP2 data-background-color="#fff9db"}
+---
 
-### 🔓 2. {data-background-color="#fff9db"}
+### 🔓 2.
 
 The (continuously differentiable) change of variable 
 $$
@@ -1214,7 +1193,8 @@ is a bijection between $\left]0, +\infty\right[^2$
 and $\mathbb{R}^2$.
 
 
-## {data-background-color="#fff9db"}
+---
+
 Since 
 $$
 \frac{d}{dt} \ln x = \frac{\dot{x}}{x}, \;
@@ -1229,7 +1209,7 @@ $$
 $$
 
 
-## {data-background-color="#fff9db"}
+---
 
 Accordingly,
 $$
@@ -1245,7 +1225,7 @@ $$
 
 Therefore $V(u(t), v(t))$ is constant.
 
-## {data-background-color="#fff9db"}
+---
 
 Now, the function
 $$
@@ -1262,7 +1242,7 @@ $$
 \lim_{\|(u, v)\| \to +\infty} V(u, v) = +\infty.
 $$
 
-## {data-background-color="#fff9db"}
+---
 
 Consequently, since $V(x(t), y(t))$ is constant, the solution $(u(t), v(t))$
 **cannot** blow up (either in finite or infinite time). 
@@ -1272,7 +1252,7 @@ in the original variables $(x(t), y(t))$.
 
 Since $(x, y) = F^{-1}(u, v)$
 and the domain of $F$ is $\left]0, +\infty\right[^2$, $x(t)>0$ and $y(t)>0$
-for any $t\geq 0$. [🔙](#PP2)
+for any $t\geq 0$.
 
 <style>
 

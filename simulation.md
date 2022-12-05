@@ -1,5 +1,5 @@
 % Simulation
-% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu)
 
 
 ### Control Engineering with Python
@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -405,7 +405,7 @@ xlabel("$t$"); grid(); legend()
 
 
 
-## Variable Step Size
+## 🏷️ Variable Step Size
 
 The step size is:
 
@@ -419,7 +419,7 @@ to minimize the number of computations.
 
 Optionally, you can specify a `max_step` (default: $+\infty$).
 
-## Error Control
+## 🏷️ Error Control
 
 We generally want to control the (local) error $e(t)$:
 the difference between the numerical solution and the exact one.
@@ -434,9 +434,7 @@ $$
 |e(t)| \leq \mathrm{atol} + \mathrm{rtol} \times |x(t)|
 $$
 
------
-
-### 🐍 Solver Options
+## 🔍 🐍 Solver Options
 
 **Example:**
 
@@ -493,9 +491,8 @@ xlabel("$t$"); grid(); legend()
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-----------
 
-### Dense Outputs
+## 🏷️ Dense Outputs
 
 Using a small `max_step` is usually the wrong way to "get more data points"
 since this will trigger many (potentially expensive) evaluations of `fun`.
@@ -506,9 +503,8 @@ the discrete data `result["t"]` and `result["y"]`
 solution `result["sol"]` **as a function of `t`**
 with little extra computations.
 
--------------
 
-### 🐍 Solver Options
+## 🔍 🐍 Solver Options
 
 ```python
 options = {
@@ -666,6 +662,10 @@ details[open] summary ~ * {
   100%  {opacity: 1}
 }
 
+section p.author {
+  text-align: center;
+  margin: auto;
+}
 
 </style>
 

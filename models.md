@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -389,11 +389,13 @@ bar.close()
 
 ---
 
-**Q1 🧠 🧮.**
+### 1. 🧠 🧮
 
 Establish the equations governing the pendulum dynamics.
 
-**Q2 🧠 🧮.**
+---
+
+### 2. 🧠 🧮
 
 Generalize the dynamics when there is a friction torque
 $c = -b \dot{\theta}$ for some $b \geq 0$.
@@ -404,27 +406,33 @@ We denote $\omega$ the pendulum **angular velocity**:
 
 $$\omega := \dot{\theta}.$$
 
-**Q3 🧠 🧮.**
+### 3. 🧠 🧮
 
 Transform the dynamics into a first-order ODE with state $x = (\theta, \omega)$.
 
-**Q4 📈.**
+---
+
+### 4. 📈
 
 Draw the system stream plot when $m=1$, $\ell=1$, $g=9.81$ and $b=0$.
 
 ---
 
-**Q5 🧠 🧮.**
+### 5. 🧠 🧮
+
 Determine least possible angular velocity
 $\omega_0 > 0$ such that when $\theta(0) = 0$ and
 $\dot{\theta}(0) = \omega_0$, the pendulum reaches (or overshoots)
 $\theta(t) = \pi$ for some $t>0$.
 
+
+## 🔓 Pendulum
+
 ---
 
-### 🔓 Solution
+### 1. 🔓
 
-**Q1 🔓.** The pendulum **total mechanical energy** $E$ is the sum of its
+The pendulum **total mechanical energy** $E$ is the sum of its
 **kinetic energy** $K$ and its **potential energy** $V$:
 
 $$
@@ -468,7 +476,9 @@ $$
 
 ---
 
-**Q2 🔓.** When there is an additional dissipative torque $c=-b\theta$, we have instead
+### 2. 🔓
+
+When there is an additional dissipative torque $c=-b\theta$, we have instead
 
 $$
 \dot{E} = c \dot{\theta} = - b\dot{\theta}^2
@@ -482,7 +492,9 @@ $$
 
 ---
 
-**Q3 🔓.** With $\omega := \dot{\theta}$, the dynamics becomes
+### 3. 🔓
+
+With $\omega := \dot{\theta}$, the dynamics becomes
 
 $$
 \begin{array}{lll}
@@ -493,7 +505,7 @@ $$
 
 ---
 
-**Q4 🔓.**
+### 4. 🔓
 
 ```python
 m=1.0; b=0.0; l=1.0; g=9.81
@@ -505,7 +517,9 @@ def f(theta_d_theta):
     return array([d_theta, d2_theta])
 ```
 
-## 📈
+---
+
+### 📈
 
 ```python
 figure()
@@ -533,8 +547,10 @@ save("images/sstreamplot_pendulum")
 
 ---
 
-**Q5 🔓.** In the top vertical configuration, the total mechanical energy of
-the pendulum is
+### 5. 🔓
+
+In the top vertical configuration, the total mechanical energy of the pendulum 
+is
 
 $$
 E_{\top} = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \cos \pi = \frac{1}{2} m \ell^2 \dot{\theta}^2 + mg \ell.

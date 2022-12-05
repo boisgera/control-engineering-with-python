@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -1406,9 +1406,7 @@ An equilibrium $x_e$ is **stable** iff:
 
 - for any $t\geq 0$, $|x(t) - x_e| \leq r$.
 
-## 🎓 Vinograd System
-
----
+## 🧩 Vinograd System
 
 Consider the system:
 
@@ -1419,7 +1417,9 @@ $$
 \end{array}
 $$
 
-## 🐍 Vector field
+---
+
+### 🐍 Vector field
 
 ```python
 def f(xy):
@@ -1430,7 +1430,9 @@ def f(xy):
     return array([dx, dy])
 ```
 
-## 📈 Stream plot
+---
+
+### 📈 Stream plot
 
 ```python
 figure()
@@ -1457,43 +1459,37 @@ axis("off")
 
 ---
 
-### Question 1 🧮 {#vinograd-1}
+### 1. 🧮
 
 Show that the origin $(0, 0)$ is the unique equilibrium.
 
-[$\to$ Solution](#vinograd-solution-1)
-
 ---
 
-### Question 2 📈🔬 {#vinograd-2}
+### 2. 📈🔬
 
 Does this equilibrium seem to be attractive (graphically) ?
 
-[$\to$ Solution](#vinograd-solution-2)
-
 ---
 
-### Question 3 🧠 {#vinograd-3}
+### 3. 🧠
 
 Show that for any equilibrium of a well-posed system:
 
 **💎 (locally) asymptotically stable $\Rightarrow$ stable**
 
-[$\to$ Solution](#vinograd-solution-3)
-
 ---
 
-### Question 4 🧪📈 {#vinograd-4}
+### 4. 🧪📈
 
 Does the origin seem to be stable (experimentally ?)
 
 Conclude accordingly.
 
+## 🔓 Vinograd System
+
 ---
 
-## 🎓 Vinograd System: Answers
-
-## Answer 1 {#vinograd-solution-1}
+### 1. 🔓
 
 $(x,y)$ is an equilibrium of the Vinograd system iff
 
@@ -1540,20 +1536,19 @@ The initial assumption cannot hold.
 
 The Vinograd system has a single equilibrium: $(0, 0)$.
 
-[$\leftarrow$ Back to question 1](#vinograd-1)
 
 ---
 
-## Answer 2 {#vinograd-solution-2}
+### 2. 🔓
 
 Yes, the origin seems to be (globally) attractive.
 
 As far as we can tell, the streamplot displays trajectories
 that ultimately all converge towards the origin.
 
-[$\leftarrow$ Back to question 2](#vinograd-2)
+---
 
-## Answer 3 {#vinograd-solution-3}
+### 3. 🔓
 
 Let's assume that $x_e$ is a (locally) asymptotically stable of a well-posed system.
 
@@ -1613,9 +1608,9 @@ $$
 
 In other words, **the system is stable!** 🎉
 
-[$\leftarrow$ Back to question 3](#vinograd-3)
+-----
 
-## Answer 4 {#vinograd-solution-4}
+### 4. 🔓
 
 No! We can pick initial states $(0, \varepsilon)$, with $\varepsilon >0$
 which are just above the origin and still the distance of
@@ -1626,8 +1621,7 @@ their trajectory to the origin will exceed $1.0$ at some point:
 ```python
 def fun(t, xy):
     return f(xy)
-eps = 1e-10
-xy0 = (0, eps)
+eps = 1e-10; xy0 = (0, eps)
 sol = solve_ivp(
   fun=fun,
   y0=xy0,
@@ -1642,26 +1636,29 @@ t = linspace(0.0, 100.0, 10000)
 xt, yt = sol(t)
 figure()
 x = y = linspace(-1.0, 1.0, 1000)
-grey_4 = to_rgb("#ced4da")
-streamplot(*Q(f, x, y), color=grey_4)
+streamplot(*Q(f, x, y), color="#ced4da")
 xticks([-1, 0, 1])
 plot([0], [0], "k.", ms=10.0)
-plot(xt, yt)
-plot(xt, yt)
+plot(xt, yt, color="C0")
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
 axis("square")
 axis("off")
 save("images/unstable")
 ```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
 
 ::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ## {.section data-background="images/unstable.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
----
-
-[$\leftarrow$ Back to question 4](#vinograd-4)
 
 
 

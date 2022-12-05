@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -278,7 +278,7 @@ assert all([real(s) < 0 for s in eigenvalues])
 figure()
 x = [real(s) for s in eigenvalues]
 y = [imag(s) for s in eigenvalues]
-plot(x, y, "kx", ms=12.0)
+plot(x, y, "kx")
 grid(True)
 title("Eigenvalues")
 axis("square")
@@ -331,13 +331,12 @@ u = - (K @ result["y"]).flatten() # vect. -> scalar
 ### 📈 Input & State Evolution
 
 ```python
-width = 160 / 9
-height = width / (16 / 9)
-figure(figsize=(width, height))
+figure()
 plot(t, x1, label="$x_1$")
 plot(t, x2, label="$x_2$")
 plot(t, u, label="$u$")
 xlabel("$t$")
+grid(True)
 legend(loc="lower right")
 ```
 
@@ -384,7 +383,7 @@ assert all([real(s) < 0 for s in eigenvalues])
 figure()
 x = [real(s) for s in eigenvalues]
 y = [imag(s) for s in eigenvalues]
-plot(x, y, "kx", ms=12.0)
+plot(x, y, "kx")
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -436,13 +435,12 @@ u = - (K @ result["y"]).flatten() # vect. -> scalar
 ### 📈 Input & State Evolution
 
 ```python
-width = 160 / 9
-height = width / (16 / 9)
-figure(figsize=(width, height))
+figure()
 plot(t, x1, label="$x_1$")
 plot(t, x2, label="$x_2$")
 plot(t, u, label="$u$")
 xlabel("$t$")
+grid(True)
 legend(loc="lower right")
 ```
 
@@ -491,7 +489,7 @@ assert all([real(s) < 0 for s in eigenvalues])
 figure()
 x = [real(s) for s in eigenvalues]
 y = [imag(s) for s in eigenvalues]
-plot(x, y, "kx", ms=12.0)
+plot(x, y, "kx")
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -541,17 +539,15 @@ u = - (K @ result["y"]).flatten() # vect. -> scalar
 ### 📈 Input & State Evolution
 
 ```python
-width = 160 / 9
-height = width / (16 / 9)
-figure(figsize=(width, height))
+figure()
 plot(t, x1, label="$x_1$")
 plot(t, x2, label="$x_2$")
 plot(t, u, label="$u$")
 xlabel("$t$")
+grid(True)
 legend(loc="lower right")
 ```
 
---------------------------------------------------------------------------------
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -580,7 +576,10 @@ $$
 J = \int_{0}^{+\infty}  x(t)^t Q x(t) + u(t)^t R u(t) \, dt.
 $$
 
----
+
+--------------------------------------------------------------------------------
+
+### 1 🧮. 
 
 Let
 
@@ -588,19 +587,25 @@ $$
 j(x, u) := x^tQ x + u^t R u.
 $$
 
-**Q1 🧮.** Show that
+Show that
 
 $$
 j(x(t), u(t)) = - \frac{d}{dt} x(t)^t \Pi x(t)
 $$
 
-**Q2 🧮.** What is the value of $J$?
+--------------------------------------------------------------------------------
 
----
+### 2. 🧮
 
-## 🔒 Optimal Value
+ What is the value of $J$?
 
-**Q1.**
+## 🔓 Optimal Value
+
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
 We know that $u = -Kx$ where $K = R^{-1} B^t \Pi$
 and $\Pi$ is a symmetric solution of
 
@@ -631,9 +636,11 @@ $$
 \end{split}
 $$
 
----
+--------------------------------------------------------------------------------
 
-**Q2.** Since the system is controllable, the optimal control makes the
+### 2. 🔓
+
+Since the system is controllable, the optimal control makes the
 origin of the closed-loop system asymptotically stable. Consequently,
 $x(t) \to 0$ when $t \to +\infty$. Hence,
 

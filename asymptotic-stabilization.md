@@ -16,10 +16,10 @@
 
 |     |             |     |                        |
 | --- | ----------- | --- | ---------------------- |
-| 🐍  | Code        | 🔍  | Example                |
+| 🐍  | Code        | 🔍  | Worked Example         |
 | 📈  | Graph       | 🧩  | Exercise               |
-| 🏷️  | Definition  | 💻  | Computation (Computer) |
-| 💎  | Theorem     | 🧮  | Computation (By Hand)  |
+| 🏷️  | Definition  | 💻  | Numerical Solution     |
+| 💎  | Theorem     | 🧮  | Analytical Solution    |
 | 📝  | Remark      | 🧠  | Theory                 |
 | ℹ️  | Information | 🗝️  | Hint                   |
 | ⚠️  | Warning     | 🔓  | Solution               |
@@ -139,9 +139,7 @@ $$
 \dot{x} = A x, \; x \in \mathbb{R}^n
 $$ 
 
-is not asymptotically stable at the origin,
-
-maybe there are some available inputs $u \in \mathbb{R}^m$ such that
+is not asymptotically stable at the origin, maybe there are some inputs $u \in \mathbb{R}^m$ such that
 
 $$
 \dot{x} = A x + Bu
