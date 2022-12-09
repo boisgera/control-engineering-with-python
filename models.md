@@ -28,24 +28,20 @@
 
 ## 🐍 Imports
 
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ```python
 from numpy import *
 from numpy.linalg import *
 from matplotlib.pyplot import *
-from mpl_toolkits.mplot3d import *
 ```
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## 🔧 Notebook Configuration
 
 ```python
-from numpy import *
-import matplotlib; matplotlib.use("nbAgg")
-%matplotlib notebook
-from matplotlib.pyplot import *
+rcParams['figure.dpi'] = 200
 ```
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

@@ -27,16 +27,23 @@
 
 ## 🐍 Imports
 
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ```python
 from numpy import *
 from numpy.linalg import *
 from matplotlib.pyplot import *
-from mpl_toolkits.mplot3d import *
+from scipy.integrate import solve_ivp
+```
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## 🔧 Notebook Configuration
+
+```python
+rcParams['figure.dpi'] = 200
 ```
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -237,30 +244,29 @@ legend()
 
 ------
 
-### 📈 Trajectories (State Space)
+### 📈 Trajectory (State Space)
 
-Display a set of solutions in the background
+```python
+def plot_trajectory_in_state_space(x):
+    x1, x2 = x[0], x[1]
+    plot(x1, x2, "k");
+    plot(x1[0], x2[0], "ko")
+    dx1, dx2 = x1[-1] - x1[-2], x2[-1] - x2[-2]
+    arrow(x1[-1], x2[-1], dx1, dx2,
+          width=0.02, color="k", zorder=10)
+```
+
+--------------------------------------------------------------------------------
+
+### 📈 Stream Plot + Trajectory
 
 ```python
 figure()
 xs = linspace(-3.0, 3.0, 50)
 ys = linspace(-1.5, 1.5, 50)
 streamplot(*Q(f, xs, ys), color="lightgrey")
-```
-
-------------
-
-### 📈...
-
-```python
-x1, x2 = x[0], x[1]
-plot(x1, x2, "k");
-plot(x1[0], x2[0], "ko")
-dx1, dx2 = x1[-1] - x1[-2], x2[-1] - x2[-2]
-arrow(
-    x1[-1], x2[-1], dx1, dx2,
-    width=0.02, color="k", zorder=10)
-grid(); axis("equal")
+plot_trajectory_in_state_space(x)
+axis("equal"); grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -292,7 +298,7 @@ Instead
 
 ## 📖 Scipy Integrate
 
-For example, use:
+Use:
 
 ```python
 from scipy.integrate import solve_ivp

@@ -26,8 +26,6 @@
 
 ## 🐍 Imports
 
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
 ```python
 from numpy import *
 from numpy.linalg import *
@@ -35,7 +33,16 @@ from scipy.integrate import solve_ivp
 from matplotlib.pyplot import *
 ```
 
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## 🔧 Notebook Configuration
+
+```python
+rcParams['figure.dpi'] = 200
+```
+
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -157,7 +164,7 @@ xlim(t0, tf); xlabel("$t$"); ylabel("$x(t)$")
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
     tight_layout()
-    save("images/finite-time-blowup", transparent=True)
+    save("images/finite-time-blowup")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
@@ -460,6 +467,7 @@ def sigma(x):
 figure()
 x = linspace(-7.0, 7.0, 1000)
 plot(x, sigma(x), label="$y=\sigma(x)$")
+grid(True)
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
@@ -471,7 +479,6 @@ xlabel("$x$")
 ylabel("$y$")
 legend()
 pp.gcf().subplots_adjust(bottom=0.2)
-grid(True)
 save("images/sigmoid")
 ```
 
@@ -1096,7 +1103,7 @@ legend()
 
 ```python
 pp.gcf().subplots_adjust(bottom=0.2)
-save("images/eps", transparent=True)
+save("images/eps")
 ```
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 

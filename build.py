@@ -12,7 +12,18 @@ import lxml.etree
 
 # Pandoc
 import pandoc
-from pandoc.types import CodeBlock, Div, Format, Header, HorizontalRule, RawBlock
+from pandoc.types import (
+    CodeBlock,
+    Div,
+    Format,
+    Header,
+    HorizontalRule,
+    Image,
+    Link,
+    Para,
+    RawBlock,
+    Strong,
+)
 
 # ------------------------------------------------------------------------------
 # TODO: reconsider all flags wrt use cases and simplification of the document.
@@ -230,7 +241,6 @@ options = [
 
 pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=options)
 
-
 # Notebook Generation
 # ------------------------------------------------------------------------------
 def make_notebook_doc(doc):
@@ -301,12 +311,66 @@ for holder, index, code in reversed(video_elements):
 # TODO: search for raw html, parse with lxml, filter on video tags, search for
 # source(s? first one?), generate the appropriate Jupyter Code Cell.
 
-# TODO: also need to remove unsupported construct from Jupyter Markdown Cells.
-#       E.g.: attributes (that's about it ?)
-for elt in pandoc.iter(notebook_doc):
+data_background_headers = []
+for elt, path in pandoc.iter(notebook_doc, path=True):
     if isinstance(elt, Header):
         header = elt
-        attr = header[1] = ("", [], [])
+        _, attr, _ = header[:]
+        _, cls, kvs = attr
+        if "display" in cls:
+            holder = path[-1]
+            url = None
+            for k, v in kvs:
+                if k == "data-background":
+                    url = v
+                    break
+            data_background_headers.append((header, holder, url))
+
+for header, holder, url in reversed(data_background_headers):
+    parent, index = holder
+    attr = ("", [], [])
+    inlines = []
+    title = ""
+    image = Image(attr, inlines, (url, title))
+    parent[index] = Para([image])
+
+# Youtube videos (iframes) support in notebooks
+found = []
+for elt, path in pandoc.iter(notebook_doc, path=True):
+    if isinstance(elt, RawBlock):
+        format, src = elt[:]
+        if format == Format("html"):
+            src = src.strip()
+            if src.startswith("<iframe "):
+                found.append((elt, path))
+
+for elt, path in reversed(found):
+    parent, index = path[-1]
+    src = elt[1]
+    attr = ("", [], [("lang", "python")])
+    codeblock = CodeBlock(attr, f"from IPython.display import HTML\n\nHTML('{src}')\n")
+    parent[index] = codeblock
+
+# Remove constructs unsupported by notebooks from Jupyter Markdown Cells.
+# ATM attributes removal in Headers and Images and removes (unwraps)
+# internal links.
+for elt in pandoc.iter(notebook_doc):
+    empty_attr = ("", [], [])
+    if isinstance(elt, Header):
+        elt[1] = empty_attr
+    elif isinstance(elt, Image):
+        elt[0] = empty_attr
+found = []
+for elt, path in pandoc.iter(notebook_doc, path=True):
+    if isinstance(elt, Link):
+        link = elt
+        url, title = target = link[2]
+        if url.startswith("#"):  # local
+            found.append((link, path))
+for link, path in reversed(found):
+    parent, index = path[-1]
+    inlines = link[1]
+    parent[index] = Strong(inlines)
 
 
 def Notebook():
@@ -426,8 +490,6 @@ def notebookify(doc):
     return notebook
 
 
-# TODO: try to replace notebookify with "native" pandoc notebook conversion;
-# See how it goes. Compare ...
 notebook = notebookify(notebook_doc)
 output = open(doc_name + ".ipynb", "w")
 output.write(json.dumps(notebook, indent=2))

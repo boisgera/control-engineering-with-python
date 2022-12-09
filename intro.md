@@ -49,40 +49,23 @@ of abstract **dynamical systems**.
 
 ## 🧭 Examples
 
-## {data-background="images/static/engin-akyurt-KUeJcc4YUug-unsplash.jpg"}
+## {data-background="images/static/engin-akyurt-KUeJcc4YUug-unsplash.jpg" .display}
 
-<h2 style="background-color:#ffffff90">
-Mechanical Systems
-</h2>
+### Mechanical Systems {style="background-color:#ffffff90"}
 
-<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://unsplash.com/@enginakyurt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">engin akyurt</a> on <a href="https://unsplash.com/s/photos/pendulum?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>)</p>
+### Photo by [enginakyurt](https://unsplash.com/@enginakyurt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/pendulum?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
   
-<!--  
-## {data-background="images/static/tomoko-uji-mrY6njRF7wk-unsplash.jpg"}
+## {data-background="images/static/jeremy-cai-B8UTPKlHNyw-unsplash.jpg" .display}
 
-<h2 style="color:white">
-The flow of water in a pipe
-</h2>
+### Population Dynamics {style="background-color:#ffffff90"}
 
-<p style="color:white;text-align:center;">(Photo by <a href="https://unsplash.com/@ujitomo?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">TOMOKO UJI</a> on <a href="https://unsplash.com/s/photos/water-pipe?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>)</p>
+### Photo by [Jeremy Cai](https://unsplash.com/@j?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/fish-lake?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
--->
+## {data-background="images/static/daniel-schludi-mAGZNECMcUg-unsplash.jpg" .display}
 
-## {data-background="images/static/jeremy-cai-B8UTPKlHNyw-unsplash.jpg"}
+### Epidemiological Models {style="background-color:#ffffff90"}
 
-<h2 style="background-color:#ffffff90; color:black">
-Population Dynamics
-</h2>
-
-
-<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://unsplash.com/@j?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Jeremy Cai</a> on <a href="https://unsplash.com/s/photos/fish-lake?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>)</p>
-
-## {data-background="images/static/daniel-schludi-mAGZNECMcUg-unsplash.jpg"}
-
-<h2 style="background-color:#ffffff90;color:black;">
-Epidemiological Models
-</h2>
-<p style="text-align:center;background-color:#ffffff90">(Photo by <a href="https://unsplash.com/@schluditsch?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Daniel Schludi</a> on <a href="https://unsplash.com/s/photos/covid-19?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>)</p>
+#### Photo by [Daniel Schludi](https://unsplash.com/@schluditsch?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/covid-19?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
 ## 🏷️ Control Engineering
 
@@ -105,16 +88,11 @@ Overlaps with and complements:
 
 ## 🧭 Applications
 
-## {data-background="images/static/possessed-photography-dRMQiAubdws-unsplash.jpg"}
+## {data-background="images/static/possessed-photography-dRMQiAubdws-unsplash.jpg" .display}
 
+### Robotics {style="background-color:#ffffff90"}
 
-<h2 style="background-color:#ffffff90">
-Robotics
-</h2>
-
-
-<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://unsplash.com/@possessedphotography?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Possessed Photography</a> on <a href="https://unsplash.com/s/photos/robotics?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
-  )</p>
+#### [Possessed Photography](https://unsplash.com/@possessedphotography?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/robotics?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
 ## 🤖 or 🧑?
 
@@ -132,16 +110,11 @@ Consider:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
-## {data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg"}
+## {data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg" .display}
 
-<h2 style="background-color:#ffffff90">
-Eurofighter Typhoon
-</h2>
+### Eurofighter Typhoon {style="background-color:#ffffff90"}
 
-
-  
-
-<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://unsplash.com/es/@raymondo600?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ray Harrington</a> on <a href="https://unsplash.com/s/photos/eurofighter-typhoon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>)</p>
+#### Photo by [Ray Harrington](https://unsplash.com/es/@raymondo600?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/eurofighter-typhoon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
 --------------------------------------------------------------------------------
 
@@ -165,6 +138,7 @@ Eurofighter Typhoon
 
 "Instead, **all movements of the throttle, stick or pedals are interpreted by the FCS and an appropriate control response taken.**"
 
+
 ## Learn More
 
   - 📖 [Negative Stability (Aerodynamics)](https://en.wikipedia.org/wiki/Relaxed_stability)
@@ -173,13 +147,11 @@ Eurofighter Typhoon
 
   - 🖼️ [Eurofighter Typhoon Photos](https://unsplash.com/s/photos/eurofighter-typhoon)
 
-## {data-background="images/static/640px-20180825_SP-LVD_Radom_Air_Show_1111_4948_DxO.jpg"}
+## {data-background="images/justin-hu-oSyF_-CfXxA-unsplash.jpg" .display}
 
-<h2 style="background-color:#ffffff90">
-Boeing 737 MAX
-</h2>
+### Boeing 737 MAX {style="background-color:#ffffff90"}
 
-<p style="background-color:#ffffff90;text-align:center;">(Photo by <a href="https://commons.wikimedia.org/wiki/User:Jakubhal">Jakub Hałun</a>,<a href="https://creativecommons.org/licenses/by-sa/4.0/deed.en">CC-BY-SA 4.0</a>)</p>
+#### Photo by [Justin Hu](https://unsplash.com/@phanto_sea?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/boeing-737-max?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"} 
 
 ## Boeing 737 MAX
 
@@ -270,7 +242,6 @@ Single feature automation.
 ### Electronic stability control
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 
 ## Learn More
 
@@ -398,8 +369,6 @@ section p.author {
 }
 
 </style>
-
 <link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
-
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
 
