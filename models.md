@@ -265,7 +265,7 @@ where $n > 1$.
 The previous $n$-th order ODE is equivalent to the first-order ODE
 
 $$
-x = f(x), \, x \in \mathbb{R}^n
+\dot{x} = f(x), \, x \in \mathbb{R}^n
 $$
 
 with
