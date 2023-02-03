@@ -570,13 +570,13 @@ $E_{\bot} \geq E_{\top}$ for the mass to reach the top position.
 That is
 
 $$
-E_{\bot} = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \geq - mg \ell = E_{\top}
+E_{\bot} = \frac{1}{2} m \ell^2 \dot{\theta}^2 - mg \ell \geq  mg \ell = E_{\top}
 $$
 
 which leads to:
 
 $$
-|\dot{\theta}| \geq \sqrt{2 \frac{g}{\ell}}.
+|\dot{\theta}| \geq 2 \sqrt{\frac{g}{\ell}}.
 $$
 
 <style>
