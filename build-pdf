@@ -5,7 +5,10 @@ decktape --size 1600x900 automatic models.html models.pdf
 decktape --size 1600x900 automatic simulation.html simulation.pdf
 decktape --size 1600x900 automatic well-posedness.html well-posedness.pdf
 decktape --size 1600x900 automatic asymptotic.html asymptotic.pdf
-decktape --size 1600x900 automatic linear-systems.html linear-systems.pdf
+#decktape --size 1600x900 automatic linear-systems.html linear-systems.pdf
+decktape --size 1600x900 automatic LTI-models.html LTI-models.pdf
+decktape --size 1600x900 automatic internal-dynamics.html internal-dynamics.pdf
+decktape --size 1600x900 automatic IO-dynamics.html IO-dynamics.pdf
 decktape --size 1600x900 automatic controllability.html controllability.pdf
 decktape --size 1600x900 automatic asymptotic-stabilization.html asymptotic-stabilization.pdf
 decktape --size 1600x900 automatic optimal-control.html optimal-control.pdf
