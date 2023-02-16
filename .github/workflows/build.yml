@@ -40,8 +40,8 @@ jobs:
       - name: JupyterLite Build
         run: jupyter lite build --contents . --output-dir dist
 
-      - name: PDF build
-        run: ./build-pdf
+      # - name: PDF build    # I have timeouts, temporary disable.
+      #   run: ./build-pdf
 
       - name: Deployment Setup
         run: rm .gitignore
