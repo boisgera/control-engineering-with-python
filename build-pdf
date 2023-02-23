@@ -1,14 +1,34 @@
-#!/bin/bash
+#!/usr/bin/env python
 
-decktape --size 1600x900 automatic intro.html intro.pdf
-decktape --size 1600x900 automatic models.html models.pdf
-decktape --size 1600x900 automatic simulation.html simulation.pdf
-decktape --size 1600x900 automatic well-posedness.html well-posedness.pdf
-decktape --size 1600x900 automatic asymptotic.html asymptotic.pdf
-#decktape --size 1600x900 automatic linear-systems.html linear-systems.pdf
-decktape --size 1600x900 automatic LTI-models.html LTI-models.pdf
-decktape --size 1600x900 automatic internal-dynamics.html internal-dynamics.pdf
-decktape --size 1600x900 automatic IO-dynamics.html IO-dynamics.pdf
-decktape --size 1600x900 automatic controllability.html controllability.pdf
-decktape --size 1600x900 automatic asymptotic-stabilization.html asymptotic-stabilization.pdf
-decktape --size 1600x900 automatic optimal-control.html optimal-control.pdf
+"""
+Parallel build of the PDF slide decks
+"""
+
+# Python Standard Library
+import shlex
+import subprocess
+import sys
+
+targets = [
+    "intro",
+    "models",
+    "simulation",
+    "well-posedness",
+    "asymptotic",
+    "LTI-models",
+    "internal-dynamics",
+    "IO-dynamics",
+    "controllability",
+    "asymptotic-stabilization",
+    "optimal-control",
+    "observers",
+]
+
+processes = []
+
+for target in targets:
+    args = shlex.split(f"decktape --size 1600x900 automatic {target}.html {target}.pdf")
+    process = subprocess.Popen(args)
+    processes.append(process)
+
+sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)
