@@ -10,7 +10,7 @@ authors:
 affiliations:
  - name: Center for Robotics, Mines Paris, PSL University
    index: 1
-date: 31 August 2021
+date: 20 February 2023
 bibliography: paper.bib
 ---
 
@@ -46,6 +46,8 @@ At the end of this course, students will be able to:
   - leverage the control engineering perspective in application domains.
 
 ## Experience
+
+**TODO.** single or 3-instructors settings.
 
 The course material has been taught:
 
@@ -86,6 +88,8 @@ with the following characteristics:
 
 ### Software Stack & Educational Technology
 
+**TODO.** Multi-backend (and why!)
+
 The software tools used to solve control engineering problems
 belong to the [Python/SciPy ecosystem](https://www.scipy.org/). 
 Mostly:
@@ -101,6 +105,8 @@ We also rely on [Jupyter notebooks](http://jupyter.org/) to define
 executable documents. Notebooks can behave mostly like classic documents,
 but they can also embed some editable and executable code that produces 
 some dynamic content. 
+
+**For teachers, likely to use the stuff. How?**
 
 ### Pedagogy & Team
 
