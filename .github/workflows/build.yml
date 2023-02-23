@@ -23,8 +23,8 @@ jobs:
       - name: Display FFMPEG Info
         run: ffmpeg -version
 
-      - name: LaTeX Install
-        run: sudo apt-get update && sudo apt-get install texlive-full
+      # - name: LaTeX Install  # Not needed anymore
+      #   run: sudo apt-get update && sudo apt-get install texlive-full
 
       - name: Node Install
         uses: actions/setup-node@v2
@@ -40,7 +40,7 @@ jobs:
       - name: JupyterLite Build
         run: jupyter lite build --contents . --output-dir dist
 
-      - name: PDF build # I have timeouts, temporary disable.
+      - name: PDF build
         run: ./build-pdf
 
       - name: Deployment Setup
