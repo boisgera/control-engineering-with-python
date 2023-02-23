@@ -34,7 +34,6 @@ from numpy import *
 from numpy.linalg import *
 from numpy.testing import *
 from scipy.integrate import *
-from scipy.linalg import *
 from matplotlib.pyplot import *
 ```
 
