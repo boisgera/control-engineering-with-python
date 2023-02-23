@@ -31,8 +31,8 @@ jobs:
         with:
           node-version: "12"
 
-      # - name: Decktape Install  # Disable PDF output again ...
-      #   run: npm install -g decktape
+      - name: Decktape Install
+        run: npm install -g decktape
 
       - name: Slides & Notebooks Build
         run: ./build
@@ -40,8 +40,8 @@ jobs:
       - name: JupyterLite Build
         run: jupyter lite build --contents . --output-dir dist
 
-      - name: PDF build
-        run: ./build-pdf
+      # - name: PDF build  # Disable PDF output again ...
+      #   run: ./build-pdf
 
       - name: Deployment Setup
         run: rm .gitignore
