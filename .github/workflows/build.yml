@@ -31,8 +31,8 @@ jobs:
         with:
           node-version: "12"
 
-      - name: Decktape Install
-        run: npm install -g decktape
+      # - name: Decktape Install  # Disable PDF output again ...
+      #   run: npm install -g decktape
 
       - name: Slides & Notebooks Build
         run: ./build
