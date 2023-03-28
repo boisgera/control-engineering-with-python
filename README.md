@@ -103,6 +103,11 @@ Open, edit and run these notebooks either
 
 ### :rocket: Project
 
+#### 2022-2023
+
+🚧 Coming soon. 🚧
+
+<!--
 #### 2021-2022
 
 - :octocat: Fork [this project](https://github.com/boisgera/control-engineering-with-python-project-2021-2022) as a starting point,
@@ -114,6 +119,7 @@ Open, edit and run these notebooks either
 - :octocat: Use this [template project](https://github.com/boisgera/control-engineering-with-python-project) as a starting point.
 
 ### :tada: Extra resources
+-->
 
 #### :computer: Animation of dynamical systems
 
