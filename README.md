@@ -108,7 +108,6 @@ Open, edit and run these notebooks either
   - :octocat: When needed, "fetch upstream" to get the project updates.
 
 ### :tada: Extra resources
--->
 
 #### :computer: Animation of dynamical systems
 
