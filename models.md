@@ -402,6 +402,8 @@ We denote $\omega$ the pendulum **angular velocity**:
 
 $$\omega := \dot{\theta}.$$
 
+---
+
 ### 3. 🧠 🧮
 
 Transform the dynamics into a first-order ODE with state $x = (\theta, \omega)$.
