@@ -1,0 +1,25 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.311729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.954792Z",
+      "mimetype": "text/javascript",
+      "name": "zoom.js",
+      "path": "reveal.js/plugin/zoom-js/zoom.js",
+      "size": 7776,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.311729Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.311729Z",
+  "mimetype": null,
+  "name": "zoom-js",
+  "path": "reveal.js/plugin/zoom-js",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

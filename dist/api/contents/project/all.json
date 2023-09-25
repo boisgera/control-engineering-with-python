@@ -1,0 +1,25 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.279728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": null,
+      "name": "Project.ipynb",
+      "path": "project/Project.ipynb",
+      "size": 135712,
+      "type": "notebook",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.275728Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.275728Z",
+  "mimetype": null,
+  "name": "project",
+  "path": "project",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

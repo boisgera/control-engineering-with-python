@@ -1,0 +1,37 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.315729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.954792Z",
+      "mimetype": "image/png",
+      "name": "image1.png",
+      "path": "reveal.js/test/examples/assets/image1.png",
+      "size": 21991,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.315729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.954792Z",
+      "mimetype": "image/png",
+      "name": "image2.png",
+      "path": "reveal.js/test/examples/assets/image2.png",
+      "size": 10237,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.315729Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.315729Z",
+  "mimetype": null,
+  "name": "assets",
+  "path": "reveal.js/test/examples/assets",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

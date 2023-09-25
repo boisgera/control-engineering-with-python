@@ -1,0 +1,25 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.271728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": "text/x-python",
+      "name": "main.py",
+      "path": "misc/images/main.py",
+      "size": 3200,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.271728Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.271728Z",
+  "mimetype": null,
+  "name": "images",
+  "path": "misc/images",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

@@ -1,0 +1,97 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.331729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:40.339459Z",
+      "mimetype": "video/mp4",
+      "name": "movie.mp4",
+      "path": "videos/movie.mp4",
+      "size": 222404,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.327729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:17:09.838117Z",
+      "mimetype": "video/mp4",
+      "name": "gas.mp4",
+      "path": "videos/gas.mp4",
+      "size": 181757,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.331729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:11:43.325112Z",
+      "mimetype": "video/mp4",
+      "name": "globally-attractive.mp4",
+      "path": "videos/globally-attractive.mp4",
+      "size": 131765,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.331729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:13:56.377615Z",
+      "mimetype": "video/mp4",
+      "name": "not-attractive.mp4",
+      "path": "videos/not-attractive.mp4",
+      "size": 226336,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.331729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:12:46.393334Z",
+      "mimetype": "video/mp4",
+      "name": "locally-attractive.mp4",
+      "path": "videos/locally-attractive.mp4",
+      "size": 196310,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.335729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:10:43.740863Z",
+      "mimetype": "video/mp4",
+      "name": "pendulum.mp4",
+      "path": "videos/pendulum.mp4",
+      "size": 279043,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.335729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:15:34.008181Z",
+      "mimetype": "video/mp4",
+      "name": "pathological.mp4",
+      "path": "videos/pathological.mp4",
+      "size": 325429,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.335729Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.335729Z",
+  "mimetype": null,
+  "name": "videos",
+  "path": "videos",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

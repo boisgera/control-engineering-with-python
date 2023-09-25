@@ -1,0 +1,61 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.283728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": "text/css",
+      "name": "reveal.css",
+      "path": "reveal.js/css/reveal.css",
+      "size": 57553,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.283728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.938792Z",
+      "mimetype": null,
+      "name": "reveal.scss",
+      "path": "reveal.js/css/reveal.scss",
+      "size": 44807,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.283728Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.283728Z",
+      "mimetype": null,
+      "name": "print",
+      "path": "reveal.js/css/print",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.299729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.299729Z",
+      "mimetype": null,
+      "name": "theme",
+      "path": "reveal.js/css/theme",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.283728Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.283728Z",
+  "mimetype": null,
+  "name": "css",
+  "path": "reveal.js/css",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

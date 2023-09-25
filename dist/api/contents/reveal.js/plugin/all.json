@@ -1,0 +1,121 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.311729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.311729Z",
+      "mimetype": null,
+      "name": "notes-server",
+      "path": "reveal.js/plugin/notes-server",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.303729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.303729Z",
+      "mimetype": null,
+      "name": "highlight",
+      "path": "reveal.js/plugin/highlight",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.311729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.311729Z",
+      "mimetype": null,
+      "name": "zoom-js",
+      "path": "reveal.js/plugin/zoom-js",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.307729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.307729Z",
+      "mimetype": null,
+      "name": "math",
+      "path": "reveal.js/plugin/math",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.311729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.311729Z",
+      "mimetype": null,
+      "name": "notes",
+      "path": "reveal.js/plugin/notes",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.311729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.311729Z",
+      "mimetype": null,
+      "name": "print-pdf",
+      "path": "reveal.js/plugin/print-pdf",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.311729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.311729Z",
+      "mimetype": null,
+      "name": "search",
+      "path": "reveal.js/plugin/search",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.307729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.307729Z",
+      "mimetype": null,
+      "name": "markdown",
+      "path": "reveal.js/plugin/markdown",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.307729Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.307729Z",
+      "mimetype": null,
+      "name": "multiplex",
+      "path": "reveal.js/plugin/multiplex",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.311729Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.311729Z",
+  "mimetype": null,
+  "name": "plugin",
+  "path": "reveal.js/plugin",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

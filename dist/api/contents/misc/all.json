@@ -1,0 +1,61 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.271728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": "text/plain",
+      "name": "stability.txt",
+      "path": "misc/stability.txt",
+      "size": 6751,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.271728Z",
+      "format": null,
+      "last_modified": "2023-09-25T09:18:57.271728Z",
+      "mimetype": null,
+      "name": "images",
+      "path": "misc/images",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.271728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": null,
+      "name": "build",
+      "path": "misc/build",
+      "size": 138,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.271728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": "text/plain",
+      "name": "odes.txt",
+      "path": "misc/odes.txt",
+      "size": 10642,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.271728Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.271728Z",
+  "mimetype": null,
+  "name": "misc",
+  "path": "misc",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

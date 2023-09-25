@@ -1,0 +1,37 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.275728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": null,
+      "name": "build",
+      "path": "notes/build",
+      "size": 41,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.275728Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.934792Z",
+      "mimetype": "text/markdown",
+      "name": "notes.md",
+      "path": "notes/notes.md",
+      "size": 2529,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.275728Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.275728Z",
+  "mimetype": null,
+  "name": "notes",
+  "path": "notes",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

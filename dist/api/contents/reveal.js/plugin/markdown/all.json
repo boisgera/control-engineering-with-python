@@ -1,0 +1,61 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.307729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.950792Z",
+      "mimetype": "text/javascript",
+      "name": "markdown.js",
+      "path": "reveal.js/plugin/markdown/markdown.js",
+      "size": 12486,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.307729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.950792Z",
+      "mimetype": "text/javascript",
+      "name": "marked.js",
+      "path": "reveal.js/plugin/markdown/marked.js",
+      "size": 19513,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.303729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.950792Z",
+      "mimetype": "text/markdown",
+      "name": "example.md",
+      "path": "reveal.js/plugin/markdown/example.md",
+      "size": 342,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.303729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.950792Z",
+      "mimetype": "text/html",
+      "name": "example.html",
+      "path": "reveal.js/plugin/markdown/example.html",
+      "size": 4466,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.307729Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.307729Z",
+  "mimetype": null,
+  "name": "markdown",
+  "path": "reveal.js/plugin/markdown",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

@@ -1,0 +1,25 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2023-09-25T09:18:57.307729Z",
+      "format": null,
+      "last_modified": "2023-09-25T08:56:21.950792Z",
+      "mimetype": "text/javascript",
+      "name": "math.js",
+      "path": "reveal.js/plugin/math/math.js",
+      "size": 1754,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2023-09-25T09:18:57.307729Z",
+  "format": "json",
+  "last_modified": "2023-09-25T09:18:57.307729Z",
+  "mimetype": null,
+  "name": "math",
+  "path": "reveal.js/plugin/math",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}
