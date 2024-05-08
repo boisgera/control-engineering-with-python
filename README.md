@@ -99,7 +99,7 @@ Open, edit and run these notebooks either
 
 ### :speech_balloon: Chat room
 
-- :speech_balloon: [Join the chat room](https://matrix.to/#/#emines-automatique:gitter.im) (GitHub sign-in required)
+- :speech_balloon: [Join the chat room](https://matrix.to/#/#emines-autom-2023-2024:matrix.org) (GitHub sign-in required)
 
 ### :rocket: Project
 
