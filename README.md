@@ -97,10 +97,6 @@ Open, edit and run these notebooks either
 
 [ceip-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
 
-### :speech_balloon: Chat room
-
-- :speech_balloon: [Join the chat room](https://matrix.to/#/#emines-autom-2023-2024:matrix.org) (GitHub sign-in required)
-
 ### :rocket: Project
 
   - :octocat: Fork [this project](https://github.com/boisgera/control-engineering-with-python-project-2023-2024) as a starting point;
