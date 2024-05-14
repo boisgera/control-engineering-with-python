@@ -1,0 +1,43 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:28.954081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.321073Z",
+      "mimetype": null,
+      "name": "animation.ipynb",
+      "path": "examples/animation.ipynb",
+      "size": 213656,
+      "type": "notebook",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:28.954081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.321073Z",
+      "mimetype": "text/x-python",
+      "name": "pendulum.py",
+      "path": "examples/pendulum.py",
+      "size": 403,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:28.954081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:28.954081Z",
+  "mimetype": null,
+  "name": "examples",
+  "path": "examples",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

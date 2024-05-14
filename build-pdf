@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+"""
+Parallel build of the PDF slide decks
+"""
+
+# Python Standard Library
+import shlex
+import subprocess
+import sys
+
+targets = [
+    "intro",
+    "models",
+    "simulation",
+    "well-posedness",
+    "asymptotic",
+    "LTI-models",
+    "internal-dynamics",
+    "IO-dynamics",
+    "controllability",
+    "asymptotic-stabilization",
+    "optimal-control",
+    "observers",
+]
+
+processes = []
+
+for target in targets:
+    args = shlex.split(f"decktape --size 1600x900 automatic {target}.html {target}.pdf")
+    process = subprocess.Popen(args)
+    processes.append(process)
+
+sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)

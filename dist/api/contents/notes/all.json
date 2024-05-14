@@ -1,0 +1,43 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.010081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.333073Z",
+      "mimetype": null,
+      "name": "build",
+      "path": "notes/build",
+      "size": 41,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.010081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.333073Z",
+      "mimetype": "text/markdown",
+      "name": "notes.md",
+      "path": "notes/notes.md",
+      "size": 2529,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.010081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.010081Z",
+  "mimetype": null,
+  "name": "notes",
+  "path": "notes",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

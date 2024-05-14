@@ -1,0 +1,29 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.046082Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "search.js",
+      "path": "reveal.js/plugin/search/search.js",
+      "size": 7177,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.046082Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.046082Z",
+  "mimetype": null,
+  "name": "search",
+  "path": "reveal.js/plugin/search",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

@@ -1,0 +1,10 @@
+#!/bin/bash
+
+rm -f *.html *.ipynb images/*.svg # generated, untracked files in master
+git checkout gh-pages
+git merge master --no-edit -s recursive -Xtheirs
+./build
+git add -f *.html *.ipynb images/*.svg
+git commit -am "new build"
+git push
+git checkout master

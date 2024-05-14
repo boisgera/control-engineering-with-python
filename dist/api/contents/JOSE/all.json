@@ -1,0 +1,57 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:28.942080Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.317073Z",
+      "mimetype": "text/markdown",
+      "name": "paper.md",
+      "path": "JOSE/paper.md",
+      "size": 6253,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:28.942080Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.317073Z",
+      "mimetype": null,
+      "name": "build",
+      "path": "JOSE/build",
+      "size": 90,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:28.942080Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.317073Z",
+      "mimetype": "text/x-bibtex",
+      "name": "paper.bib",
+      "path": "JOSE/paper.bib",
+      "size": 778,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:28.942080Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:28.942080Z",
+  "mimetype": null,
+  "name": "JOSE",
+  "path": "JOSE",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

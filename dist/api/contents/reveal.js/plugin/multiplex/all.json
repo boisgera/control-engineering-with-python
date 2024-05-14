@@ -1,0 +1,71 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.042081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "application/json",
+      "name": "package.json",
+      "path": "reveal.js/plugin/multiplex/package.json",
+      "size": 383,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.042081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "index.js",
+      "path": "reveal.js/plugin/multiplex/index.js",
+      "size": 1795,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.042081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "master.js",
+      "path": "reveal.js/plugin/multiplex/master.js",
+      "size": 939,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.038081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "client.js",
+      "path": "reveal.js/plugin/multiplex/client.js",
+      "size": 369,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.042081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.042081Z",
+  "mimetype": null,
+  "name": "multiplex",
+  "path": "reveal.js/plugin/multiplex",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

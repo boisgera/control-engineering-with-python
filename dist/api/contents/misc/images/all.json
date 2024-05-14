@@ -1,0 +1,29 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.006081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.333073Z",
+      "mimetype": "text/x-python",
+      "name": "main.py",
+      "path": "misc/images/main.py",
+      "size": 3200,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.006081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.006081Z",
+  "mimetype": null,
+  "name": "images",
+  "path": "misc/images",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

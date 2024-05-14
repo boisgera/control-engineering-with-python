@@ -1,0 +1,43 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.018081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.333073Z",
+      "mimetype": "text/css",
+      "name": "pdf.css",
+      "path": "reveal.js/css/print/pdf.css",
+      "size": 2879,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.018081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.333073Z",
+      "mimetype": "text/css",
+      "name": "paper.css",
+      "path": "reveal.js/css/print/paper.css",
+      "size": 4886,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.018081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.018081Z",
+  "mimetype": null,
+  "name": "print",
+  "path": "reveal.js/css/print",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

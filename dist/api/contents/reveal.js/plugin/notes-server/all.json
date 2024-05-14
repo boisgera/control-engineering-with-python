@@ -1,0 +1,57 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.042081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "index.js",
+      "path": "reveal.js/plugin/notes-server/index.js",
+      "size": 1850,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.042081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/html",
+      "name": "notes.html",
+      "path": "reveal.js/plugin/notes-server/notes.html",
+      "size": 13582,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.042081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "client.js",
+      "path": "reveal.js/plugin/notes-server/client.js",
+      "size": 1880,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.042081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.042081Z",
+  "mimetype": null,
+  "name": "notes-server",
+  "path": "reveal.js/plugin/notes-server",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

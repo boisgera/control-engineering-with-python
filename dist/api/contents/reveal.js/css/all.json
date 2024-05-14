@@ -1,0 +1,71 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.030081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T09:16:29.030081Z",
+      "mimetype": null,
+      "name": "theme",
+      "path": "reveal.js/css/theme",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.018081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T09:16:29.018081Z",
+      "mimetype": null,
+      "name": "print",
+      "path": "reveal.js/css/print",
+      "size": null,
+      "type": "directory",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.018081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.337073Z",
+      "mimetype": null,
+      "name": "reveal.scss",
+      "path": "reveal.js/css/reveal.scss",
+      "size": 44807,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.018081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.333073Z",
+      "mimetype": "text/css",
+      "name": "reveal.css",
+      "path": "reveal.js/css/reveal.css",
+      "size": 57553,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.018081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.018081Z",
+  "mimetype": null,
+  "name": "css",
+  "path": "reveal.js/css",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

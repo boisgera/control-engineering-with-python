@@ -1,0 +1,71 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.038081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "marked.js",
+      "path": "reveal.js/plugin/markdown/marked.js",
+      "size": 19513,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.038081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/markdown",
+      "name": "example.md",
+      "path": "reveal.js/plugin/markdown/example.md",
+      "size": 342,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.038081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "markdown.js",
+      "path": "reveal.js/plugin/markdown/markdown.js",
+      "size": 12486,
+      "type": "file",
+      "writable": true
+    },
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.038081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/html",
+      "name": "example.html",
+      "path": "reveal.js/plugin/markdown/example.html",
+      "size": 4466,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.038081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.038081Z",
+  "mimetype": null,
+  "name": "markdown",
+  "path": "reveal.js/plugin/markdown",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

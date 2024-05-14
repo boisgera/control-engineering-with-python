@@ -1,0 +1,29 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.058082Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.353073Z",
+      "mimetype": "text/x-python",
+      "name": "heat.py",
+      "path": "sandbox/heat.py",
+      "size": 3300,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.058082Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.058082Z",
+  "mimetype": null,
+  "name": "sandbox",
+  "path": "sandbox",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}

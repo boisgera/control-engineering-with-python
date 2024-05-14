@@ -1,0 +1,29 @@
+{
+  "content": [
+    {
+      "content": null,
+      "created": "2024-05-14T09:16:29.034081Z",
+      "format": null,
+      "hash": null,
+      "hash_algorithm": null,
+      "last_modified": "2024-05-14T08:59:41.349073Z",
+      "mimetype": "text/javascript",
+      "name": "highlight.js",
+      "path": "reveal.js/plugin/highlight/highlight.js",
+      "size": 476557,
+      "type": "file",
+      "writable": true
+    }
+  ],
+  "created": "2024-05-14T09:16:29.034081Z",
+  "format": "json",
+  "hash": null,
+  "hash_algorithm": null,
+  "last_modified": "2024-05-14T09:16:29.034081Z",
+  "mimetype": null,
+  "name": "highlight",
+  "path": "reveal.js/plugin/highlight",
+  "size": null,
+  "type": "directory",
+  "writable": true
+}
