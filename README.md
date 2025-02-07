@@ -19,7 +19,7 @@
 ### :books: Program & Slides
 
 0.  **Introduction to Control Engineering** 
-    ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
+    ([HTML](intro.html),
     [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/intro.ipynb))
 
 1.  **Introduction to Dynamical Systems**
