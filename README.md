@@ -99,8 +99,7 @@ Open, edit and run these notebooks either
 
 ### :rocket: Project
 
-  - :octocat: Fork [this project](https://github.com/boisgera/control-engineering-with-python-project-2023-2024) as a starting point;
-    when needed, "fetch upstream" to get the project updates.
+🚧 *Coming soon!* 🚧
 
 ### :tada: Extra resources
 
