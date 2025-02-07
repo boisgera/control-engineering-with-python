@@ -20,58 +20,46 @@
 
 0.  **Introduction to Control Engineering** 
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
-    [PDF](https://boisgera.github.io/control-engineering-with-python/intro.pdf),
     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=intro.ipynb))
 
 1.  **Introduction to Dynamical Systems**
 
     - Models ([HTML](https://boisgera.github.io/control-engineering-with-python/models.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/models.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=models.ipynb))
 
     - Simulation ([HTML](https://boisgera.github.io/control-engineering-with-python/simulation.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/simulation.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=simulation.ipynb))
 
     - Well-posedness ([HTML](https://boisgera.github.io/control-engineering-with-python/well-posedness.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/well-posedness.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=well-posedness.ipynb))
 
     - Asymptotic Behavior ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/asymptotic.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic.ipynb))
 
 2.  **Linear-Time Invariant Systems**
 
     - LTI Models ([HTML](https://boisgera.github.io/control-engineering-with-python/LTI-models.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/LTI-models.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=LTI-models.ipynb))
 
     - Internal dynamics ([HTML](https://boisgera.github.io/control-engineering-with-python/internal-dynamics.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/internal-dynamics.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=IO-dynamics.ipynb))
 
     - I/O behavior ([HTML](https://boisgera.github.io/control-engineering-with-python/IO-dynamics.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/IO-dynamics.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=IO-dynamics.ipynb))
 
 3.  **Controller Design**
 
     - Controllability ([HTML](https://boisgera.github.io/control-engineering-with-python/controllability.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/controllability.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllability.ipynb))
 
     - Asymptotic Stabilization ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic-stabilization.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/asymptotic-stabilization.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic-stabilization.ipynb))
 
     - Optimal Control ([HTML](https://boisgera.github.io/control-engineering-with-python/optimal-control.html),
-      [PDF](https://boisgera.github.io/control-engineering-with-python/optimal-control.pdf),
       [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=optimal-control.ipynb))
 
 4.  **Observers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
-    [PDF](https://boisgera.github.io/control-engineering-with-python/observers.pdf),
     [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
 
     - Observability 

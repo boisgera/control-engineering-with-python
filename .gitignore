@@ -24,3 +24,7 @@ videos/*.mp4
 # ... but for examples
 !examples/*
 
+
+# pixi environments
+.pixi
+*.egg-info

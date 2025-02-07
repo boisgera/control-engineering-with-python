@@ -23,6 +23,13 @@ targets = [
     "observers",
 ]
 
-processes = [subprocess.Popen(["./build.py", f"{target}.md"]) for target in targets]
+processes = []
+
+for target in targets:
+    cmd = ["./build.py"]
+    if "--fast" in sys.argv[1:]:
+        cmd.append("--fast")
+    cmd.append(f"{target}.md")
+    processes.append(subprocess.Popen(cmd)) # start in the background
 
 sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)
