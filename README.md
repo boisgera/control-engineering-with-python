@@ -20,7 +20,7 @@
 
 0.  **Introduction to Control Engineering** 
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
-    [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=intro.ipynb))
+    [IPYNB](https://boisgera.github.io/control-engineering-with-python/intro.ipyb))
 
 1.  **Introduction to Dynamical Systems**
 
