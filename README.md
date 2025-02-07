@@ -62,18 +62,6 @@
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
     [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/observers.ipynb))
 
-    - Observability 
-
-    - Observer design: pole assignment & optimal filtering 
-
-5.  **Application to mobile robotics** 
-
-    - Lagrangian mechanics
-
-    - Kinematic models of mobile robots
-
-    - Control of mobile robots
-
 ### :notebook: Notebooks
 
 The course contents are also available as Jupyter notebooks.
