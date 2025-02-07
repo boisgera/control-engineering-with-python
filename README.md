@@ -20,47 +20,47 @@
 
 0.  **Introduction to Control Engineering** 
     ([HTML](https://boisgera.github.io/control-engineering-with-python/intro.html),
-    [IPYNB](https://boisgera.github.io/control-engineering-with-python/intro.ipyb))
+    [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/intro.ipynb))
 
 1.  **Introduction to Dynamical Systems**
 
     - Models ([HTML](https://boisgera.github.io/control-engineering-with-python/models.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=models.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/models.ipynb))
 
     - Simulation ([HTML](https://boisgera.github.io/control-engineering-with-python/simulation.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=simulation.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/simulation.ipynb))
 
     - Well-posedness ([HTML](https://boisgera.github.io/control-engineering-with-python/well-posedness.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=well-posedness.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/well-posedness.ipynb))
 
     - Asymptotic Behavior ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/asymptotic.ipynb))
 
 2.  **Linear-Time Invariant Systems**
 
     - LTI Models ([HTML](https://boisgera.github.io/control-engineering-with-python/LTI-models.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=LTI-models.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/LTI-models.ipynb))
 
     - Internal dynamics ([HTML](https://boisgera.github.io/control-engineering-with-python/internal-dynamics.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=IO-dynamics.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/internal-dynamics.ipynb))
 
     - I/O behavior ([HTML](https://boisgera.github.io/control-engineering-with-python/IO-dynamics.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=IO-dynamics.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/IO-dynamics.ipynb))
 
 3.  **Controller Design**
 
     - Controllability ([HTML](https://boisgera.github.io/control-engineering-with-python/controllability.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=controllability.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/controllability.ipynb))
 
     - Asymptotic Stabilization ([HTML](https://boisgera.github.io/control-engineering-with-python/asymptotic-stabilization.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=asymptotic-stabilization.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/asymptotic-stabilization.ipynb))
 
     - Optimal Control ([HTML](https://boisgera.github.io/control-engineering-with-python/optimal-control.html),
-      [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=optimal-control.ipynb))
+      [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/optimal-control.ipynb))
 
 4.  **Observers**
     ([HTML](https://boisgera.github.io/control-engineering-with-python/observers.html),
-    [IPYNB](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=observers.ipynb))
+    [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/observers.ipynb))
 
     - Observability 
 
