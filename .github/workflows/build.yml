@@ -23,8 +23,8 @@ jobs:
       - name: Display FFMPEG Info
         run: ffmpeg -version
 
-      - name: LaTeX Install
-        run: sudo apt-get update && sudo apt-get install texlive-full
+      # - name: LaTeX Install
+      #   run: sudo apt-get update && sudo apt-get install texlive-full
 
       - name: Node Install
         uses: actions/setup-node@v2
