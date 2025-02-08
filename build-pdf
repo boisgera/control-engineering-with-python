@@ -33,7 +33,7 @@ if sh("which decktape").wait() != 0:
 processes = []
 
 for target in targets:
-    cmd = f"decktape --size 1600x900 automatic {target}.html {target}.pdf"
+    cmd = f"decktape --no-sandbox --size 1600x900 automatic {target}.html {target}.pdf"
     process = sh(cmd)
     processes.append(process)
 
