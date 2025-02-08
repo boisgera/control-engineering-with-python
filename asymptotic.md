@@ -1260,7 +1260,7 @@ data = mivp.solve_alt(
 good = to_rgb("#51cf66")
 bad = to_rgb("#ff6b6b")
 mivp.generate_movie(data, filename="videos/gas.mp4", fps=df,
-    axes=gca(), zorder=1000, color=good, linewidth=3.0,
+    axes=gca(), zorder=1000, color=good, linewidth=1.0,
 )
 ```
 
@@ -1285,8 +1285,6 @@ import matplotlib.pyplot as plt
 
 # Local Library
 import mivp
-
-# ------------------------------------------------------------------------------
 
 # Vector field
 def fun(t, xy):
@@ -1347,7 +1345,7 @@ data = mivp.solve_alt(
 
 bad = to_rgb("#ff6b6b")
 mivp.generate_movie(data, filename="videos/movie.mp4", fps=df,
-    axes=gca(), zorder=1000, color=bad, linewidth=3.0,
+    axes=gca(), zorder=1000, color=bad, linewidth=1.0,
 )
 ```
 

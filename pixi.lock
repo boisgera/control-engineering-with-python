@@ -2290,8 +2290,6 @@ packages:
   - mpfr >=4.2.1,<5.0a0
   - python >=3.13,<3.14.0a0
   - python_abi 3.13.* *_cp313
-  arch: x86_64
-  platform: linux
   license: LGPL-3.0-or-later
   license_family: LGPL
   purls:
@@ -2308,8 +2306,6 @@ packages:
   - mpfr >=4.2.1,<5.0a0
   - python >=3.13,<3.14.0a0
   - python_abi 3.13.* *_cp313
-  arch: x86_64
-  platform: osx
   license: LGPL-3.0-or-later
   license_family: LGPL
   purls:
@@ -5458,8 +5454,6 @@ packages:
   - gmp >=6.3.0,<7.0a0
   - libgcc >=13
   - mpfr >=4.2.1,<5.0a0
-  arch: x86_64
-  platform: linux
   license: LGPL-3.0-or-later
   license_family: LGPL
   purls: []
@@ -5472,8 +5466,6 @@ packages:
   - __osx >=10.13
   - gmp >=6.3.0,<7.0a0
   - mpfr >=4.2.1,<5.0a0
-  arch: x86_64
-  platform: osx
   license: LGPL-3.0-or-later
   license_family: LGPL
   purls: []
@@ -5486,8 +5478,6 @@ packages:
   - __glibc >=2.17,<3.0.a0
   - gmp >=6.3.0,<7.0a0
   - libgcc >=13
-  arch: x86_64
-  platform: linux
   license: LGPL-3.0-only
   license_family: LGPL
   purls: []
@@ -5499,8 +5489,6 @@ packages:
   depends:
   - __osx >=10.13
   - gmp >=6.3.0,<7.0a0
-  arch: x86_64
-  platform: osx
   license: LGPL-3.0-only
   license_family: LGPL
   purls: []
@@ -5684,6 +5672,8 @@ packages:
   - python_abi 3.13.* *_cp313
   constrains:
   - numpy-base <0a0
+  arch: x86_64
+  platform: linux
   license: BSD-3-Clause
   license_family: BSD
   purls:
@@ -5703,6 +5693,8 @@ packages:
   - python_abi 3.13.* *_cp313
   constrains:
   - numpy-base <0a0
+  arch: x86_64
+  platform: osx
   license: BSD-3-Clause
   license_family: BSD
   purls:
@@ -5723,6 +5715,8 @@ packages:
   - vc14_runtime >=14.29.30139
   constrains:
   - numpy-base <0a0
+  arch: x86_64
+  platform: win
   license: BSD-3-Clause
   license_family: BSD
   purls:
