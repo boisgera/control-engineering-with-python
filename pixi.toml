@@ -1,7 +1,7 @@
 [project]
 authors = ["Sébastien Boisgérault <Sebastien.Boisgerault@gmail.com>"]
 channels = ["conda-forge"]
-description = "Add a short description here"
+description = "Control Engineering with Python"
 name = "control-engineering-with-python"
 platforms = ["linux-64", "win-64", "osx-64"] # osx-arm64 not supported by the old pandoc we are using
 version = "0.1.0"
@@ -27,6 +27,10 @@ jupyterlite = ">=0.5.1,<0.6"
 sympy = ">=1.13.3,<2"
 nodejs = ">=22.12.0,<22.14"
 # decktape: not packaged on conda-forge.
+# texlive: core only and only available on linux
+
+# TODO: make a build environment with pandoc and texlive-core, etc. 
+# Being linux-only is not a (big) issue.
 
 [pypi-dependencies]
 pandoc = ">=2.4, <3"
