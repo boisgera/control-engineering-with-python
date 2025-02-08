@@ -37,11 +37,8 @@ jobs:
       - name: Slides & Notebooks Build
         run: ./build
 
-      - name: JupyterLite Build
-        run: jupyter lite build --contents . --output-dir dist
-
-      # - name: PDF build  # Disable PDF output again ...
-      #   run: ./build-pdf
+      - name: PDF build
+        run: ./build-pdf
 
       - name: Deployment Setup
         run: rm .gitignore

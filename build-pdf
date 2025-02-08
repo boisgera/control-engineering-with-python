@@ -9,6 +9,9 @@ import shlex
 import subprocess
 import sys
 
+def sh(cmd):
+    return subprocess.Popen(shlex.split(cmd)) 
+
 targets = [
     "intro",
     "models",
@@ -24,11 +27,14 @@ targets = [
     "observers",
 ]
 
+if sh("which decktape").wait() != 0:
+    sh("npm install -g decktape").wait()
+
 processes = []
 
 for target in targets:
-    args = shlex.split(f"decktape --size 1600x900 automatic {target}.html {target}.pdf")
-    process = subprocess.Popen(args)
+    cmd = f"decktape --size 1600x900 automatic {target}.html {target}.pdf"
+    process = sh(cmd)
     processes.append(process)
 
 sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)
