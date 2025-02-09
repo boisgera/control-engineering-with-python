@@ -20,7 +20,7 @@
 ### 📚 Slide Decks
 
 
-| Chapter      | Document | 
+| Chapter      | ![](https://iconify.design/docs/api/vscode-icons/file-type-html) Slide Deck | 
 | ------------ | -------- |
 | Introduction | [Introduction] |
 | Dynamical Systems | |
