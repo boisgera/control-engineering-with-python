@@ -19,10 +19,10 @@
 
 ### 📚 Slide Decks
 
-![Test icon](https://iconify.design/docs/api/vscode-icons/file-type-html.svg)
+![Test icon](https://api.iconify.design/vscode-icons/file-type-html.svg)
 
 
-| Chapter      | ![](https://iconify.design/docs/api/vscode-icons/file-type-html.svg) Slide Deck | 
+| Chapter      | ![](https://api.iconify.design/vscode-icons/file-type-html.svg) Slide Deck | 
 | ------------ | -------- |
 | Introduction | [Introduction] |
 | Dynamical Systems | |
