@@ -20,11 +20,11 @@
 ### 📚 Slide Decks
 
 
-| Chapter      | Slide Deck (HTML) | Other Formats |
-| ------------ | -------- | ![PDF] ![Jupyter] |
-| Introduction | ![HTML] [Introduction] | ![PDF] ![Jupyter] |
-| Dynamical Systems | ![HTML] [Models] | ![PDF] ![Jupyter]  |
-| | ![HTML] [Simulation] | ![PDF] ![Jupyter]  |
+| Chapter                       | Slide Deck (HTML)       | Other Formats      |
+| ----------------------------- | ----------------------- | ------------------ |
+| Introduction                  | ![HTML] [Introduction]  | ![PDF] ![Jupyter]  |
+| Dynamical Systems             | ![HTML] [Models]        | ![PDF] ![Jupyter]  |
+|                             | ![HTML] [Simulation]      | ![PDF] ![Jupyter]  |
 | | ![HTML] [Well-Posedness] | ![PDF] ![Jupyter]  |
 | | ![HTML] [Asymptotic Behavior] | ![PDF] ![Jupyter]  |
 | Linear Time-Invariant Systems | | ![PDF] ![Jupyter] |
