@@ -19,12 +19,8 @@
 
 ### 📚 Slide Decks
 
-![Test icon](https://api.iconify.design/vscode-icons/file-type-html.svg) Test
 
-Test <img src="https://api.iconify.design/vscode-icons/file-type-html.svg" style="position:relative;top:2px"/> Test
-
-
-| Chapter      | ![](https://api.iconify.design/vscode-icons/file-type-html.svg) Slide Deck | 
+| Chapter      | ![HTML] Slide Deck | 
 | ------------ | -------- |
 | Introduction | [Introduction] |
 | Dynamical Systems | |
@@ -38,6 +34,8 @@ Test <img src="https://api.iconify.design/vscode-icons/file-type-html.svg" style
 | |  |
 | | |
 | Observers | [Observers] |
+
+[HTML]: https://api.iconify.design/vscode-icons/file-type-html.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
 [Observers]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.html
