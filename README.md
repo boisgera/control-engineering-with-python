@@ -21,7 +21,7 @@
 
 ![Test icon](https://api.iconify.design/vscode-icons/file-type-html.svg) Test
 
-Test <img src="https://api.iconify.design/vscode-icons/file-type-html.svg" /> Test
+Test <img src="https://api.iconify.design/vscode-icons/file-type-html.svg" style="position:relative;top:2px"/> Test
 
 
 | Chapter      | ![](https://api.iconify.design/vscode-icons/file-type-html.svg) Slide Deck | 
