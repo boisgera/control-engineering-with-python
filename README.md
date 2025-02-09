@@ -69,20 +69,19 @@
 
 The course materials are also available as Jupyter notebooks. To execute and edit them:
 
- 0. **Install the pixi package manager** ([Instructions](https://pixi.sh/latest/))
+ 0. **Install the pixi package manager.** ([Instructions](https://pixi.sh/latest/))
 
- 1. **Download and extract the [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip)** 
-    of the gh-pages branch.  
+ 1. **Download and extract this [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip).**   
 
-    (or `git clone` the `gh-pages` branch of the current repository)
+    (or `git clone` the `gh-pages` branch of the current repository if you know how)
 
- 2. Inside the project directory, to browse the notebook, type:
+ 2. **To browse the notebooks**, inside the project directory, type the terminal command:
 
     ```console
     $ pixi run start
     ```
     
-To use conda instead of pixi, download the project as usual, then in its directory, type
+Alternatively, to use conda instead of pixi, download the project as usual, then in its directory, type
 
 ```console
 $ conda env create -f environment.yml
