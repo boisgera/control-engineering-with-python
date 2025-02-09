@@ -2,6 +2,7 @@
 
 [![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) ![Discord](https://img.shields.io/discord/1338161489567023187?logo=discord&logoColor=white)
 
+<!--
 ### Notations
 
 | Symbol | Meaning     | Symbol | Meaning                |
@@ -13,6 +14,8 @@
 | 📝     | Remark      | 🧠     | Theory                 |
 | ℹ️     | Information | 🗝️     | Hint                   |
 | ⚠️     | Warning     | 🔓     | Solution               |
+
+-->
 
 ### :books: Program & Slides
 
