@@ -23,7 +23,8 @@ tqdm = ">=4.67.1,<5"
 sympy = ">=1.13.3,<2"
 
 [feature.build]
-platforms = ["linux-64"]
+# The old version of pandoc used prevents building on osx-arm64
+platforms = ["linux-64", "win-64", "osx-64"] 
 
 [feature.build.dependencies]
 curl = ">=8.11.1,<9"
@@ -31,7 +32,7 @@ ffmpeg = ">=7.1.0,<8"
 lxml = ">=5.3.0,<6"
 pandoc = "2.17.1.1.*"
 nodejs = ">=22.12.0,<22.14"
-texlive-core = "*"
+# texlive-core = "*"  # not "good enough" for matplotlib
 
 [feature.build.activation]
 scripts = ["scripts/install-decktape.sh"]
