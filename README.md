@@ -69,11 +69,10 @@
 
 The course materials are also available as Jupyter notebooks. To execute and edit them:
 
- 0. **Install the pixi package manager.** ([Instructions](https://pixi.sh/latest/))
+ 0. **Install the pixi package manager ([Instructions](https://pixi.sh/latest/)).**
 
- 1. **Download and extract this [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip).**   
-
-    (or `git clone` the `gh-pages` branch of the current repository if you know how)
+ 1. **Download and extract this [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip)** 
+ (or `git clone` the `gh-pages` branch of the current repository if you know how)
 
  2. **To browse the notebooks**, inside the project directory, type the terminal command:
 
@@ -81,20 +80,13 @@ The course materials are also available as Jupyter notebooks. To execute and edi
     $ pixi run start
     ```
     
-Alternatively, if want to use the conda package manager instead of pixi,
-
-  - skip step 0.
-  
-  - perform step 1.  as usual, 
-
-  - inside the project directory, type `conda env create -f environment.yml`
-    to create the conda project environment (only once), then whenever you want to browse 
-    the notebooks
-
-    ```console
-    $ conda activate control-engineering-with-python
-    $ jupyter lab
-    ```
+Alternatively, if want to use the conda package manager instead of pixi, skip step 0.,
+perform step 1. as usual, and then inside the project directory, type `conda env create -f environment.yml` to create the conda project environment (once and dfor all). Then whenever you want to browse 
+the notebooks, type:
+```console
+$ conda activate control-engineering-with-python
+$ jupyter lab
+```
 
       
 ### 🚀 Project
