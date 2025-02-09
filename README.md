@@ -20,20 +20,20 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | Slide Deck (HTML)       | Other Formats      |
-| ----------------------------- | ----------------------- | ------------------ |
-| Introduction                  | ![HTML] [Introduction]  | ![PDF] ![Jupyter]  |
-| Dynamical Systems             | ![HTML] [Models]        | ![PDF] ![Jupyter]  |
-|                             | ![HTML] [Simulation]      | ![PDF] ![Jupyter]  |
-| | ![HTML] [Well-Posedness] | ![PDF] ![Jupyter]  |
-| | ![HTML] [Asymptotic Behavior] | ![PDF] ![Jupyter]  |
-| Linear Time-Invariant Systems | | ![PDF] ![Jupyter] |
-| | | ![PDF] ![Jupyter]  |
-| | | ![PDF] ![Jupyter]  |
-| Controller Design | | ![PDF] ![Jupyter] |
-| |  | ![PDF] ![Jupyter] |
-| | | ![PDF] ![Jupyter] |
-| Observers | ![HTML] [Observers] | ![PDF] ![Jupyter] |
+| Chapter                       | Slide Deck (HTML)             | Extra Formats      |
+| ----------------------------- | ----------------------------- | ------------------ |
+| Introduction                  | ![HTML] [Introduction]        | ![PDF] ![Jupyter]  |
+| Dynamical Systems             | ![HTML] [Models]              | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [Simulation]          | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [Well-Posedness]      | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [Asymptotic Behavior] | ![PDF] ![Jupyter]  |
+| Linear Time-Invariant Systems | ![HTML] [LTI Models]          | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [Internal Dynamics]   | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [I/O Behavior]        | ![PDF] ![Jupyter]  |
+| Controller Design             | ![HTML] [Controllability]     | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [Stabilization]       | ![PDF] ![Jupyter]  |
+|                               | ![HTML] [Optimal Control]     | ![PDF] ![Jupyter]  |
+| Observers                     | ![HTML] [Observers]           | ![PDF] ![Jupyter]  |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
 [PDF]: https://api.iconify.design/vscode-icons/file-type-pdf2.svg
@@ -45,6 +45,12 @@
 [Well-Posedness]: https://boisgera.github.io/control-engineering-with-python/1-3-Well-Posedness.html
 [Asymptotic Behavior]: https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.html
 
+[LTI Models]: https://boisgera.github.io/control-engineering-with-python/2-1-LTI-Models.html
+[Internal Dynamics]: https://boisgera.github.io/control-engineering-with-python/2-2-Internal-Dynamics.html
+[I/O Behavior]: https://boisgera.github.io/control-engineering-with-python/2-3-IO-Behavior.html
+[Controllability]: https://boisgera.github.io/control-engineering-with-python/3-1-Controllability.html
+[Stabilization]: https://boisgera.github.io/control-engineering-with-python/3-2-Stabilization.html
+[Optimal Control]: https://boisgera.github.io/control-engineering-with-python/3-3-Optimal-Control.html
 
 
 [Observers]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.html
