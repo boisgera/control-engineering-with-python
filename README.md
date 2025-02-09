@@ -20,9 +20,9 @@
 ### 📚 Slide Decks
 
 
-| Chapter      | ![HTML] Slide Deck | 
+| Chapter      | Slide Deck | 
 | ------------ | -------- |
-| Introduction | [Introduction] |
+| Introduction | ![HTML] [Introduction] |
 | Dynamical Systems | |
 | | |
 | | |
@@ -33,7 +33,7 @@
 | Controller Design | |
 | |  |
 | | |
-| Observers | [Observers] |
+| Observers | ![HTML] [Observers] |
 
 [HTML]: https://api.iconify.design/vscode-icons/file-type-html.svg
 
