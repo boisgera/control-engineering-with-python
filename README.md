@@ -28,12 +28,12 @@
 |                               | 1.3 | ![HTML] [Well-Posedness]      | ![PDF] |
 |                               | 1.4 | ![HTML] [Asymptotic Behavior] | ![PDF] |
 | Linear Time-Invariant Systems | 2.1 | ![HTML] [LTI Models]          | ![PDF] |
-|                               | 2.2 | ![HTML] [Internal Dynamics]   | ![PDF] PDF  |
-|                               | 2.3 | ![HTML] [I/O Behavior]        | ![PDF] PDF  |
-| Controller Design             | 3.1 | ![HTML] [Controllability]     | ![PDF] PDF  |
-|                               | 3.2 | ![HTML] [Stabilization]       | ![PDF] PDF  |
-|                               | 3.3 | ![HTML] [Optimal Control]     | ![PDF] PDF  |
-| Observers                     | 4.1 | ![HTML] [Observers]           | ![PDF] PDF  |
+|                               | 2.2 | ![HTML] [Internal Dynamics]   | ![PDF] |
+|                               | 2.3 | ![HTML] [I/O Behavior]        | ![PDF] |
+| Controller Design             | 3.1 | ![HTML] [Controllability]     | ![PDF] |
+|                               | 3.2 | ![HTML] [Stabilization]       | ![PDF] |
+|                               | 3.3 | ![HTML] [Optimal Control]     | ![PDF] |
+| Observers                     | 4.1 | ![HTML] [Observers]           | ![PDF] |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
 [PDF]: https://api.iconify.design/bi/file-pdf.svg
