@@ -67,13 +67,13 @@
 
 [Jupyter]: https://api.iconify.design/logos/jupyter.svg
 
-The course materials are also available as Jupyter notebooks. To execute and edit them:
+The course materials are also available as Jupyter notebooks. To view, execute and edit them:
 
  0. [Install the pixi package manager.](https://pixi.sh/latest/)
 
  1. Download and extract this [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip).[^1] 
 
- 2. To browse the notebooks, inside the project directory, type the terminal command:
+ 2. Inside the project directory, type the terminal command:
 
     ```console
     $ pixi run start
