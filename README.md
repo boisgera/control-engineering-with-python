@@ -65,7 +65,7 @@
 
 ### ![Jupyter] Jupyter Notebooks
 
-[Jupyter]: https://api.iconify.design/logos/jupyter
+[Jupyter]: https://api.iconify.design/logos/jupyter.svg
 
 The course materials are also available as Jupyter notebooks. To execute and edit them:
 
