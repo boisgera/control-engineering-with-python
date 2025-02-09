@@ -20,7 +20,7 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | #   | Slide Deck (HTML)             | PDF |
+| Chapter                       | #   | Slide Deck (HTML)             |  |
 | ----------------------------- | --- | ----------------------------- | ------------------ |
 | Introduction                  | 0.1 | ![HTML] [Introduction]        | ![PDF] |
 | Dynamical Systems             | 1.1 | ![HTML] [Models]              | ![PDF] |
