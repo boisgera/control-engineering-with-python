@@ -35,7 +35,7 @@
 | | |
 | Observers | ![HTML] [Observers] |
 
-[HTML]: https://api.iconify.design/vscode-icons/file-type-html.svg
+[HTML]: https://api.iconify.design/logos/html-5.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
 [Observers]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.html
