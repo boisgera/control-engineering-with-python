@@ -20,7 +20,7 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | Slide Deck (HTML)             | Extra Formats      |
+| Chapter                       | Slide Deck (HTML)             | Fallback (PDF)     |
 | ----------------------------- | ----------------------------- | ------------------ |
 | Introduction                  | ![HTML] [Introduction]        | ![PDF] ![Jupyter]  |
 | Dynamical Systems             | ![HTML] [Models]              | ![PDF] ![Jupyter]  |
@@ -36,7 +36,7 @@
 | Observers                     | ![HTML] [Observers]           | ![PDF] ![Jupyter]  |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
-[PDF]: https://api.iconify.design/vscode-icons/file-type-pdf2.svg
+[PDF]: https://api.iconify.design/logos/pdf.svg
 [Jupyter]: https://api.iconify.design/logos/jupyter.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
