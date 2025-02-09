@@ -20,24 +20,24 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | Slide Deck (HTML)             | Fallback (PDF)     |
+| Chapter                       | Slide Deck (HTML)             | Fallback |
 | ----------------------------- | ----------------------------- | ------------------ |
-| Introduction                  | ![HTML] [Introduction]        | ![PDF] ![Jupyter]  |
-| Dynamical Systems             | ![HTML] [Models]              | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [Simulation]          | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [Well-Posedness]      | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [Asymptotic Behavior] | ![PDF] ![Jupyter]  |
-| Linear Time-Invariant Systems | ![HTML] [LTI Models]          | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [Internal Dynamics]   | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [I/O Behavior]        | ![PDF] ![Jupyter]  |
-| Controller Design             | ![HTML] [Controllability]     | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [Stabilization]       | ![PDF] ![Jupyter]  |
-|                               | ![HTML] [Optimal Control]     | ![PDF] ![Jupyter]  |
-| Observers                     | ![HTML] [Observers]           | ![PDF] ![Jupyter]  |
+| Introduction                  | ![HTML] [Introduction]        | ![PDF] PDF  |
+| Dynamical Systems             | ![HTML] [Models]              | ![PDF] PDF  |
+|                               | ![HTML] [Simulation]          | ![PDF] PDF  |
+|                               | ![HTML] [Well-Posedness]      | ![PDF] PDF  |
+|                               | ![HTML] [Asymptotic Behavior] | ![PDF] PDF  |
+| Linear Time-Invariant Systems | ![HTML] [LTI Models]          | ![PDF] PDF  |
+|                               | ![HTML] [Internal Dynamics]   | ![PDF] PDF  |
+|                               | ![HTML] [I/O Behavior]        | ![PDF] PDF  |
+| Controller Design             | ![HTML] [Controllability]     | ![PDF] PDF  |
+|                               | ![HTML] [Stabilization]       | ![PDF] PDF  |
+|                               | ![HTML] [Optimal Control]     | ![PDF] PDF  |
+| Observers                     | ![HTML] [Observers]           | ![PDF] PDF  |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
-[PDF]: https://api.iconify.design/ri/file-pdf-2-line.svg
-[Jupyter]: https://api.iconify.design/logos/jupyter.svg
+[PDF]: https://api.iconify.design/ant-design/file-pdf-outlined.svg
+[Jupyterz]: https://api.iconify.design/logos/jupyter.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
 [Models]: https://boisgera.github.io/control-engineering-with-python/1-1-Models.html
