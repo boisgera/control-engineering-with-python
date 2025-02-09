@@ -16,7 +16,7 @@ jobs:
           environments: build
 
       - name: Slides & Notebooks Build
-        run: ./build --pdf
+        run: pixi build --pdf
 
       - name: Deployment Setup
         run: rm .gitignore
