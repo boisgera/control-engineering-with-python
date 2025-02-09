@@ -104,8 +104,9 @@ Open, edit and run these notebooks either
 
 🚧 *Coming soon!* 🚧
 
-### :tada: Extra resources
+### 📚 Extra Open Resources
 
+<!--
 #### :computer: Animation of dynamical systems
 
 Example notebook: double pendulum
@@ -114,7 +115,7 @@ Example notebook: double pendulum
 
 - [open in binder](https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages?filepath=examples/animation.ipynb).
 
-#### :books: Free External Resources
+--> 
 
 - :book: [Nicolas Rougier – Scientific Visualization: Python + Matplotlib](https://hal.inria.fr/hal-03427242/document)
 - :book: [Eduardo Sontag – Mathematical Control Theory](http://www.sontaglab.org/FTPDIR/sontag_mathematical_control_theory_springer98.pdf)
