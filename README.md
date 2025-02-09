@@ -20,9 +20,9 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | #   | Slide Deck (HTML)             |  |
-| ----------------------------- | --- | ----------------------------- | ------------------ |
-| Introduction                  | 0.1 | ![HTML] [Introduction]        | ![PDF] |
+| Chapter                       | #   | Slide Deck (HTML)             |                            |
+| ----------------------------- | --- | ----------------------------- | -------------------------- |
+| Introduction                  | 0.1 | ![HTML] [Introduction]        | [![PDF]][Introduction PDF] |
 | Dynamical Systems             | 1.1 | ![HTML] [Models]              | ![PDF] |
 |                               | 1.2 | ![HTML] [Simulation]          | ![PDF] |
 |                               | 1.3 | ![HTML] [Well-Posedness]      | ![PDF] |
@@ -44,17 +44,26 @@
 [Simulation]: https://boisgera.github.io/control-engineering-with-python/1-2-Simulation.html
 [Well-Posedness]: https://boisgera.github.io/control-engineering-with-python/1-3-Well-Posedness.html
 [Asymptotic Behavior]: https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.html
-
 [LTI Models]: https://boisgera.github.io/control-engineering-with-python/2-1-LTI-Models.html
 [Internal Dynamics]: https://boisgera.github.io/control-engineering-with-python/2-2-Internal-Dynamics.html
 [I/O Behavior]: https://boisgera.github.io/control-engineering-with-python/2-3-IO-Behavior.html
 [Controllability]: https://boisgera.github.io/control-engineering-with-python/3-1-Controllability.html
 [Stabilization]: https://boisgera.github.io/control-engineering-with-python/3-2-Stabilization.html
 [Optimal Control]: https://boisgera.github.io/control-engineering-with-python/3-3-Optimal-Control.html
-
-
 [Observers]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.html
 
+[Introduction PDF]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.pdf
+[Models PDF]: https://boisgera.github.io/control-engineering-with-python/1-1-Models.pdf
+[Simulation PDF]: https://boisgera.github.io/control-engineering-with-python/1-2-Simulation.pdf
+[Well-Posedness PDF]: https://boisgera.github.io/control-engineering-with-python/1-3-Well-Posedness.pdf
+[Asymptotic Behavior PDF]: https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.pdf
+[LTI Models PDF]: https://boisgera.github.io/control-engineering-with-python/2-1-LTI-Models.pdf
+[Internal Dynamics PDF]: https://boisgera.github.io/control-engineering-with-python/2-2-Internal-Dynamics.pdf
+[I/O Behavior PDF]: https://boisgera.github.io/control-engineering-with-python/2-3-IO-Behavior.pdf
+[Controllability PDF]: https://boisgera.github.io/control-engineering-with-python/3-1-Controllability.pdf
+[Stabilization PDF]: https://boisgera.github.io/control-engineering-with-python/3-2-Stabilization.pdf
+[Optimal Control PDF]: https://boisgera.github.io/control-engineering-with-python/3-3-Optimal-Control.pdf
+[Observers PDF]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.pdf
 
 0.  **Introduction** 
 
