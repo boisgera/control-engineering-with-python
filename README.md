@@ -19,7 +19,6 @@
 
 ### 📚 Slide Decks
 
-
 | Chapter                       | #   | Slide Deck (HTML)             |                                   |
 | ----------------------------- | --- | ----------------------------- | --------------------------------- |
 | Introduction                  | 0.1 | ![HTML] [Introduction]        | [![PDF]][Introduction PDF]        |
