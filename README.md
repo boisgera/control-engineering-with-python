@@ -36,8 +36,8 @@
 | Observers | ![HTML] [Observers] | ![PDF] ![Jupyter] |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
-[PDF]: https://api.iconify.design/vscode-icons/file-type-pdf2
-[Jupyter]: https://api.iconify.design/logos/jupyter
+[PDF]: https://api.iconify.design/vscode-icons/file-type-pdf2.svg
+[Jupyter]: https://api.iconify.design/logos/jupyter.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
 [Models]: https://boisgera.github.io/control-engineering-with-python/1-1-Models.html
