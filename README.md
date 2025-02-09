@@ -20,20 +20,24 @@
 ### 📚 Slide Decks
 
 
-| Section      |
-| ------------ | 
-| Introduction |
-| Dynamical Systems |
-| |
-| |
-| |
-| Linear Time-Invariant Systems |
-| |
-| |
-| Controller Design |
-| | 
-| |
-| Observers | 
+| Chapter      | Document | 
+| ------------ | -------- |
+| Introduction | [Introduction] |
+| Dynamical Systems | |
+| | |
+| | |
+| | |
+| Linear Time-Invariant Systems | |
+| | |
+| | |
+| Controller Design | |
+| |  |
+| | |
+| Observers | [Observers] |
+
+[Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
+[Observers]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.html
+
 
 0.  **Introduction** 
 
