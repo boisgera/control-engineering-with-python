@@ -17,7 +17,23 @@
 
 -->
 
-### :books: Program & Slides
+### 📚 Slide Decks
+
+
+| Section      |
+| ------------ | 
+| Introduction |
+| Dynamical Systems |
+| |
+| |
+| |
+| Linear Time-Invariant Systems |
+| |
+| |
+| Controller Design |
+| | 
+| |
+| Observers | 
 
 0.  **Introduction** 
 
