@@ -13,8 +13,8 @@ jobs:
 
       - uses: prefix-dev/setup-pixi@v0.8.1
         with:
-          cache: false
-          locked: false
+          cache: false  # 🪲 Bug mitigation
+          locked: false # 🪲 Bug mitigation
           environments: build
 
       - name: LaTeX Install

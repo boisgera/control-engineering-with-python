@@ -5,6 +5,7 @@ Parallel build of the HTML slide decks and Jupyter notebooks (and optionally PDF
 """
 
 # Python Standard Library
+import os
 import shlex
 import subprocess
 import sys
@@ -12,23 +13,11 @@ import sys
 def sh(cmd):
     return subprocess.Popen(shlex.split(cmd)) 
 
-targets = [
-    "intro",
-    "models",
-    "simulation",
-    "well-posedness",
-    "asymptotic",
-    "LTI-models",
-    "internal-dynamics",
-    "IO-dynamics",
-    "controllability",
-    "asymptotic-stabilization",
-    "optimal-control",
-    "observers",
-]
 
+targets = [file[:-3] for file in  os.listdir() if file[0].isdigit() and file.endswith(".md")]
+
+print("Building notebooks and HTML slide decks")
 processes = []
-
 for target in targets:
     cmd = ["./build.py"]
     if "--fast" in sys.argv[1:]:

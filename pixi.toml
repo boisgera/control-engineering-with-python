@@ -42,7 +42,7 @@ pandoc = ">=2.4, <3"
 
 [feature.build.tasks]
 build = "./build"
-clean = "rm -rf *.html *.pdf"
+clean = "rm -rf *.html *.pdf *.ipynb"
 
 [environments]
 build = ["build"]
