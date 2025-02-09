@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 
 """
-Parallel build of the HTML slide decks and Jupyter notebooks
+Parallel build of the HTML slide decks and Jupyter notebooks (and optionally PDF slide decks)
 """
 
-# Standard Python Library
+# Python Standard Library
+import shlex
 import subprocess
 import sys
+
+def sh(cmd):
+    return subprocess.Popen(shlex.split(cmd)) 
 
 targets = [
     "intro",
@@ -32,4 +36,17 @@ for target in targets:
     cmd.append(f"{target}.md")
     processes.append(subprocess.Popen(cmd)) # start in the background
 
-sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)
+status = (0 if all(p.wait() == 0 for p in processes) else 1)
+if status != 0:
+    sys.exit(status)
+
+if "--pdf" in sys.argv[1:]:
+    print("Building PDF slide decks")
+    processes = []
+
+    for target in targets:
+        cmd = f"decktape --chrome-arg=--no-sandbox --size 1600x900 automatic {target}.html {target}.pdf"
+        process = sh(cmd)
+        processes.append(process)
+
+    sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)

@@ -35,10 +35,7 @@ jobs:
         run: npm install -g decktape
 
       - name: Slides & Notebooks Build
-        run: ./build
-
-      - name: PDF build
-        run: ./build-pdf
+        run: ./build --pdf
 
       - name: Deployment Setup
         run: rm .gitignore

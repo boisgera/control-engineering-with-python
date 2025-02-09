@@ -27,8 +27,9 @@ targets = [
     "observers",
 ]
 
-if sh("which decktape").wait() != 0:
-    sh("npm install -g decktape").wait()
+# # Should have been taken care of by the pixi activation script
+# if sh("which decktape").wait() != 0:
+#    sh("npm install -g decktape").wait()
 
 processes = []
 

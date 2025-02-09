@@ -1,5 +1,7 @@
 #!/usr/bin/env python
-
+"""
+Build notebooks & slides for a single markdown documents
+"""
 # Python 3 Standard Library
 import copy
 import io
