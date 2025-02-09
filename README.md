@@ -20,22 +20,24 @@
 ### 📚 Slide Decks
 
 
-| Chapter      | Slide Deck | 
-| ------------ | -------- |
-| Introduction | ![HTML] [Introduction] |
-| Dynamical Systems | ![HTML] [Models] |
-| | ![HTML] [Simulation] |
-| | ![HTML] [Well-Posedness] |
-| | ![HTML] [Asymptotic Behavior] |
-| Linear Time-Invariant Systems | |
-| | |
-| | |
-| Controller Design | |
-| |  |
-| | |
-| Observers | ![HTML] [Observers] |
+| Chapter      | Slide Deck (HTML) | Other Formats |
+| ------------ | -------- | ![PDF] ![Jupyter] |
+| Introduction | ![HTML] [Introduction] | ![PDF] ![Jupyter] |
+| Dynamical Systems | ![HTML] [Models] | ![PDF] ![Jupyter]  |
+| | ![HTML] [Simulation] | ![PDF] ![Jupyter]  |
+| | ![HTML] [Well-Posedness] | ![PDF] ![Jupyter]  |
+| | ![HTML] [Asymptotic Behavior] | ![PDF] ![Jupyter]  |
+| Linear Time-Invariant Systems | | ![PDF] ![Jupyter] |
+| | | ![PDF] ![Jupyter]  |
+| | | ![PDF] ![Jupyter]  |
+| Controller Design | | ![PDF] ![Jupyter] |
+| |  | ![PDF] ![Jupyter] |
+| | | ![PDF] ![Jupyter] |
+| Observers | ![HTML] [Observers] | ![PDF] ![Jupyter] |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
+[PDF]: https://api.iconify.design/vscode-icons/file-type-pdf2
+[Jupyter]: https://api.iconify.design/logos/jupyter
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
 [Models]: https://boisgera.github.io/control-engineering-with-python/1-1-Models.html
