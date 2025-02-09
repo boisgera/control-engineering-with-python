@@ -14,6 +14,7 @@ jobs:
       - uses: prefix-dev/setup-pixi@v0.8.1
         with:
           cache: false
+          locked: false
           environments: build
 
       - name: LaTeX Install
