@@ -1,6 +1,6 @@
 # Control Engineering with Python
 
-[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) [![Discord](https://img.shields.io/discord/1338161489567023187?logo=discord&logoColor=white)](https://discord.gg/rNQtz2BMv6)
+[![Build Status](https://github.com/boisgera/control-engineering-with-python/workflows/build/badge.svg)](https://github.com/boisgera/control-engineering-with-python/actions) [![Discord](https://img.shields.io/discord/1338266282176282699?logo=discord&logoColor=white)](https://discord.gg/We5HHdvyd3)
 
 <!--
 ### Notations
