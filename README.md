@@ -81,20 +81,20 @@ The course materials are also available as Jupyter notebooks. To execute and edi
     $ pixi run start
     ```
     
-Alternatively, to use conda instead of pixi, download the project as usual, then in its directory, type
+Alternatively, if want to use the conda package manager instead of pixi,
 
-```console
-$ conda env create -f environment.yml
-```
+  - skip step 0.
+  
+  - perform step 1.  as usual, 
 
-to create the conda project environment (only once), then
+  - inside the project directory, type `conda env create -f environment.yml`
+    to create the conda project environment (only once), then whenever you want to browse 
+    the notebooks
 
-```console
-$ conda activate control-engineering-with-python
-$ jupyter lab
-```
-
-to activate it and browse the notebooks.
+    ```console
+    $ conda activate control-engineering-with-python
+    $ jupyter lab
+    ```
 
       
 ### 🚀 Project
