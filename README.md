@@ -20,20 +20,20 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | Slide Deck (HTML)             | Fallback (PDF) |
-| ----------------------------- | ----------------------------- | ------------------ |
-| Introduction                  | 0.1 ![HTML] [Introduction]        | ![PDF] PDF  |
-| Dynamical Systems             | 1.1 ![HTML] [Models]              | ![PDF] PDF  |
-|                               | 1.2 ![HTML] [Simulation]          | ![PDF] PDF  |
-|                               | 1.3 ![HTML] [Well-Posedness]      | ![PDF] PDF  |
-|                               | 1.4 ![HTML] [Asymptotic Behavior] | ![PDF] PDF  |
-| Linear Time-Invariant Systems | ![HTML] [LTI Models]          | ![PDF] PDF  |
-|                               | ![HTML] [Internal Dynamics]   | ![PDF] PDF  |
-|                               | ![HTML] [I/O Behavior]        | ![PDF] PDF  |
-| Controller Design             | ![HTML] [Controllability]     | ![PDF] PDF  |
-|                               | ![HTML] [Stabilization]       | ![PDF] PDF  |
-|                               | ![HTML] [Optimal Control]     | ![PDF] PDF  |
-| Observers                     | ![HTML] [Observers]           | ![PDF] PDF  |
+| Chapter                       | #   | Slide Deck (HTML)             | Fallback (PDF) |
+| ----------------------------- | --- | ----------------------------- | ------------------ |
+| Introduction                  | 0.1 | ![HTML] [Introduction]        | ![PDF] PDF  |
+| Dynamical Systems             | 1.1 | ![HTML] [Models]              | ![PDF] PDF  |
+|                               | 1.2 | ![HTML] [Simulation]          | ![PDF] PDF  |
+|                               | 1.3 | ![HTML] [Well-Posedness]      | ![PDF] PDF  |
+|                               | 1.4 | ![HTML] [Asymptotic Behavior] | ![PDF] PDF  |
+| Linear Time-Invariant Systems | 2.1 | ![HTML] [LTI Models]          | ![PDF] PDF  |
+|                               | 2.2 | ![HTML] [Internal Dynamics]   | ![PDF] PDF  |
+|                               | 2.3 | ![HTML] [I/O Behavior]        | ![PDF] PDF  |
+| Controller Design             | 3.1 | ![HTML] [Controllability]     | ![PDF] PDF  |
+|                               | 3.2 | ![HTML] [Stabilization]       | ![PDF] PDF  |
+|                               | 3.3 | ![HTML] [Optimal Control]     | ![PDF] PDF  |
+| Observers                     | 4.1 | ![HTML] [Observers]           | ![PDF] PDF  |
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
 [PDF]: https://api.iconify.design/bi/file-pdf.svg
