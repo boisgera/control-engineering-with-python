@@ -1,0 +1,50 @@
+name: build
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Activate Conda Environment
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: control
+          environment-file: environment.yml
+
+      - name: Display FFMPEG Info
+        run: ffmpeg -version
+
+      - name: LaTeX Install
+        run: sudo apt-get update && sudo apt-get install texlive-full
+
+      - name: Node Install
+        uses: actions/setup-node@v2
+        with:
+          node-version: "18"
+
+      - name: Decktape Install
+        run: npm install -g decktape
+
+      - name: Slides & Notebooks Build
+        run: ./build --pdf
+
+      - name: Deployment Setup
+        run: rm .gitignore
+
+      - name: Deployment
+        uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          BRANCH: gh-pages
+          FOLDER: "."
+          SINGLE_COMMIT: true
+          PRESERVE: true
