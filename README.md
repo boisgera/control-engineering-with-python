@@ -17,7 +17,7 @@
 
 -->
 
-### 📚 Slide Decks
+### 📚 Lecture Slides
 
 | Chapter                       | #   | Slide Deck (HTML)             |                                   |
 | ----------------------------- | --- | ----------------------------- | --------------------------------- |
@@ -36,7 +36,6 @@
 
 [HTML]: https://api.iconify.design/logos/html-5.svg
 [PDF]: https://api.iconify.design/bi/file-pdf.svg
-[Jupyterz]: https://api.iconify.design/logos/jupyter.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
 [Models]: https://boisgera.github.io/control-engineering-with-python/1-1-Models.html
@@ -64,7 +63,10 @@
 [Optimal Control PDF]: https://boisgera.github.io/control-engineering-with-python/3-3-Optimal-Control.pdf
 [Observers PDF]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.pdf
 
-### :notebook: Notebooks
+### ![Jupyter] Notebooks
+
+[Jupyter]: https://api.iconify.design/logos/jupyter.svg
+
 
 The course contents are also available as Jupyter notebooks.
 Open, edit and run these notebooks either
