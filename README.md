@@ -63,25 +63,47 @@
 [Optimal Control PDF]: https://boisgera.github.io/control-engineering-with-python/3-3-Optimal-Control.pdf
 [Observers PDF]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.pdf
 
-### ![Jupyter] Notebooks
+### ![Jupyter] Jupyter Notebooks
 
-[Jupyter]: https://api.iconify.design/logos/jupyter.svg
+The course materials are also available as Jupyter notebooks. To execute and edit them:
+
+ 0. **Install the pixi package manager** 
+ 
+    [Installation instructions](https://pixi.sh/latest/)
 
 
-The course contents are also available as Jupyter notebooks.
-Open, edit and run these notebooks either
+ 1. **Download and extract the [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip)** 
+    of the gh-pages branch.  
 
-- :cloud: in the cloud: [open project with Binder][ceip-binder] or
+    (or `git clone` the `gh-pages` branch of the current repository)
 
-- :computer: on your computer: [follow the instructions](install.md).
+ 2. Inside the project directory, to browse the notebook, type:
 
-[ceip-binder]: https://mybinder.org/v2/gh/boisgera/control-engineering-with-python/gh-pages
+    ```console
+    $ pixi run start
+    ```
+    
+To use conda instead of pixi, download the project as usual, then in its directory, type
 
-### :rocket: Project
+```console
+$ conda env create -f environment.yml
+```
+
+to create the conda project environment (only once), then
+
+```console
+$ conda activate control-engineering-with-python
+$ jupyter lab
+```
+
+to activate it and browse the notebooks.
+
+      
+### 🚀 Project
 
 🚧 *Coming soon!* 🚧
 
-### 📚 Extra Open Resources
+### 📚 Open Resources
 
 <!--
 #### :computer: Animation of dynamical systems
