@@ -79,7 +79,7 @@ The course materials are also available as Jupyter notebooks. To view, execute a
    
 
 Alternatively, if want to use the conda package manager instead of pixi, skip step 0.,
-perform step 1. as usual, and then inside the project directory, type `conda env create -f environment.yml` to create the conda project environment (once and dfor all). Then whenever you want to browse 
+perform step 1. as usual, and then inside the project directory, type `conda env create -f environment.yml` to create the conda project environment (once and for all). Then whenever you want to browse 
 the notebooks, type `conda activate control-engineering-with-python` and then `jupyter lab`.
 
       
