@@ -45,7 +45,7 @@
 
     4. Asymptotic Behavior 
       ([HTML](https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.html),
-       [PDF]](https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.pdf)
+       [PDF](https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.pdf)
        [IPYNB](https://github.com/boisgera/control-engineering-with-python/blob/gh-pages/1-4-Asymptotic-Behavior.ipynb))
 
 2.  **Linear-Time Invariant Systems**
