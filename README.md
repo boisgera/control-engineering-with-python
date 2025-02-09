@@ -20,14 +20,14 @@
 ### 📚 Slide Decks
 
 
-| Chapter                       | #   | Slide Deck (HTML)             | Fallback (PDF) |
+| Chapter                       | #   | Slide Deck (HTML)             | PDF |
 | ----------------------------- | --- | ----------------------------- | ------------------ |
-| Introduction                  | 0.1 | ![HTML] [Introduction]        | ![PDF] PDF  |
-| Dynamical Systems             | 1.1 | ![HTML] [Models]              | ![PDF] PDF  |
-|                               | 1.2 | ![HTML] [Simulation]          | ![PDF] PDF  |
-|                               | 1.3 | ![HTML] [Well-Posedness]      | ![PDF] PDF  |
-|                               | 1.4 | ![HTML] [Asymptotic Behavior] | ![PDF] PDF  |
-| Linear Time-Invariant Systems | 2.1 | ![HTML] [LTI Models]          | ![PDF] PDF  |
+| Introduction                  | 0.1 | ![HTML] [Introduction]        | ![PDF] |
+| Dynamical Systems             | 1.1 | ![HTML] [Models]              | ![PDF] |
+|                               | 1.2 | ![HTML] [Simulation]          | ![PDF] |
+|                               | 1.3 | ![HTML] [Well-Posedness]      | ![PDF] |
+|                               | 1.4 | ![HTML] [Asymptotic Behavior] | ![PDF] |
+| Linear Time-Invariant Systems | 2.1 | ![HTML] [LTI Models]          | ![PDF] |
 |                               | 2.2 | ![HTML] [Internal Dynamics]   | ![PDF] PDF  |
 |                               | 2.3 | ![HTML] [I/O Behavior]        | ![PDF] PDF  |
 | Controller Design             | 3.1 | ![HTML] [Controllability]     | ![PDF] PDF  |
