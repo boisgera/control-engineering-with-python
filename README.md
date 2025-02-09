@@ -23,10 +23,10 @@
 | Chapter      | Slide Deck | 
 | ------------ | -------- |
 | Introduction | ![HTML] [Introduction] |
-| Dynamical Systems | |
-| | |
-| | |
-| | |
+| Dynamical Systems | ![HTML] [Models] |
+| | ![HTML] [Simulation] |
+| | ![HTML] [Well-Posedness] |
+| | ![HTML] [Asymptotic Behavior] |
 | Linear Time-Invariant Systems | |
 | | |
 | | |
@@ -38,6 +38,13 @@
 [HTML]: https://api.iconify.design/logos/html-5.svg
 
 [Introduction]: https://boisgera.github.io/control-engineering-with-python/0-1-Introduction.html
+[Models]: https://boisgera.github.io/control-engineering-with-python/1-1-Models.html
+[Simulation]: https://boisgera.github.io/control-engineering-with-python/1-2-Simulation.html
+[Well-Posedness]: https://boisgera.github.io/control-engineering-with-python/1-3-Well-Posedness.html
+[Asymptotic Behavior]: https://boisgera.github.io/control-engineering-with-python/1-4-Asymptotic-Behavior.html
+
+
+
 [Observers]: https://boisgera.github.io/control-engineering-with-python/4-1-Observers.html
 
 
