@@ -19,7 +19,9 @@
 
 ### 📚 Slide Decks
 
-![Test icon](https://api.iconify.design/vscode-icons/file-type-html.svg)
+![Test icon](https://api.iconify.design/vscode-icons/file-type-html.svg) Test
+
+Test <img src="https://api.iconify.design/vscode-icons/file-type-html.svg" /> Test
 
 
 | Chapter      | ![](https://api.iconify.design/vscode-icons/file-type-html.svg) Slide Deck | 
