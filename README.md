@@ -65,6 +65,8 @@
 
 ### ![Jupyter] Jupyter Notebooks
 
+[Jupyter]: https://api.iconify.design/logos/jupyter
+
 The course materials are also available as Jupyter notebooks. To execute and edit them:
 
  0. **Install the pixi package manager** 
