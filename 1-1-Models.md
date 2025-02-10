@@ -1,6 +1,10 @@
 % Models
 % 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
 
+<!-- Avatar: great in slides, problematic in notebooks
+% <img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:bottom;position:relative;bottom:0.2em;"/>[Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
+-->
+
 
 ### Control Engineering with Python
 
@@ -9,7 +13,6 @@
 - ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
 - 🏦 [ITN, Mines Paris - PSL University](https://itn.dev)
-
 
 
 ## Symbols
@@ -125,6 +128,19 @@ where:
 - **State space:** $\mathbb{R}^n$
 
 - **Vector field:** $f:\mathbb{R}^n \to \mathbb{R}^n$.
+
+--------------------------------------------------------------------------------
+
+More general versions:
+
+  - Time-dependent vector-field:
+    $$
+    \dot{x} = f(t, x), \; t \in I \subset \mathbb{R},
+    $$
+
+  - $x \in X$, open subset of $\mathbb{R}^n$,
+
+  - $x \in X$, $n$-dimensional manifold.
 
 ## 🏷️ Vector Field
 
@@ -329,7 +345,7 @@ t_span = t_i, t_f = (0.0, 10.0)
 t = arange(t_i, t_f + 0.1*dt, dt)
 
 y0 = [3*pi/4, 0]
-r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t, atol=1e-12, rtol=1e-15)
+r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t, atol=1e-12, rtol=1e-12)
 theta, dtheta = r.y
 x = l * sin(theta)
 y = -l * cos(theta)
@@ -340,7 +356,14 @@ axis("equal")
 gca().set_xlim(-1.1*l, 1.1*l)
 gca().set_ylim(-1.1*l, 1.1*l)
 theta = linspace(0, 2*pi, 1000)
-plot(cos(theta), sin(theta), linewidth=2, linestyle="dashed", color=neutral, zorder=-100)
+plot(
+  cos(theta), 
+  sin(theta), 
+  linewidth=2, 
+  linestyle="dashed", 
+  color=neutral, 
+  zorder=-100,
+)
 plot([0], [0],
     marker="o", markevery=[-1],
     ms=15.0,
@@ -356,10 +379,9 @@ line = plot(
     lw=5.0,
     ms=20.0,
     color=grey_8,
-    marker="o", markevery=[-1],
-    #markeredgecolor="white"
+    marker="o", 
+    markevery=[-1],
 )[0]
-
 
 num_frames = len(t)
 
@@ -368,9 +390,13 @@ def update(i):
 
 animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
 writer = ani.FFMpegWriter(fps=fps)
-bar = tqdm(total=num_frames)
-animation.save("videos/pendulum.mp4", writer=writer, dpi=300,
-progress_callback = lambda i, n: bar.update(1))
+bar = tqdm(desc="Pendulum Video", total=num_frames)
+animation.save(
+  "videos/pendulum.mp4", 
+  writer=writer, 
+  dpi=300,
+  progress_callback = lambda i, n: bar.update(1),
+)
 bar.close()
 ```
 

@@ -62,7 +62,7 @@ def solve_alt(**kwargs):
         assert np.amax(dd) == dd[i, j]  # may fail when nan/infs?
         # with vinograd, np.amax(dd) may be nan if we include the origin.
         # Investigate !
-        print(f"{len(data)=} {(i, j)=}", f"{np.amax(dd)=}")
+        # print(f"{len(data)=} {(i, j)=}", f"{np.amax(dd)=}")
 
         s.insert(i + 1, 0.5 * (s[i] + s[i + 1]))
         y0 = boundary(np.array([s[i + 1]]))[0]

@@ -1,15 +1,17 @@
 % Simulation
-% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu)
+% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
 
+<!-- Avatar: great in slides, problematic in notebooks
+% <img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:bottom;position:relative;bottom:0.2em;"/>[Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
+-->
 
 ### Control Engineering with Python
 
-- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+- 📖 [Course Materials](https://github.com/boisgera/control-engineering-with-python)
 
 - ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
-
+- 🏦 [ITN, Mines Paris - PSL University](https://itn.dev)
 
 
 ## Symbols
@@ -298,7 +300,7 @@ Instead
 
 ## 📖 Scipy Integrate
 
-Use:
+Use (for example):
 
 ```python
 from scipy.integrate import solve_ivp

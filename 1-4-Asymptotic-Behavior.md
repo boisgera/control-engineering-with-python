@@ -1,15 +1,17 @@
 % Asymptotic Behavior
-% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
 
+<!-- Avatar: great in slides, problematic in notebooks
+% <img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:bottom;position:relative;bottom:0.2em;"/>[Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
+-->
 
 ### Control Engineering with Python
 
-- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+- 📖 [Course Materials](https://github.com/boisgera/control-engineering-with-python)
 
 - ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
-
+- 🏦 [ITN, Mines Paris - PSL University](https://itn.dev)
 
 
 ## Symbols
@@ -337,7 +339,6 @@ import matplotlib.animation as ani
 from matplotlib.colors import to_rgb
 from tqdm import tqdm
 
-
 neutral = grey_4 = to_rgb("#ced4da")
 #grey_5 = to_rgb("#adb5bd")
 #grey_8 = to_rgb("#343a40")
@@ -353,7 +354,7 @@ t = np.arange(t_i, t_f + dt, dt)
 y0s = [[-4.0, 1.0], [4.0, -1.0]]
 colors = [good, good]
 xys = []
-for y0 in tqdm(y0s):
+for y0 in y0s:
     r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
     xys.append(r.y)
 
@@ -396,7 +397,7 @@ def update(i):
 
 animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
 writer = ani.FFMpegWriter(fps=fps)
-bar = tqdm(total=num_frames)
+bar = tqdm(desc="Globally Attractive Video", total=num_frames)
 animation.save("videos/globally-attractive.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
@@ -489,7 +490,7 @@ t = np.arange(t_i, t_f + dt, dt)
 y0s = [[-2.4, 0.0], [-1.8, 0.0], [-1.2, 0.0]]
 colors = [bad, good, good]
 xys = []
-for y0 in tqdm(y0s):
+for y0 in y0s:
     r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
     xys.append(r.y)
 
@@ -532,7 +533,7 @@ def update(i):
 
 animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
 writer = ani.FFMpegWriter(fps=fps)
-bar = tqdm(total=num_frames)
+bar = tqdm(desc="Locally Attractive Video", total=num_frames)
 animation.save("videos/locally-attractive.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
@@ -627,7 +628,7 @@ y0s = [[-4*0.9659258262890683, -4*0.2588190451025208],
        [0.2*0.9659258262890683, 0.2*0.2588190451025208 - 0.2]]
 colors = [good, bad, bad]
 xys = []
-for y0 in tqdm(y0s):
+for y0 in y0s:
     r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
     xys.append(r.y)
 
@@ -670,7 +671,7 @@ def update(i):
 
 animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
 writer = ani.FFMpegWriter(fps=fps)
-bar = tqdm(total=num_frames)
+bar = tqdm(desc="Not Attractive Video", total=num_frames)
 animation.save("videos/not-attractive.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
@@ -1027,7 +1028,7 @@ t = np.arange(t_i, t_f + 0.1*dt, dt)
 y0s = [[1.5*cos(theta), 1.5*sin(theta)] for theta in linspace(0, (11/12)*2*pi, 12)]
 # colors = [good] * len(y0s)
 xys = []
-for y0 in tqdm(y0s):
+for y0 in y0s:
     r = solve_ivp(fun=ft, y0=y0, t_span=t_span, t_eval=t)
     xys.append(r.y)
 
@@ -1072,7 +1073,7 @@ def update(i):
 
 animation = ani.FuncAnimation(fig, func=update, frames=num_frames)
 writer = ani.FFMpegWriter(fps=fps)
-bar = tqdm(total=num_frames)
+bar = tqdm(desc="Pathological Example Video", total=num_frames)
 animation.save("videos/pathological.mp4", writer=writer, dpi=300,
 progress_callback = lambda i, n: bar.update(1))
 bar.close()
@@ -1652,11 +1653,99 @@ save("images/unstable")
 
 
 
-::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-## {.section data-background="images/unstable.svg" data-background-size="contain"}
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+```python
+
+# Third-Party Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Local Library
+import mivp
+
+# ------------------------------------------------------------------------------
+
+def f(xy):
+    x, y = xy
+    q = x**2 + y**2 * (1 + (x**2 + y**2)**2)
+    dx = (x**2 * (y - x) + y**5) / q
+    dy = y**2 * (y - 2*x) / q
+    return array([dx, dy])
+
+# Vector field
+def fun(t, xy):
+    return f(xy)
+
+# Streamplot
+fig = figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(lambda xy: fun(0, xy), x, y), color=grey_4)
+plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+        markeredgecolor="white", color=neutral)
+axis("square")
+axis("off")
+tight_layout()
+
+# Time span & frame rate
+t_span = (0.0, 10.0)
+
+df = 60.0
+dt = 1.0 / df
+t = np.arange(t_span[0], t_span[1], dt)
+t = np.r_[t, t_span[1]]
+
+# Initial set boundary
+y0 = [2.5, 0.0]
+radius = 2.0
+xc, yc = y0
+
+def boundary(t):  # we assume that t is a 1-dim array
+    return np.array(
+        [
+            [xc + radius * np.cos(theta), yc + radius * np.sin(theta)]
+            for theta in 2 * np.pi * t
+        ]
+    )
+
+# Precision
+rtol = 1e-6  # default: 1e-3
+atol = 1e-12  # default: 1e-6
+
+# ------------------------------------------------------------------------------
+
+data = mivp.solve_alt(
+    fun=fun,
+    t_eval=t,
+    boundary=boundary,
+    boundary_rtol=0.0,
+    boundary_atol=0.1,
+    rtol=rtol,
+    atol=atol,
+    method="LSODA",
+)
+
+good = to_rgb("#51cf66")
+bad = to_rgb("#ff6b6b")
+mivp.generate_movie(data, filename="videos/vinograd.mp4", fps=df,
+    axes=gca(), zorder=1000, color=bad, linewidth=1.0,
+)
+```
+
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+---
+
+```{=html}
+<video controls style="width:100vw;">
+  <source src="videos/vinograd.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+```
+
 
 
 
