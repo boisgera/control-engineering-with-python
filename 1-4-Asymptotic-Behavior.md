@@ -1456,6 +1456,100 @@ axis("off")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+```python
+
+# Third-Party Libraries
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Local Library
+import mivp
+
+# ------------------------------------------------------------------------------
+
+def f(xy):
+    x, y = xy
+    q = x**2 + y**2 * (1 + (x**2 + y**2)**2)
+    dx = (x**2 * (y - x) + y**5) / q
+    dy = y**2 * (y - 2*x) / q
+    return array([dx, dy])
+
+# Vector field
+def fun(t, xy):
+    return f(xy)
+
+# Streamplot
+fig = figure()
+x = y = linspace(-5.0, 5.0, 1000)
+streamplot(*Q(lambda xy: fun(0, xy), x, y), color=grey_4)
+plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
+        markeredgecolor="white", color=neutral)
+axis("square")
+axis("off")
+tight_layout()
+
+# Time span & frame rate
+t_span = (0.0, 10.0)
+
+df = 60.0
+dt = 1.0 / df
+t = np.arange(t_span[0], t_span[1], dt)
+t = np.r_[t, t_span[1]]
+
+# Initial set boundary
+y0 = [2.5, 0.0]
+radius = 2.0
+xc, yc = y0
+
+def boundary(t):  # we assume that t is a 1-dim array
+    return np.array(
+        [
+            [xc + radius * np.cos(theta), yc + radius * np.sin(theta)]
+            for theta in 2 * np.pi * t
+        ]
+    )
+
+# Precision
+rtol = 1e-6  # default: 1e-3
+atol = 1e-12  # default: 1e-6
+
+# ------------------------------------------------------------------------------
+
+data = mivp.solve_alt(
+    fun=fun,
+    t_eval=t,
+    boundary=boundary,
+    boundary_rtol=0.0,
+    boundary_atol=0.1,
+    rtol=rtol,
+    atol=atol,
+    method="LSODA",
+)
+
+good = to_rgb("#51cf66")
+bad = to_rgb("#ff6b6b")
+mivp.generate_movie(data, filename="videos/vinograd.mp4", fps=df,
+    axes=gca(), zorder=1000, color=bad, linewidth=1.0,
+)
+```
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+---
+
+```{=html}
+<video controls style="width:100vw;">
+  <source src="videos/vinograd.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+```
+
 ---
 
 ### 1. 🧮
@@ -1651,101 +1745,11 @@ save("images/unstable")
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-
-
-::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-```python
-
-# Third-Party Libraries
-import numpy as np
-import matplotlib.pyplot as plt
-
-# Local Library
-import mivp
-
-# ------------------------------------------------------------------------------
-
-def f(xy):
-    x, y = xy
-    q = x**2 + y**2 * (1 + (x**2 + y**2)**2)
-    dx = (x**2 * (y - x) + y**5) / q
-    dy = y**2 * (y - 2*x) / q
-    return array([dx, dy])
-
-# Vector field
-def fun(t, xy):
-    return f(xy)
-
-# Streamplot
-fig = figure()
-x = y = linspace(-5.0, 5.0, 1000)
-streamplot(*Q(lambda xy: fun(0, xy), x, y), color=grey_4)
-plot([0], [0], lw=3.0, marker="o", ms=10.0, markevery=[-1],
-        markeredgecolor="white", color=neutral)
-axis("square")
-axis("off")
-tight_layout()
-
-# Time span & frame rate
-t_span = (0.0, 10.0)
-
-df = 60.0
-dt = 1.0 / df
-t = np.arange(t_span[0], t_span[1], dt)
-t = np.r_[t, t_span[1]]
-
-# Initial set boundary
-y0 = [2.5, 0.0]
-radius = 2.0
-xc, yc = y0
-
-def boundary(t):  # we assume that t is a 1-dim array
-    return np.array(
-        [
-            [xc + radius * np.cos(theta), yc + radius * np.sin(theta)]
-            for theta in 2 * np.pi * t
-        ]
-    )
-
-# Precision
-rtol = 1e-6  # default: 1e-3
-atol = 1e-12  # default: 1e-6
-
-# ------------------------------------------------------------------------------
-
-data = mivp.solve_alt(
-    fun=fun,
-    t_eval=t,
-    boundary=boundary,
-    boundary_rtol=0.0,
-    boundary_atol=0.1,
-    rtol=rtol,
-    atol=atol,
-    method="LSODA",
-)
-
-good = to_rgb("#51cf66")
-bad = to_rgb("#ff6b6b")
-mivp.generate_movie(data, filename="videos/vinograd.mp4", fps=df,
-    axes=gca(), zorder=1000, color=bad, linewidth=1.0,
-)
-```
-
+## {.section data-background="images/unstable.svg" data-background-size="contain"}
 
 ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
----
-
-```{=html}
-<video controls style="width:100vw;">
-  <source src="videos/vinograd.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-```
-
 
 
 
