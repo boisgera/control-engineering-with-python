@@ -451,7 +451,7 @@ def notebookify(doc):
     )
 
     header_cell = MarkdownCell()
-    header_cell["source"] = pandoc.write(header)
+    header_cell["source"] = pandoc.write(header, format="markdown-raw_attribute")
     cells.append(header_cell)
 
     for block in blocks:
