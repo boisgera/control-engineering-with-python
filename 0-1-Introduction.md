@@ -1,14 +1,14 @@
 % Introduction
-% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
 
 
 ### Control Engineering with Python
 
-- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+- 📖 [Course Materials](https://github.com/boisgera/control-engineering-with-python)
 
 - ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+- 🏦 [ITN, Mines Paris - PSL University](https://itn.dev)
 
 
 
@@ -199,14 +199,27 @@ $\to$ 🛑 **global 737 MAX groundings.**
 - 📰 [Boeing 737 Max adjustable stabilizer](https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg)
 
 
-## Self-Driving Cars
+## Rocket Booster Landing
 
- 📆 **2022:** despite [marketing stunts](https://www.tesla.com/autopilot), not there yet.
+#### 🚀 [SpaceX's Starship](https://www.spacex.com/vehicles/starship/)
 
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RYUr-5PYA7s?si=ibaQaj5eRpKapGBm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
-## ADAS Levels
+## ADAS & Self-Driving Cars
 
-🏷️ **Advanced Driver-Assistance Systems**
+🏷️ **ADAS:** Advanced Driver-Assistance Systems
+
+📆 **2025:** fully autonomous cars are not 100% there yet.
+
+Actors: [Tesla], [Mercedes-Benz], [Waymo], etc.
+
+[Tesla]: https://www.tesla.com
+[Mercedes-Benz]: https://www.mercedes-benz.com
+[Waymo]: https://waymo.com/
+
+## [SAE Levels](https://www.sae.org/blog/sae-j3016-update)
+
+🏷️ **SAE** : Society of Automobile Engineers
 
   - **Level 0:** ~ No automation
 
@@ -216,10 +229,9 @@ $\to$ 🛑 **global 737 MAX groundings.**
 
   - **Level 3:** ~ Eyes off $\leftarrow$ Mercedes Drive Pilot (2021)
 
-  - **Level 4:** ~ Mind off
+  - **Level 4:** ~ Mind off $\leftarrow$ Mercedes Testing (2024)
 
-  - **Level 5:** ~ **🚀 Self-driving**
-
+  - **Level 5:** ~ **🚀 Self-driving** $\leftarrow$ Not achieved yet
 
 
 ## Level 1 ADAS

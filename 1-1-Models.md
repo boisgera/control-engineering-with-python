@@ -1,14 +1,14 @@
 % Models
-% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
 
 
 ### Control Engineering with Python
 
-- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+- 📖 [Course Materials](https://github.com/boisgera/control-engineering-with-python)
 
 - ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
 
-- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+- 🏦 [ITN, Mines Paris - PSL University](https://itn.dev)
 
 
 
