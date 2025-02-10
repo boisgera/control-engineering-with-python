@@ -4,6 +4,7 @@ import scipy.integrate as sci
 import matplotlib.pyplot as plt
 import matplotlib.animation as ani
 
+# TODO: support progress handler in move generation (for tqdm)
 
 def solve(**kwargs):
     kwargs = kwargs.copy()
