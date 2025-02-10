@@ -23,7 +23,9 @@ from pandoc.types import (
     Image,
     Link,
     Para,
+    Plain,
     RawBlock,
+    RawInline,
     Strong,
 )
 
@@ -436,14 +438,15 @@ def notebookify(doc):
         Str("Python"),
     ]
     title = metamap["title"][0]
-    author = metamap["author"][0][0][0]
-
+    author_inlines = metamap["author"][0][0][0]
+    author_html_str = pandoc.write(Pandoc(Meta({}), [Plain(author_inlines)]), format="html")
+    
     header = Pandoc(
         Meta({}),
         [
             Header(1, ("", [], []), hero_title),
             Header(1, ("", [], []), title),
-            Para(author),
+            RawBlock(Format("html"), author_html_str),
         ],
     )
 

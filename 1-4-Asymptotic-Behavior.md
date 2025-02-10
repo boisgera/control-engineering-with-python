@@ -1,9 +1,5 @@
 % Asymptotic Behavior
-% 👤 [Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
-
-<!-- Avatar: great in slides, problematic in notebooks
-% <img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:bottom;position:relative;bottom:0.2em;"/>[Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
--->
+% <img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:middle;position:relative;bottom:0.1em;"/>[Sébastien Boisgérault](mailto:Sebastien.Boisgerault@minesparis.psl.eu) 
 
 ### Control Engineering with Python
 
