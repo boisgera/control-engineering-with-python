@@ -77,7 +77,7 @@ The course materials are also available as Jupyter notebooks. To view, execute a
 
  2. Download and extract this [zip archive](https://github.com/boisgera/control-engineering-with-python/archive/refs/heads/gh-pages.zip).[^1] 
 
- 3. Inside the project directory, type the terminal command `pixi run start`.
+ 3. Inside the project directory, execute the command `pixi run start`.
 
 [^1]: or alternatively, if you are a git user, `git clone` the `gh-pages` branch of the current repository.
    
