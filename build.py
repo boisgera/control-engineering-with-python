@@ -245,6 +245,18 @@ options = [
 
 pandoc.write(slides_doc, file=doc_name + ".html", format="revealjs", options=options)
 
+# 🪲🪛 Fix Pandoc+reveal+unpkg bug
+with open(doc_name + ".html", mode="tr") as f:
+    content = f.read()
+with open(doc_name + ".html", mode="tw") as f:
+    f.write(
+        content.replace(
+            "https://unpkg.com/reveal.js@^4//", 
+            "https://unpkg.com/reveal.js@^4/"
+        )
+    )
+    
+
 # Notebook Generation
 # ------------------------------------------------------------------------------
 def make_notebook_doc(doc):
