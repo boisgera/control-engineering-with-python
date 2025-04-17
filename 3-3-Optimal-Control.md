@@ -279,10 +279,13 @@ figure()
 x = [real(s) for s in eigenvalues]
 y = [imag(s) for s in eigenvalues]
 plot(x, y, "kx")
+plot([0, 0], [-5, 5], "k")
+plot([-5, 5], [0, 0], "k")
 grid(True)
 title("Eigenvalues")
 axis("square")
 axis([-5, 5, -5, 5])
+xticks(arange(-5, 6)); yticks(arange(-5, 6))
 ```
 
 ::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::

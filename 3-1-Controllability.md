@@ -266,6 +266,23 @@ def u(t):
 
 --------------------------------------------------------------------------------
 
+### 🐍 Automatic differentiation
+Alternatively, use the [autograd] package:
+
+[autograd]: https://pypi.org/project/autograd/
+
+``` python
+import autograd.numpy as numpy
+from autograd import elementwise_grad as egrad
+def x(t):
+    return alpha * t**3 + beta * t**2
+d2_x = egrad(egrad(x))
+def u(t):
+    return m * d2_x(t)
+```
+
+--------------------------------------------------------------------------------
+
 ### 🐍 💻 Simulation
 
 
