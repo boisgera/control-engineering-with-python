@@ -89,7 +89,7 @@ the notebooks, type `conda activate control-engineering-with-python` and then `j
       
 ### 🚀 Project
 
-[🐦‍⬛ Redstart](https://github.com/boisgera/redstart)
+  - 🐦‍⬛ [Redstart](https://github.com/boisgera/redstart)
 
 ### 📚 Open Resources
 
