@@ -86,11 +86,13 @@ Alternatively, if want to use the conda package manager instead of pixi, skip st
 perform step 2. as above, and then inside the project directory, type `conda env create -f environment.yml` to create the conda project environment (once and for all). Then whenever you want to browse 
 the notebooks, type `conda activate control-engineering-with-python` and then `jupyter lab`.
 
+<!--
       
 ### 🚀 Project
 
   - 🐦‍⬛ [Redstart](https://github.com/boisgera/redstart)
   
+-->  
 
 ### 📚 Open Resources
 

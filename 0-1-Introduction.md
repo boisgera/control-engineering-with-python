@@ -66,6 +66,10 @@ of abstract **dynamical systems**.
 
 #### Photo by [Daniel Schludi](https://unsplash.com/@schluditsch?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/covid-19?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
+## {data-background="images/static/Forrester-World-Model.png" .display}
+
+### World Dynamics (Forrester)
+
 ## 🏷️ Control Engineering
 
 Apply Control Theory to **design & build** concrete dynamical systems 
@@ -216,21 +220,21 @@ Actors: [Tesla], [Mercedes-Benz], [Waymo], etc.
 [Mercedes-Benz]: https://www.mercedes-benz.com
 [Waymo]: https://waymo.com/
 
-## [SAE Levels](https://www.sae.org/blog/sae-j3016-update)
+## [SAE Automation Levels](https://www.sae.org/blog/sae-j3016-update)
 
 🏷️ **SAE** : Society of Automobile Engineers
 
-  - **Level 0:** ~ No automation
+  - **Level 0:** 👨 No automation: warnings, alerts, etc.
 
-  - **Level 1:** ~ Hands on
+  - **Level 1:** 👨/🤖 single-task assist (e.g. speed control)
 
-  - **Level 2**: ~ Hands off $\leftarrow$ Telsa Autopilot
+  - **Level 2**: 👨/🤖 many-task assist $\leftarrow$ Telsa Autopilot
 
-  - **Level 3:** ~ Eyes off $\leftarrow$ Mercedes Drive Pilot (2021)
+  - **Level 3:** 🤖/👨 $\leftarrow$ Mercedes Drive Pilot (2021)
 
-  - **Level 4:** ~ Mind off $\leftarrow$ Mercedes Testing (2024)
+  - **Level 4:** 🤖 $\leftarrow$ Waymo (2022), Mercedes (2024 🔧)
 
-  - **Level 5:** ~ **🚀 Self-driving** $\leftarrow$ Not achieved yet
+  - **Level 5:** 🤖 fully self-driving $\leftarrow$ 🚀 Not achieved yet
 
 
 ## Level 1 ADAS
