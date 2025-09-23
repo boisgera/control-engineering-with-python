@@ -52,7 +52,7 @@ of abstract **dynamical systems**.
 
 ### Mechanical Systems {style="background-color:#ffffff90"}
 
-### Photo by [enginakyurt](https://unsplash.com/@enginakyurt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/pendulum?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
+###### Photo by [enginakyurt](https://unsplash.com/@enginakyurt?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/pendulum?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
   
 ## {data-background="images/static/jeremy-cai-B8UTPKlHNyw-unsplash.jpg" .display}
 
@@ -62,7 +62,7 @@ of abstract **dynamical systems**.
 
 ## {data-background="images/static/Forrester-World-Model.png" .display}
 
-### World Dynamics (Forrester)
+### World Dynamics (Forrester) {style="background-color:#f0f0f0ff"}
 
 ## {data-background="images/static/daniel-schludi-mAGZNECMcUg-unsplash.jpg" .display}
 
@@ -115,11 +115,14 @@ Consider:
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
+
 ## {data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg" .display}
 
-### Eurofighter Typhoon {style="background-color:#ffffff90"}
 
+### Eurofighter Typhoon {style="background-color:#ffffff90"}
 #### Photo by [Ray Harrington](https://unsplash.com/es/@raymondo600?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/eurofighter-typhoon?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
+
+#### {style="margin-bottom:80vh"}
 
 --------------------------------------------------------------------------------
 
@@ -157,6 +160,8 @@ Consider:
 ### Boeing 737 MAX {style="background-color:#ffffff90"}
 
 #### Photo by [Justin Hu](https://unsplash.com/@phanto_sea?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/boeing-737-max?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"} 
+
+#### {style="margin-bottom:80vh"}
 
 ## Boeing 737 MAX
 
