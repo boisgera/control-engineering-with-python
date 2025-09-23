@@ -60,15 +60,17 @@ of abstract **dynamical systems**.
 
 ### Photo by [Jeremy Cai](https://unsplash.com/@j?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/fish-lake?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
+## {data-background="images/static/Forrester-World-Model.png" .display}
+
+### World Dynamics (Forrester)
+
 ## {data-background="images/static/daniel-schludi-mAGZNECMcUg-unsplash.jpg" .display}
 
 ### Epidemiological Models {style="background-color:#ffffff90"}
 
 #### Photo by [Daniel Schludi](https://unsplash.com/@schluditsch?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) on [Unsplash](https://unsplash.com/s/photos/covid-19?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText) {style="background-color:#ffffff90"}
 
-## {data-background="images/static/Forrester-World-Model.png" .display}
 
-### World Dynamics (Forrester)
 
 ## 🏷️ Control Engineering
 
@@ -212,7 +214,7 @@ $\to$ 🛑 **global 737 MAX groundings.**
 
 🏷️ **ADAS:** Advanced Driver-Assistance Systems
 
-📆 **2025:** fully autonomous cars are not 100% there yet.
+📆 **2025:** fully autonomous cars are not there yet.
 
 Actors: [Tesla], [Mercedes-Benz], [Waymo], etc.
 
