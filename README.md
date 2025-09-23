@@ -112,8 +112,10 @@ Example notebook: double pendulum
 
 - :book: [Vladimír Kučera – Riccati Equations and their Solution](http://library.utia.cas.cz/separaty/2011/TR/kucera-0436431.pdf)
 
+<!--
 - :book: [The Zodiac – Theory of Robot Control](http://www.gipsa-lab.grenoble-inp.fr/~carlos.canudas-de-wit/publications/Theory_of_robot_control.pdf)
 
+-->
 ---
 
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
