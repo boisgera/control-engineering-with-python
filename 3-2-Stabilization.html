@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="👤 Sébastien Boisgérault">
+  <title>Asymptotic Stabilization</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Asymptotic Stabilization</h1>
+  <p class="author">👤 <a
+href="sebastien.boisgerault@minesparis.psl.eu">Sébastien
+Boisgérault</a></p>
+</section>
+
+<section class="slide level2">
+
+<h3 id="control-engineering-with-python">Control Engineering with
+Python</h3>
+<ul>
+<li><p>📖 <a
+href="https://github.com/boisgera/control-engineering-with-python">Documents
+(GitHub)</a></p></li>
+<li><p>©️ <a href="https://creativecommons.org/licenses/by/4.0/">License
+CC BY 4.0</a></p></li>
+<li><p>🏦 <a href="https://mines-paristech.eu/">Mines ParisTech, PSL
+University</a></p></li>
+</ul>
+</section>
+<section id="symbols" class="slide level2">
+<h2>Symbols</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>🐍</td>
+<td>Code</td>
+<td>🔍</td>
+<td>Worked Example</td>
+</tr>
+<tr class="even">
+<td>📈</td>
+<td>Graph</td>
+<td>🧩</td>
+<td>Exercise</td>
+</tr>
+<tr class="odd">
+<td>🏷️</td>
+<td>Definition</td>
+<td>💻</td>
+<td>Numerical Method</td>
+</tr>
+<tr class="even">
+<td>💎</td>
+<td>Theorem</td>
+<td>🧮</td>
+<td>Analytical Method</td>
+</tr>
+<tr class="odd">
+<td>📝</td>
+<td>Remark</td>
+<td>🧠</td>
+<td>Theory</td>
+</tr>
+<tr class="even">
+<td>ℹ️</td>
+<td>Information</td>
+<td>🗝️</td>
+<td>Hint</td>
+</tr>
+<tr class="odd">
+<td>⚠️</td>
+<td>Warning</td>
+<td>🔓</td>
+<td>Solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="imports" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🐍 Imports</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.testing <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> <span class="op">*</span></span></code></pre></div>
+<!--
+
+🐍 Streamplot Helper
+--------------------------------------------------------------------------------
+
+``` python
+def Q(f, xs, ys):
+    X, Y = meshgrid(xs, ys)
+    v = vectorize
+    fx = v(lambda x, y: f([x, y])[0])
+    fy = v(lambda x, y: f([x, y])[1])
+    return X, Y, fx(X, Y), fy(X, Y)
+```
+-->
+</section>
+<section id="asymptotic-stabilization" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🧭 Asymptotic Stabilization</h2>
+<p>When the system</p>
+<p><span class="math display">\[
+\dot{x} = A x, \; x \in \mathbb{R}^n
+\]</span></p>
+<p>is not asymptotically stable at the origin, maybe there are some
+inputs <span class="math inline">\(u \in \mathbb{R}^m\)</span> such
+that</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu
+\]</span></p>
+<p>that we can use to stabilize asymptotically the system?</p>
+</section>
+<section id="linear-feedback" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Linear Feedback</h2>
+<p>We search for <span class="math inline">\(u\)</span> as a
+<strong>linear feedback</strong>:</p>
+<p><span class="math display">\[
+u(t) = -K x(t)
+\]</span></p>
+<p>for some <span class="math inline">\(K \in \mathbb{R}^{m \times
+n}\)</span>.</p>
+</section>
+<section id="note" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">📝 Note</h2>
+<p>In this scheme</p>
+<ul>
+<li><p>⚠️ The full system state <span
+class="math inline">\(x(t)\)</span> <strong>must be
+measured</strong>.</p></li>
+<li><p>🏷️ This information is then <strong>fed back</strong> into the
+system.</p></li>
+<li><p>🏷️ The feedback <strong>closes the loop</strong>.</p></li>
+</ul>
+</section>
+<section id="closed-loop-diagram" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Closed-Loop Diagram</h2>
+<p><img data-src="images/static/feedback.svg" /></p>
+</section>
+<section id="closed-loop-dynamics" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Closed-Loop Dynamics</h2>
+<p>When</p>
+<p><span class="math display">\[
+  \begin{array}{rcl}
+  \dot{x} &amp;=&amp; Ax + B u \\
+        u &amp;=&amp; - K x
+  \end{array}
+  \]</span></p>
+<p>the state <span class="math inline">\(x \in \mathbb{R}^n\)</span>
+evolves according to:</p>
+<p><span class="math display">\[
+  \dot{x} = (A - B K) x
+  \]</span></p>
+</section>
+<section id="reminder" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Reminder</h2>
+<p>The closed-loop system is asymptotically stable iff every eigenvalue
+of the matrix</p>
+<p><span class="math display">\[
+A - B K
+\]</span></p>
+<p>is in the open left-hand plane.</p>
+</section>
+<section id="spectrum-as-a-multiset" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Spectrum as a Multiset</h2>
+<p>Multisets remember the multiplicity of their elements. It’s
+convenient to describe the spectrum of matrices:</p>
+<p><span class="math display">\[
+A :=
+  \left[
+  \begin{array}{ccc}
+  1 &amp; 0 &amp; 0 \\
+  0 &amp; 1 &amp; 0 \\
+  0 &amp; 0 &amp; 2
+  \end{array}
+  \right]
+  \, \Rightarrow \,
+\sigma(A)
+= \{1, 1, 2\}
+\]</span></p>
+<p><span class="math display">\[
+0 \not \in \sigma(A), \, 1 \in \sigma(A), \, 1 \in^2 \sigma(A), \, 1
+\not \in^3 \sigma(A)
+\]</span></p>
+<p><span class="math display">\[
+2 \in \sigma(A), \, 2 \not \in^2 \sigma(A)
+\]</span></p>
+</section>
+<section id="pole-assignment" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Pole Assignment</h2>
+<h4 id="assumptions">Assumptions</h4>
+<ul>
+<li><p>The system</p>
+<p><span class="math display">\[
+\dot{x} = A x + B u, \, x \in \mathbb{R}^n, \,u\in\mathbb{R}^p
+\]</span></p>
+<p>is controllable.</p></li>
+<li><p><span class="math inline">\(\Lambda\)</span> is a symmetric
+multiset of <span class="math inline">\(n\)</span> complex numbers:</p>
+<p><span class="math display">\[
+\Lambda = \{\lambda_1, \dots, \lambda_n\} \subset \mathbb{C}
+\; \mbox{ and } \;
+\lambda \in^k \Lambda
+\, \Rightarrow \,
+\overline{\lambda} \in^k \Lambda.
+\]</span></p></li>
+</ul>
+</section>
+<section id="pole-assignment-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Pole Assignment</h2>
+<h4 id="conclusion">Conclusion</h4>
+<p><span class="math inline">\(\Rightarrow\)</span> There is a matrix
+<span class="math inline">\(K \in \mathbb{R}^{n \times m}\)</span> such
+that</p>
+<p><span class="math display">\[
+\sigma(A - B K) = \Lambda.
+\]</span></p>
+</section>
+<section id="pole-assignment-2" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Pole Assignment</h2>
+<p>Consider the double integrator <span class="math inline">\(\ddot{x} =
+u\)</span></p>
+<p><span class="math display">\[
+  \frac{d}{dt}
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  =
+  \left[\begin{array}{cx} 0 &amp; 1 \\ 0 &amp; 0\end{array}\right]
+  \left[\begin{array}{c} x \\ \dot{x} \end{array}\right]
+  +
+  \left[\begin{array}{c} 0 \\ 1 \end{array}\right]
+  u
+  \]</span></p>
+<p>(in standard form)</p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="section">🐍 💻</h3>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.signal <span class="im">import</span> place_poles</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> array([[<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">0</span>]])</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> array([[<span class="dv">0</span>], [<span class="dv">1</span>]])</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>poles <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>]</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> place_poles(A, B, poles).gain_matrix</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="section-1">🐍</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>assert_almost_equal(K, [[<span class="fl">2.0</span>, <span class="fl">3.0</span>]])</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>eigenvalues, _ <span class="op">=</span> eig(A <span class="op">-</span> B <span class="op">@</span> K)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>assert_almost_equal(eigenvalues, [<span class="op">-</span><span class="dv">1</span>, <span class="op">-</span><span class="dv">2</span>])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="spectrum">🐍 📊 Spectrum</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> [real(s) <span class="cf">for</span> s <span class="kw">in</span> eigenvalues]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> [imag(s) <span class="cf">for</span> s <span class="kw">in</span> eigenvalues]</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plot(x, y, <span class="st">&quot;kx&quot;</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>,<span class="dv">1</span>, <span class="dv">2</span>,<span class="dv">3</span>])</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>yticks([<span class="op">-</span><span class="dv">3</span>, <span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>,<span class="dv">1</span>, <span class="dv">2</span>,<span class="dv">3</span>])</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], [<span class="dv">0</span>, <span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)   </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>title(<span class="st">&quot;Spectrum of $A-BK$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-2" class="slide level2 section"
+data-background="images/poles-PA.svg" data-background-size="contain"
+data-background-color="#f3f0ff">
+<h2 class="section" data-background="images/poles-PA.svg"
+data-background-size="contain" data-background-color="#f3f0ff"></h2>
+</section>
+<section id="limitations" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">⚠️ Limitations</h2>
+<p>⛔ The <code>place_poles</code> function rejects eigenvalues whose
+multiplicity is higher than the rank of <span
+class="math inline">\(B\)</span>.</p>
+<p>In the previous example, <span class="math inline">\(\mbox{rank}\, B
+= 1\)</span>, so</p>
+<ul>
+<li><p>❌ <code>poles = [-1, -1]</code> won’t work.</p></li>
+<li><p>✔️ <code>poles = [-1, -2]</code> will.</p></li>
+</ul>
+</section>
+<section id="pole-assignment-3" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Pole Assignment</h2>
+<p>Consider the system with dynamics</p>
+<p><span class="math display">\[
+\begin{array}{ccr}
+\dot{x}_1 &amp;=&amp; x_1 - x_2 + u \\
+\dot{x}_2 &amp;=&amp; - x_1 + x_2 + u
+\end{array}
+\]</span></p>
+<p>We apply the control law</p>
+<p><span class="math display">\[
+u = -k_1 x_1 - k_2 x_2.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-3">1. 🧮</h3>
+<p>Can we assign the poles of the closed-loop system freely by a
+suitable choice of <span class="math inline">\(k_1\)</span> and <span
+class="math inline">\(k_2\)</span>?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-4">2. 🧠</h3>
+<p>Explain this result.</p>
+</section>
+<section id="pole-assignment-4" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Pole Assignment</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-5">1. 🔓</h3>
+<p><span class="math display">\[
+\begin{split}
+A - B K
+&amp;=
+\left[
+\begin{array}{rr}
+1 &amp; -1 \\
+-1 &amp; 1
+\end{array}
+\right]
+-
+\left[
+\begin{array}{r}
+1 \\
+1
+\end{array}
+\right]
+\left[
+\begin{array}{rr}
+k_1 &amp; k_2
+\end{array}
+\right] \\
+&amp;=
+\left[
+\begin{array}{rr}
+1-k_1 &amp; -1-k_2 \\
+-1-k_1 &amp; 1-k_2
+\end{array}
+\right]
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+\begin{split}
+\det A- BK
+&amp;=
+\det \left(
+  \left[
+\begin{array}{rr}
+s - 1+k_1 &amp; 1+k_2 \\
+1+k_1 &amp; s-1+k_2
+\end{array}
+\right]
+  \right)
+  \\
+&amp;= (s - 1+k_1)(s-1+k_2) - (1+k_1)(1+k_2) \\
+&amp;= s^2 + (k_1+k_2) s - 2 (k_1 + k_2)
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+\begin{split}
+\sigma(A - BK) &amp;= \{ \lambda_1, \lambda_2 \} \\
+&amp;= \{\lambda \in \mathbb{C} \, | \, s^2 + (k_1+k_2) s - 2 (k_1 +
+k_2)  = 0\}.
+\end{split}
+\]</span></p>
+<p>Since the characteristic polynomial is also <span
+class="math display">\[
+(s-\lambda_1)(s-\lambda_2)
+\]</span> we get <span class="math display">\[
+k_1 + k_2 = - \lambda_1 - \lambda_2, \;
+-2 (k_1 + k_2) = \lambda_1 \lambda_2
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Thus we have</p>
+<p><span class="math display">\[
+\lambda_1 \lambda_2 = 2 (\lambda_1 + \lambda_2)
+\Rightarrow \lambda_2 = \frac{2\lambda_1}{\lambda_1 - 2}
+\]</span></p>
+<p>and both poles cannot be assigned freely; for example if we select
+<span class="math inline">\(\lambda_1 =1\)</span>, we end up with <span
+class="math inline">\(\lambda_2 = -2\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-6">2. 🔓</h3>
+<p>We have not checked the assumptions of <a
+href="#/pole-assignment-1">💎 Pole Assignment</a> yet.</p>
+<p>The commandability matrix is <span class="math display">\[
+\left[B, AB \right]
+=
+\left[
+  \begin{array}{rr}
+  1 &amp; 0 \\
+  1 &amp; 0
+  \end{array}
+  \right]
+\]</span> whose rank is <span class="math inline">\(1 &lt;
+2\)</span>.</p>
+<p>Since the system is not controllable, pole assignment may fail and it
+does here.</p>
+</section>
+<section id="pendulum" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Pendulum</h2>
+<p>Consider the pendulum with dynamics:</p>
+<p><span class="math display">\[
+m \ell^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = u
+\]</span></p>
+<p>Numerical Values:</p>
+<p><span class="math display">\[
+m = 1.0, \, \ell = 1.0, \, b = 0.1,\, g = 9.81
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-7">1. 🧮</h3>
+<p>Compute the linearized dynamics of the system around the equilibrium
+<span class="math inline">\(\theta=\pi\)</span> and <span
+class="math inline">\(\dot{\theta} = 0\)</span> (<span
+class="math inline">\(u=0\)</span>).</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-8">2. 💻</h3>
+<p>Design a control law <span class="math display">\[
+u = -k_{1} (\theta - \pi) - k_{2} \dot{\theta}
+\]</span> such that the closed-loop linear system is asymptotically
+stable, with a time constant equal to <span
+class="math inline">\(10\)</span> sec.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-9">3. 💻 🧮</h3>
+<p>Simulate this control law on the nonlinear systems when <span
+class="math inline">\(\theta(0) = 0.9 \pi\)</span> and <span
+class="math inline">\(\dot{\theta}(0) = 0\)</span>.</p>
+</section>
+<section id="pendulum-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Pendulum</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-10">1. 🔓</h3>
+<p>Let <span class="math inline">\(\Delta \theta = \theta -
+\pi\)</span>, <span class="math inline">\(\omega =
+\dot{\theta}\)</span>, <span class="math inline">\(\Delta \omega =
+\omega\)</span>, <span class="math inline">\(\Delta u = u\)</span>.</p>
+<p>We notice that <span class="math display">\[
+\begin{split}
+\sin \theta
+  &amp;= \sin (\pi + \Delta \theta) \\
+  &amp;= -\sin \Delta \theta \\
+  &amp;\approx -\Delta \theta
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>The system dynamics can be approximated around <span
+class="math inline">\((\theta,\omega) = (\pi , 0)\)</span> by</p>
+<p><span class="math display">\[
+(d/dt) \Delta \theta = \Delta \omega
+\]</span> and <span class="math display">\[
+m \ell^2 (d/dt) \Delta \omega + b \Delta \omega - mg \ell \Delta \theta
+= \Delta u.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>or in standard form</p>
+<p><span class="math display">\[
+\frac{d}{dt}
+\left[
+\begin{array}{c}
+\Delta \theta \\
+\Delta \omega
+\end{array}
+\right]
+=
+\left[
+\begin{array}{cc}
+0        &amp; 1 \\
+g / \ell &amp; - b / (m \ell^2)
+\end{array}
+\right]
+\left[
+\begin{array}{c}
+\Delta \theta \\
+\Delta \omega
+\end{array}
+\right]
++
+\left[
+\begin{array}{c}
+0 \\
+1 / (m \ell^2)
+\end{array}
+\right]
+\Delta u
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-11">2. 🔓</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fl">1.0</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>l <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> <span class="fl">9.81</span></span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> array([[  <span class="dv">0</span>,            <span class="dv">1</span>],</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>           [g<span class="op">/</span>l , <span class="op">-</span> b<span class="op">/</span>(m<span class="op">*</span>l<span class="op">*</span>l)]])</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> array([[        <span class="dv">0</span>],</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>           [<span class="dv">1</span><span class="op">/</span>(m<span class="op">*</span>l<span class="op">*</span>l)]])</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>t1, t2 <span class="op">=</span> <span class="fl">10.0</span>, <span class="fl">5.0</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>poles <span class="op">=</span> [<span class="op">-</span><span class="dv">1</span><span class="op">/</span>t1, <span class="op">-</span><span class="dv">1</span><span class="op">/</span>t2]</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> place_poles(A, B, poles).gain_matrix</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-12">3. 🔓</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fun(t, theta_omega):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    theta, omega <span class="op">=</span> theta_omega</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    Δtheta, Δomega <span class="op">=</span> theta <span class="op">-</span> pi, omega</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    Δu <span class="op">=</span> <span class="op">-</span> K <span class="op">@</span> [Δtheta, Δomega] </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    u <span class="op">=</span> Δu[<span class="dv">0</span>]  <span class="co"># Δu has a (1,) shape</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    dtheta <span class="op">=</span> omega</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    domega <span class="op">=</span> <span class="op">-</span> (g<span class="op">/</span>l)<span class="op">*</span>sin(theta) <span class="op">-</span> b<span class="op">/</span>(m<span class="op">*</span>l<span class="op">*</span>l)<span class="op">*</span>omega <span class="op">\</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>             <span class="op">+</span> <span class="fl">1.0</span><span class="op">/</span>(m<span class="op">*</span>l<span class="op">*</span>l)<span class="op">*</span>u</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dtheta, domega])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>t_span <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">30.0</span>]</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> [<span class="fl">0.9</span><span class="op">*</span>pi, <span class="fl">0.0</span>]</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> solve_ivp(fun, t_span, y0, dense_output<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(t_span[<span class="dv">0</span>], t_span[<span class="op">-</span><span class="dv">1</span>], <span class="dv">1000</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>thetat, omega_t <span class="op">=</span> r[<span class="st">&quot;sol&quot;</span>](t)</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>plot(t, thetat, label<span class="op">=</span><span class="vs">r&quot;$\theta(t)$&quot;</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>yticks([<span class="fl">0.9</span><span class="op">*</span>pi, pi, <span class="fl">1.1</span><span class="op">*</span>pi], </span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>       [<span class="vs">r&quot;$0.9\pi$&quot;</span>, <span class="vs">r&quot;$\pi$&quot;</span>, <span class="vs">r&quot;$1.1\pi$&quot;</span>])</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)<span class="op">;</span> legend()</span></code></pre></div>
+</section>
+<section id="section-13" class="slide level2 section"
+data-background="images/inverted-pendulum.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section" data-background="images/inverted-pendulum.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section id="double-spring" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Double Spring</h2>
+<p>Consider the dynamics:</p>
+<p><span class="math display">\[
+\begin{array}{rcl}
+m_1 \ddot{x}_1 &amp; = &amp; -k_1 x_1 - k_2 (x_1 - x_2) - b_1 \dot{x}_1
+\\
+m_2 \ddot{x}_2 &amp; = &amp; -k_2 (x_2 - x_1) - b_2 \dot{x}_2 + u
+\end{array}
+\]</span></p>
+<p>Numerical values: <span class="math display">\[
+m_1 = m_2 = 1, \; k_1 = 1, k_2 = 100, \; b_1 = 2, \; b_2 = 20
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-14">1. 🧮 💻</h3>
+<p>Compute the poles of the system.</p>
+<p>Is the origin asymptotically stable?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-15">2. 💻</h3>
+<p>Use a linear feedback to:</p>
+<ul>
+<li><p>kill the oscillatory behavior of the solutions,</p></li>
+<li><p>“speed up” the dynamics.</p></li>
+</ul>
+</section>
+<section id="double-spring-system" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Double Spring System</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-16">1. 🔓</h3>
+<p>Let <span class="math inline">\(v_1 = \dot{x}_1\)</span>, <span
+class="math inline">\(v_2 = \dot{x}_2\)</span>. With the state <span
+class="math inline">\((x_1, v_1, x_2, v_2)\)</span>:</p>
+<p><span class="math display">\[
+A =
+\left[
+  \begin{array}{cccc}
+  0 &amp; 1 &amp; 0 &amp; 0 \\
+  -(k_1+k_2)/m_1&amp; -b_1/m_1&amp; k_2/m_1&amp; 0 \\
+  0 &amp; 0 &amp; 0 &amp; 1 \\
+  k_2/m_2&amp; 0 &amp; -k_2/m_2 &amp; -b_2/m_2\\
+  \end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+B =
+\left[
+  \begin{array}{c}
+  0 \\
+  0 \\
+  0 \\
+  1/m_2
+  \end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="op">=</span> m2 <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>k1 <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> k2 <span class="op">=</span> <span class="dv">100</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>b1 <span class="op">=</span> <span class="dv">2</span><span class="op">;</span> b2 <span class="op">=</span> <span class="dv">20</span></span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>A <span class="op">=</span> array([</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  [          <span class="dv">0</span>,      <span class="dv">1</span>,      <span class="dv">0</span>,      <span class="dv">0</span>],</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  [<span class="op">-</span>(k1<span class="op">+</span>k2)<span class="op">/</span>m1, <span class="op">-</span>b1<span class="op">/</span>m1,  k2<span class="op">/</span>m1,      <span class="dv">0</span>],</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  [          <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">0</span>,      <span class="dv">1</span>],</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  [      k2<span class="op">/</span>m2,      <span class="dv">0</span>, <span class="op">-</span>k2<span class="op">/</span>m2, <span class="op">-</span>b2<span class="op">/</span>m2]</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>B <span class="op">=</span> array([[<span class="fl">0.0</span>], [<span class="fl">0.0</span>], [<span class="fl">0.0</span>], [<span class="dv">1</span><span class="op">/</span>m2]])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>eigenvalues, _ <span class="op">=</span> eig(A)</span></code></pre></div>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; eigenvalues
+array([-15.64029062 +0.j        ,  
+        -3.15722141+11.45767938j,
+        -3.15722141-11.45767938j,  
+        -0.04526657 +0.j        ])</code></pre>
+<p>Since all eigenvalues have a negative real part, the double-spring
+system is asymptotically stable.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<pre><code>figure()
+x = [real(s) for s in eigenvalues]
+y = [imag(s) for s in eigenvalues]
+plot(x, y, &quot;kx&quot;)
+plot(0.0, 0.0, &quot;k.&quot;)
+gca().set_aspect(1.0)
+title(&quot;Spectrum of $A$&quot;); grid(True)</code></pre>
+</section>
+<section id="section-17" class="slide level2 section"
+data-background="images/spectrum-double-spring.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section" data-background="images/spectrum-double-spring.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">20.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>yt <span class="op">=</span> array([expm(A <span class="op">*</span> t_) <span class="cf">for</span> t_ <span class="kw">in</span> t]) <span class="op">@</span> y0</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>x1t, x2t <span class="op">=</span> yt[:, <span class="dv">0</span>], yt[:, <span class="dv">2</span>]</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plot(t, x1t, label<span class="op">=</span><span class="st">&quot;$x_1$&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plot(t, x2t, label<span class="op">=</span><span class="st">&quot;$x_2$&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)<span class="op">;</span> legend()</span></code></pre></div>
+</section>
+<section id="section-18" class="slide level2 section"
+data-background="images/spectrum-double-spring-simu.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section"
+data-background="images/spectrum-double-spring-simu.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-19">2. 🔓</h3>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>eigenvalues[<span class="dv">3</span>] <span class="op">=</span> <span class="op">-</span> <span class="dv">1</span> <span class="op">/</span> <span class="fl">0.1</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> place_poles(A, B, eigenvalues).gain_matrix</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">repr</span>(eig(A <span class="op">-</span> B <span class="op">@</span> K)[<span class="dv">0</span>]))</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>eigenvalues, _ <span class="op">=</span> eig(A <span class="op">-</span> B <span class="op">@</span> K)</span></code></pre></div>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; eigenvalues
+array([-15.64029062 +0.j        ,  
+        -3.15722141+11.45767938j,
+        -3.15722141-11.45767938j,  
+        -1.         +0.j        ])</code></pre>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<pre><code>figure()
+x = [real(s) for s in eigenvalues]
+y = [imag(s) for s in eigenvalues]
+plot(x, y, &quot;kx&quot;)
+plot(0.0, 0.0, &quot;k.&quot;)
+gca().set_aspect(1.0)
+title(&quot;Spectrum of $A - B K$&quot;); grid(True)</code></pre>
+</section>
+<section id="section-20" class="slide level2 section"
+data-background="images/spectrum-double-spring-1.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section"
+data-background="images/spectrum-double-spring-1.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">20.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>yt <span class="op">=</span> array([expm((A<span class="op">-</span>B<span class="op">@</span>K) <span class="op">*</span> t_) <span class="cf">for</span> t_ <span class="kw">in</span> t]) <span class="op">@</span> y0</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>x1t, x2t <span class="op">=</span> yt[:, <span class="dv">0</span>], yt[:, <span class="dv">2</span>]</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plot(t, x1t, label<span class="op">=</span><span class="st">&quot;$x_1$&quot;</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>plot(t, x2t, label<span class="op">=</span><span class="st">&quot;$x_2$&quot;</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)<span class="op">;</span> legend()</span></code></pre></div>
+</section>
+<section id="section-21" class="slide level2 section"
+data-background="images/spectrum-double-spring-simu-1.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section"
+data-background="images/spectrum-double-spring-simu-1.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb23"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>eigenvalues[<span class="dv">0</span>] <span class="op">=</span> <span class="op">-</span> <span class="dv">1</span> <span class="op">/</span> <span class="fl">0.09</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>eigenvalues[<span class="dv">1</span>] <span class="op">=</span> <span class="op">-</span> <span class="dv">1</span> <span class="op">/</span> <span class="fl">0.08</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> place_poles(A, B, eigenvalues).gain_matrix</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="bu">repr</span>(eig(A <span class="op">-</span> B <span class="op">@</span> K)[<span class="dv">0</span>]))</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb24"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>eigenvalues, _ <span class="op">=</span> eig(A <span class="op">-</span> B <span class="op">@</span> K)</span></code></pre></div>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; eigenvalues
+array([-15.64029062+0.j, 
+       -12.5       +0.j, 
+       -11.11111111+0.j,
+       -10.        +0.j])</code></pre>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<pre><code>figure()
+x = [real(s) for s in eigenvalues]
+y = [imag(s) for s in eigenvalues]
+plot(x, y, &quot;kx&quot;)
+plot(0.0, 0.0, &quot;k.&quot;)
+ylim(-12, 12)
+gca().set_aspect(1.0)
+title(&quot;Spectrum of $A - B K$&quot;); grid(True)</code></pre>
+</section>
+<section id="section-22" class="slide level2 section"
+data-background="images/spectrum-double-spring-2.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section"
+data-background="images/spectrum-double-spring-2.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb27"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> [<span class="fl">0.0</span>, <span class="fl">0.0</span>, <span class="fl">1.0</span>, <span class="fl">0.0</span>]</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">20.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>yt <span class="op">=</span> array([expm((A<span class="op">-</span>B<span class="op">@</span>K) <span class="op">*</span> t_) <span class="cf">for</span> t_ <span class="kw">in</span> t]) <span class="op">@</span> y0</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>x1t, x2t <span class="op">=</span> yt[:, <span class="dv">0</span>], yt[:, <span class="dv">2</span>]</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb28"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plot(t, x1t, label<span class="op">=</span><span class="st">&quot;$x_1$&quot;</span>)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>plot(t, x2t, label<span class="op">=</span><span class="st">&quot;$x_2$&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)<span class="op">;</span> legend()</span></code></pre></div>
+</section>
+<section id="section-23" class="slide level2 section"
+data-background="images/spectrum-double-spring-simu-2.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section"
+data-background="images/spectrum-double-spring-simu-2.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+
+"""
+Parallel build of the PDF slide decks
+"""
+
+# Python Standard Library
+import shlex
+import subprocess
+import sys
+
+def sh(cmd):
+    return subprocess.Popen(shlex.split(cmd)) 
+
+targets = [
+    "intro",
+    "models",
+    "simulation",
+    "well-posedness",
+    "asymptotic",
+    "LTI-models",
+    "internal-dynamics",
+    "IO-dynamics",
+    "controllability",
+    "asymptotic-stabilization",
+    "optimal-control",
+    "observers",
+]
+
+# # Should have been taken care of by the pixi activation script
+# if sh("which decktape").wait() != 0:
+#    sh("npm install -g decktape").wait()
+
+processes = []
+
+for target in targets:
+    cmd = f"decktape --chrome-arg=--no-sandbox --size 1600x900 automatic {target}.html {target}.pdf"
+    process = sh(cmd)
+    processes.append(process)
+
+sys.exit(0 if all(p.wait() == 0 for p in processes) else 1)
