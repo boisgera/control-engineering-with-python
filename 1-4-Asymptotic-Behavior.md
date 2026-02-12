@@ -147,7 +147,7 @@ href="https://blog.shashanktomar.com/posts/strange-attractors"
 style="display:block;width:100%;">
 <img 
 alt="Strange attractors" 
-src="/images/strange-attractors.png" 
+src="/images/static/strange-attractors.png" 
 style="width:100%;height:auto;"
 data-lazy-loaded="">
 </a>
