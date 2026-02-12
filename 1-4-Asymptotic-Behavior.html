@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Sébastien Boisgérault">
+  <title>Asymptotic Behavior</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Asymptotic Behavior</h1>
+  <p class="author"><img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:middle;position:relative;bottom:0.1em;"/><a
+href="mailto:Sebastien.Boisgerault@minesparis.psl.eu">Sébastien
+Boisgérault</a></p>
+</section>
+
+<section class="slide level2">
+
+<h3 id="control-engineering-with-python">Control Engineering with
+Python</h3>
+<ul>
+<li><p>📖 <a
+href="https://github.com/boisgera/control-engineering-with-python">Course
+Materials</a></p></li>
+<li><p>©️ <a href="https://creativecommons.org/licenses/by/4.0/">License
+CC BY 4.0</a></p></li>
+<li><p>🏦 <a href="https://itn.dev">ITN, Mines Paris - PSL
+University</a></p></li>
+</ul>
+</section>
+<section id="symbols" class="slide level2">
+<h2>Symbols</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>🐍</td>
+<td>Code</td>
+<td>🔍</td>
+<td>Worked Example</td>
+</tr>
+<tr class="even">
+<td>📈</td>
+<td>Graph</td>
+<td>🧩</td>
+<td>Exercise</td>
+</tr>
+<tr class="odd">
+<td>🏷️</td>
+<td>Definition</td>
+<td>💻</td>
+<td>Numerical Method</td>
+</tr>
+<tr class="even">
+<td>💎</td>
+<td>Theorem</td>
+<td>🧮</td>
+<td>Analytical Method</td>
+</tr>
+<tr class="odd">
+<td>📝</td>
+<td>Remark</td>
+<td>🧠</td>
+<td>Theory</td>
+</tr>
+<tr class="even">
+<td>ℹ️</td>
+<td>Information</td>
+<td>🗝️</td>
+<td>Hint</td>
+</tr>
+<tr class="odd">
+<td>⚠️</td>
+<td>Warning</td>
+<td>🔓</td>
+<td>Solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="imports" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🐍 Imports</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span></code></pre></div>
+</section>
+<section id="streamplot-helper" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🐍 Streamplot Helper</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Q(f, xs, ys):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    X, Y <span class="op">=</span> meshgrid(xs, ys)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> vectorize</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    fx <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">0</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fy <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">1</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, Y, fx(X, Y), fy(X, Y)</span></code></pre></div>
+</section>
+<section id="ℹ-assumption" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">ℹ️ Assumption</h2>
+<p>From now on, we only deal with well-posed systems.</p>
+</section>
+<section id="asymptotic" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Asymptotic</h2>
+<p><strong>Asymptotic</strong> = Long-Term: when <span
+class="math inline">\(t \to + \infty\)</span></p>
+<aside class="notes">
+<p>So far, we have given little attention to the properties that
+characterize the long-term behavior of dynamical systems. Well-posedness
+ensures merely the local (in time) existence of uniqueness of solutions
+to an IVP and continuity with respect to the initial condition is only
+applicable to solutions defined on a finite (compact) time
+intervals.</p>
+<p>We will now turn to the study of such properties specifically.</p>
+</aside>
+</section>
+<section id="section" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">⚠️</h2>
+<p>Even simple dynamical systems may exhibit</p>
+<p><strong>complex asymptotic behaviors.</strong></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><a 
+href="https://blog.shashanktomar.com/posts/strange-attractors"
+style="display:block;width:100%;"> <img 
+alt="Strange attractors" 
+src="./images/static/strange-attractors.png" 
+style="width:100%;height:auto;"
+data-lazy-loaded=""> </a></p>
+</section>
+<section id="lorenz-system" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Lorenz System</h2>
+<p><span class="math display">\[
+\begin{array}{lll}
+\dot{x} &amp;=&amp; \sigma (y - x) \\
+\dot{y} &amp;=&amp; x (\rho - z) \\
+\dot{z} &amp;=&amp; xy - \beta z
+\end{array}
+\]</span></p>
+<aside class="notes">
+<p>But first, we need to realize that dynamical systems, even when they
+are governed by a simple, low-dimensional system of equations, may
+exhibit very complex asymptotic patterns.</p>
+<p>The <a href="https://en.wikipedia.org/wiki/Lorenz_system">Lorenz
+system</a> is a classical example of such system.</p>
+</aside>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><a
+href="https://portsmouth.github.io/fibre/?settings=eyJSIjp7InJheUJhdGNoIjoxMjgsIm1heFRpbWVTdGVwcyI6MjI5LCJtYXhJdGVyYXRpb25zIjoxMDAsImludGVncmF0aW9uVGltZSI6MiwiaW50ZWdyYXRlRm9yd2FyZCI6dHJ1ZSwiZ3JpZFNwYWNlIjowLjAzMzA4MjA1NjczMzUyMTgwNCwidHViZVdpZHRoIjowLjAxMzIzMjgyMjY5MzQwODcyMywidHViZVNwcmVhZCI6ZmFsc2UsInJlY29yZF9yZWFsdGltZSI6dHJ1ZSwieG1pbiI6MTguMTI3NTIxNDk3MTg5NjI2LCJ4bWF4IjoyNi43NDEyMjM2ODMyMjY3NzgsInltaW4iOi0xNS4xMDMyMzE2NzQyNjQ5NDUsInltYXgiOi04LjczODI1MzU0Njc5NDE0Mywiem1pbiI6MTkuMjU3MzA2NjExNDgwNjYsInptYXgiOjIxLjU4ODgyMDMyODM4NTQ2MywiY2xpcFRvQm91bmRzIjpmYWxzZSwic2hvd0JvdW5kcyI6dHJ1ZSwiZXhwb3N1cmUiOi0wLjc1MzM5MjIwMzMxNjgyMSwiZ2FtbWEiOjAuOTkyNDYxNzAyMDA1NjU2NSwiY29udHJhc3QiOjEuMTIyMzM0Njk3MzkzOTI2Mywic2F0dXJhdGlvbiI6MS4zODY5OTExNjk1MDI0NzcsInN1YnRyYWN0aXZlQ29sb3IiOmZhbHNlLCJiZ0NvbG9yIjpbMCwwLDBdLCJoYWlyU2hhZGVyIjpmYWxzZSwic3BlY1NoaW5lIjoyMS45NzI4NjIzNzM0NjU0MzIsInNwZWNDb2xvciI6WzAuOTAxOTUzMjc1MDg4MDg4MSwwLjg5MzEwOTkxODYyMzQ5MjEsMC44OTMxMDk5MTg2MjM0OTIxXSwibGlnaHQxX2NvbG9yIjpbMSwwLjksMC44XSwibGlnaHQyX2NvbG9yIjpbMC44LDAuOSwxXSwibGlnaHQxX2RpciI6WzAuNTc3MzUwMjY5MTg5NjI1OCwwLjU3NzM1MDI2OTE4OTYyNTgsMC41NzczNTAyNjkxODk2MjU4XSwibGlnaHQyX2RpciI6Wy0wLjU3NzM1MDI2OTE4OTYyNTgsLTAuNTc3MzUwMjY5MTg5NjI1OCwtMC41NzczNTAyNjkxODk2MjU4XSwiZGVwdGhUZXN0Ijp0cnVlLCJkYXNoX3NwYWNpbmciOjAuNTQwMzQwMjU5OTgwODU3NCwiZGFzaF9zcGVlZCI6MzMuMDgyMDU2NzMzNTIxODksImRhc2hfc2l6ZSI6MC45MTUyNzAyMzYyOTQxMDU1LCJkYXNoZXMiOmZhbHNlLCJzdWJ0cmFjdGl2ZV9jb2xvciI6ZmFsc2UsImhhaXJTaGluZSI6MTAsImhhaXJTcGVjQ29sb3IiOlsxLDEsMV19LCJDIjp7InBvcyI6Wy03LjQyNjkzNjMzNzgzOTcxLC02Ljk5ODI1Mjk3MjIzMzY1OSwxMTcuMTMyNDU3OTg4NDA0MDddLCJ0YXIiOlsxLjE4NTQzMDE1NTUyNDU3NCwtMS4zMzUzOTk3MDQyNDcyNDA1LDI3Ljk0Nzk3NzA0NDE1MDk1N10sIm5lYXIiOjAuMDM0NjQxMDE2MTUxMzc3NTUsImZhciI6MzQ2NDEuMDE2MTUxMzc3NTQ2fSwiRSI6eyJjb2RlIjoiXG4vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vXG4vLyBMb3JlbnogYXR0cmFjdG9yXG4vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vXG5cbmNvbnN0IGZsb2F0IGthcHBhID0gZmxvYXQoMS44NCk7XG5jb25zdCBmbG9hdCBhbHBoYSA9IGZsb2F0KDYuNyk7XG5cbiNkZWZpbmUgcmdiIHZlYzNcblxuY29uc3QgdmVjMyBjb2xMbyA9IHJnYigyNTQsNDUsNzMpIC8gMjU1LjA7XG5jb25zdCB2ZWMzIGNvbEhpID0gcmdiKDUsMTM4LDI1NSkgLyAyNTUuMDtcbmNvbnN0IGZsb2F0IG1hZ1NjYWxlID0gZmxvYXQoMC42KTtcblxuY29uc3QgZmxvYXQgcmhvICAgPSBmbG9hdCgyOC4wKTsgICAgIFxuY29uc3QgZmxvYXQgc2lnbWEgPSBmbG9hdCgxMC4wKTtcbmNvbnN0IGZsb2F0IGJldGEgID0gZmxvYXQoOC4wKS9mbG9hdCgzLjApO1xuXG5cbiB2ZWMzIHZlbG9jaXR5KHZlYzMgcCwgZmxvYXQgdClcbiB7XG4gICAgIHZlYzMgdjtcbiAgICAgZmxvYXQgeCA9IHAueDtcbiAgICAgZmxvYXQgeSA9IHAueTtcbiAgICAgZmxvYXQgeiA9IHAuejtcbiAgICAgdi54ID0gc2lnbWEqKHkgLSB4KTtcbiAgICAgdi55ID0geCoocmhvIC0geik7XG4gICAgIHYueiA9IHgqeSAtIGJldGEqejtcbiAgICAgcmV0dXJuIHY7XG4gfSAgICBcbiBcbiBcbnZlYzMgY29sb3IodmVjMyBwLCBmbG9hdCB0KVxue1xuICAgIHZlYzMgdiA9IHZlbG9jaXR5KHAsIHQpO1xuICBcdGZsb2F0IG1hZzIgPSB0L21hZ1NjYWxlO1xuICAgIGZsb2F0IGxlcnAgPSBtYWcyLygxLjArbWFnMik7XG4gICAgcmV0dXJuICgxLjAtbGVycCkqY29sTG8gKyBsZXJwKmNvbEhpO1xufSAgXG4ifX0%3D"><img
+data-src="images/static/lorenz-attractor.png" /></a></p>
+<p>Visualized with <a
+href="https://github.com/portsmouth/fibre">Fibre</a></p>
+<aside class="notes">
+<p>The solutions <span class="math inline">\(x(t)\)</span> of this
+system, which are global, have no limit when <span
+class="math inline">\(t \to + \infty\)</span> and don’t blow up either
+but instead oscillates forever between two regions of the state space.
+This long-term behavior is quantitatively very sensitive to the choice
+of the initial condition, making long-term predictions about the system
+practically impossible: the system is chaotic.</p>
+</aside>
+</section>
+<section id="hadley-system" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Hadley System</h2>
+<p><span class="math display">\[
+\begin{array}{lll}
+\dot{x} &amp;=&amp; -y^2 - z^2 - ax + af\\
+\dot{y} &amp;=&amp; xy - b xz - y + g \\
+\dot{z} &amp;=&amp; bxy + xz - z
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><a
+href="https://portsmouth.github.io/fibre/?settings=eyJSIjp7InJheUJhdGNoIjoxMjgsIm1heFRpbWVTdGVwcyI6MzE5LCJtYXhJdGVyYXRpb25zIjoxMDAsImludGVncmF0aW9uVGltZSI6MjAsImludGVncmF0ZUZvcndhcmQiOnRydWUsImdyaWRTcGFjZSI6MC4wMDUsInR1YmVXaWR0aCI6MC4wMTg3NDc4NDI2MTk1ODA5MzIsInR1YmVTcHJlYWQiOmZhbHNlLCJyZWNvcmRfcmVhbHRpbWUiOnRydWUsInhtaW4iOi0xLjg0MjQzOTkxMzY3MjEzMjEsInhtYXgiOi0xLjY5NzQwMDg2MTM5ODUwMjUsInltaW4iOi0wLjc1MDc5Mzc1MTk1Njc2MDIsInltYXgiOi0wLjI5OTU4ODE4NTU3MDA5MzE1LCJ6bWluIjotMC44MTQyMDU1NzE1Mzg3ODkzLCJ6bWF4IjotMC43NTYwODExMDg1OTM5NzI5LCJjbGlwVG9Cb3VuZHMiOmZhbHNlLCJzaG93Qm91bmRzIjp0cnVlLCJleHBvc3VyZSI6LTEuMTc3NDg1ODI2MDc5NTYxLCJnYW1tYSI6MS4wMjU2MTcyNzI3MTgyNTEsImNvbnRyYXN0IjoxLjI5MDI5MjY5NzkzNTg2NDIsInNhdHVyYXRpb24iOjEuNDU1NzE0ODM4Njk2ODcyMywic3VidHJhY3RpdmVDb2xvciI6ZmFsc2UsImJnQ29sb3IiOlswLDAsMF0sImhhaXJTaGFkZXIiOmZhbHNlLCJzcGVjU2hpbmUiOjMxLjg5NzQ4MDA3NzUzNjA3Nywic3BlY0NvbG9yIjpbMSwxLDFdLCJsaWdodDFfY29sb3IiOlsxLDAuOSwwLjhdLCJsaWdodDJfY29sb3IiOlswLjgsMC45LDFdLCJsaWdodDFfZGlyIjpbMC41NzczNTAyNjkxODk2MjU4LDAuNTc3MzUwMjY5MTg5NjI1OCwwLjU3NzM1MDI2OTE4OTYyNThdLCJsaWdodDJfZGlyIjpbLTAuNTc3MzUwMjY5MTg5NjI1OCwtMC41NzczNTAyNjkxODk2MjU4LC0wLjU3NzM1MDI2OTE4OTYyNThdLCJkZXB0aFRlc3QiOnRydWUsImRhc2hfc3BhY2luZyI6MC41NDAzNDAyNTk5ODA4NTc0LCJkYXNoX3NwZWVkIjozMy4wODIwNTY3MzM1MjE4OSwiZGFzaF9zaXplIjowLjkxNTI3MDIzNjI5NDEwNTUsImRhc2hlcyI6ZmFsc2UsInN1YnRyYWN0aXZlX2NvbG9yIjpmYWxzZSwiaGFpclNoaW5lIjoxMCwiaGFpclNwZWNDb2xvciI6WzEsMSwxXX0sIkMiOnsicG9zIjpbLTQuMjgwNDkyMTM4MTY3OTY3NSwwLjg4NDU1MjA5Nzk1NTE3MSwtMy40OTI3MzM4Njc0MzM3ODFdLCJ0YXIiOlswLjQ0MzkwMDY5MjE1MTE1OTUsMC4xMDk3ODc2ODUzODYxNzI1MywtMC4xNDE1NTE2NDc4Mzk3MTEzXSwibmVhciI6MC4wMzQ2NDEwMTYxNTEzNzc1NSwiZmFyIjozNDY0MS4wMTYxNTEzNzc1NDZ9LCJFIjp7ImNvZGUiOiJcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy9cbi8vIEhhZGxleSBhdHRyYWN0b3Jcbi8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy8vLy9cblxuY29uc3QgZmxvYXQgYSA9IGZsb2F0KDAuMik7XG5jb25zdCBmbG9hdCBiID0gZmxvYXQoNC4wKTtcbmNvbnN0IGZsb2F0IGYgPSBmbG9hdCg4LjApO1xuY29uc3QgZmxvYXQgZyA9IGZsb2F0KDEuMCk7XG5cbiNkZWZpbmUgcmdiIHZlYzNcblxuY29uc3QgdmVjMyBjb2xMbyA9IHJnYigyNTUsNjEsODcpIC8gMjU1LjA7XG5jb25zdCB2ZWMzIGNvbEhpID0gcmdiKDg2LDE3NiwyNTQpIC8gMjU1LjA7XG5jb25zdCBmbG9hdCBtYWdTY2FsZSA9IGZsb2F0KDYpO1xuXG52ZWMzIHZlbG9jaXR5KHZlYzMgcCwgZmxvYXQgdClcbntcbiAgICB2ZWMzIHY7XG4gICAgZmxvYXQgeCA9IHAueDtcbiAgICBmbG9hdCB5ID0gcC55O1xuICAgIGZsb2F0IHogPSBwLno7XG4gICAgdi54ID0gLXkqeSAteip6IC1hKnggKyBhKmY7XG4gICAgdi55ID0geCp5IC0gYip4KnogLSB5ICsgZztcbiAgICB2LnogPSBiKngqeSArIHgqeiAtIHo7XG4gICAgcmV0dXJuIHY7XG59ICAgIFxuIFxudmVjMyBjb2xvcih2ZWMzIHAsIGZsb2F0IHQpXG57XG4gICAgdmVjMyB2ID0gdmVsb2NpdHkocCwgdCk7XG4gICAgZmxvYXQgbWFnMiA9IHQvbWFnU2NhbGU7XG4gICAgZmxvYXQgbGVycCA9IG1hZzIvKDEuMCttYWcyKTtcbiAgICByZXR1cm4gKDEuMC1sZXJwKSpjb2xMbyArIGxlcnAqY29sSGk7XG59ICBcbiJ9fQ%3D%3D"><img
+data-src="images/static/hadley-attractor.png" /></a></p>
+<p>Visualized with <a
+href="https://github.com/portsmouth/fibre">Fibre</a></p>
+<aside class="notes">
+<p>Asymptotic patterns of chaotic system are by no means restricted to
+this “switching” behavior. The Hadley system is another – even “messier”
+– example of chaotic behavior.</p>
+<p>Fortunately, many systems behaved more predictabily, and/or can be
+controlled so that their asymptotic behavior is more acceptable.</p>
+</aside>
+</section>
+<section id="equilibrium" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Equilibrium</h2>
+<p>An <strong>equilibrium</strong> of system <span
+class="math inline">\(\dot{x} = f(x)\)</span> is a state <span
+class="math inline">\(x_e\)</span> such that the maximal solution <span
+class="math inline">\(x(t)\)</span> such that <span
+class="math inline">\(x(0) = x_e\)</span></p>
+<ul>
+<li><p>is global and,</p></li>
+<li><p>is <span class="math inline">\(x(t) = x_e\)</span> for any <span
+class="math inline">\(t &gt; 0\)</span>.</p></li>
+</ul>
+</section>
+<section id="equilibrium-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Equilibrium</h2>
+<p>The state <span class="math inline">\(x_e\)</span> is an equilibrium
+of <span class="math inline">\(\dot{x} = f(x)\)</span></p>
+<p><span class="math display">\[\Longleftrightarrow\]</span></p>
+<p><span class="math display">\[f(x_e) = 0.\]</span></p>
+<aside class="notes">
+<p>If <span class="math inline">\(f(x_e) = 0\)</span>, then <span
+class="math inline">\(d x_e / dt = f(x_e) = 0\)</span> and thus the
+(constant) function <span class="math inline">\(t \in \left[0, +\infty
+\right) \mapsto x_e\)</span> is a global solution of the IVP <span
+class="math inline">\(\dot{x} =f(x)\)</span> and <span
+class="math inline">\(x_e = 0\)</span>.</p>
+<p>Conversely, if <span class="math inline">\(x(t):= x_e\)</span>, <span
+class="math inline">\(t\geq 0\)</span> is a global solution of <span
+class="math inline">\(\dot{x} = f(x)\)</span>, then <span
+class="math inline">\(0 = \dot{x}(0) = f(x(0)) = f(x_e)\)</span>.</p>
+</aside>
+</section>
+<section id="stability" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Stability</h2>
+<p>About the long-term behavior of solutions.</p>
+<ul>
+<li><p>“Stability” subtle concept,</p></li>
+<li><p>“Asymptotic Stability” simpler (and stronger),</p></li>
+<li><p>“Attractivity” simpler yet, (but often too weak).</p></li>
+</ul>
+</section>
+<section id="attractivity" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Attractivity</h2>
+<p><strong>Context:</strong> system <span class="math inline">\(\dot{x}
+= f(x)\)</span> with equilibrium <span
+class="math inline">\(x_e\)</span>.</p>
+</section>
+<section id="global-attractivity" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Global Attractivity</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is
+<strong>globally attractive</strong> if for every <span
+class="math inline">\(x_0,\)</span> the maximal solution <span
+class="math inline">\(x(t)\)</span> such that <span
+class="math inline">\(x(0)=x_0\)</span></p>
+<ul>
+<li><p>is global and,</p></li>
+<li><p><span class="math inline">\(x(t) \to x_e\)</span> when <span
+class="math inline">\(t \to +\infty\)</span>.</p></li>
+</ul>
+</section>
+<section id="local-attractivity" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Local Attractivity</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is
+<strong>locally attractive</strong> if for every <span
+class="math inline">\(x_0\)</span> <strong>close enough to <span
+class="math inline">\(x_e\)</span></strong>, the maximal solution <span
+class="math inline">\(x(t)\)</span> such that <span
+class="math inline">\(x(0)=x_0\)</span></p>
+<ul>
+<li><p>is global and,</p></li>
+<li><p><span class="math inline">\(x(t) \to x_e\)</span> when <span
+class="math inline">\(t \to +\infty\)</span>.</p></li>
+</ul>
+<aside class="notes">
+<p>Technically, an equilibrium <span class="math inline">\(x_e\)</span>
+is <strong>locally attractive</strong> if there is a <span
+class="math inline">\(r&gt;0\)</span> such that the maximal solution to
+the IVP <span class="math inline">\(\dot{x} = f(x)\)</span> and <span
+class="math inline">\(x(0) = x_0\)</span> is global and satisfies <span
+class="math inline">\(x(t) \to +\infty\)</span> when <span
+class="math inline">\(t \to +\infty\)</span> whenever <span
+class="math inline">\(\|x_0 - x_e\| \leq r\)</span>.</p>
+</aside>
+</section>
+<section id="global-attractivity-1" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Global Attractivity</h2>
+<p>The system</p>
+<p><span class="math display">\[
+\begin{array}{cc}
+\dot{x} &amp;=&amp; -2x + y \\
+\dot{y} &amp;=&amp; -2y + x
+\end{array}
+\]</span></p>
+<ul>
+<li><p>is well-posed,</p></li>
+<li><p>has an equilibrium at <span class="math inline">\((0,
+0)\)</span>.</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="vector-field">🐍 Vector field</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(xy):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span> y</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>y <span class="op">+</span> x</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="stream-plot">📈 Stream plot</h3>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">5.0</span>, <span class="fl">5.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">20.0</span>)</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;square&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;off&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-1" class="slide level2 section"
+data-background="images/globally-attractive.svg"
+data-background-size="contain" data-background-color="#f3f0ff">
+<h2 class="section" data-background="images/globally-attractive.svg"
+data-background-size="contain" data-background-color="#f3f0ff"></h2>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/globally-attractive.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section id="local-attractivity-1" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Local Attractivity</h2>
+<p>The system</p>
+<p><span class="math display">\[
+\begin{array}{cc}
+\dot{x} &amp;=&amp; -2x + y^3 \\
+\dot{y} &amp;=&amp; -2y + x^3
+\end{array}
+\]</span></p>
+<ul>
+<li><p>is well-posed,</p></li>
+<li><p>has an equilibrium at <span class="math inline">\((0,
+0)\)</span>.</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="vector-field-1">🐍 Vector field</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(xy):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span> y<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>y <span class="op">+</span> x<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="stream-plot-1">📈 Stream plot</h3>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">5.0</span>, <span class="fl">5.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;square&quot;</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;off&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-2" class="slide level2 section"
+data-background="images/locally-attractive.svg"
+data-background-size="contain" data-background-color="#f3f0ff">
+<h2 class="section" data-background="images/locally-attractive.svg"
+data-background-size="contain" data-background-color="#f3f0ff"></h2>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/locally-attractive.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section id="no-attractivity" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 No Attractivity</h2>
+<p>The system</p>
+<p><span class="math display">\[
+\begin{array}{cr}
+\dot{x} &amp;=&amp; -2x + y \\
+\dot{y} &amp;=&amp;  2y - x
+\end{array}
+\]</span></p>
+<ul>
+<li><p>is well-posed,</p></li>
+<li><p>has a (unique) equilibrium at <span class="math inline">\((0,
+0)\)</span>.</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="vector-field-2">🐍 Vector field</h3>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(xy):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span> y</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span>  <span class="dv">2</span><span class="op">*</span>y <span class="op">-</span> x</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="stream-plot-2">📈 Stream plot</h3>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">5.0</span>, <span class="fl">5.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;square&quot;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;off&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-3" class="slide level2 section"
+data-background="images/not-attractive.svg"
+data-background-size="contain" data-background-color="#f3f0ff">
+<h2 class="section" data-background="images/not-attractive.svg"
+data-background-size="contain" data-background-color="#f3f0ff"></h2>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/not-attractive.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section id="pendulum" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Pendulum</h2>
+<p>The pendulum is governed by the equation</p>
+<p><span class="math display">\[
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = 0
+\]</span></p>
+<p>where <span class="math inline">\(m&gt;0\)</span>, <span
+class="math inline">\(\ell&gt;0\)</span>, <span
+class="math inline">\(g&gt;0\)</span> and <span
+class="math inline">\(b\geq0\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-4">1. 🧮</h3>
+<p>Compute the equilibria of this system.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-5">2. 🧠</h3>
+<p>Can any of these equilibria be <strong>globally</strong>
+attractive?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-6">3. 📈</h3>
+<p>Assume that <span class="math inline">\(m=1\)</span>, <span
+class="math inline">\(\ell=1\)</span>, <span
+class="math inline">\(g=9.81\)</span> and <span
+class="math inline">\(b=1\)</span>.</p>
+<p>Make a stream plot of the system.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-7">4. 🔬</h3>
+<p>Determine which equilibria are locally attractive.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="frictionless-pendulum">5. 📈 Frictionless Pendulum</h3>
+<p>Assume now that <span class="math inline">\(b=0\)</span>.</p>
+<p>Make a stream plot of the system.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-8">6. 🧮 🧠</h3>
+<p>Prove that the equilibrium at <span
+class="math inline">\((0,0)\)</span> is not locally attractive.</p>
+<p><strong>🗝️ Hint.</strong> Study how the total mechanical energy <span
+class="math inline">\(E\)</span></p>
+<p><span class="math display">\[
+E(\theta,\dot{\theta}) := m\ell^2 \dot{\theta}^2 / 2 - m g\ell \cos
+\theta
+\]</span></p>
+<p>evolves in time.</p>
+</section>
+<section id="pendulum-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Pendulum</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-9">1. 🔓</h3>
+<p>The 2nd-order differential equations of the pendulum are equivalent
+to the first order system</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{rcl}
+\dot{\theta} &amp;=&amp; \omega \\
+\dot{\omega} &amp;=&amp; (- b / m \ell^2) \omega - (g /\ell) \sin \theta
+\\
+\end{array}
+\right.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Thus, the system state is <span class="math inline">\(x =(\theta,
+\omega)\)</span> and is governed by <span class="math inline">\(\dot{x}
+= f(x)\)</span> with</p>
+<p><span class="math display">\[
+f(\theta, \omega) = (\omega, (- b / m \ell^2) \omega - (g /\ell) \sin
+\theta).
+\]</span></p>
+<p>Hence, the state <span class="math inline">\((\theta,
+\omega)\)</span> is a solution to <span class="math inline">\(f(\theta,
+\omega) = 0\)</span> if and only if <span class="math inline">\(\omega =
+0\)</span> and <span class="math inline">\(\sin \theta = 0\)</span>. In
+other words, the equilibria of the system are characterized by <span
+class="math inline">\(\theta = k \pi\)</span> for some <span
+class="math inline">\(k \in \mathbb{Z}\)</span> and <span
+class="math inline">\(\omega (= \dot{\theta}) = 0\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-10">2. 🔓</h3>
+<p>Since there are several equilibria, none of them can be globally
+attractive.</p>
+<p>Indeed let <span class="math inline">\(x_1\)</span> be a globally
+attractive equilibrium and assume that <span
+class="math inline">\(x_2\)</span> is any other equilibrium. By
+definition, the maximal solution <span
+class="math inline">\(x(t)\)</span> such that <span
+class="math inline">\(x(0) = x_2\)</span> is <span
+class="math inline">\(x(t) = x_2\)</span> for every <span
+class="math inline">\(t\geq0\)</span>. On the other hand, since <span
+class="math inline">\(x_1\)</span> is globally attractive, it also
+satisfies <span class="math inline">\(x(t) \to x_1\)</span> when <span
+class="math inline">\(t\to +\infty\)</span>, hence there is a
+contradiction.</p>
+<p>Thus, <span class="math inline">\(x_1\)</span> is the only possible
+equilibrium.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-11">3. 🔓</h3>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> l <span class="op">=</span> b <span class="op">=</span> <span class="dv">1</span><span class="op">;</span> g<span class="op">=</span><span class="fl">9.81</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(theta_omega):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    theta, omega <span class="op">=</span> theta_omega</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    d_theta <span class="op">=</span> omega</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    d_omega <span class="op">=</span> <span class="op">-</span> b <span class="op">/</span> (m <span class="op">*</span> l <span class="op">*</span> l) <span class="op">*</span> omega</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    d_omega <span class="op">-=</span>  (g <span class="op">/</span> l) <span class="op">*</span> sin(theta)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (d_theta, d_omega)</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> linspace(<span class="op">-</span><span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span>(<span class="fl">1.2</span>), <span class="dv">2</span><span class="op">*</span>pi<span class="op">*</span>(<span class="fl">1.2</span>), <span class="dv">1000</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>d_theta <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">5.0</span>, <span class="fl">5.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, theta, d_theta), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">2</span><span class="op">*</span>pi, <span class="op">-</span>pi, <span class="dv">0</span> ,pi, <span class="dv">2</span><span class="op">*</span>pi], <span class="dv">5</span><span class="op">*</span>[<span class="fl">0.0</span>], <span class="st">&quot;k.&quot;</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span><span class="op">*</span>pi, <span class="op">-</span>pi, <span class="dv">0</span> ,pi, <span class="dv">2</span><span class="op">*</span>pi],</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>[<span class="vs">r&quot;$-2\pi$&quot;</span>, <span class="vs">r&quot;$\pi$&quot;</span>, <span class="vs">r&quot;$0$&quot;</span>, <span class="vs">r&quot;$\pi$&quot;</span>, <span class="vs">r&quot;$2\pi$&quot;</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-12" class="slide level2 section"
+data-background="images/pendulum-friction.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section" data-background="images/pendulum-friction.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-13">4. 🔓</h3>
+<p>From the streamplot, we see that the equilibria</p>
+<p><span class="math display">\[(\theta, \dot{\theta}) = (2k\pi, 0), \;
+k\in \mathbb{Z}\]</span></p>
+<p>are asymptotically stable, but that the equilibria</p>
+<p><span class="math display">\[(\theta, \dot{\theta}) = (2(k+1) \pi,
+0),\; k\in \mathbb{Z}\]</span></p>
+<p>are not (they are not locally attractive).</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-14">5. 🔓</h3>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, theta, d_theta), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">2</span><span class="op">*</span>pi, <span class="op">-</span>pi, <span class="dv">0</span> ,pi, <span class="dv">2</span><span class="op">*</span>pi], <span class="dv">5</span><span class="op">*</span>[<span class="fl">0.0</span>], <span class="st">&quot;k.&quot;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span><span class="op">*</span>pi, <span class="op">-</span>pi, <span class="dv">0</span> ,pi, <span class="dv">2</span><span class="op">*</span>pi],</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>[<span class="vs">r&quot;$-2\pi$&quot;</span>, <span class="vs">r&quot;$\pi$&quot;</span>, <span class="vs">r&quot;$0$&quot;</span>, <span class="vs">r&quot;$\pi$&quot;</span>, <span class="vs">r&quot;$2\pi$&quot;</span>])</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-15" class="slide level2 section"
+data-background="images/pendulum-no-friction.svg"
+data-background-size="contain" data-background-color="#fff9db">
+<h2 class="section" data-background="images/pendulum-no-friction.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-16">6. 🔓</h3>
+<p><span class="math display">\[
+\begin{split}
+\dot{E}
+  &amp;= \frac{d}{dt} \left(m\ell^2 \dot{\theta}^2 / 2 - m g\ell \cos
+\theta\right) \\
+  &amp;= m\ell^2 \ddot{\theta}\dot{\theta} + m g \ell (\sin \theta)
+\dot{\theta} \\
+  &amp;= \left(m\ell^2 \ddot{\theta} + m g \ell \sin \theta
+\right)\dot{\theta} \\
+  &amp;= \left(- b \dot{\theta}\right)\dot{\theta} \\
+  &amp;= 0
+\end{split}
+\]</span></p>
+<p>Therefore, <span class="math inline">\(E(t)\)</span> is constant.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>On the other hand,</p>
+<p><span class="math display">\[
+\min \, \{E(\theta, \dot{\theta}) \; | \; (\theta,\dot{\theta}) \in
+\mathbb{R}^2\}
+= E(0, 0)
+= -mgl.
+\]</span></p>
+<p>Moreover, this minimum is locally strict. Precisely, for any <span
+class="math inline">\(0&lt; |\theta| &lt; \pi\)</span>, <span
+class="math display">\[
+E(0, 0) &lt; E(\theta,\dot{\theta}).
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>If the origin was locally attractive, for any <span
+class="math inline">\(\theta(0)\)</span> and <span
+class="math inline">\(\dot{\theta}(0)\)</span> small enough, we would
+have <span class="math display">\[
+E(\theta(t), \dot{\theta}(t)) \to E(0, 0)
+\; \mbox{ when } \;
+t\to +\infty
+\]</span> (by continuity). But if <span class="math inline">\(0 &lt;
+|\theta(0)| &lt; \pi\)</span>, we have</p>
+<p><span class="math display">\[E(\theta(0), \dot{\theta}(0)) &gt; E(0,
+0)\]</span></p>
+<p>and that would contradict that <span
+class="math inline">\(E(t)\)</span> is constant.</p>
+<p>Hence the origin is not locally attractive.</p>
+</section>
+<section id="attractivity-low-level" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Attractivity (Low-level)</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is
+<strong>globally attractive</strong> iff:</p>
+<ul>
+<li><p>for any state <span class="math inline">\(x_0\)</span> and for
+any <span class="math inline">\(\epsilon &gt; 0\)</span> there is a
+<span class="math inline">\(\tau \geq 0\)</span>,</p></li>
+<li><p>such that the maximal solution <span
+class="math inline">\(x(t)\)</span> such that <span
+class="math inline">\(x(0) = x_0\)</span> is global and,</p></li>
+<li><p>satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+</section>
+<section id="warning" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">⚠️ Warning</h2>
+<ul>
+<li><p>Very close values of <span class="math inline">\(x_0\)</span>
+could <strong>theoretically</strong> lead to very different “speed of
+convergence” of <span class="math inline">\(x(t)\)</span> towards the
+equilibrium.</p></li>
+<li><p>This is not contradictory with the well-posedness assumption:
+continuity w.r.t. the initial condition only works with finite time
+spans.</p></li>
+</ul>
+</section>
+<section id="pathological-example" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 (Pathological) Example</h2>
+<p><span class="math display">\[
+\begin{array}{lll}
+\dot{x} &amp;=&amp; x + xy - (x + y)\sqrt{x^2 + y^2} \\
+\dot{y} &amp;=&amp; y - x^2 + (x - y) \sqrt{x^2 + y^2}
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>Equivalently, in polar coordinates:</p>
+<p><span class="math display">\[
+\begin{array}{lll}
+\dot{r} &amp;=&amp; r (1 - r) \\
+\dot{\theta} &amp;=&amp; r (1 - \cos \theta)
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="vector-field-3">🐍 Vector Field</h3>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(xy):</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> sqrt(x<span class="op">*</span>x <span class="op">+</span> y<span class="op">*</span>y)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> x <span class="op">+</span> x <span class="op">*</span> y <span class="op">-</span> (x <span class="op">+</span> y) <span class="op">*</span> r</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> y <span class="op">-</span> x <span class="op">*</span> x <span class="op">+</span> (x <span class="op">-</span> y) <span class="op">*</span> r</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="stream-plot-3">📈 Stream Plot</h3>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">2.0</span>, <span class="fl">2.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">1</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">20.0</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;square&quot;</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;off&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-17" class="slide level2 section"
+data-background="images/attractive2.svg" data-background-size="contain"
+data-background-color="#f3f0ff">
+<h2 class="section" data-background="images/attractive2.svg"
+data-background-size="contain" data-background-color="#f3f0ff"></h2>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/pathological.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section id="asymptotic-stability" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">Asymptotic Stability</h2>
+<p>Asymptotic stability is a stronger version of attractivity which is
+by definition robust with respect to the choice of the initial
+state.</p>
+</section>
+<section id="global-asympt.-stability" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Global Asympt. Stability</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is
+<strong>globally asympt. stable</strong> iff:</p>
+<ul>
+<li><p>for any state <span class="math inline">\(x_0\)</span> and for
+any <span class="math inline">\(\epsilon &gt; 0\)</span> there is a
+<span class="math inline">\(\tau \geq 0\)</span>,</p></li>
+<li><p>and there is a <span class="math inline">\(r &gt; 0\)</span> such
+that if <span class="math inline">\(\|x_0&#39; - x_0\| \leq
+r\)</span>,</p></li>
+<li><p>such that the maximal solution <span
+class="math inline">\(x(t)\)</span> such that <span
+class="math inline">\(x(0) = x_0&#39;\)</span> is global and,</p></li>
+<li><p>satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+<aside class="notes">
+<p>Global asymptotic stability is requirement which is very similar to
+attractivity. The only difference is that it requires the time <span
+class="math inline">\(\tau\)</span> that we should wait to be sure that
+the distance between <span class="math inline">\(x(t)\)</span> and the
+equilibrium is less that <span
+class="math inline">\(\varepsilon\)</span> should be valid not only for
+the initial condition <span class="math inline">\(x(0) = x_0\)</span>
+but also for any other initial condition in an (arbitrary small)
+neighbourhood of <span class="math inline">\(x_0\)</span>. There is a
+common profile for the “speed of convergence” towards the equilibrium
+between an initial condition and its neighbors ; this condition is not
+always met if we merely have an attractive equilibrium.</p>
+</aside>
+<!--
+
+--------------------------------------------------------------------------------
+
+Equivalently:
+
+  - **for any $r>0$**, for any $\epsilon > 0$,
+    there is a $\tau \geq 0$ such the maximal solution $x(t)$
+    **such that $\|x(0) - x_e\| \leq r$** exists for all $t \geq 0$ and
+    satisfies:
+
+    $$
+    \|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+    $$
+
+The equilibrium $x_e$ is **globally attractive** if for every $x_0,$
+the maximal solution $x(t)$ such that $x(0)=x_0$
+
+  - is global and,
+
+  - $x(t) \to  x_e$ when $t \to +\infty$.
+
+-->
+</section>
+<section id="set-of-initial-conditions" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Set of Initial Conditions</h2>
+<p>Let <span class="math inline">\(f: \mathbb{R}^n \to
+\mathbb{R}^n\)</span> and <span class="math inline">\(X_0 \subset
+\mathbb{R}^n\)</span>.</p>
+<p>Let <span class="math inline">\(X(t)\)</span> be the image of <span
+class="math inline">\(X_0\)</span> by the flow at time <span
+class="math inline">\(t\)</span>:</p>
+<p><span class="math display">\[
+X(t) := \{x(t) \; | \; \dot{x} = f(x), \; x(0)= x_0, \; x_0 \in X_0 \
+\}.
+\]</span></p>
+</section>
+<section id="global-asympt.-stability-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Global Asympt. Stability</h2>
+<p>An equilibrium <span class="math inline">\(x_e\)</span> is globally
+asympt. stable iff</p>
+<ul>
+<li><p>for every bounded set <span class="math inline">\(X_0\)</span>
+and any <span class="math inline">\(x_0 \in X_0\)</span> the associated
+maximal solution <span class="math inline">\(x(t)\)</span> is global
+and,</p></li>
+<li><p><span class="math inline">\(X(t) \to \{x_e\}\)</span> when <span
+class="math inline">\(t\to +\infty\)</span>.</p></li>
+</ul>
+</section>
+<section id="limits-of-sets" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Limits of Sets</h2>
+<p><span class="math display">\[
+X(t) \to \{x_e\}
+\]</span></p>
+<p>to be interpreted as</p>
+<p><span class="math display">\[
+\sup_{x(t) \in X(t)} \|x(t) - x_e\| \to 0.
+\]</span></p>
+</section>
+<section id="hausdorff-distance" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Hausdorff Distance</h2>
+<p><span class="math display">\[
+\sup_{x(t) \in X(t)} \|x(t) - x_e\| = d_H(X(t), \{x_e\})
+\]</span></p>
+<p>where <span class="math inline">\(d_H\)</span> is the <a
+href="https://en.wikipedia.org/wiki/Hausdorff_distance"><strong>Hausdorff
+distance</strong></a> between sets:</p>
+<p><span class="math display">\[
+d_H(A, B) := \max \left\{ \sup_{a \in A} d(a, B), \sup_{b\in B} d(A, b)
+\right\}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/gas.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/movie.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section id="local-asymptotic-stability" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Local Asymptotic Stability</h2>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is
+<strong>locally asympt. stable</strong> iff:</p>
+<ul>
+<li><p>there is a <span class="math inline">\(r&gt;0\)</span> such that
+for any <span class="math inline">\(\epsilon &gt; 0\)</span>,</p></li>
+<li><p>there is a <span class="math inline">\(\tau \geq 0\)</span> such
+that,</p></li>
+<li><p>if <span class="math inline">\(\|x_0 - x_e\| \leq r\)</span>, the
+maximal solution <span class="math inline">\(x(t)\)</span> such that
+<span class="math inline">\(x(0) = x_0\)</span> is global and
+satisfies:</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq \epsilon \; \mbox{ when } \; t \geq \tau.
+\]</span></p></li>
+</ul>
+</section>
+<section id="LAS-ppty" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Local Asympt. Stability</h2>
+<p>An equilibrium <span class="math inline">\(x_e\)</span> is locally
+asympt. stable iff:</p>
+<p>There is a <span class="math inline">\(r&gt;0\)</span> such that for
+every set <span class="math inline">\(X_0\)</span> such that</p>
+<p><span class="math display">\[
+X_0 \subset \{x \; | \; \|x - x_e\| \leq r \},
+\]</span></p>
+<p>and for any <span class="math inline">\(x_0 \in X_0\)</span>, the
+associated maximal solution <span class="math inline">\(x(t)\)</span> is
+global and</p>
+<p><span class="math display">\[
+X(t) \to \{x_e\} \mbox{ when } t\to +\infty.
+\]</span></p>
+</section>
+<section id="stability-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Stability</h2>
+<p>An equilibrium <span class="math inline">\(x_e\)</span> is
+<strong>stable</strong> iff:</p>
+<ul>
+<li><p>for any <span class="math inline">\(r&gt;0\)</span>,</p></li>
+<li><p>there is a <span class="math inline">\(\rho \leq r\)</span> such
+that if <span class="math inline">\(|x(0) - x_e| \leq \rho\)</span>,
+then</p></li>
+<li><p>the solution <span class="math inline">\(x(t)\)</span> is
+global,</p></li>
+<li><p>for any <span class="math inline">\(t\geq 0\)</span>, <span
+class="math inline">\(|x(t) - x_e| \leq r\)</span>.</p></li>
+</ul>
+</section>
+<section id="vinograd-system" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Vinograd System</h2>
+<p>Consider the system:</p>
+<p><span class="math display">\[
+\begin{array}{rcl}
+\dot{x} &amp;=&amp; (x^2 (y-x) +y^5) / (x^2 + y^2 (1 + (x^2 + y^2)^2 ))
+\\
+\dot{y} &amp;=&amp; y^2 (y - 2x) / (x^2 + y^2 (1 + (x^2 + y^2)^2 ))
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="vector-field-4">🐍 Vector field</h3>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(xy):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    q <span class="op">=</span> x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> (<span class="dv">1</span> <span class="op">+</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> y<span class="op">**</span><span class="dv">2</span>)<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> (x<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> (y <span class="op">-</span> x) <span class="op">+</span> y<span class="op">**</span><span class="dv">5</span>) <span class="op">/</span> q</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> y<span class="op">**</span><span class="dv">2</span> <span class="op">*</span> (y <span class="op">-</span> <span class="dv">2</span><span class="op">*</span>x) <span class="op">/</span> q</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="stream-plot-4">📈 Stream plot</h3>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;square&quot;</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;off&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-18" class="slide level2 section"
+data-background="images/vinograd.svg" data-background-size="contain"
+data-background-color="#ebfbee">
+<h2 class="section" data-background="images/vinograd.svg"
+data-background-size="contain" data-background-color="#ebfbee"></h2>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<video controls style="width:100vw;">
+  <source src="videos/vinograd.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-19">1. 🧮</h3>
+<p>Show that the origin <span class="math inline">\((0, 0)\)</span> is
+the unique equilibrium.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-20">2. 📈🔬</h3>
+<p>Does this equilibrium seem to be attractive (graphically) ?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-21">3. 🧠</h3>
+<p>Show that for any equilibrium of a well-posed system:</p>
+<p><strong>💎 (locally) asymptotically stable <span
+class="math inline">\(\Rightarrow\)</span> stable</strong></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-22">4. 🧪📈</h3>
+<p>Does the origin seem to be stable (experimentally ?)</p>
+<p>Conclude accordingly.</p>
+</section>
+<section id="vinograd-system-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Vinograd System</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-23">1. 🔓</h3>
+<p><span class="math inline">\((x,y)\)</span> is an equilibrium of the
+Vinograd system iff</p>
+<p><span class="math display">\[
+\begin{array}{rcl}
+(x^2 (y-x) +y^5) / (x^2 + y^2 (1 + (x^2 + y^2)^2 )) &amp;=&amp; 0 \\
+y^2 (y - 2x) / (x^2 + y^2 (1 + (x^2 + y^2)^2 )) &amp;=&amp; 0
+\end{array}
+\]</span></p>
+<p>or equivalently</p>
+<p><span class="math display">\[
+y^2 (y - 2x) = 0 \; \mbox{ and } \; x^2 (y-x) +y^5 = 0.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>If we assume that <span class="math inline">\(y=0\)</span>, then:</p>
+<ul>
+<li><p><span class="math inline">\(y^2 (y - 2x) = 0\)</span> is
+satisfied and</p></li>
+<li><p><span class="math inline">\(x^2 (y-x) +y^5 = 0 \, \Leftrightarrow
+\, -x^3 = 0 \, \Leftrightarrow \, x=0.\)</span></p></li>
+</ul>
+<p><strong>Under this assumption, <span
+class="math inline">\((0,0)\)</span> is the only
+equilibrium.</strong></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Otherwise (if <span class="math inline">\(y\neq 0\)</span>),</p>
+<ul>
+<li><p><span class="math inline">\(y^2 (y - 2x) = 0\)</span> yields
+<span class="math inline">\(y = 2x\)</span>,</p></li>
+<li><p>The substitution of <span class="math inline">\(y\)</span> by
+<span class="math inline">\(2x\)</span> in <span
+class="math inline">\(x^2 (y-x) +y^5 = 0\)</span> yields <span
+class="math display">\[x^3(1+32x^2)=0\]</span> and therefore <span
+class="math inline">\(x=0\)</span>.</p></li>
+<li><p><span class="math inline">\(y^2 (y - 2x) = 0\)</span> becomes
+<span class="math inline">\(y^3=0\)</span> and thus <span
+class="math inline">\(y=0\)</span>.</p></li>
+</ul>
+<p>The initial assumption cannot hold.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><strong>Conclusion:</strong></p>
+<p>The Vinograd system has a single equilibrium: <span
+class="math inline">\((0, 0)\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-24">2. 🔓</h3>
+<p>Yes, the origin seems to be (globally) attractive.</p>
+<p>As far as we can tell, the streamplot displays trajectories that
+ultimately all converge towards the origin.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-25">3. 🔓</h3>
+<p>Let’s assume that <span class="math inline">\(x_e\)</span> is a
+(locally) asymptotically stable of a well-posed system.</p>
+<p>Let <span class="math inline">\(r&gt;0\)</span> such that <a
+href="#/LAS-ppty">this property</a> is satisfied and let</p>
+<p><span class="math display">\[
+B := \{x \in \mathbb{R}^n \; | \; \|x - x_e\| \leq r \} \subset
+\mathrm{dom} \, f.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>The set <span class="math inline">\(x(t, B)\)</span> is defined for
+any <span class="math inline">\(t\geq 0\)</span> and since <span
+class="math inline">\(B\)</span> is a neighbourhood of <span
+class="math inline">\(x_e\)</span>, there is <span
+class="math inline">\(\tau \geq 0\)</span> such that for any <span
+class="math inline">\(t \geq \tau\)</span>, the image of <span
+class="math inline">\(B\)</span> by <span class="math inline">\(x(t,
+\cdot)\)</span> is included in <span
+class="math inline">\(B\)</span>.</p>
+<p><span class="math display">\[
+t\geq \tau \, \Rightarrow \, x(t, B) \subset B.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Additionally, the system is well-posed.</p>
+<p>Hence there is a <span class="math inline">\(r&#39; &gt; 0\)</span>
+such that for any <span class="math inline">\(x_0\)</span> in the closed
+ball <span class="math inline">\(B&#39;\)</span> of radius <span
+class="math inline">\(r&#39;\)</span> centered at <span
+class="math inline">\(x_e\)</span> and any <span class="math inline">\(t
+\in [0, \tau]\)</span>, we have</p>
+<p><span class="math display">\[
+\|x(x_0, t) - x(x_e, t) \| \leq r.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Since <span class="math inline">\(x_e\)</span> is an equilibrium,
+<span class="math inline">\(x(t, x_e) = x_e\)</span>, thus <span
+class="math inline">\(\|x(x_0, t) - x_e \| \leq r.\)</span>
+Equivalently,</p>
+<p><span class="math display">\[
+0\leq t \leq \tau \, \Rightarrow \, x(t, B&#39;) \subset B.
+\]</span></p>
+<p>Note that since <span class="math inline">\(x(0, B&#39;) =
+B&#39;\)</span>, this inclusion yields <span
+class="math inline">\(B&#39; \subset B\)</span>. Thus, for any <span
+class="math inline">\(t \geq 0\)</span>, either <span
+class="math inline">\(t\in [0, \tau]\)</span> and <span
+class="math inline">\(x(t, B&#39;) \subset B\)</span> or <span
+class="math inline">\(t\geq \tau\)</span> and since <span
+class="math inline">\(B&#39; \subset B\)</span>,</p>
+<p><span class="math display">\[x(t, B&#39;) \subset x(t, B) \subset
+B.\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><strong>Conclusion:</strong> we have established that there is a
+<span class="math inline">\(r &gt; 0\)</span> such that <span
+class="math inline">\(B \subset \mathrm{dom} \, f\)</span> and a <span
+class="math inline">\(r&#39;&gt;0\)</span> such that <span
+class="math inline">\(r&#39; \leq r\)</span> and</p>
+<p><span class="math display">\[
+t\geq 0 \, \Rightarrow x(t, B&#39;) \subset B.
+\]</span></p>
+<p>In other words, <strong>the system is stable!</strong> 🎉</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-26">4. 🔓</h3>
+<p>No! We can pick initial states <span class="math inline">\((0,
+\varepsilon)\)</span>, with <span class="math inline">\(\varepsilon
+&gt;0\)</span> which are just above the origin and still the distance of
+their trajectory to the origin will exceed <span
+class="math inline">\(1.0\)</span> at some point:</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fun(t, xy):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> f(xy)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>eps <span class="op">=</span> <span class="fl">1e-10</span><span class="op">;</span> xy0 <span class="op">=</span> (<span class="dv">0</span>, eps)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> solve_ivp(</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  fun<span class="op">=</span>fun,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  y0<span class="op">=</span>xy0,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  t_span<span class="op">=</span>(<span class="fl">0.0</span>, <span class="fl">100.0</span>),</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  dense_output<span class="op">=</span><span class="va">True</span>)[<span class="st">&quot;sol&quot;</span>]</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">100.0</span>, <span class="dv">10000</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>xt, yt <span class="op">=</span> sol(t)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;#ced4da&quot;</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>])</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>plot(xt, yt, color<span class="op">=</span><span class="st">&quot;C0&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-27" class="slide level2 section"
+data-background="images/unstable.svg" data-background-size="contain"
+data-background-color="#fff9db">
+<h2 class="section" data-background="images/unstable.svg"
+data-background-size="contain" data-background-color="#fff9db"></h2>
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

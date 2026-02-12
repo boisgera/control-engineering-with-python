@@ -1,0 +1,22 @@
+name: control
+channels:
+  - conda-forge
+dependencies:
+  - python=3.9
+  - pip
+  - black
+  - numpy
+  - scipy
+  - autograd
+  - sympy
+  - matplotlib
+  - jupyter
+  - jupyterlab
+  - curl
+  - ffmpeg
+  - lxml
+  - tqdm
+  - pandoc=2.17.1.1
+  - pip:
+      - pandoc==2.1
+      - jupyterlite

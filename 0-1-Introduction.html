@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="Sébastien Boisgérault">
+  <title>Introduction</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Introduction</h1>
+  <p class="author"><img src="https://www.gravatar.com/avatar/b3a0ee9f4ac3d8fadf6ecfb9bdde2297?s=100" style="width:1em;height:1em;display:inline-block;border-radius:50%;margin:0px;margin-right:0.25em; vertical-align:middle;position:relative;bottom:0.1em;"/><a
+href="mailto:Sebastien.Boisgerault@minesparis.psl.eu">Sébastien
+Boisgérault</a></p>
+</section>
+
+<section class="slide level2">
+
+<h3 id="control-engineering-with-python">Control Engineering with
+Python</h3>
+<ul>
+<li><p>📖 <a
+href="https://github.com/boisgera/control-engineering-with-python">Course
+Materials</a></p></li>
+<li><p>©️ <a href="https://creativecommons.org/licenses/by/4.0/">License
+CC BY 4.0</a></p></li>
+<li><p>🏦 <a href="https://itn.dev">ITN, Mines Paris - PSL
+University</a></p></li>
+</ul>
+</section>
+<section id="symbols" class="slide level2">
+<h2>Symbols</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>🐍</td>
+<td>Code</td>
+<td>🔍</td>
+<td>Worked Example</td>
+</tr>
+<tr class="even">
+<td>📈</td>
+<td>Graph</td>
+<td>🧩</td>
+<td>Exercise</td>
+</tr>
+<tr class="odd">
+<td>🏷️</td>
+<td>Definition</td>
+<td>💻</td>
+<td>Numerical Method</td>
+</tr>
+<tr class="even">
+<td>💎</td>
+<td>Theorem</td>
+<td>🧮</td>
+<td>Analytical Method</td>
+</tr>
+<tr class="odd">
+<td>📝</td>
+<td>Remark</td>
+<td>🧠</td>
+<td>Theory</td>
+</tr>
+<tr class="even">
+<td>ℹ️</td>
+<td>Information</td>
+<td>🗝️</td>
+<td>Hint</td>
+</tr>
+<tr class="odd">
+<td>⚠️</td>
+<td>Warning</td>
+<td>🔓</td>
+<td>Solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="control-theory" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Control Theory</h2>
+<p>A field of Mathematics that deals with the</p>
+<ul>
+<li><p><strong>modelling</strong>,</p></li>
+<li><p><strong>analysis</strong> and</p></li>
+<li><p><strong>control</strong>.</p></li>
+</ul>
+<p>of abstract <strong>dynamical systems</strong>.</p>
+<p>🇺🇸 Control Theory <span class="math inline">\(\to\)</span> 🇫🇷
+<strong>Automatique</strong>.</p>
+</section>
+<section id="dynamical-systems-abstract" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Dynamical Systems (Abstract)</h2>
+<ul>
+<li><p>Described by a set of time-dependent variables,</p></li>
+<li><p>which are governed by mathematical equations,</p></li>
+<li><p>that connects the system past, present and future.</p></li>
+</ul>
+</section>
+<section id="examples" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🧭 Examples</h2>
+</section>
+<section id="section" class="slide level2 display"
+data-background="images/static/engin-akyurt-KUeJcc4YUug-unsplash.jpg"
+data-background-color="None">
+<h2 class="display"
+data-background="images/static/engin-akyurt-KUeJcc4YUug-unsplash.jpg"
+data-background-color="None"></h2>
+<h3 style="background-color:#ffffff90"
+id="mechanical-systems">Mechanical Systems</h3>
+<h6 style="background-color:#ffffff90"
+id="photo-by-enginakyurt-on-unsplash">Photo by <a
+href="https://unsplash.com/@enginakyurt?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">enginakyurt</a>
+on <a
+href="https://unsplash.com/s/photos/pendulum?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></h6>
+</section>
+<section id="section-1" class="slide level2 display"
+data-background="images/static/jeremy-cai-B8UTPKlHNyw-unsplash.jpg"
+data-background-color="None">
+<h2 class="display"
+data-background="images/static/jeremy-cai-B8UTPKlHNyw-unsplash.jpg"
+data-background-color="None"></h2>
+<h3 style="background-color:#ffffff90"
+id="population-dynamics">Population Dynamics</h3>
+<h3 style="background-color:#ffffff90"
+id="photo-by-jeremy-cai-on-unsplash">Photo by <a
+href="https://unsplash.com/@j?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Jeremy
+Cai</a> on <a
+href="https://unsplash.com/s/photos/fish-lake?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></h3>
+</section>
+<section id="section-2" class="slide level2 display"
+data-background="images/static/Forrester-World-Model.png"
+data-background-color="None">
+<h2 class="display"
+data-background="images/static/Forrester-World-Model.png"
+data-background-color="None"></h2>
+<h3 style="background-color:#f0f0f0ff"
+id="world-dynamics-forrester">World Dynamics (Forrester)</h3>
+</section>
+<section id="section-3" class="slide level2 display"
+data-background="images/static/daniel-schludi-mAGZNECMcUg-unsplash.jpg"
+data-background-color="None">
+<h2 class="display"
+data-background="images/static/daniel-schludi-mAGZNECMcUg-unsplash.jpg"
+data-background-color="None"></h2>
+<h3 style="background-color:#ffffff90"
+id="epidemiological-models">Epidemiological Models</h3>
+<h4 style="background-color:#ffffff90"
+id="photo-by-daniel-schludi-on-unsplash">Photo by <a
+href="https://unsplash.com/@schluditsch?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Daniel
+Schludi</a> on <a
+href="https://unsplash.com/s/photos/covid-19?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></h4>
+</section>
+<section id="control-engineering" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Control Engineering</h2>
+<p>Apply Control Theory to <strong>design &amp; build</strong> concrete
+dynamical systems with specified behaviors.</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Overlaps with and complements:</p>
+<ul>
+<li><p>🔌 Electrical Engineering</p></li>
+<li><p>🔧 Mechanical Engineering</p></li>
+<li><p>🖥️ Software Engineering</p></li>
+<li><p>…</p></li>
+</ul>
+</section>
+<section id="applications" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🧭 Applications</h2>
+</section>
+<section id="section-4" class="slide level2 display"
+data-background="images/static/possessed-photography-dRMQiAubdws-unsplash.jpg"
+data-background-color="None">
+<h2 class="display"
+data-background="images/static/possessed-photography-dRMQiAubdws-unsplash.jpg"
+data-background-color="None"></h2>
+<h3 style="background-color:#ffffff90" id="robotics">Robotics</h3>
+<h4 style="background-color:#ffffff90"
+id="possessed-photography-on-unsplash"><a
+href="https://unsplash.com/@possessedphotography?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Possessed
+Photography</a> on <a
+href="https://unsplash.com/s/photos/robotics?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></h4>
+</section>
+<section id="or" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🤖 or 🧑?</h2>
+<p>Consider:</p>
+<ul>
+<li><p>💸 Cost analysis</p></li>
+<li><p>🎨 Creative/complex work?</p></li>
+<li><p>🦾 Strength, speed, precision</p></li>
+<li><p>🏜️ Hostile work environment</p></li>
+</ul>
+</section>
+<section id="manufacturing" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Manufacturing</h2>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0?si=aKT-QZNKTgX1WoSb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+</section>
+<section id="section-5" class="slide level2 display"
+data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg"
+data-background-color="None">
+<h2 class="display"
+data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg"
+data-background-color="None"></h2>
+<h3 style="background-color:#ffffff90"
+id="eurofighter-typhoon">Eurofighter Typhoon</h3>
+<h4 style="background-color:#ffffff90"
+id="photo-by-ray-harrington-on-unsplash">Photo by <a
+href="https://unsplash.com/es/@raymondo600?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Ray
+Harrington</a> on <a
+href="https://unsplash.com/s/photos/eurofighter-typhoon?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></h4>
+<h4 style="margin-bottom:80vh" id="section-6"></h4>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<ul>
+<li><p>twin-engine, canard delta wing, multirole fighter</p></li>
+<li><p>air superiority fighter / agile / dogfighter</p></li>
+<li><p>⚠️ <strong>aerodynamically unstable in subsonic
+flight!</strong></p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>“The design of the Typhoon is such that without input to any control
+surfaces the aircraft will pitch up during flight extremely
+quickly.”</p>
+<p>“Although this improves the agility of the aircraft it also requires
+a system to enable controlled flight to be maintained.”</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>“This is achieved through the Fly By Wire <strong>🏷️ Flight Control
+System</strong> […].”</p>
+<p>“With this system the pilot has no direct link to any of the
+aircraft’s control surfaces.”</p>
+<p>“Instead, <strong>all movements of the throttle, stick or pedals are
+interpreted by the FCS and an appropriate control response
+taken.</strong>”</p>
+</section>
+<section id="learn-more" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Learn More</h2>
+<ul>
+<li><p>📖 <a
+href="https://en.wikipedia.org/wiki/Relaxed_stability">Negative
+Stability (Aerodynamics)</a></p></li>
+<li><p>📖 <a
+href="https://web.archive.org/web/20110901224810/http://typhoon.starstreak.net/Eurofighter/flight-sys.html">Eurofighter
+Typhoon FCS</a></p></li>
+<li><p>🖼️ <a
+href="https://unsplash.com/s/photos/eurofighter-typhoon">Eurofighter
+Typhoon Photos</a></p></li>
+</ul>
+</section>
+<section id="section-7" class="slide level2 display"
+data-background="images/justin-hu-oSyF_-CfXxA-unsplash.jpg"
+data-background-color="None">
+<h2 class="display"
+data-background="images/justin-hu-oSyF_-CfXxA-unsplash.jpg"
+data-background-color="None"></h2>
+<h3 style="background-color:#ffffff90" id="boeing-737-max">Boeing 737
+MAX</h3>
+<h4 style="background-color:#ffffff90"
+id="photo-by-justin-hu-on-unsplash">Photo by <a
+href="https://unsplash.com/@phanto_sea?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Justin
+Hu</a> on <a
+href="https://unsplash.com/s/photos/boeing-737-max?utm_source=unsplash&amp;utm_medium=referral&amp;utm_content=creditCopyText">Unsplash</a></h4>
+<h4 style="margin-bottom:80vh" id="section-8"></h4>
+</section>
+<section id="boeing-737-max-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Boeing 737 MAX</h2>
+<p>4th generation of Boeing 737.</p>
+<p><strong>Larger and more powerful engines</strong>.</p>
+<p><span class="math inline">\(\to\)</span> ⛽ fuel consumption reduced
+by 14%</p>
+<p><span class="math inline">\(\to\)</span> 💸 profit!</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><span class="math inline">\(\to\)</span> ⚠️ engines located further
+forward and higher</p>
+<p><span class="math inline">\(\to\)</span> ⚠️ pitch-up tendency that
+needs to be controlled</p>
+<p><span class="math inline">\(\to\)</span> 🏷️ <strong>Maneuvering
+Characteristics Augmentation System (MCAS)</strong></p>
+</section>
+<section id="fatal-crashes" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Fatal Crashes</h2>
+<p>✈️ <strong>Lion Air Flight 610</strong> (2018, Indonesia)</p>
+<p>“MCAS pushing the aircraft into a dive due to data from a faulty
+angle-of-attack sensor.”</p>
+<p>✈️ <strong>Ethiopian Airlines Flight 302</strong> (2019,
+Ethiopia)</p>
+<p>“Evidence suggests, that […] the aircraft was configured to dive,
+similar to Lion Air Flight 610.”</p>
+<p><span class="math inline">\(\to\)</span> 🛑 <strong>global 737 MAX
+groundings.</strong></p>
+</section>
+<section id="learn-more-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Learn More</h2>
+<ul>
+<li><p>📖 <a href="https://en.wikipedia.org/wiki/Boeing_737_MAX">Boeing
+737 Max (Wikipedia)</a></p></li>
+<li><p>📖 <a href="https://www.boeing.com/737-max-updates/mcas/">Boeing
+MCAS</a></p></li>
+<li><p>📰 <a
+href="https://www.theverge.com/2019/3/22/18275736/boeing-737-max-plane-crashes-grounded-problems-info-details-explained-reasons">Boeing
+737 Max Plane Crashes</a></p></li>
+<li><p>📰 <a
+href="https://theaircurrent.com/aviation-safety/what-is-the-boeing-737-max-maneuvering-characteristics-augmentation-system-mcas-jt610/">What
+is the Boeing 737 Max MACS?</a></p></li>
+<li><p>📰 <a
+href="https://en.wikipedia.org/wiki/Ethiopian_Airlines_Flight_302#/media/File:Adjustable_stabilizer.svg">Boeing
+737 Max adjustable stabilizer</a></p></li>
+</ul>
+</section>
+<section id="rocket-booster-landing" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Rocket Booster Landing</h2>
+<h4 id="spacexs-starship">🚀 <a
+href="https://www.spacex.com/vehicles/starship/">SpaceX’s
+Starship</a></h4>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/RYUr-5PYA7s?si=ibaQaj5eRpKapGBm" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+</iframe>
+</section>
+<section id="adas-self-driving-cars" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">ADAS &amp; Self-Driving Cars</h2>
+<ul>
+<li><p>🏷️ <strong>ADAS:</strong> Advanced Driver-Assistance
+Systems</p></li>
+<li><p>🏢 <a href="https://www.tesla.com">Tesla</a>, <a
+href="https://www.mercedes-benz.com">Mercedes-Benz</a>, <a
+href="https://waymo.com/">Waymo</a>, <a
+href="https://comma.ai/">Comma</a>, etc. <a
+href="https://youtu.be/werrvv0MVXQ?si=K3iOb2OEJfZD1k15&amp;t=1386">🎬</a></p></li>
+<li><p>📆 <strong>2026:</strong></p>
+<ul>
+<li><p>We’re coming close to fully autonomous cars! <a
+href="https://waymo.com/blog/2025/11/safe-routine-ready-autonomous-driving-in-new-cities">📰</a></p></li>
+<li><p>Cars can be far safer when autonomous <a
+href="https://waymo.com/safety/">📰</a></p></li>
+</ul></li>
+</ul>
+</section>
+<section id="sae-automation-levels" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None"><a
+href="https://www.sae.org/blog/sae-j3016-update">SAE Automation
+Levels</a></h2>
+<p>🏷️ <strong>SAE</strong> : Society of Automobile Engineers</p>
+<ul>
+<li><p><strong>Level 0:</strong> 👨 No automation: warnings, alerts,
+etc.</p></li>
+<li><p><strong>Level 1:</strong> 👨/🤖 single-task assist (e.g. speed
+control)</p></li>
+<li><p><strong>Level 2</strong>: 👨/🤖 many-task assist <span
+class="math inline">\(\leftarrow\)</span> Telsa Autopilot</p></li>
+<li><p><strong>Level 3:</strong> 🤖/👨 <span
+class="math inline">\(\leftarrow\)</span> Mercedes Drive Pilot
+(2021)</p></li>
+<li><p><strong>Level 4:</strong> 🤖 <span
+class="math inline">\(\leftarrow\)</span> Waymo (2022), Mercedes (2024
+🔧)</p></li>
+<li><p><strong>Level 5:</strong> 🤖 fully self-driving <span
+class="math inline">\(\leftarrow\)</span> 🚀 Not achieved yet</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<ul>
+<li><p>ADAS Level 3-5 system design is mostly Machine Learning (see for
+example <a href="https://waymo.com/blog/">the official Waymo’s
+blog</a>)</p></li>
+<li><p>ADAS Level 0-2 system design is mostly Control
+Engineering.</p></li>
+</ul>
+</section>
+<section id="level-1-adas" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Level 1 ADAS</h2>
+<p>Single feature automation.</p>
+<ul>
+<li><p><strong>🏷️CAS: Collision avoidance systems</strong></p></li>
+<li><p><strong>🏷️ CC: Cruise control</strong></p></li>
+</ul>
+</section>
+<section id="acc-cas-cc" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ ACC: CAS + CC</h2>
+<h3 id="adaptative-cruise-control">Adaptative Cruise Control</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/GInSPWZRFRM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</section>
+<section id="escesp" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🏷️ ESC/ESP</h2>
+<h3 id="electronic-stability-control">Electronic stability control</h3>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ie0Icbo6jJ8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen>
+</iframe>
+</section>
+<section id="learn-more-2" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Learn More</h2>
+<ul>
+<li><p>📰 <a
+href="https://www.theguardian.com/technology/2022/aug/09/tesla-self-driving-technology-safety-children%3E">Tesla’s
+self-driving technology fails to detect children […]</a></p></li>
+<li><p>📰 <a
+href="https://www.roadandtrack.com/news/a39481699/what-happens-if-mercedes-drivepilot-causes-a-crash/">Mercedes
+Drive Pilot Beats Tesla Autopilot By Taking Legal
+Responsibility</a></p></li>
+<li><p>📰 <a
+href="https://www.slashgear.com/782536/mercedes-benz-wins-worlds-first-approval-for-level-3-autonomous-cars-whats-that-mean/">Mercedes-Benz
+Wins World’s First Approval For Level 3 Autonomous Cars</a></p></li>
+<li><p>📖 <a
+href="https://en.wikipedia.org/wiki/Advanced_driver-assistance_system">ADAS</a>,
+<a
+href="https://en.wikipedia.org/wiki/Collision_avoidance_system">CAS</a>,
+<a href="https://en.wikipedia.org/wiki/Cruise_control">CC</a>, <a
+href="https://en.wikipedia.org/wiki/Adaptive_cruise_control">ACC</a>, <a
+href="https://en.wikipedia.org/wiki/Electronic_stability_control">ESC/ESP</a>.</p></li>
+</ul>
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

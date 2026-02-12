@@ -1,0 +1,1308 @@
+% Controllability
+% 👤 [Sébastien Boisgérault](sebastien.boisgerault@minesparis.psl.eu) 
+
+
+### Control Engineering with Python
+
+- 📖 [Documents (GitHub)](https://github.com/boisgera/control-engineering-with-python)
+
+- ©️ [License CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)
+
+- 🏦 [Mines ParisTech, PSL University](https://mines-paristech.eu/)
+
+
+
+## Symbols
+
+|     |             |     |                        |
+| --- | ----------- | --- | ---------------------- |
+| 🐍  | Code        | 🔍  | Worked Example         |
+| 📈  | Graph       | 🧩  | Exercise               |
+| 🏷️  | Definition  | 💻  | Numerical Method       |
+| 💎  | Theorem     | 🧮  | Analytical Method      |
+| 📝  | Remark      | 🧠  | Theory                 |
+| ℹ️  | Information | 🗝️  | Hint                   |
+| ⚠️  | Warning     | 🔓  | Solution               |
+
+
+🐍 Imports
+--------------------------------------------------------------------------------
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+```python
+from numpy import *
+from numpy.linalg import *
+from numpy.testing import *
+from scipy.integrate import *
+from scipy.linalg import *
+from matplotlib.pyplot import *
+```
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: notebook :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    from numpy import *
+    import matplotlib; matplotlib.use("nbAgg")
+    %matplotlib notebook
+    from matplotlib.pyplot import *
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    # Python 3.x Standard Library
+    import gc
+    import os
+
+    # Third-Party Packages
+    import numpy as np; np.seterr(all="ignore")
+    import numpy.linalg as la
+    import scipy.misc
+    import matplotlib as mpl; mpl.use("Agg")
+    import matplotlib.pyplot as pp
+    import matplotlib.axes as ax
+    import matplotlib.patches as pa
+
+
+    #
+    # Matplotlib Configuration & Helper Functions
+    # --------------------------------------------------------------------------
+
+    # TODO: also reconsider line width and markersize stuff "for the web
+    #       settings".
+    fontsize = 10
+
+    width = 345 / 72.27
+    height = width / (16/9)
+
+    rc = {
+        "text.usetex": True,
+        "pgf.preamble": r"\usepackage{amsmath,amsfonts,amssymb}",
+        #"font.family": "serif",
+        "font.serif": [],
+        #"font.sans-serif": [],
+        "legend.fontsize": fontsize,
+        "axes.titlesize":  fontsize,
+        "axes.labelsize":  fontsize,
+        "xtick.labelsize": fontsize,
+        "ytick.labelsize": fontsize,
+        "figure.max_open_warning": 100,
+        #"savefig.dpi": 300,
+        #"figure.dpi": 300,
+        "figure.figsize": [width, height],
+        "lines.linewidth": 1.0,
+    }
+    mpl.rcParams.update(rc)
+
+    # Web target: 160 / 9 inches (that's ~45 cm, this is huge) at 90 dpi
+    # (the "standard" dpi for Web computations) gives 1600 px.
+    width_in = 160 / 9
+
+    def save(name, **options):
+        cwd = os.getcwd()
+        root = os.path.dirname(os.path.realpath(__file__))
+        os.chdir(root)
+        pp.savefig(name + ".svg", **options)
+        os.chdir(cwd)
+
+    def set_ratio(ratio=1.0, bottom=0.1, top=0.1, left=0.1, right=0.1):
+        height_in = (1.0 - left - right)/(1.0 - bottom - top) * width_in / ratio
+        pp.gcf().set_size_inches((width_in, height_in))
+        pp.gcf().subplots_adjust(bottom=bottom, top=1.0-top, left=left, right=1.0-right)
+
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+🏷️ Controllability
+--------------------------------------------------------------------------------
+
+The system $\dot{x} = f(x,u)$ is **controllable** if 
+
+  - for any $t_0 \in \mathbb{R}$, $x_0 \in \mathbb{R}^n$ and $x_f \in \mathbb{R}^n$, 
+
+  - there are $t_f > t_0$ and $u: [t_0, t_f] \to \mathbb{R}^m$ such that
+
+  - the solution $x(t)$ such that $x(t_0)=x_0$ satisfies
+
+    $$
+    x(t_f) = x_f.
+    $$
+
+--------------------------------------------------------------------------------
+
+![](images/static/controllability.svg)
+
+
+🏷️ Admissible Trajectory
+--------------------------------------------------------------------------------
+
+Let $x_r$ be a reference trajectory of the system state:
+ $$
+ x_r(t), \,  t\in[t_0, t_f].
+ $$ 
+
+ It is **admissible** if there is a function $u_r(t)$, $t \in [t_0, t_f]$ 
+ such that the solution $x$ of the IVP
+   $$
+   \dot{x} = f(x, u_r), \; x(t_0) = x_r(t_0)
+   $$
+is the function $x_r$.
+
+
+🔍 Car
+--------------------------------------------------------------------------------
+
+The position $d$ (in meters) of a car of mass $m$ (in kg) on a straight road
+is governed by
+
+$$
+m \ddot{d} = u
+$$
+
+where $u$ the force (in Newtons) generated by its motor.
+
+--------------------------------------------------------------------------------
+
+The car is initially at the origin of a road and motionless.
+
+We would like to cross the end of the road (location $d_f > 0$) 
+at time $t_f > 0$ and speed $v_f$.
+
+**Numerical values:** 
+  
+  - $m=1500 \, \mbox{kg}$, 
+
+  - $t_f=10 \, \mbox{s}$, $d_f=100 \, \mbox{m}$ and $v_f=100 \, \mbox{km/h}$.
+
+--------------------------------------------------------------------------------
+
+### Step 1 -- Trajectory Planning
+
+We search for a **reference trajectory** for the state
+
+$$x_r(t) = (d_r(t), \dot{d}_r(t))$$
+
+such that: 
+
+  - $d_r(0)=0$, $\dot{d}_r(0) = 0$, 
+  
+  - $d_r(t_f) = x_f$, $\dot{d}_r(t_f) = v_f$.
+    
+--------------------------------------------------------------------------------
+
+### Step 2 -- Admissibility
+
+We check that this reference trajectory is **admissible**, 
+i.e. that we can find a control $u_r(t)$ such that the solution
+of the IVP is $x(t) = x_r(t)$ when $x(0) = x_r(t)$.
+
+--------------------------------------------------------------------------------
+
+### Admissible Trajectory
+
+
+Here, if $d_r$ is smooth and if we apply the control $u(t) = m\ddot{d}_r(t)$,
+
+  $$
+  m \frac{d^2}{dt^2} (d-d_r) = 0, 
+  $$
+  $$
+  (d-d_r)(0) = 0, \; \frac{d}{dt} (d-d_r)(0)= 0.
+  $$
+
+Thus, $d(t) = d_r(t)$ -- and thus $\dot{d}(t) = \dot{d}_r(t)$ -- 
+for every $t\geq 0$.
+
+--------------------------------------------------------------------------------
+
+### Reference Trajectory
+
+We can find $d_r$ as a third-order polynomial in $t$ 
+
+$$
+d_r(t) = \alpha t^3 + \beta t^2 + \gamma t + \delta
+$$
+
+with
+
+$$
+\alpha = \frac{v_f}{t_f^2}- 2\frac{d_f}{t_f^3}, \;
+\beta = 3\frac{d_f}{t_f^2} - \frac{v_f}{tf},\;
+\gamma=0, \; \delta=0.
+$$
+
+(equivalently, with $u(t)$ as an affine function of $t$).
+
+--------------------------------------------------------------------------------
+
+### 🐍 Constants
+
+
+``` python
+m = 1500.0
+xf = 100.0
+vf = 100.0 * 1000 / 3600 # m/s
+tf = 10.0
+alpha = vf/tf**2 - 2*xf/tf**3
+beta = 3*xf/tf**2 - vf/tf
+```
+
+--------------------------------------------------------------------------------
+
+### 🐍 State & Input Evolution
+
+``` python
+def x(t):
+    return alpha * t**3 + beta * t**2
+def d2_x(t):
+    return 6 * alpha * t + 2 * beta
+def u(t):
+    return m * d2_x(t)
+```
+
+--------------------------------------------------------------------------------
+
+### 🐍 Automatic differentiation
+Alternatively, use the [autograd] package:
+
+[autograd]: https://pypi.org/project/autograd/
+
+``` python
+import autograd.numpy as numpy
+from autograd import elementwise_grad as egrad
+def x(t):
+    return alpha * t**3 + beta * t**2
+d2_x = egrad(egrad(x))
+def u(t):
+    return m * d2_x(t)
+```
+
+--------------------------------------------------------------------------------
+
+### 🐍 💻 Simulation
+
+
+```python
+y0 = [0.0, 0.0]
+def fun(t, y):
+    x, d_x = y
+    d2_x = u(t) / m
+    return [d_x, d2_x]
+result = solve_ivp(
+  fun, [0.0, tf], y0, dense_output=True
+)
+```
+
+--------------------------------------------------------------------------------
+
+### 📊 Graph of the Distance
+
+
+``` python
+figure()
+t = linspace(0, tf, 1000)
+xt = result["sol"](t)[0]
+plot(t, xt)
+grid(True); xlabel("$t$"); title("$d(t)$")
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/car")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+## {.section data-background="images/car.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+--------------------------------------------------------------------------------
+
+### 📊 Graph of the velocity
+
+
+``` python
+figure()
+vt = result["sol"](t)[1]
+plot(t, 3.6 * vt)
+grid(True); xlabel("$t$")
+title(r"$\dot{d}(t)$ km/h")
+```
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/car-speed")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## {.section data-background="images/car-speed.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+🧩 Non-admissible trajectory
+--------------------------------------------------------------------------------
+
+Let $\dot{x} = A x + B u$ with $x\in \mathbb{R}^2$, $u \in \mathbb{R}$,
+$$
+A = \left[
+\begin{array}{cc}
+0 & 1 \\
+0 & 0
+\end{array}
+\right], \; 
+B = \left[
+\begin{array}{cc}
+0 \\
+1
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+### 1. 🧠 
+
+Find a smooth reference trajectory $x_r(t)$, $t\in[0, 1]$ which is not admissible.
+
+🔓 Non-admissible trajectory
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The first line of the vector equation $\dot{x} = A x + Bu$ is
+
+$$
+\dot{x}_1 = x_2.
+$$
+
+Any trajectory $x_r$ that does not satisfy this equation is not
+admissible; for example
+
+$$
+x_r(t) :=
+\left[ 
+  \begin{array}{c}
+  0 \\
+  1
+  \end{array}
+\right].
+$$
+
+
+🧩 Pendulum
+--------------------------------------------------------------------------------
+
+Consider the pendulum with dynamics:
+
+  $$
+  m \ell^2 \ddot{\theta} + b \dot{\theta} + mg \ell \sin \theta = u
+  $$
+
+--------------------------------------------------------------------------------
+
+### 1. 🧠 🧮
+
+Find a smooth reference trajectory that leads the
+pendulum from the bottom configuration
+
+$$
+\theta(0)=0, \; \dot{\theta}(0) = 0
+$$ 
+
+to the top configuration
+
+$$
+\theta(t_f) = \pi, \; \dot{\theta}(t_f) = 0.
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🧠 🧮 
+
+Show that the reference trajectory is admissible and compute the
+corresponding input $u_r(t)$.
+
+--------------------------------------------------------------------------------
+
+
+### 3. 💻 🧠
+
+Simulate the result and visualize the solution.
+    
+What should theoretically happen at $t=t_f$ if $u(t)=0$ is applied 
+when $t \geq t_f$? What does happen in reality ? Why ? How can we 
+mitigate this issue?
+
+**Numerical Values:**
+
+$$
+m = 1.0, \, l = 1.0, \, b = 0.1,\, g = 9.81, \, t_f = 10.
+$$
+
+🔓 Pendulum
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+
+Since the initial and final conditions form a set of 4 equations,
+we search for an admissible trajectory defined by a 3rd-order polynomial
+
+$$
+\theta_r(t) := a t_f^3 + bt_f^2 + c t_f +d
+$$
+
+with unknown coefficients $a, b, c, d$.
+
+--------------------------------------------------------------------------------
+
+The initial conditions $\theta_r(0)=0$ and $\dot{\theta}_r(0)=0$ are equivalent
+to 
+
+$$
+b = 0, \; c= 0.
+$$
+
+--------------------------------------------------------------------------------
+
+The final condition $\theta_r(t_f) = \pi$ is equivalent to
+
+$$
+at_f^3 + bt_f^2 = \pi
+$$
+
+and $\dot{\theta}_r(t_f) = 0$ to
+
+$$
+3a t_f^2 + 2b t_f = 0.
+$$
+
+--------------------------------------------------------------------------------
+
+The latter equation can be transformed into
+
+$$
+b = -\frac{3}{2} a t_f
+$$
+
+and the former becomes
+
+$$
+at_f^3 - \frac{3}{2} a t_f^3 = \pi
+\; \Leftrightarrow \;
+a = -\frac{2\pi}{t_f^3}
+$$
+
+and thus $b = \frac{3\pi}{t_f^2}.$
+
+--------------------------------------------------------------------------------
+
+Finally, the following trajectory $(\theta_r(t),\dot{\theta}_t(t))$ is smooth 
+and meets the required initial and final conditions:
+
+$$
+\theta_r(t) = -2\pi \left(\frac{t}{t_f}\right)^3 + 3\pi \left(\frac{t}{t_f}\right)^2
+$$
+
+$$
+\dot{\theta}_r(t) = -\frac{6\pi}{t_f} \left(\frac{t}{t_f}\right)^2 + \frac{6\pi}{t_f} \left(\frac{t}{t_f}\right)
+$$
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+By construction our reference trajectory meets the initial condition. 
+There is a unique input that makes the solution follows this reference;
+its is defined by
+
+$$
+u_r(t) := m \ell^2 \ddot{\theta}_r(t) + b \dot{\theta}_r(t) + mg \ell \sin \theta_r(t) 
+$$
+
+where
+
+$$
+\ddot{\theta}_r(t) = -\frac{12\pi}{t_f^2} \left(\frac{t}{t_f}\right) + \frac{6\pi}{t_f^2}.
+$$
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+```python
+m = 1.0
+l = 1.0
+b = 0.1
+g = 9.81 
+t0, tf = 0.0, 10.0
+```
+
+--------------------------------------------------------------------------------
+
+```python
+def theta_r(t):
+    s = t/tf
+    return -2*pi*s**3 + 3*pi*s**2
+def dtheta_r(t):
+    s = t/tf
+    return -6*pi/tf*s**2 + 6*pi/tf*s
+```
+
+--------------------------------------------------------------------------------
+
+```python
+def d2theta_r(t):
+    s = t/tf
+    return -12*pi/(tf*tf)*s + 6*pi/(tf*tf)
+def u_r(t):
+    return (m*l*l*d2theta_r(t) + 
+            b*dtheta_r(t) + 
+            m*g*l*sin(theta_r(t)))
+```
+
+--------------------------------------------------------------------------------
+
+```python
+def fun(t, theta_dtheta):
+    theta, dtheta = theta_dtheta
+    d2theta = ((-b*dtheta - m*g*l*sin(theta) + u_r(t)) 
+               / (m * l * l))
+    return dtheta, d2theta
+t_span = [t0, tf]
+y0 = [0.0, 0.0]
+```
+
+---------------------------------------------------------------------------------
+
+```python
+r = solve_ivp(fun, t_span, y0, dense_output=True)
+t = linspace(t0, tf, 1000)
+solt = r["sol"](t)
+thetat, dthetat = solt
+```
+
+--------------------------------------------------------------------------------
+
+```python
+figure()
+plot(t, theta_r(t), "k--", label=r"$\theta_r(t)$")
+plot(t, thetat, label=r"$\theta(t)$")
+yticks([0, 0.5*pi, pi], ["$0$", r"$\pi/2$", r"$\pi$"])
+title(r"Simulation of $\theta(t)$")
+grid(True); legend()
+```
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-miss")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## {.section data-background="images/pendulum-miss.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+--------------------------------------------------------------------------------
+
+Theoretically, we should have $\theta(t_f) = \pi$ and $\dot{\theta}(t_f)=0$,
+but the simulation is quite far from that. 
+
+Since the top equilibrium
+is unstable, small (numerical) errors in the state may cause 
+large deviations of the trajectory.
+
+We may reduce the simulation error thresholds to alleviate this problem.
+
+--------------------------------------------------------------------------------
+
+```python
+rhp = solve_ivp(fun, t_span, y0, 
+                dense_output=True, 
+                rtol=1e-6, atol=1e-9)
+t = linspace(t0, tf, 1000)
+solt_hp = rhp["sol"](t)
+thetat_hp, dthetat_hp = solt_hp
+```
+
+--------------------------------------------------------------------------------
+
+```python
+figure()
+plot(t, theta_r(t), "k--", label=r"$\theta_r(t)$")
+plot(t, thetat, label=r"$\theta(t)$  (standard)")
+plot(t, thetat_hp, label=r"$\theta(t)$ (low error)")
+yticks([0, 0.5*pi, pi], ["$0$", r"$\pi/2$", r"$\pi$"])
+title(r"Simulation of $\theta(t)$")
+grid(True); legend()
+```
+
+
+::: hidden :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+    tight_layout()
+    save("images/pendulum-miss-less")
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+::: slides :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+## {.section data-background="images/pendulum-miss-less.svg" data-background-size="contain"}
+
+::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
+
+
+💎 Controllability of LTI systems
+--------------------------------------------------------------------------------
+
+A system $\dot{x} = Ax + Bu$ is controllable
+iff 
+
+  - from the origin $x_0 = 0$ at $t_0=0$,
+
+  - we can reach any state $x_f \in \mathbb{R}^n$.
+
+🏷️ 💎 Kalman Criterion
+--------------------------------------------------------------------------------
+
+The system $\dot{x} = Ax+Bu$ ($x\in \mathbb{R}^n$) is controllable iff:
+
+  $$
+  \mathrm{rank} \, \left[B, AB, \dots, A^{n-1} B\right] = n
+  $$
+
+$[B, \dots, A^{n-1}B]$ is the **controllability matrix**.
+
+
+🔍 Controllability Matrix
+--------------------------------------------------------------------------------
+
+$$
+A = 
+\left[ 
+\begin{array}{ccc}
+0 & 1 & 0 \\
+0 & 0 & 1 \\
+0 & 0 & 0
+\end{array}
+\right], \;
+B = 
+\left[ 
+\begin{array}{c}
+0 \\
+0 \\
+1 
+\end{array}
+\right]
+$$
+
+--------------------------------------------------------------------------------
+
+### 🐍 Computation
+
+
+``` python
+def KCM(A, B):
+    n = shape(A)[0]
+    mp = matrix_power
+    cs = column_stack
+    return cs([mp(A, k) @ B for k in range(n)])
+```
+
+--------------------------------------------------------------------------------
+
+### 🐍 LTI System
+
+``` python
+n = 3 
+A = zeros((n, n))
+for i in range(0, n-1):
+    A[i,i+1] = 1.0
+
+B = zeros((n, 1))
+B[n-1, 0] = 1.0
+```
+
+--------------------------------------------------------------------------------
+
+### 🐍 Rank Condition
+
+
+``` python
+C = KCM(A, B)
+
+C_expected = [[0, 0, 1], [0, 1, 0], [1, 0, 0]]
+assert_almost_equal(C, C_expected)
+
+assert matrix_rank(C) == n
+```
+
+⚠️ Warnings
+--------------------------------------------------------------------------------
+
+  - This implementation of `KCM` is not optimized: fewer computations are achievable
+    using the identity:
+
+    $$
+    A^n B = A \times (A^{n-1}B).
+    $$
+
+  - Rank computations are subject to (catastrophic) numerical errors;
+    sensitivity analysis or symbolic computations may alleviate the problem.
+
+🧩 Fully Actuated System
+--------------------------------------------------------------------------------
+
+Consider $\dot{x} = A x + Bu$ with 
+
+  - $x \in \mathbb{R}^n$, 
+ 
+  - $u \in\mathbb{R}^m$ and,
+
+  - $\mathrm{rank} \, B = n$.
+
+--------------------------------------------------------------------------------
+
+### 1. 🧠 
+
+Show that $m \geq n$.
+
+--------------------------------------------------------------------------------
+
+### 2. 🧮 
+
+Is the system controllable ?
+
+--------------------------------------------------------------------------------
+
+### 3. 🧠 🧮
+
+Given $x_0$, $x_f$ and $t_f > 0$, show that any smooth trajectory 
+that leads from $x_0$ at time $t_0$ to $x_f$ at time $t_f$ is admissible.
+
+
+🔓 Fully Actuated System
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+The shape of $B$ is $n \times m$, thus
+
+$$
+\mbox{rank} \, B \leq \min(n, m).
+$$
+
+By assumption $\mbox{rank} \, B = n$, thus $n \leq m$.
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+The system is controllable since 
+
+$$
+\mbox{rank} \, [B, AB, \dots] \leq \mbox{rank} \, B = n.
+$$
+
+--------------------------------------------------------------------------------
+
+### 3. 🔓
+
+Since $\mbox{rank} \, B = n$, matrix $B$ contains a $n \times n$ invertible matrix $R$.
+Let's assume for the sake of simplicity that $R$ is made of the first $n$ 
+columns of $B$ and let
+$$
+S: = 
+\left[
+  \begin{array}{c}
+  R^{-1} \\
+  0
+  \end{array}
+\right] \in \mathbb{R}^{m \times n}.
+$$
+
+Then by construction $B \times S = I \in \mathbb{R}^{n\times n}$. 
+
+--------------------------------------------------------------------------------
+
+
+If we define $u$ as a function of some 
+auxiliary control $v \in \mathbb{R}^n$ by
+$$
+u(t) = S v(t),
+$$
+then
+$$
+\dot{x} = A x + v.
+$$
+
+--------------------------------------------------------------------------------
+
+To join $x_0$ at $t_0$ and $x_f$ at $t_f$, we can apply the control
+$$
+v(t) := -A x_r(t) + \dot{x}_r(t)
+$$
+where 
+$$
+x_r(t) := x_0 + \frac{t-t_0}{t_f-t_0} (x_f - x_0).
+$$
+
+--------------------------------------------------------------------------------
+
+Indeed,  that leads to
+$$
+\dot{x}(t) = A x(t)  - A x_r(t) + \dot{x}_r(t), \; x(t_0) = x_r(t_0)
+$$
+or if we denote $e := x - x_r$,
+$$
+\dot{e}(t) = Ae(t), \; e(t_0) =0
+$$
+and thus yields $x(t) = x_r(t)$ for any $t\geq t_0$.
+
+
+
+🧩 Integrator Chain
+--------------------------------------------------------------------------------
+
+![](images/static/integrator-chain.svg)
+
+$$\dot{x}_n = u, \, \dot{x}_{n-1} = x_n, \, \cdots \,, \dot{x}_1 = x_2.$$
+
+--------------------------------------------------------------------------------
+
+### 1. 🧠 🧮 
+
+Show that the system is controllable
+
+🔓 Integrator Chain
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+We have
+
+$$
+A = \left[
+    \begin{array}{c}
+    0 & 1 &      0 & \cdots & 0\\
+    0 & 0 & 1      & \cdots & 0 \\
+    0 & 0 & \cdots  & \ddots & \vdots \\
+    \vdots & \vdots & \vdots & \vdots & 1 \\
+    0 & 0 & 0      & 0  & 0 \\
+    \end{array}
+  \right],
+  \;
+  B =\left[
+    \begin{array}{c}
+    0 \\
+    0 \\
+    \vdots \\
+    0 \\
+    1
+    \end{array}
+  \right]
+$$
+
+--------------------------------------------------------------------------------
+
+Thus, 
+
+$$
+B =\left[
+\begin{array}{c}
+0 \\
+0 \\
+\vdots \\
+0 \\
+1
+\end{array}
+\right], \;
+AB =\left[
+\begin{array}{c}
+0 \\
+0 \\
+\vdots \\
+1 \\
+0
+\end{array}
+\right], 
+\, \dots, \,
+A^{n-1} B =
+\left[
+\begin{array}{c}
+1 \\
+0 \\
+\vdots \\
+0 \\
+0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+The controllability matrix has full rank and the system is controllable.
+
+🧩 Heat Equation
+--------------------------------------------------------------------------------
+
+
+![](images/static/heat-simple.svg)
+
+--------------------------------------------------------------------------------
+
+  - $d T_1/dt = u + (T_2 - T_1)$
+
+  - $d T_2/dt = (T_1 - T_2) + (T_3 - T_2)$
+
+  - $d T_3/dt = (T_2 - T_3) + (T_4 - T_3)$
+
+  - $d T_4/dt = (T_3 - T_4)$
+
+
+--------------------------------------------------------------------------------
+
+### 1. 🧠 🧮
+     
+Show that the system is controllable.
+
+--------------------------------------------------------------------------------
+
+### 2. 🧠 🧮 
+
+Assume now that the four cells are organized as a square.
+
+  - Is the system still controllable?
+
+  - Why? 
+
+  - How could you solve this problem?
+
+
+🔓 Heat Equation
+--------------------------------------------------------------------------------
+
+--------------------------------------------------------------------------------
+
+### 1. 🔓
+
+We have
+
+$$
+A = 
+\left[
+\begin{array}{rrrr}
+-1 &  1 &  0 &  0 \\
+ 1 & -2 &  1 &  0 \\
+ 0 &  1 & -2 &  1 \\
+ 0 &  0 &  1 & -1
+\end{array}
+\right], \;
+B = 
+\left[
+\begin{array}{r}
+1 \\
+0 \\
+0 \\
+0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+$$
+A B =
+\left[
+\begin{array}{r}
+-1 \\
+1 \\
+0 \\
+0
+\end{array}
+\right], \;
+A^2 B =
+\left[
+\begin{array}{r}
+2 \\
+-3 \\
+1 \\
+0
+\end{array}
+\right], \;
+A^3 B =
+\left[
+\begin{array}{r}
+-5 \\
+ 9 \\
+-5 \\
+1
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+The controllability matrix
+
+$$
+\left[
+\begin{array}{rrrr}
+ 1 & -1 &  2 & -5 \\
+ 0 &  1 & -3 &  9 \\
+ 0 &  0 &  1 & -5 \\
+ 0 &  0 &  0 &  1
+\end{array}
+\right]
+$$
+
+is full rank, thus the system is controllable.
+
+--------------------------------------------------------------------------------
+
+### 2. 🔓
+
+If the system is organized as a square
+
+$$
+A = 
+\left[
+\begin{array}{rrrr}
+-2 &  1 &  1 &  0 \\
+ 1 & -2 &  0 &  1 \\
+ 1 &  0 & -2 &  1 \\
+ 0 &  1 &  1 & -2
+\end{array}
+\right], \;
+B = 
+\left[
+\begin{array}{r}
+1 \\
+0 \\
+0 \\
+0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+The controllability matrix is
+
+$$
+\left[
+\begin{array}{rrrr}
+ 1 & -2 &  6 & -20 \\
+ 0 &  1 & -4 &  16 \\
+ 0 &  1 & -4 &  16 \\
+ 0 &  0 &  2 & -12
+\end{array}
+\right]
+$$
+
+It is **not** full rank since the second and the third rows are equal.
+Thus the system is not controllable.
+
+--------------------------------------------------------------------------------
+
+The lack of controllability is due to symmetry.
+
+If the initial
+temperature in cell 2 and 3 are equal, since they play symmetric role in the
+system, their temperature will be equal for any subsequent time. 
+
+Hence, it will
+be impossible to reach a state with different temperature in cell 2 and 3, no
+matter what the input is.
+
+--------------------------------------------------------------------------------
+
+To break this symmetry and restore controllability, we may for example try to
+add a second independent heat source sink in cell 2.
+
+This leads to
+
+$$
+A = 
+\left[
+\begin{array}{rrrr}
+-2 &  1 &  1 &  0 \\
+ 1 & -2 &  0 &  1 \\
+ 1 &  0 & -2 &  1 \\
+ 0 &  1 &  1 & -2
+\end{array}
+\right], \;
+B = 
+\left[
+\begin{array}{rr}
+1 & 0 \\
+0 & 1 \\
+0 & 0\\
+0 & 0
+\end{array}
+\right].
+$$
+
+--------------------------------------------------------------------------------
+
+and the controllability matrix
+
+$$
+\left[
+\begin{array}{rrrr}
+1 &  0 &  -2 &  1 & 6 & -4 & -20 & 16 \\
+ 0 & 1 &  1 & -2 & -4 & 6 & 16 & -20\\
+ 0 &  0 & 1 &  0 & -4 & 2 & 16 & -12 \\
+ 0 &  0 &  0 & 1 & 2 & -4 & -12 & 16
+\end{array}
+\right]
+$$
+
+which has a full-rank.
+
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+</style>
+
+<link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet">
+
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">

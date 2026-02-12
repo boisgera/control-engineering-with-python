@@ -1,0 +1,11 @@
+#!/bin/bash
+
+pandoc \
+  --table-of-contents \
+  -o stability.pdf stability.txt
+
+pandoc \
+  --table-of-contents \
+  -o odes.pdf odes.txt
+
+

@@ -1,0 +1,1159 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="👤 Sébastien Boisgérault">
+  <title>Linear Models</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Linear Models</h1>
+  <p class="author">👤 <a
+href="sebastien.boisgerault@minesparis.psl.eu">Sébastien
+Boisgérault</a></p>
+</section>
+
+<section class="slide level2">
+
+<h3 id="control-engineering-with-python">Control Engineering with
+Python</h3>
+<ul>
+<li><p>📖 <a
+href="https://github.com/boisgera/control-engineering-with-python">Documents
+(GitHub)</a></p></li>
+<li><p>©️ <a href="https://creativecommons.org/licenses/by/4.0/">License
+CC BY 4.0</a></p></li>
+<li><p>🏦 <a href="https://mines-paristech.eu/">Mines ParisTech, PSL
+University</a></p></li>
+</ul>
+</section>
+<section id="symbols" class="slide level2">
+<h2>Symbols</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>🐍</td>
+<td>Code</td>
+<td>🔍</td>
+<td>Worked Example</td>
+</tr>
+<tr class="even">
+<td>📈</td>
+<td>Graph</td>
+<td>🧩</td>
+<td>Exercise</td>
+</tr>
+<tr class="odd">
+<td>🏷️</td>
+<td>Definition</td>
+<td>💻</td>
+<td>Numerical Method</td>
+</tr>
+<tr class="even">
+<td>💎</td>
+<td>Theorem</td>
+<td>🧮</td>
+<td>Analytical Method</td>
+</tr>
+<tr class="odd">
+<td>📝</td>
+<td>Remark</td>
+<td>🧠</td>
+<td>Theory</td>
+</tr>
+<tr class="even">
+<td>ℹ️</td>
+<td>Information</td>
+<td>🗝️</td>
+<td>Hint</td>
+</tr>
+<tr class="odd">
+<td>⚠️</td>
+<td>Warning</td>
+<td>🔓</td>
+<td>Solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="imports" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🐍 Imports</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span></code></pre></div>
+</section>
+<section id="streamplot-helper" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🐍 Streamplot Helper</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Q(f, xs, ys):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    X, Y <span class="op">=</span> meshgrid(xs, ys)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> vectorize</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    fx <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">0</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fy <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">1</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, Y, fx(X, Y), fy(X, Y)</span></code></pre></div>
+</section>
+<section id="preamble" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🧭 Preamble</h2>
+</section>
+<section id="non-autonomous-systems" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Non-autonomous Systems</h2>
+<p>Their structure is</p>
+<p><span class="math display">\[
+\dot{x} = f(x, u)
+\]</span></p>
+<p>where <span class="math inline">\(x \in \mathbb{R}^n\)</span> and
+<span class="math inline">\(u \in \mathbb{R}^m\)</span>, that is</p>
+<p><span class="math display">\[
+f: \mathbb{R}^n \times \mathbb{R}^m \to \mathbb{R}^n.
+\]</span></p>
+</section>
+<section id="inputs" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🏷️ Inputs</h2>
+<p>The vector-valued <span class="math inline">\(u\)</span> is the
+<strong>system input</strong>.</p>
+<p>This quantity may depend on the time <span
+class="math inline">\(t\)</span></p>
+<p><span class="math display">\[
+u: t \in \mathbb{R} \mapsto u(t) \in \mathbb{R}^m,
+\]</span></p>
+<p>(actually it may also depend on some state, but we will adress this
+later).</p>
+</section>
+<section id="section" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">📝</h2>
+<p>A solution of</p>
+<p><span class="math display">\[\dot{x} = f(x, u), \; x(t_0) =
+x_0\]</span></p>
+<p>is merely a solution of</p>
+<p><span class="math display">\[\dot{x} = h(t,x), \; x(t_0) =
+x_0,\]</span></p>
+<p>where</p>
+<p><span class="math display">\[h(t, x) := f(x, u(t)).\]</span></p>
+</section>
+<section id="outputs" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🏷️ Outputs</h2>
+<p>We may complement the system dynamics with an equation</p>
+<p><span class="math display">\[
+y = g(x, u) \in \mathbb{R}^p
+\]</span></p>
+<p>The vector <span class="math inline">\(y\)</span> refers to the
+<strong>systems output</strong>, usually the quantities that we can
+effectively measure in a system (the state <span
+class="math inline">\(x\)</span> itself may be unknown).</p>
+</section>
+<section id="linear-systems" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🧭 Linear Systems</h2>
+</section>
+<section id="standard-form" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Standard Form</h2>
+<p>Input <span class="math inline">\(u \in \mathbb{R}^m\)</span>, state
+<span class="math inline">\(x \in \mathbb{R}^n\)</span>, output <span
+class="math inline">\(y \in \mathbb{R}^p\)</span>.</p>
+<p><span class="math display">\[
+  \begin{array}{c}
+  \dot{x} &amp;=&amp; A x + B u \\
+  y       &amp;=&amp; C x + D u
+  \end{array}
+  \]</span></p>
+</section>
+<section id="matrix-shape" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Matrix Shape</h2>
+<p><span class="math inline">\(A \in \mathbb{R}^{n \times n}\)</span>,
+<span class="math inline">\(B \in \mathbb{R}^{n\times m}\)</span>, <span
+class="math inline">\(C \in \mathbb{R}^{p \times n}\)</span>, <span
+class="math inline">\(D \in \mathbb{R}^{p \times m}\)</span>.</p>
+<p><span class="math display">\[
+  \left[
+  \begin{array}{c|c}
+  A &amp;  B \\
+  \hline
+  C &amp;  D
+  \end{array}
+  \right]
+  \]</span></p>
+</section>
+<section id="well-posedness" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Well-Posedness</h2>
+<p>When <span class="math inline">\(u=0\)</span>,</p>
+<p><span class="math display">\[
+\dot{x} = A x =: f(x)
+\; \Rightarrow \;
+\frac{\partial f}{\partial x}(x) = A
+\]</span></p>
+<p>The vector field <span class="math inline">\(f\)</span> is
+continuously differentiable</p>
+<p><span class="math inline">\(\Rightarrow\)</span> <strong>The system
+is well-posed.</strong></p>
+</section>
+<section id="equilibrium" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Equilibrium</h2>
+<p>When <span class="math inline">\(u=0\)</span>, since</p>
+<p><span class="math display">\[
+\dot{x} = A x =: f(x)
+\]</span></p>
+<p><span class="math display">\[
+f(0) = A 0 = 0
+\]</span></p>
+<p><span class="math inline">\(\Rightarrow\)</span> <strong>the origin
+<span class="math inline">\(x=0\)</span> is always an
+equilibrium.</strong></p>
+<p>(the only one in the state space if <span
+class="math inline">\(A\)</span> is invertible).</p>
+</section>
+<section id="why-linear" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🤔 Why “Linear” ?</h2>
+<p>Assume that:</p>
+<ul>
+<li><p><span class="math inline">\(\dot{x}_1 = A x_1 + B u_1\)</span>,
+<span class="math inline">\(x_1(0) = x_{10}\)</span>,</p></li>
+<li><p><span class="math inline">\(\dot{x}_2 = A x_2 + B u_2\)</span>,
+<span class="math inline">\(x_2(0) = x_{20}\)</span>,</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Set</p>
+<ul>
+<li><p><span class="math inline">\(u_3 = \lambda u_1 + \mu u_2\)</span>
+and</p></li>
+<li><p><span class="math inline">\(x_{30} = \lambda x_{10} + \mu
+x_{20}\)</span>.</p></li>
+</ul>
+<p>for some <span class="math inline">\(\lambda\)</span> and <span
+class="math inline">\(\mu\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Then, if</p>
+<p><span class="math display">\[x_3 = \lambda x_1 + \mu
+x_2,\]</span></p>
+<p>we have</p>
+<p><span class="math display">\[
+\dot{x}_3 = A x_3 + B u_3, \; x_3(0) = x_{30}.
+\]</span></p>
+</section>
+<section id="dynamics-decomposition" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Dynamics Decomposition</h2>
+<p>The solution of</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu, \; x(0) = x_0
+\]</span></p>
+<p>is the sum <span class="math inline">\(x(t)=x_1(t)+x_2(t)\)</span>
+where</p>
+<ul>
+<li><p><span class="math inline">\(x_1(t)\)</span> is the solution to
+the <strong>internal dynamics</strong> and</p></li>
+<li><p><span class="math inline">\(x_2(t)\)</span> is the solution to
+the <strong>external dynamics</strong>.</p></li>
+</ul>
+</section>
+<section id="internalexternal" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Internal/External</h2>
+<ul>
+<li><p>The <strong>internal dynamics</strong> is controlled by the
+initial value <span class="math inline">\(x_0\)</span> only (there is no
+input, <span class="math inline">\(u=0\)</span>).</p>
+<p><span class="math display">\[
+\dot{x}_1 = A x_1, \; x_1(0) = x_0,
+\]</span></p></li>
+<li><p>The <strong>external dynamics</strong> is controlled by the input
+<span class="math inline">\(u(t)\)</span> only (the system is initially
+at rest, <span class="math inline">\(x_0=0\)</span>).</p>
+<p><span class="math display">\[
+\dot{x}_2 = A x_2 + Bu, \;  x_2(0) = 0.
+\]</span></p></li>
+</ul>
+</section>
+<section id="lti-systems" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ LTI Systems</h2>
+<p>These systems are actually linear and <strong>time-invariant</strong>
+(hence <strong>LTI</strong>) systems. Time-invariant means that when
+<span class="math inline">\(x(t)\)</span> is a solution of</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu, \; x(0) = x_0,
+\]</span></p>
+<p>then <span class="math inline">\(x(t- t_0)\)</span> is a solution
+of</p>
+<p><span class="math display">\[
+\dot{x} = A x + Bu(t-t_0), \; x(t_0) = x_0.
+\]</span></p>
+</section>
+<section id="heat-equation" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Heat Equation</h2>
+<p><img data-src="images/static/heat-simple.svg" /></p>
+</section>
+<section id="simplified-model" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">Simplified Model</h2>
+<ul>
+<li><p>Four cells numbered 1 to 4 are arranged in a row.</p></li>
+<li><p>The first cell has a heat source, the last one a temperature
+sensor.</p></li>
+<li><p>The heat sink/source is increasing the temperature of its cell of
+<span class="math inline">\(u\)</span> degrees by second.</p></li>
+<li><p>If the temperature of a cell is <span
+class="math inline">\(T\)</span> and the one of a neighbor is <span
+class="math inline">\(T_n\)</span>, <span
+class="math inline">\(T\)</span> increases of <span
+class="math inline">\(T_n - T\)</span> by second.</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>Given the geometric layout:</p>
+<ul>
+<li><p><span class="math inline">\(d T_1/dt = u + (T_2 -
+T_1)\)</span></p></li>
+<li><p><span class="math inline">\(d T_2/dt = (T_1 - T_2) + (T_3 -
+T_2)\)</span></p></li>
+<li><p><span class="math inline">\(d T_3/dt = (T_2 - T_3) + (T_4 -
+T_3)\)</span></p></li>
+<li><p><span class="math inline">\(d T_4/dt = (T_3 -
+T_4)\)</span></p></li>
+<li><p><span class="math inline">\(y = T_4\)</span></p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>Set <span class="math inline">\(x = (T_1, T_2, T_3,
+T_4)\)</span>.</p>
+<p>The model is linear and its standard matrices are:</p>
+<p><span class="math display">\[
+A = \left[
+  \begin{array}{rrrr}
+-1 &amp; 1 &amp; 0 &amp; 0   \\
+1  &amp; -2 &amp; 1 &amp; 0 \\
+0 &amp; 1 &amp; -2 &amp; 1  \\
+0 &amp; 0 &amp; 1 &amp; -1
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p><span class="math display">\[
+B = \left[
+  \begin{array}{c}
+  1 \\ 0 \\ 0 \\ 0
+  \end{array}
+  \right], \;
+C =
+\left[
+\begin{array}{cccc}
+0 &amp; 0 &amp; 0 &amp; 1
+\end{array}
+\right],
+\; D = [0]
+\]</span></p>
+</section>
+<section id="linearization" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🧭 Linearization</h2>
+</section>
+<section id="nonlinear-to-linear" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Nonlinear to Linear</h2>
+<p>Consider the nonlinear system</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\dot{x} &amp;=&amp; f(x, u) \\
+      y &amp;=&amp; g(x, u)
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Assume that <span class="math inline">\(x_e\)</span> is an
+equilibrium when <span class="math inline">\(u=u_e\)</span> (cst):</p>
+<p><span class="math display">\[
+f(x_e, u_e) = 0
+\]</span></p>
+<p>and let</p>
+<p><span class="math display">\[
+  y_e := g(x_e, u_e).
+  \]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Define the error variables</p>
+<ul>
+<li><p><span class="math inline">\(\Delta x := x -
+x_e\)</span>,</p></li>
+<li><p><span class="math inline">\(\Delta u := u - u_e\)</span>
+and</p></li>
+<li><p><span class="math inline">\(\Delta y := y -
+y_e\)</span>.</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>As long as the error variables stay small</p>
+<p><span class="math display">\[
+f(x, u)
+\simeq
+\overbrace{f(x_e, u_e)}^0 +
+\frac{\partial f}{\partial x}(x_e, u_e) \Delta x
++ \frac{\partial f}{\partial u}(x_e, u_e) \Delta u
+\]</span></p>
+<p><span class="math display">\[
+g(x, u)
+\simeq
+\overbrace{g(x_e, u_e)}^{y_e} +
+\frac{\partial g}{\partial x}(x_e, u_e) \Delta x
++ \frac{\partial g}{\partial u}(x_e, u_e) \Delta u
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Hence, the error variables satisfy <em>approximately</em></p>
+<p><span class="math display">\[
+\begin{array}{c}
+d(\Delta x)/dt &amp;=&amp; A \Delta x + B \Delta u \\
+\Delta y       &amp;=&amp; C \Delta x + D \Delta u
+\end{array}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\left[
+\begin{array}{c|c}
+A &amp;  B \\
+\hline
+C &amp;  D
+\end{array}
+\right]
+=
+\left[
+\begin{array}{c|c}
+\frac{\partial f}{\partial x} &amp;  \frac{\partial f}{\partial u} \\
+\hline
+\frac{\partial g}{\partial x} &amp;  \frac{\partial g}{\partial u}
+\end{array}
+\right](x_e, u_e)
+\]</span></p>
+</section>
+<section id="example" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Example</h2>
+<p>The system</p>
+<p><span class="math display">\[
+\begin{array}{cc}
+\dot{x} &amp;=&amp; -2x + y^3 \\
+\dot{y} &amp;=&amp; -2y + x^3
+\end{array}
+\]</span></p>
+<p>has an equilibrium at <span class="math inline">\((0,
+0)\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>The corresponding error variables satisfy <span
+class="math inline">\(\Delta x = x\)</span> and <span
+class="math inline">\(\Delta y = y\)</span>, thus <span
+class="math display">\[
+\frac{d \Delta x}{dt} =\dot{x} = -2 x + y^3 = -2 \Delta x + (\Delta y)^3
+\approx -2 \Delta x
+\]</span> <span class="math display">\[
+\frac{d \Delta y}{dt} =\dot{y} = -2 y + x^3 = -2 \Delta y + (\Delta x)^3
+\approx -2 \Delta y
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p><span class="math display">\[
+\begin{array}{cc}
+\dot{x} &amp;=&amp; -2x + y^3 \\
+\dot{y} &amp;=&amp; -2y + x^3
+\end{array}
+\]</span></p>
+<p><span class="math inline">\(\to\)</span></p>
+<p><span class="math display">\[
+\begin{array}{cc}
+\dot{x} &amp;\approx&amp; -2x  \\
+\dot{y} &amp;\approx&amp; -2y
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="vector-fields">🐍 Vector fields</h3>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(xy):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>x <span class="op">+</span> y<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>y <span class="op">+</span> x<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> fl(xy):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    x, y <span class="op">=</span> xy</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    dx <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>x</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    dy <span class="op">=</span> <span class="op">-</span><span class="dv">2</span><span class="op">*</span>y</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> array([dx, dy])</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<h3 id="stream-plot">📈 Stream Plot</h3>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> y <span class="op">=</span> linspace(<span class="op">-</span><span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(f, x, y), color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>blue_5 <span class="op">=</span> <span class="st">&quot;#339af0&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>streamplot(<span class="op">*</span>Q(fl, x, y), color<span class="op">=</span>blue_5) </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>], [<span class="dv">0</span>], <span class="st">&quot;k.&quot;</span>, ms<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;square&quot;</span>)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>axis(<span class="st">&quot;off&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-1" class="slide level2 section"
+data-background="images/linearization.svg"
+data-background-size="contain" data-background-color="#f3f0ff">
+<h2 class="section" data-background="images/linearization.svg"
+data-background-size="contain" data-background-color="#f3f0ff"></h2>
+</section>
+<section id="linearization-1" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Linearization</h2>
+<p>Consider</p>
+<p><span class="math display">\[
+\dot{x} = -x^2 + u, \; y = x u
+\]</span></p>
+<p>If we set <span class="math inline">\(u_e = 1\)</span>, the system
+has an equilibrium at <span class="math inline">\(x_e = 1\)</span> (and
+also <span class="math inline">\(x_e = -1\)</span> but we focus on the
+former) and the corresponding <span class="math inline">\(y\)</span> is
+<span class="math inline">\(y_e = x_e u_e = 1\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>Around this configuration <span class="math inline">\((x_e, u_e) =
+(1, 1)\)</span>, we have</p>
+<p><span class="math display">\[
+\frac{\partial (-x^2+u)}{\partial x} = -2x_e = -2,
+\; \frac{\partial (-x^2+u)}{\partial u} = 1,
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+\frac{\partial x u }{\partial x} = u_e = 1,
+\; \frac{\partial x u}{\partial u} = x_e = 1.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>Thus, the approximate, linearized dynamics around this equilibrium
+is</p>
+<p><span class="math display">\[
+\begin{array}{rcr}
+d(x-1)/dt &amp;=&amp; -2 (x - 1) + (u - 1) \\
+y -1      &amp;=&amp;  (x - 1) + (u - 1)
+\end{array}
+\]</span></p>
+</section>
+<section id="asymptotic-stability" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Asymptotic Stability</h2>
+<p>The equilibrium <span class="math inline">\(0\)</span> is locally
+asymptotically stable for</p>
+<p><span class="math display">\[
+\frac{d \Delta x}{dt} = A \Delta x
+\]</span></p>
+<p>where <span class="math inline">\(A = \partial f (x_e, u_e) /
+\partial x.\)</span></p>
+<p><span class="math inline">\(\Rightarrow\)</span></p>
+<p>The equilibrium <span class="math inline">\(x_e\)</span> is locally
+asymptotically stable for</p>
+<p><span class="math display">\[
+\dot{x} = f(x, u_e).
+\]</span></p>
+</section>
+<section id="converse-result" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">⚠️ Converse Result</h2>
+<ul>
+<li><p>The converse is not true : the nonlinear system may be
+asymptotically stable but not its linearized approximation
+(e.g. consider <span class="math inline">\(\dot{x} =
+-x^3\)</span>).</p></li>
+<li><p>If we replace local <strong>asymptotic stability</strong> with
+local <strong>exponential stability</strong>, the requirement that
+locally</p>
+<p><span class="math display">\[
+\|x(t) - x_e\| \leq A e^{-\sigma t} \|x(0) - x_e\|
+\]</span></p>
+<p>for some <span class="math inline">\(A &gt;0\)</span> and <span
+class="math inline">\(\sigma &gt; 0\)</span>, then it works.</p></li>
+</ul>
+</section>
+<section id="pendulum" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Pendulum</h2>
+<p>A pendulum submitted to a torque <span
+class="math inline">\(c\)</span> is governed by</p>
+<p><span class="math display">\[
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
+\]</span></p>
+<p>We assume that only the angle <span
+class="math inline">\(\theta\)</span> is measured.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-2">1. 🧮</h3>
+<p>Let <span class="math inline">\(x=(\theta, \dot{\theta})\)</span>,
+<span class="math inline">\(u=c\)</span> and <span
+class="math inline">\(y=\theta\)</span>.</p>
+<p>What are the function <span class="math inline">\(f\)</span> and
+<span class="math inline">\(g\)</span> that determine the nonlinear
+dynamics of the pendulum?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-3">2. 🧮</h3>
+<p>Show that for any angle <span class="math inline">\(\theta_e\)</span>
+there is a constant value <span class="math inline">\(c_e\)</span> of
+the torque such that <span class="math inline">\(x_e = (\theta_e,
+0)\)</span> is an equilibrium.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-4">3. 🧮</h3>
+<p>Compute the linearized dynamics of the pendulum around this
+equilibrium and put it in the standard form (compute <span
+class="math inline">\(A\)</span>, <span
+class="math inline">\(B\)</span>, <span class="math inline">\(C\)</span>
+and <span class="math inline">\(D\)</span>).</p>
+</section>
+<section id="pendulum-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Pendulum</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-5">1. 🔓</h3>
+<p>The 2nd-order differential equation</p>
+<p><span class="math display">\[
+m \ell^2 \ddot{\theta} + b \dot{\theta} + m g \ell \sin \theta = c.
+\]</span></p>
+<p>is equivalent to the first-order differential equation</p>
+<p><span class="math display">\[
+\frac{d}{dt}
+\left[
+  \begin{array}{c}
+    \theta \\
+    \omega
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{c}
+    \omega \\
+    -(b /m\ell^2)\omega - (g/\ell) \sin \theta + c / m\ell^2
+  \end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Hence, with <span class="math inline">\(x=(\theta,
+\dot{\theta})\)</span>, <span class="math inline">\(u=c\)</span> and
+<span class="math inline">\(y=\theta\)</span>, we have</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+\dot{x} &amp;=&amp; f(x, u) \\
+      y &amp;=&amp; g(x, u)
+\end{array}
+\]</span></p>
+<p>with</p>
+<p><span class="math display">\[
+\begin{array}{lll}
+f((\theta, \omega), c) &amp;=&amp; \left(\omega, -(b /m\ell^2)\omega -
+(g/\ell) \sin \theta + c / m\ell^2 \right) \\
+g((\theta, \omega), c) &amp;=&amp; \theta.
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-6">2. 🔓</h3>
+<p>Let <span class="math inline">\(\theta_e\)</span> in <span
+class="math inline">\(\mathbb{R}\)</span>. If <span
+class="math inline">\(c=c_e\)</span>, the state <span
+class="math inline">\(x_e:=(\theta_e, 0)\)</span> is an equilibrium if
+and only if <span class="math inline">\(f((\theta_e, 0),
+c_e)=0\)</span>, that is</p>
+<p><span class="math display">\[
+\left[
+  \begin{array}{c}
+    0 \\
+    0 - (g/\ell) \sin \theta_e + c_e / m\ell^2
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{c}
+    0 \\
+    0
+  \end{array}
+\right]
+\]</span></p>
+<p>which holds if and only if</p>
+<p><span class="math display">\[
+c_e = m g \ell  \sin \theta_e.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-7">3. 🔓</h3>
+<p>We have</p>
+<p><span class="math display">\[
+A = \frac{\partial f}{\partial x} (x_e, c_e)
+=
+\left[
+  \begin{array}{rr}
+    0 &amp;
+    1 \\
+    - (g/\ell) \cos \theta_e &amp;
+    -(b /m\ell^2) \\
+  \end{array}
+\right]
+\]</span></p>
+<p><span class="math display">\[
+B = \frac{\partial f}{\partial u} (x_e, u_e) =
+\left[
+  \begin{array}{c}
+    0 \\
+    1/m\ell^2
+    \end{array}
+\right]
+\]</span></p>
+<p><span class="math display">\[
+C = \frac{\partial g}{\partial x_e} (x_e, u_e)
+=
+\left[
+  \begin{array}{cc}
+    1 \\
+    0
+  \end{array}
+\right],
+\;
+D = \frac{\partial g}{\partial u_e} (x_e, u_e)
+=
+0
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Thus,</p>
+<p><span class="math display">\[
+\begin{split}
+\frac{d}{dt}\Delta \theta &amp; \approx \Delta \omega \\
+\frac{d}{dt}\Delta \omega &amp; \approx -(g/\ell) \cos (\theta_e) \Delta
+\theta -(b/m\ell^2) \Delta \omega + \Delta c /m \ell^2 \\
+\end{split}
+\]</span></p>
+<p>and obviously, as far as the output goes,</p>
+<p><span class="math display">\[
+\Delta \theta \approx \Delta \theta.
+\]</span></p>
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

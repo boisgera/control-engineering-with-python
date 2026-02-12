@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="👤 Sébastien Boisgérault">
+  <title>I/O Behavior</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">I/O Behavior</h1>
+  <p class="author">👤 <a
+href="sebastien.boisgerault@minesparis.psl.eu">Sébastien
+Boisgérault</a></p>
+</section>
+
+<section class="slide level2">
+
+<h3 id="control-engineering-with-python">Control Engineering with
+Python</h3>
+<ul>
+<li><p>📖 <a
+href="https://github.com/boisgera/control-engineering-with-python">Documents
+(GitHub)</a></p></li>
+<li><p>©️ <a href="https://creativecommons.org/licenses/by/4.0/">License
+CC BY 4.0</a></p></li>
+<li><p>🏦 <a href="https://mines-paristech.eu/">Mines ParisTech, PSL
+University</a></p></li>
+</ul>
+</section>
+<section id="symbols" class="slide level2">
+<h2>Symbols</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>🐍</td>
+<td>Code</td>
+<td>🔍</td>
+<td>Worked Example</td>
+</tr>
+<tr class="even">
+<td>📈</td>
+<td>Graph</td>
+<td>🧩</td>
+<td>Exercise</td>
+</tr>
+<tr class="odd">
+<td>🏷️</td>
+<td>Definition</td>
+<td>💻</td>
+<td>Numerical Method</td>
+</tr>
+<tr class="even">
+<td>💎</td>
+<td>Theorem</td>
+<td>🧮</td>
+<td>Analytical Method</td>
+</tr>
+<tr class="odd">
+<td>📝</td>
+<td>Remark</td>
+<td>🧠</td>
+<td>Theory</td>
+</tr>
+<tr class="even">
+<td>ℹ️</td>
+<td>Information</td>
+<td>🗝️</td>
+<td>Hint</td>
+</tr>
+<tr class="odd">
+<td>⚠️</td>
+<td>Warning</td>
+<td>🔓</td>
+<td>Solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="imports" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🐍 Imports</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span></code></pre></div>
+</section>
+<section id="streamplot-helper" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🐍 Streamplot Helper</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Q(f, xs, ys):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    X, Y <span class="op">=</span> meshgrid(xs, ys)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> vectorize</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    fx <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">0</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fy <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">1</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, Y, fx(X, Y), fy(X, Y)</span></code></pre></div>
+</section>
+<section id="context" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🧭 Context</h2>
+<ol type="1">
+<li><p><strong>System initially at rest.</strong> <span
+class="math inline">\(x(0) = 0.\)</span></p></li>
+<li><p><strong>Black box.</strong> The system state <span
+class="math inline">\(x(t)\)</span> is unknown.</p></li>
+<li><p><strong>Input/Output (I/O).</strong> The input determines the
+output:</p>
+<p><span class="math display">\[
+u(t), \, t\geq 0  \; \to \; y(t), \, t\geq 0.
+\]</span></p></li>
+</ol>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>The <a
+href="https://en.wikipedia.org/wiki/Variation_of_parameters">variation
+of constants method</a> yields</p>
+<p><span class="math display">\[
+  y(t) = \int_0^{t} C e^{A(t-\tau)} B u(\tau) \, d\tau + D u(t).
+  \]</span></p>
+</section>
+<section id="signals-causality" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Signals &amp; Causality</h2>
+<p>A <strong>signal</strong> is a time-dependent function</p>
+<p><span class="math display">\[
+x(t) \in \mathbb{R}^n, \; t \in \mathbb{R}.
+\]</span></p>
+<p>It is <strong>causal</strong> if</p>
+<p><span class="math display">\[
+t&lt; 0 \; \Rightarrow \; x(t) = 0.
+\]</span></p>
+</section>
+<section id="convention" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📝 Convention</h2>
+<p>In the sequel, we will assume that time-dependent functions defined
+only for non-negative times</p>
+<p><span class="math display">\[
+x(t), \, t \geq 0
+\]</span></p>
+<p>are zero for negative times</p>
+<p><span class="math display">\[
+x(t) = 0, \; t &lt; 0.
+\]</span></p>
+<p>With this convention, they become causal signals.</p>
+</section>
+<section id="heaviside-function" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Heaviside function</h2>
+<p>The <strong>Heaviside function</strong> is the causal signal defined
+by</p>
+<p><span class="math display">\[
+e(t) = \left|
+\begin{array}{c}
+1 &amp; \mbox{if } \; t\geq 0, \\
+0 &amp; \mbox{if } \; t &lt; 0.
+\end{array}
+\right.
+\]</span></p>
+<p>🏷️ Synonym: <strong>(unit) step signal.</strong></p>
+</section>
+<section id="impulse-response" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Impulse Response</h2>
+<p>The system <strong>impulse response</strong> is defined by:</p>
+<p><span class="math display">\[
+H(t) = (C e^{At} B) \times e(t) + D \delta(t) \in \mathbb{R}^{p \times
+m}
+\]</span></p>
+</section>
+<section id="notes" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">📝 Notes</h2>
+<ul>
+<li><p>the formula is valid for general (<strong>MIMO</strong>)
+systems.</p>
+<p>🏷️ <strong>MIMO</strong> = multiple-input &amp;
+multiple-output.</p></li>
+<li><p><span class="math inline">\(\delta(t)\)</span> is the
+<strong>unit impulse</strong> signal, we’ll get back to it (in the
+meantime, you may assume that <span
+class="math inline">\(D=0\)</span>).</p></li>
+</ul>
+</section>
+<section id="siso-systems" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📝 SISO Systems</h2>
+<p>When <span class="math inline">\(u(t) \in \mathbb{R}\)</span> and
+<span class="math inline">\(y(t) \in \mathbb{R}\)</span> the system is
+<strong>SISO</strong>.</p>
+<p>🏷️ <strong>SISO</strong> = single-input &amp; single-output.</p>
+<p>Then <span class="math inline">\(H(t)\)</span> is a <span
+class="math inline">\(1 \times 1\)</span> matrix.</p>
+<p>We identify it with its unique coefficient <span
+class="math inline">\(h(t)\)</span>:</p>
+<p><span class="math display">\[
+H(t) \in \mathbb{R}^{1\times 1} = [h(t)], \; h(t) \in \mathbb{R}.
+\]</span></p>
+</section>
+<section id="io-behavior" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 I/O Behavior</h2>
+<p>Let <span class="math inline">\(u(t)\)</span>, <span
+class="math inline">\(x(t)\)</span>, <span
+class="math inline">\(y(t)\)</span> be causal signals such that:</p>
+<p><span class="math display">\[
+\left|
+  \begin{array}{rcl}
+  \dot{x}(t) &amp;=&amp; A x(t) + B u(t) \\
+        y(t) &amp;=&amp; C x(t) + Du(t)
+  \end{array}
+\right.,
+\, t\geq 0
+\; \mbox{ and } \;
+x(0) = 0.
+\]</span></p>
+<p>Then</p>
+<p><span class="math display">\[
+y(t) = (H \ast u) (t) := \int_{-\infty}^{+\infty} H(t - \tau) u(\tau) \,
+d\tau .
+\]</span></p>
+</section>
+<section id="convolution" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Convolution</h2>
+<p>The operation <span class="math inline">\(\ast\)</span> is called a
+<strong>convolution</strong>.</p>
+</section>
+<section id="impulse-response-1" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Impulse Response</h2>
+<p>Consider the SISO system</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{ccl}
+\dot{x} &amp;=&amp; ax + u \\
+y &amp;=&amp; x \\
+\end{array}
+\right.
+\]</span></p>
+<p>where <span class="math inline">\(a \neq 0\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>We have</p>
+<p><span class="math display">\[
+\begin{split}
+H(t) &amp;= (C e^{At} B) \times e(t) + D \delta(t)\\
+     &amp;= [1]e^{[a]t} [1] e(t) + [0] \delta(t) \\
+     &amp;= [e(t)e^{at}]
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>When <span class="math inline">\(u(t) = e(t)\)</span> for
+example,</p>
+<p><span class="math display">\[
+\begin{split}
+y(t)
+  &amp;= \int_{-\infty}^{+\infty} e(t - \tau)e^{a(t-\tau)} e(\tau) \,
+d\tau \\
+  &amp;= \int_{0}^{t} e^{a(t- \tau)} \, d\tau \\
+  &amp;= \int_{0}^{t} e^{a \tau} \, d\tau  \\
+  &amp;= \frac{1}{a} \left(e^{a t} - 1 \right)
+\end{split}
+\]</span></p>
+</section>
+<section id="integrator" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Integrator</h2>
+<p>Let</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{ccc}
+\dot{x} &amp;=&amp; u \\
+y &amp;=&amp; x \\
+\end{array}
+\right.
+\]</span></p>
+<p>where <span class="math inline">\(u \in \mathbb{R}\)</span>, <span
+class="math inline">\(x \in \mathbb{R}\)</span> and <span
+class="math inline">\(y \in \mathbb{R}\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section">1. 🧮</h3>
+<p>Compute the impulse response of the system.</p>
+</section>
+<section id="integrator-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Integrator</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-1">1. 🔓</h3>
+<p><span class="math display">\[
+\begin{split}
+H(t) &amp;= (C e^{At} B) \times e(t) + D \delta(t)\\
+     &amp;= [1]e^{[0]t} [1] e(t) + [0] \delta(t) \\
+     &amp;= [e(t)]
+\end{split}
+\]</span></p>
+</section>
+<section id="double-integrator" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Double Integrator</h2>
+<p>Let</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{ccc}
+\dot{x}_1 &amp;=&amp; x_2 \\
+\dot{x}_2 &amp;=&amp; u \\
+y &amp;=&amp; x_1 \\
+\end{array}
+\right.
+\]</span></p>
+<p>where <span class="math inline">\(u \in \mathbb{R}\)</span>, <span
+class="math inline">\(x=(x_1, x_2) \in \mathbb{R}^2\)</span> and <span
+class="math inline">\(y \in \mathbb{R}\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-2">1. 🧮</h3>
+<p>Compute the impulse response of the system.</p>
+</section>
+<section id="double-integrator-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Double Integrator</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-3">1. 🔓</h3>
+<p><span class="math display">\[
+\begin{split}
+H(t) &amp;= (C \exp(At) B) \times e(t) + D \delta(t)\\
+     &amp;= \displaystyle \left[\begin{array}{cc} 1 &amp; 0
+\end{array}\right]
+        \exp \left(
+        \left[\begin{array}{cc}
+        0 &amp; 1 \\
+        0 &amp; 0
+        \end{array}\right]
+         t \right) \left[\begin{array}{c} 0 \\ 1 \end{array}\right]
+e(t)  + [0] \delta(t) \\
+     &amp;= \displaystyle \left[\begin{array}{cc} 1 &amp; 0
+\end{array}\right]
+        \left[\begin{array}{cc}
+        1 &amp; t \\
+        0 &amp; 1
+        \end{array}\right]
+        \left[\begin{array}{c} 0 \\ 1 \end{array}\right] e(t) \\
+&amp;= [t e(t)]
+\end{split}
+\]</span></p>
+</section>
+<section id="gain" class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Gain</h2>
+<p>Let</p>
+<p><span class="math display">\[
+y = K u
+\]</span></p>
+<p>where <span class="math inline">\(u \in \mathbb{R}^m\)</span>, <span
+class="math inline">\(y \in \mathbb{R}^p\)</span> and <span
+class="math inline">\(K \in \mathbb{R}^{p \times m}\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-4">1. 🧮</h3>
+<p>Compute the impulse response of the system.</p>
+</section>
+<section id="gain-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Gain</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-5">1. 🔓</h3>
+<p>The I/O behavior can be represented by <span
+class="math inline">\(\dot{x} = 0x+0u\)</span> and <span
+class="math inline">\(y= 0 \times x + K u\)</span> (for example).
+Thus,</p>
+<p><span class="math display">\[
+\begin{split}
+H(t) &amp;= (C \exp(At) B) \times e(t) + D \delta(t)\\
+     &amp;= 0 + K \delta(t)\\
+     &amp;= K \delta(t)
+\end{split}
+\]</span></p>
+</section>
+<section id="mimo-system" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 MIMO System</h2>
+<p>Let <span class="math display">\[
+H(t) :=
+\left[
+\begin{array}{cc}
+e^{t} e(t) &amp; e^{-t} e(t)
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-6">1. 🧮</h3>
+<p>Find a linear system with matrices <span
+class="math inline">\(A\)</span>, <span
+class="math inline">\(B\)</span>, <span
+class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span>
+whose impulse response is <span class="math inline">\(H(t)\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-7">2. 🧮</h3>
+<p>Is there another 4-uple of matrices <span
+class="math inline">\(A\)</span>, <span
+class="math inline">\(B\)</span>, <span
+class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span>
+with the same impulse response?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-8">3. 🧮</h3>
+<p>Same question but with a matrix <span
+class="math inline">\(A\)</span> of a different size?</p>
+</section>
+<section id="mimo-system-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 MIMO System</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-9">1. 🔓</h3>
+<p>Since</p>
+<p><span class="math display">\[
+\exp
+\left(
+  \left[
+\begin{array}{rr}
+  +1 &amp; 0 \\
+  0 &amp; -1
+  \end{array}
+\right] t
+\right)
+=
+\left[
+  \begin{array}{rr}
+  e^{+t} &amp; 0 \\
+  0 &amp; e^{-t}
+  \end{array}
+\right],
+\]</span></p>
+<p>the following matrices work:</p>
+<p><span class="math display">\[
+A = \left[
+  \begin{array}{rr}
+  +1 &amp; 0 \\
+  0 &amp; -1
+  \end{array}
+\right], \;
+B = \left[
+  \begin{array}{cc}
+  1 &amp; 0 \\
+  0 &amp; 1
+  \end{array}
+\right], \;
+C= \left[
+  \begin{array}{cc}
+  1 &amp; 1 \\
+  \end{array}
+\right], \;
+D = \left[
+  \begin{array}{cc}
+  0 &amp; 0 \\
+  \end{array}
+\right].
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-10">2. 🔓</h3>
+<p>Since <span class="math display">\[
+\begin{split}
+H(t) &amp;= (C \exp(At) B) \times e(t) + D \delta(t)\\
+     &amp;= ((-C) \exp(At) (-B)) \times e(t) + D \delta(t)
+\end{split}
+\]</span> changing <span class="math inline">\(B\)</span> and <span
+class="math inline">\(C\)</span> to be <span class="math display">\[
+B = \left[
+  \begin{array}{rr}
+  -1 &amp; 0 \\
+  0 &amp; -1
+  \end{array}
+\right], \;
+C= \left[
+  \begin{array}{rr}
+  -1 &amp; -1 \\
+  \end{array}
+\right], \;
+\]</span> doesn’t change the impulse response.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-11">3. 🔓</h3>
+<p>We can also easily add a scalar dynamics (say <span
+class="math inline">\(\dot{x}_3 = 0\)</span>) that doesn’t influence the
+impulse response.</p>
+<p>The following matrices also work</p>
+<p><span class="math display">\[
+A = \left[
+  \begin{array}{rrr}
+  +1 &amp; 0 &amp; 0\\
+  0 &amp; -1 &amp; 0 \\
+  0 &amp; 0  &amp; 0
+  \end{array}
+\right], \;
+B = \left[
+  \begin{array}{cc}
+  1 &amp; 0\\
+  0 &amp; 1\\
+  0 &amp; 0
+  \end{array}
+\right], \]</span></p>
+<p><span class="math display">\[
+C= \left[
+  \begin{array}{cc}
+  1 &amp; 1 &amp; 0 \\
+  \end{array}
+\right], \;
+D = \left[
+  \begin{array}{cc}
+  0 &amp; 0\\
+  \end{array}
+\right].
+\]</span></p>
+</section>
+<section id="laplace-transform" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Laplace Transform</h2>
+<p>Let <span class="math inline">\(x(t)\)</span>, <span
+class="math inline">\(t\in\mathbb{R}\)</span> be a scalar signal.</p>
+<p>It <strong>Laplace transform</strong> is the function of <span
+class="math inline">\(s\)</span> given by:</p>
+<p><span class="math display">\[
+x(s) = \int_{-\infty}^{+\infty} x(t) e^{-st} \, dt.
+\]</span></p>
+</section>
+<section id="domain-codomain" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Domain &amp; Codomain</h2>
+<p>The Laplace transform of a signal is a complex-valued function; its
+domain is a subset of the complex plane.</p>
+<p><span class="math display">\[
+s \in D \, \Rightarrow \, x(s) \in \mathbb{C}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>If <span class="math inline">\(x(t)\)</span> is a causal signal of
+<strong>sub-exponential growth</strong></p>
+<p><span class="math display">\[
+|x(t)| \leq k e^{\sigma t} e(t), \, t \in \mathbb{R},
+\]</span></p>
+<p>(<span class="math inline">\(k \geq 0\)</span> and <span
+class="math inline">\(\sigma \in \mathbb{R}\)</span>), its Laplace
+transform is defined on an open half-plane:</p>
+<p><span class="math display">\[
+\Re (s) &gt; \sigma \; \Rightarrow \; x(s) \in \mathbb{C}.
+\]</span></p>
+</section>
+<section id="notation" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">⚠️ Notation</h2>
+<p>We use the same symbol (here “<span
+class="math inline">\(x\)</span>”) to denote:</p>
+<ul>
+<li><p>a signal <span class="math inline">\(x(t)\)</span> and</p></li>
+<li><p>its Laplace transform <span
+class="math inline">\(x(s)\)</span></p></li>
+</ul>
+<p>They are two equivalent representations of the same “object”, but
+different mathematical “functions”.</p>
+<p>If you fear some ambiguity, use named variables, e.g.:</p>
+<p><span class="math display">\[
+  x(t=1) \, \mbox{ or } \, x(s=1) \, \mbox{ instead of } \, x(1).
+  \]</span></p>
+</section>
+<section id="vectormatrix-valued-signals" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Vector/Matrix-Valued Signals</h2>
+<p>The Laplace transform</p>
+<ul>
+<li><p>of a vector-valued signal <span class="math inline">\(x(t) \in
+\mathbb{R}^n\)</span> or</p></li>
+<li><p>of a matrix-valued signal <span class="math inline">\(X(t) \in
+\mathbb{R}^{m \times n}\)</span></p></li>
+</ul>
+<p>are computed elementwise.</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><span class="math display">\[
+x_{i}(s) := \int_{-\infty}^{+\infty} x_{i}(t) e^{-st} \, dt.
+\]</span></p>
+<p><span class="math display">\[
+X_{ij}(s) := \int_{-\infty}^{+\infty} X_{ij}(t) e^{-st} \, dt.
+\]</span></p>
+</section>
+<section id="rational-signals" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Rational Signals</h2>
+<p>We will only deal with <strong>rational</strong> (and causal)
+signals:</p>
+<p><span class="math display">\[
+  x(t) = \left(\sum_{\lambda \in \Lambda} p_{\lambda}(t) e^{\lambda t}
+\right) e(t)
+  \]</span></p>
+<p>where:</p>
+<ul>
+<li><p><span class="math inline">\(\Lambda\)</span> is a finite subset
+of <span class="math inline">\(\mathbb{C}\)</span>,</p></li>
+<li><p>for every <span class="math inline">\(\lambda \in
+\Lambda\)</span>, <span class="math inline">\(p_{\lambda}(t)\)</span> is
+a polynomial in <span class="math inline">\(t\)</span>.</p></li>
+</ul>
+</section>
+<section id="section-12" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📝</h2>
+<p>They are called <strong>rational</strong> since</p>
+<p><span class="math display">\[
+  x(s) = \frac{n(s)}{d(s)}
+  \]</span></p>
+<p>where <span class="math inline">\(n(s)\)</span> and <span
+class="math inline">\(d(s)\)</span> are polynomials; also</p>
+<p><span class="math display">\[
+\deg n(s) \leq \deg d(s).
+\]</span></p>
+</section>
+<section id="exponential" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Exponential</h2>
+<p>Let</p>
+<p><span class="math display">\[
+x(t) = e^{a t} e(t), \; t\in \mathbb{R}
+\]</span> for some <span class="math inline">\(a \in
+\mathbb{R}\)</span>. Then</p>
+<p><span class="math display">\[
+\begin{split}
+x(s) &amp;= \int_{-\infty}^{+\infty} e^{at} e(t) e^{-s t} \, dt =
+\int_0^{+\infty} e^{(a-s) t} \, dt. \\
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>If <span class="math inline">\(\Re(s) &gt; a\)</span>, then <span
+class="math display">\[
+\left|e^{(a-s) t}\right| \leq e^{-(\Re (s) -a) t};
+\]</span> the function <span class="math inline">\(t \in \left[0,
++\infty\right[ \mapsto e^{(a-s) t}\)</span> is integrable and</p>
+<p><span class="math display">\[
+x(s) = \left[\frac{e^{(a-s) t}}{a-s} \right]^{+\infty}_0 =
+\frac{1}{s-a}.
+\]</span></p>
+</section>
+<section id="symbolic-computation" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">💻 Symbolic Computation</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sympy</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.abc <span class="im">import</span> t, s</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sympy.integrals.transforms <span class="op">\</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> laplace_transform    </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> L(f):</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> laplace_transform(f, t, s)[<span class="dv">0</span>]</span></code></pre></div>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; from sympy.abc import a
+&gt;&gt;&gt; xt = sympy.exp(a*t)
+&gt;&gt;&gt; xs = L(xt)
+&gt;&gt;&gt; xs
+1/(-a + s)</code></pre>
+</section>
+<section id="ramp" class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Ramp</h2>
+<p>Let</p>
+<p><span class="math display">\[
+x(t) = t e(t), \; t\in\mathbb{R}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-13">1. 🧮</h3>
+<p>Compute analytically the Laplace Transform of <span
+class="math inline">\(x(t)\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-14">2. 💻</h3>
+<p>Compute symbolically the Laplace Transform of <span
+class="math inline">\(x(t)\)</span>.</p>
+</section>
+<section id="ramp-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Ramp</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-15">1. 🔓</h3>
+<p><span class="math display">\[
+\begin{split}
+x(s)
+&amp;= \int_{-\infty}^{+\infty} t e(t) e^{-s t} \, dt \\
+&amp;= \int_0^{+\infty} t e^{-s t} \, dt. \\
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>By integration by parts, <span class="math display">\[
+\begin{split}
+x(s)
+  &amp;= \left[t\frac{e^{-st}}{-s} \right]^{+\infty}_0 -
+\int_0^{+\infty} \frac{e^{-s t}}{-s} \, dt \\
+  &amp;= \frac{1}{s} \int_0^{+\infty} e^{-s t} \, dt \\
+  &amp;= \frac{1}{s} \left[\frac{e^{-st}}{-s} \right]^{+\infty}_0 \\
+  &amp;= \frac{1}{s^2}
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-16">2. 🔓</h3>
+<p>With SymPy, we have accordingly:</p>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; xt = t
+&gt;&gt;&gt; xs = L(xt)
+&gt;&gt;&gt; xs
+s**(-2)</code></pre>
+</section>
+<section id="transfer-function" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Transfer Function</h2>
+<p>Let <span class="math inline">\(H(t)\)</span> be the impulse response
+of a system.</p>
+<p>Its Laplace transform <span class="math inline">\(H(s)\)</span> is
+the system <strong>transfer function</strong>.</p>
+</section>
+<section id="section-17" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎</h2>
+<p>For LTI systems in standard form,</p>
+<p><span class="math display">\[
+H(s) = C [sI - A]^{-1} B + D.
+\]</span></p>
+</section>
+<section id="operational-calculus" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Operational Calculus</h2>
+<p><span class="math display">\[
+y(t) = (H \ast u)(t)
+\; \Longleftrightarrow \;
+y(s) = H(s) \times u(s)
+\]</span></p>
+</section>
+<section id="graphical-language" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Graphical Language</h2>
+<p>Control engineers used <strong>block diagrams</strong> to describe
+(combinations of) dynamical systems, with</p>
+<ul>
+<li><p>“boxes” to determine the relation between input signals and
+output signals and</p></li>
+<li><p>“wires” to route output signals to inputs signals.</p></li>
+</ul>
+</section>
+<section id="feedback-block-diagram" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Feedback Block-Diagram</h2>
+<p><img data-src="images/static/feedback-alt.svg" /></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<ul>
+<li><p><strong>Triangles</strong> denote <strong>gains</strong> (scalar
+or matrix multipliers),</p></li>
+<li><p><strong>Adders</strong> sum (or substract) signals.</p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<ul>
+<li><p><strong>LTI systems</strong> can be specified by:</p>
+<ul>
+<li><p>(differential) equations,</p></li>
+<li><p>the impulse response,</p></li>
+<li><p>the transfer function.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="equivalent-systems" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Equivalent Systems</h2>
+<p><img data-src="images/static/equivalent-systems.svg" /></p>
+</section>
+<section id="feedback-block-diagram-1" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Feedback Block-Diagram</h2>
+<p>Consider the system depicted in the <a
+href="#/feedback-block-diagram">Feedback Block-Diagram</a> picture.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-18">1. 🧮</h3>
+<p>Compute its transfer function.</p>
+</section>
+<section id="feedback-block-diagram-2" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Feedback Block-Diagram</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-19">1. 🔓</h3>
+<p>The diagram logic translates into:</p>
+<p><span class="math display">\[
+y(s) = \frac{1}{s} \left(u(s) - k y(s)\right),
+\]</span></p>
+<p>and thus</p>
+<p><span class="math display">\[
+\left(1 - \frac{k}{s}\right) y(s) =\frac{1}{s} u(s)
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>or equivalently</p>
+<p><span class="math display">\[
+y(s) = \frac{1}{s- k} u(s).
+\]</span></p>
+<p>Thus, the transfer function of this SISO system is</p>
+<p><span class="math display">\[
+h(s) = \frac{1}{s- k}.
+\]</span></p>
+</section>
+<section id="impulse-response-2" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🤔 Impulse Response</h2>
+<p>Why refer to <span class="math inline">\(h(t)\)</span> as the system
+“impulse response”?</p>
+<p>By the way, what’s an impulse?</p>
+</section>
+<section id="impulse-approximations" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Impulse Approximations</h2>
+<p>Pick a time constant <span class="math inline">\(\varepsilon &gt;
+0\)</span> and define</p>
+<p><span class="math display">\[
+\delta_{\varepsilon}(t) := \frac{1}{\varepsilon} e^{-t/\varepsilon}
+e(t).
+\]</span></p>
+</section>
+<section id="section-20" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🐍</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> delta(t, eps):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> exp(<span class="op">-</span>t <span class="op">/</span> eps) <span class="op">/</span> eps <span class="op">*</span> (t <span class="op">&gt;=</span> <span class="dv">0</span>)</span></code></pre></div>
+</section>
+<section id="section-21" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="op">-</span><span class="dv">1</span>, <span class="dv">4</span>, <span class="dv">1000</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> eps <span class="kw">in</span> [<span class="fl">1.0</span>, <span class="fl">0.5</span>, <span class="fl">0.25</span>]:</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    plot(t, delta(t, eps), </span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="vs">rf&quot;$\varepsilon=</span><span class="sc">{</span>eps<span class="sc">}</span><span class="vs">$&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> title(<span class="vs">r&quot;$\delta_{\varepsilon}(t)$&quot;</span>) </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>legend()</span></code></pre></div>
+</section>
+<section id="section-22" class="slide level2 section"
+data-background="images/impulses.svg" data-background-size="contain"
+data-background-color="None">
+<h2 class="section" data-background="images/impulses.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="in-the-laplace-domain" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">In the Laplace Domain</h2>
+<p><span class="math display">\[
+\begin{split}
+\delta_{\varepsilon}(s)
+  &amp;= \int_{-\infty}^{+\infty} \delta_{\varepsilon}(t) e^{-st} \, dt
+\\
+  &amp;= \frac{1}{\varepsilon} \int_{0}^{+\infty} e^{-(s +
+1/\varepsilon)t} \, dt \\
+  &amp;= \frac{1}{\varepsilon}
+      \left[
+      \frac{e^{-(s+1/\varepsilon)t}}{-(s+1/\varepsilon)}
+      \right]^{+\infty}_0 = \frac{1}{1 + \varepsilon s}\\
+\end{split}
+\]</span></p>
+<p>(assuming that <span class="math inline">\(\Re(s) &gt;
+-1/\varepsilon\)</span>)</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<ul>
+<li><p>The “limit” of the signal <span
+class="math inline">\(\delta_{\varepsilon}(t)\)</span> when <span
+class="math inline">\(\varepsilon \to 0\)</span> is not defined <em>as a
+function</em> (issue for <span class="math inline">\(t=0\)</span>) but
+as a <strong>generalized function</strong> <span
+class="math inline">\(\delta(t)\)</span>, the <strong>unit
+impulse</strong>.</p></li>
+<li><p>This technicality can be avoided in the Laplace domain where
+<span class="math display">\[
+  \delta(s) = \lim_{\varepsilon \to 0} \delta_{\varepsilon}(s)
+  =
+  \lim_{\varepsilon \to 0} \frac{1}{1 + \varepsilon s} = 1.
+  \]</span></p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Thus, if <span class="math inline">\(y(t) = (h \ast u)(t)\)</span>
+and</p>
+<ol type="1">
+<li><p><span class="math inline">\(u(t) = \delta(t)\)</span>
+then</p></li>
+<li><p><span class="math inline">\(y(s) = h(s) \times \delta(s) = h(s)
+\times 1 = h(s)\)</span></p></li>
+<li><p>and thus <span class="math inline">\(y(t) =
+h(t)\)</span>.</p></li>
+</ol>
+<p><strong>Conclusion:</strong> the impulse response <span
+class="math inline">\(h(t)\)</span> is the output of the system when the
+input is the unit impulse <span
+class="math inline">\(\delta(t)\)</span>.</p>
+</section>
+<section id="io-stability" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ I/O Stability</h2>
+<p>A system is <strong>I/O-stable</strong> if there is a <span
+class="math inline">\(K \geq 0\)</span> such that</p>
+<p><span class="math display">\[
+\|u(t)\| \leq M, \, t\geq 0
+\]</span></p>
+<p><span class="math display">\[
+\Rightarrow
+\]</span></p>
+<p><span class="math display">\[
+\|y(t)\| \leq K M, \, t\geq 0.
+\]</span></p>
+<p>🏷️ More precisely, <strong>BIBO-stability</strong> (“bounded input,
+bounded output”).</p>
+</section>
+<section id="transfer-function-poles" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Transfer Function Poles</h2>
+<p>A <strong>pole</strong> of the transfer function <span
+class="math inline">\(H(s)\)</span> is a <span class="math inline">\(s
+\in \mathbb{C}\)</span> such that for at least one element <span
+class="math inline">\(H_{ij}(s)\)</span>,</p>
+<p><span class="math display">\[
+|H_{ij}(s)| = +\infty.
+\]</span></p>
+</section>
+<section id="io-stability-criteria" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 I/O-Stability Criteria</h2>
+<p>A system is I/O-stable if and only if all its poles are in the open
+left-plane, i.e. such that</p>
+<p><span class="math display">\[
+\Re (s)&lt; 0.
+\]</span></p>
+</section>
+<section id="internal-stability-rightarrow-io-stability"
+class="slide level2" data-background-color="None">
+<h2 data-background-color="None">💎 Internal Stability <span
+class="math inline">\(\Rightarrow\)</span> I/O-Stability</h2>
+<p>If the system <span class="math inline">\(\dot{x} = A x\)</span> is
+asymptotically stable, then for any matrices <span
+class="math inline">\(B\)</span>, <span
+class="math inline">\(C\)</span>, <span class="math inline">\(D\)</span>
+of compatible shapes,</p>
+<p><span class="math display">\[
+\begin{split}
+\dot{x} &amp;= A x + B u \\
+y &amp;= C x + Du
+\end{split}
+\]</span></p>
+<p>is I/O-stable.</p>
+</section>
+<section id="fully-actuated-measured-system" class="slide level2"
+data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff">🔍 Fully Actuated &amp; Measured
+System</h2>
+<p>If <span class="math inline">\(B=I\)</span>, <span
+class="math inline">\(C=I\)</span> and <span
+class="math inline">\(D=0\)</span>, that is</p>
+<p><span class="math display">\[
+  \dot{x} = A x +u, \; y = x
+  \]</span></p>
+<p>then <span class="math inline">\(H(s) = [sI-A]^{-1}\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#f3f0ff">
+<h2 data-background-color="#f3f0ff"></h2>
+<p>Therefore, <span class="math inline">\(s\)</span> is a pole of <span
+class="math inline">\(H\)</span> iff it’s an eigenvalue of <span
+class="math inline">\(A\)</span>.</p>
+<p>Thus, in this case, asymptotic stability and I/O-stability are
+equivalent.</p>
+<p>(This equivalence actually holds under much weaker conditions.)</p>
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>

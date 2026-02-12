@@ -1,0 +1,1960 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="generator" content="pandoc">
+  <meta name="author" content="👤 Sébastien Boisgérault">
+  <title>Internal Dynamics</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reset.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/reveal.css">
+  <style>
+    .reveal .sourceCode {  /* see #7635 */
+      overflow: visible;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js@^4/dist/theme/white.css" id="theme">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide">
+  <h1 class="title">Internal Dynamics</h1>
+  <p class="author">👤 <a
+href="sebastien.boisgerault@minesparis.psl.eu">Sébastien
+Boisgérault</a></p>
+</section>
+
+<section class="slide level2">
+
+<h3 id="control-engineering-with-python">Control Engineering with
+Python</h3>
+<ul>
+<li><p>📖 <a
+href="https://github.com/boisgera/control-engineering-with-python">Documents
+(GitHub)</a></p></li>
+<li><p>©️ <a href="https://creativecommons.org/licenses/by/4.0/">License
+CC BY 4.0</a></p></li>
+<li><p>🏦 <a href="https://mines-paristech.eu/">Mines ParisTech, PSL
+University</a></p></li>
+</ul>
+</section>
+<section id="symbols" class="slide level2">
+<h2>Symbols</h2>
+<table>
+<tbody>
+<tr class="odd">
+<td>🐍</td>
+<td>Code</td>
+<td>🔍</td>
+<td>Worked Example</td>
+</tr>
+<tr class="even">
+<td>📈</td>
+<td>Graph</td>
+<td>🧩</td>
+<td>Exercise</td>
+</tr>
+<tr class="odd">
+<td>🏷️</td>
+<td>Definition</td>
+<td>💻</td>
+<td>Numerical Method</td>
+</tr>
+<tr class="even">
+<td>💎</td>
+<td>Theorem</td>
+<td>🧮</td>
+<td>Analytical Method</td>
+</tr>
+<tr class="odd">
+<td>📝</td>
+<td>Remark</td>
+<td>🧠</td>
+<td>Theory</td>
+</tr>
+<tr class="even">
+<td>ℹ️</td>
+<td>Information</td>
+<td>🗝️</td>
+<td>Hint</td>
+</tr>
+<tr class="odd">
+<td>⚠️</td>
+<td>Warning</td>
+<td>🔓</td>
+<td>Solution</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="imports" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🐍 Imports</h2>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> numpy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.linalg <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> <span class="op">*</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.integrate <span class="im">import</span> solve_ivp</span></code></pre></div>
+</section>
+<section id="streamplot-helper" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🐍 Streamplot Helper</h2>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> Q(f, xs, ys):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    X, Y <span class="op">=</span> meshgrid(xs, ys)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    v <span class="op">=</span> vectorize</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    fx <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">0</span>])</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    fy <span class="op">=</span> v(<span class="kw">lambda</span> x, y: f([x, y])[<span class="dv">1</span>])</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> X, Y, fx(X, Y), fy(X, Y)</span></code></pre></div>
+</section>
+<section id="section" class="slide level2" data-background-color="None">
+<h2 data-background-color="None">🧭</h2>
+<p>We are interested in the behavior of the solution to</p>
+<p><span class="math display">\[
+\dot{x} = A x, \; x(0) = x_0 \in \mathbb{R}^n
+\]</span></p>
+<p>First, we study some elementary systems in this class.</p>
+</section>
+<section id="scalar-case-real-valued" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Scalar Case, Real-Valued</h2>
+<p><span class="math display">\[
+\dot{x} = a x
+\]</span></p>
+<p><span class="math inline">\(a \in \mathbb{R}, \; x(0) = x_0 \in
+\mathbb{R}.\)</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><strong>💎 Solution:</strong> <span class="math display">\[
+x(t) = e^{a t} x_0
+\]</span></p>
+<p><strong>🔓 Proof:</strong> <span class="math display">\[
+\frac{d}{dt} e^{at} x_0 = a e^{at} x_0 = a x(t)
+\]</span> and <span class="math display">\[
+x(0) = e^{a \times 0} x_0 = x_0.
+\]</span></p>
+</section>
+<section id="trajectory" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈 Trajectory</h2>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span> x0 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>plot(t, exp(a<span class="op">*</span>t)<span class="op">*</span>x0, <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$x(t)$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-1" class="slide level2 section"
+data-background="images/scalar-LTI-2.svg" data-background-size="contain"
+data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-2.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-2" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-3" class="slide level2 section"
+data-background="images/scalar-LTI-2-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-2-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-4" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">1.0</span><span class="op">;</span> x0 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>plot(t, exp(a<span class="op">*</span>t)<span class="op">*</span>x0, <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$x(t)$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-5" class="slide level2 section"
+data-background="images/scalar-LTI-1.svg" data-background-size="contain"
+data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-1.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-6" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-7" class="slide level2 section"
+data-background="images/scalar-LTI-1-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-1-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-8" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">0.0</span><span class="op">;</span> x0 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>plot(t, exp(a<span class="op">*</span>t)<span class="op">*</span>x0, <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$x(t)$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-9" class="slide level2 section"
+data-background="images/scalar-LTI-0.svg" data-background-size="contain"
+data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-0.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-10" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-11" class="slide level2 section"
+data-background="images/scalar-LTI-0-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-0-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-12" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">;</span> x0 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plot(t, exp(a<span class="op">*</span>t)<span class="op">*</span>x0, <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$x(t)$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-13" class="slide level2 section"
+data-background="images/scalar-LTI-m1.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m1.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-14" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-15" class="slide level2 section"
+data-background="images/scalar-LTI-m1-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m1-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-16" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="op">-</span><span class="fl">2.0</span><span class="op">;</span> x0 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>plot(t, exp(a<span class="op">*</span>t)<span class="op">*</span>x0, <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$x(t)$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-17" class="slide level2 section"
+data-background="images/scalar-LTI-m2.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m2.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-18" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-19" class="slide level2 section"
+data-background="images/scalar-LTI-m2-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m2-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="analysis" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🔬 Analysis</h2>
+<p>The origin is globally asymptotically stable when</p>
+<p><span class="math display">\[
+a &lt; 0.0
+\]</span></p>
+<p>i.e. <strong><span class="math inline">\(a\)</span> is in the open
+left-hand plane</strong>.</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Let the <strong>time constant</strong> <span
+class="math inline">\(\tau\)</span> be</p>
+<p><span class="math display">\[
+\tau := 1 / |a|.
+\]</span></p>
+<p>When the system is asymptotically stable,</p>
+<p><span class="math display">\[
+x(t) = e^{-t/\tau} x_0.
+\]</span></p>
+</section>
+<section id="quantitative-convergence" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Quantitative Convergence</h2>
+<p><span class="math inline">\(\tau\)</span> controls the speed of
+convergence to the origin:</p>
+<table>
+<thead>
+<tr class="header">
+<th style="text-align: right;">time <span
+class="math inline">\(t\)</span></th>
+<th style="text-align: right;">distance to the origin <span
+class="math inline">\(|x(t)|\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span
+class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span
+class="math inline">\(|x(0)|\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span
+class="math inline">\(\tau\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\simeq (1/3)
+|x(0)|\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span
+class="math inline">\(3\tau\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\simeq
+(5/100) |x(0)|\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span
+class="math inline">\(\vdots\)</span></td>
+<td style="text-align: right;"><span
+class="math inline">\(\vdots\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span
+class="math inline">\(+\infty\)</span></td>
+<td style="text-align: right;"><span
+class="math inline">\(0\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="vector-case-diagonal-real-valued" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Vector Case, Diagonal, Real-Valued</h2>
+<p><span class="math display">\[
+\dot{x}_1 = a_1 x_1, \; x_1(0) = x_{10}
+\]</span></p>
+<p><span class="math display">\[
+\dot{x}_2 = a_2 x_2, \; x_2(0) = x_{20}
+\]</span></p>
+<p>i.e.</p>
+<p><span class="math display">\[
+A = \left[
+\begin{array}{cc}
+a_1 &amp;   0 \\
+  0 &amp; a_2
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><strong>🔓 Solution:</strong> by linearity</p>
+<p><span class="math display">\[
+x(t) =   e^{a_1 t} \left[\begin{array}{c} x_{10} \\ 0 \end{array}\right]
+       + e^{a_2 t} \left[\begin{array}{c} 0 \\ x_{20} \end{array}\right]
+\]</span></p>
+</section>
+<section id="section-20" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">;</span> a2 <span class="op">=</span> <span class="fl">2.0</span><span class="op">;</span> x10 <span class="op">=</span> x20 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> exp(a1<span class="op">*</span>t)<span class="op">*</span>x10<span class="op">;</span> x2 <span class="op">=</span> exp(a2<span class="op">*</span>t)<span class="op">*</span>x20</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>xn <span class="op">=</span> sqrt(x1<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x2<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plot(t, xn , <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plot(t, x1, <span class="st">&quot;k--&quot;</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plot(t, x2 , <span class="st">&quot;k--&quot;</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$\|x(t)\|$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a_1=</span><span class="sc">{</span>a1<span class="sc">}</span><span class="ss">, \; a_2=</span><span class="sc">{</span>a2<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-21" class="slide level2 section"
+data-background="images/scalar-LTI-m1p2.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m1p2.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-22" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>plot(real(a1), imag(a1), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>plot(real(a2), imag(a2), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a_1=</span><span class="sc">{</span>a1<span class="sc">}</span><span class="ss">, \; a_2=</span><span class="sc">{</span>a2<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-23" class="slide level2 section"
+data-background="images/scalar-LTI-m1p2-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m1p2-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-24" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>a1 <span class="op">=</span> <span class="op">-</span><span class="fl">1.0</span><span class="op">;</span> a2 <span class="op">=</span> <span class="op">-</span><span class="fl">2.0</span><span class="op">;</span> x10 <span class="op">=</span> x20 <span class="op">=</span> <span class="fl">1.0</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">3.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>x1 <span class="op">=</span> exp(a1<span class="op">*</span>t)<span class="op">*</span>x10<span class="op">;</span> x2 <span class="op">=</span> exp(a2<span class="op">*</span>t)<span class="op">*</span>x20</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>xn <span class="op">=</span> sqrt(x1<span class="op">**</span><span class="dv">2</span> <span class="op">+</span> x2<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>plot(t, xn , <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>plot(t, x1, <span class="st">&quot;k--&quot;</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>plot(t, x2 , <span class="st">&quot;k--&quot;</span>)</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)<span class="op">;</span> ylabel(<span class="st">&quot;$\|x(t)\|$&quot;</span>)<span class="op">;</span> title(<span class="ss">f&quot;$a_1=</span><span class="sc">{</span>a1<span class="sc">}</span><span class="ss">, \; a_2=</span><span class="sc">{</span>a2<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>grid()<span class="op">;</span> axis([<span class="fl">0.0</span>, <span class="fl">2.0</span>, <span class="fl">0.0</span>, <span class="fl">10.0</span>])</span></code></pre></div>
+</section>
+<section id="section-25" class="slide level2 section"
+data-background="images/scalar-LTI-m1m2.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m1m2.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-26" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>plot(real(a1), imag(a1), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>plot(real(a2), imag(a2), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a_1=</span><span class="sc">{</span>a1<span class="sc">}</span><span class="ss">, \; a_2=</span><span class="sc">{</span>a2<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-27" class="slide level2 section"
+data-background="images/scalar-LTI-m1m2-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m1m2-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="analysis-1" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🔬 Analysis</h2>
+<ul>
+<li><p>💎 The rightmost <span class="math inline">\(a_i\)</span>
+determines the asymptotic behavior,</p></li>
+<li><p>💎 The origin is globally asymptotically stable if and only
+if</p>
+<p><strong>every <span class="math inline">\(a_i\)</span> is in the open
+left-hand plane.</strong></p></li>
+</ul>
+</section>
+<section id="scalar-case-complex-valued" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">Scalar Case, Complex-Valued</h2>
+<p><span class="math display">\[
+\dot{x} = a x
+\]</span></p>
+<p><span class="math inline">\(a \in \mathbb{C}\)</span>, <span
+class="math inline">\(x(0) = x_0 \in \mathbb{C}\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p><strong>🔓 Solution:</strong> formally, the same old solution</p>
+<p><span class="math display">\[
+x(t) = e^{at} x_0
+\]</span></p>
+<p>But now, <span class="math inline">\(x(t) \in
+\mathbb{C}\)</span>:</p>
+<p>if <span class="math inline">\(a = \sigma + i \omega\)</span> and
+<span class="math inline">\(x_0 = |x_0| e^{i \angle x_0}\)</span></p>
+<p><span class="math display">\[
+|x(t)| = |x_0| e^{\sigma t} \, \mbox{ and } \, \angle x(t) = \angle x_0
++ \omega t.
+\]</span></p>
+</section>
+<section id="section-28" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="ot">1.0j</span><span class="op">;</span> x0<span class="op">=</span><span class="fl">1.0</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">20.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plot(t, real(exp(a<span class="op">*</span>t)<span class="op">*</span>x0), label<span class="op">=</span><span class="st">&quot;$\Re(x(t))$&quot;</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plot(t, imag(exp(a<span class="op">*</span>t)<span class="op">*</span>x0), label<span class="op">=</span><span class="st">&quot;$\mathrm</span><span class="sc">{Im}</span><span class="st">(x(t))$&quot;</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>legend()<span class="op">;</span> grid()</span></code></pre></div>
+</section>
+<section id="section-29" class="slide level2 section"
+data-background="images/scalar-LTI-alt-1.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-alt-1.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> figure()</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">&quot;3d&quot;</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>zticks <span class="op">=</span> ax.set_zticks</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>ax.plot(t, real(exp(a<span class="op">*</span>t)<span class="op">*</span>x0), imag(exp(a<span class="op">*</span>t)<span class="op">*</span>x0))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>xticks([<span class="fl">0.0</span>, <span class="fl">20.0</span>])<span class="op">;</span> yticks([])<span class="op">;</span> zticks([])</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&quot;$\Re(x(t))$&quot;</span>)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">&quot;$\mathrm</span><span class="sc">{Im}</span><span class="st">(x(t))$&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-30" class="slide level2 section"
+data-background="images/scalar-LTI-3d.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-3d.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-31" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)<span class="op">;</span> grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-32" class="slide level2 section"
+data-background="images/scalar-LTI-1j-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-1j-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-33" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="op">-</span><span class="fl">0.5</span> <span class="op">+</span> <span class="ot">1.0j</span><span class="op">;</span> x0<span class="op">=</span><span class="fl">1.0</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> linspace(<span class="fl">0.0</span>, <span class="fl">20.0</span>, <span class="dv">1000</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>plot(t, real(exp(a<span class="op">*</span>t)<span class="op">*</span>x0), label<span class="op">=</span><span class="st">&quot;$\Re(x(t))$&quot;</span>)</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>plot(t, imag(exp(a<span class="op">*</span>t)<span class="op">*</span>x0), label<span class="op">=</span><span class="st">&quot;$\mathrm</span><span class="sc">{Im}</span><span class="st">(x(t))$&quot;</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>legend()<span class="op">;</span> grid()</span></code></pre></div>
+</section>
+<section id="section-34" class="slide level2 section"
+data-background="images/scalar-LTI-alt-2.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-alt-2.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-35" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> figure()</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">&quot;3d&quot;</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>zticks <span class="op">=</span> ax.set_zticks</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>ax.plot(t, real(exp(a<span class="op">*</span>t)<span class="op">*</span>x0), imag(exp(a<span class="op">*</span>t)<span class="op">*</span>x0))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>xticks([<span class="fl">0.0</span>, <span class="fl">20.0</span>])<span class="op">;</span> yticks([])<span class="op">;</span> zticks([])</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">&quot;$t$&quot;</span>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">&quot;$\Re(x(t))$&quot;</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">&quot;$\mathrm</span><span class="sc">{Im}</span><span class="st">(x(t))$&quot;</span>)</span></code></pre></div>
+</section>
+<section id="section-36" class="slide level2 section"
+data-background="images/scalar-LTI-3d-2.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-3d-2.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="section-37" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📈</h2>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode python"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>figure()</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>plot(real(a), imag(a), <span class="st">&quot;x&quot;</span>, color<span class="op">=</span><span class="st">&quot;k&quot;</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>gca().set_aspect(<span class="fl">1.0</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>xlim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> ylim(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>)<span class="op">;</span> </span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>plot([<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>], [<span class="dv">0</span>,<span class="dv">0</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>plot([<span class="dv">0</span>, <span class="dv">0</span>], [<span class="op">-</span><span class="dv">3</span>, <span class="dv">3</span>], <span class="st">&quot;k&quot;</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>xticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])<span class="op">;</span> yticks([<span class="op">-</span><span class="dv">2</span>,<span class="op">-</span><span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>])</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>title(<span class="ss">f&quot;$a=</span><span class="sc">{</span>a<span class="sc">}</span><span class="ss">$&quot;</span>)</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>grid(<span class="va">True</span>)</span></code></pre></div>
+</section>
+<section id="section-38" class="slide level2 section"
+data-background="images/scalar-LTI-m11j-poles.svg"
+data-background-size="contain" data-background-color="None">
+<h2 class="section" data-background="images/scalar-LTI-m11j-poles.svg"
+data-background-size="contain" data-background-color="None"></h2>
+</section>
+<section id="analysis-2" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🔬 Analysis</h2>
+<ul>
+<li><p>💎 The origin is globally asymptotically stable iff</p>
+<p><strong><span class="math inline">\(a\)</span> is in the open
+left-hand plane: </strong> <span class="math inline">\(\Re (a) &lt;
+0\)</span>.</p></li>
+<li><p>💎 If <span class="math inline">\(a =: \sigma + i
+\omega\)</span>,</p>
+<ul>
+<li><p>🏷️ <span class="math inline">\(\tau = 1 /|\sigma|\)</span> is the
+<strong>time constant</strong>.</p></li>
+<li><p>🏷️ <span class="math inline">\(\omega\)</span> the
+<strong>rotational frequency</strong> of the oscillations.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="exponential-matrix" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Exponential Matrix</h2>
+<p>If <span class="math inline">\(M \in \mathbb{C}^{n \times
+n}\)</span>, its <strong>exponential</strong> is defined as:</p>
+<p><span class="math display">\[
+e^{M} = \sum_{k=0}^{+\infty} \frac{M^k}{k !} \in \mathbb{C}^{n \times n}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<h3 id="section-39">⚠️</h3>
+<p>The exponential of a matrix <span class="math inline">\(M\)</span> is
+<strong>not</strong> the matrix with elements <span
+class="math inline">\(e^{M_{ij}}\)</span> (the elementwise
+exponential).</p>
+<ul>
+<li><p>🐍 elementwise exponential: <strong><code>exp</code></strong>
+(<code>numpy</code> module),</p></li>
+<li><p>🐍 exponential: <strong><code>expm</code></strong>
+(<code>scipy.linalg</code> module).</p></li>
+</ul>
+</section>
+<section id="exponential-matrix-1" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Exponential Matrix</h2>
+<p>Let</p>
+<p><span class="math display">\[
+M =
+\left[
+\begin{array}{cc}
+0 &amp; 1 \\
+1 &amp; 0
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-40">1. 🧮</h3>
+<p>Compute the exponential of <span
+class="math inline">\(M\)</span>.</p>
+<p>🗝️ <strong>Hint:</strong></p>
+<p><span class="math display">\[
+\cosh x := \frac{e^x + e^{-x}}{2}, \;
+\sinh x := \frac{e^x - e^{-x}}{2}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-41">2. 🐍 💻 🔬</h3>
+<p>Compute numerically:</p>
+<ul>
+<li><p><code>exp(M)</code> (<code>numpy</code>)</p></li>
+<li><p><code>expm(M)</code> (<code>scipy.linalg</code>)</p></li>
+</ul>
+<p>and check the results consistency.</p>
+</section>
+<section id="exponential-matrix-2" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Exponential Matrix</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-42">1. 🔓</h3>
+<p>We have</p>
+<p><span class="math display">\[
+M =
+\left[
+\begin{array}{cc}
+0 &amp; 1 \\
+1 &amp; 0
+\end{array}
+\right], \;
+M^2 =
+\left[
+\begin{array}{cc}
+1 &amp; 0 \\
+0 &amp; 1
+\end{array}
+\right]
+= I
+\]</span></p>
+<p>and hence for any <span class="math inline">\(j \in
+\mathbb{N}\)</span>,</p>
+<p><span class="math display">\[
+M^{2j+1} =
+\left[
+\begin{array}{cc}
+0 &amp; 1 \\
+1 &amp; 0
+\end{array}
+\right], \;
+M^{2j} =
+\left[
+\begin{array}{cc}
+1 &amp; 0 \\
+0 &amp; 1
+\end{array}
+\right]
+= I.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+\begin{split}
+e^{M}
+  &amp;= \sum_{k=0}^{+\infty} \frac{M^k}{k !} \\
+  &amp;= \left( \sum_{j=0}^{+\infty} \frac{1}{(2j) !} \right)I
+   + \left(\sum_{j=0}^{+\infty} \frac{1}{(2j+1) !} \right)M \\
+  &amp;= \left(\sum_{k=0}^{+\infty} \frac{1^k + (-1)^k}{2(k !)} \right)I
+   + \left(\sum_{k=0}^{+\infty} \frac{1^k - (-1)^k}{2(k !)} \right)M
+\\   
+  &amp;= (\cosh 1)I + (\sinh 1)M
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Thus,</p>
+<p><span class="math display">\[
+e^M =
+\left[
+\begin{array}{cc}
+\cosh 1 &amp; \sinh 1 \\
+\sinh 1 &amp; \cosh 1
+\end{array}
+\right].
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-43">2. 🔓</h3>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; M = [[0.0, 1.0], [1.0, 0.0]]</code></pre>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; exp(M)
+array([[1.        , 2.71828183],
+       [2.71828183, 1.        ]])</code></pre>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; expm(M)
+array([[1.54308063, 1.17520119],
+       [1.17520119, 1.54308063]])</code></pre>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>These results are consistent:</p>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; array([[exp(0.0), exp(1.0)], 
+...        [exp(1.0), exp(0.0)]])
+array([[1.        , 2.71828183],
+       [2.71828183, 1.        ]])</code></pre>
+<pre class="no-exec" lang="python"><code>&gt;&gt;&gt; array([[cosh(1.0), sinh(1.0)], 
+...        [sinh(1.0), cosh(1.0)]])
+array([[1.54308063, 1.17520119],
+       [1.17520119, 1.54308063]])</code></pre>
+</section>
+<section id="section-44" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">📝</h2>
+<p>Note that</p>
+<p><span class="math display">\[
+\begin{align}
+\frac{d}{dt} e^{A t} &amp;= \frac{d}{dt} \sum_{n=0}^{+\infty}
+\frac{A^n}{n!} t^n \\
+&amp;= \sum_{n=1}^{+\infty} \frac{A^{n}}{(n-1)!} t^{n-1} \\
+&amp;= A \sum_{n=1}^{+\infty} \frac{A^{n-1}}{(n-1)!} t^{n-1}
+= A e^{A t}
+\end{align}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Thus, for any <span class="math inline">\(A \in \mathbb{C}^{n\times
+n}\)</span> and <span class="math inline">\(x_0 \in
+\mathbb{C}^n\)</span>,</p>
+<p><span class="math display">\[
+\frac{d}{dt} (e^{A t} x_0)
+= A (e^{At} x_0)
+\]</span></p>
+</section>
+<section id="internal-dynamics" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Internal Dynamics</h2>
+<p>The solution of</p>
+<p><span class="math display">\[
+\dot{x} = A x\; \mbox{ and } \; x(0) = x_0
+\]</span></p>
+<p>is</p>
+<p><span class="math display">\[
+x(t) = e^{A t} x_0.
+\]</span></p>
+</section>
+<section id="g.a.s.-leftrightarrow-l.a." class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 G.A.S. <span
+class="math inline">\(\Leftrightarrow\)</span> L.A.</h2>
+<p>📝 For any dynamical system, if the origin is a globally
+asymptotically stable equilibrium, then it is a locally attractive
+equilbrium.</p>
+<p>💎 <strong>For linear systems</strong>, the converse result also
+holds.</p>
+<p>🚀 Let’s prove this!</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-45">1. 🧠</h3>
+<p>Show that for any linear system <span class="math inline">\(\dot{x} =
+A x\)</span>, if the origin is locally attractive, then it is also
+globally attractive.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-46">2. 🧠</h3>
+<p>Show that linear system <span class="math inline">\(\dot{x} = A
+x\)</span>, if the origin is globally attractive, then it is also
+globally asymptotically stable.</p>
+<p>🗝️ <strong>Hint:</strong> Consider the solutions <span
+class="math inline">\(e_k(t) := e^{At}e_k\)</span> associated to <span
+class="math inline">\(e_k(0)=e_k\)</span> where <span
+class="math inline">\((e_1, \dots, e_n)\)</span> is the canonical basis
+of the state space.</p>
+</section>
+<section id="g.a.s.-leftrightarrow-l.a.-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 G.A.S. <span
+class="math inline">\(\Leftrightarrow\)</span> L.A.</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-47">1. 🔓</h3>
+<p>If the origin is locally attractive, then there is a <span
+class="math inline">\(\varepsilon &gt; 0\)</span> such that for any
+<span class="math inline">\(x_0 \in \mathbb{R}^n\)</span> such that
+<span class="math inline">\(\|x_0\| \leq \varepsilon\)</span>,</p>
+<p><span class="math display">\[
+\lim_{t \to +\infty} e^{At} x_0 = 0.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Now, let any <span class="math inline">\(x_0 \in
+\mathbb{R}^n\)</span>. Since the norm of <span
+class="math inline">\(\varepsilon x_0 /\|x_0\|\)</span> is <span
+class="math inline">\(\varepsilon\)</span>, and by linearity of <span
+class="math inline">\(e^{At}\)</span>, we obtain</p>
+<p><span class="math display">\[
+\begin{split}
+  \lim_{t \to +\infty} e^{At} x_0
+    &amp;= \lim_{t \to +\infty} e^{At} \left(\frac{\|x_0\|}{\varepsilon}
+\varepsilon \frac{x_0}{\|x_0\|} \right) \\
+    &amp;= \frac{\|x_0\|}{\varepsilon} \lim_{t \to +\infty} e^{At}
+\left(\varepsilon \frac{x_0}{\|x_0\|} \right)\\
+    &amp;= 0.
+\end{split}
+\]</span></p>
+<p>Thus the origin is globally attractive.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-48">2. 🔓</h3>
+<p>Let <span class="math inline">\(X_0\)</span> be a bounded set of
+<span class="math inline">\(\mathbb{R}^n\)</span>. Since <span
+class="math display">\[
+x_0 = \sum_{k=1}^n x_{0k} e_k,
+\]</span></p>
+<p>the solution <span class="math inline">\(x(t)\)</span> of <span
+class="math inline">\(\dot{x}=Ax\)</span>, <span
+class="math inline">\(x(0)=x_0\)</span> satisfies <span
+class="math display">\[
+\begin{split}
+x(t)
+&amp;= e^{At} x_0 = e^{At} \left(\sum_{k=1}^n x_{0k} e_k\right)
+= \sum_{k=1}^n x_{0k} e^{At} e_k.
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+\begin{split}
+\|x(t)\|
+  &amp;= \left\| \sum_{k=1}^n x_{0k} e^{At} e_k \right\| \\
+  &amp;\leq \sum_{k=1}^n |x_{0k}| \left\| e^{At} e_k \right\| \\
+  &amp;= \sum_{k=1}^n |x_{0k}| \left\| e_k(t) \right\| \\
+  &amp;\leq \left(\sum_{k=1}^n |x_{0k}|\right) \max_{k=1, \dots, n}
+\|e_k(t)\|
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Since <span class="math inline">\(X_0\)</span> is bounded, there is a
+<span class="math inline">\(\alpha &gt; 0\)</span> such that for any
+<span class="math inline">\(x_0 = (x_{01}, \dots, x_{0n})\)</span> in
+<span class="math inline">\(X_0\)</span>,</p>
+<p><span class="math display">\[
+\|x_0\|_1 := \sum_{k=1}^n |x_{0k}| \leq \alpha.
+\]</span></p>
+<p>Since for every <span class="math inline">\(k=1, \dots, n\)</span>,
+<span class="math inline">\(\lim_{t\to +\infty} \|e_k(t)\|
+=0\)</span>,</p>
+<p><span class="math display">\[
+\lim_{t\to +\infty} \max_{k=1, \dots, n} \|e_k(t)\| =0.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Finally</p>
+<p><span class="math display">\[
+\begin{split}
+\|x(t, x_0)\|
+  &amp;\leq \left(\sum_{k=1}^n |x_{0k}| \right) \max_{k=1,
+  \dots, n} \|e_k(t)\| \\
+    &amp;\leq \alpha \max_{k=1, \dots, n} \|e_k(t)\| \\
+\end{split}
+\]</span></p>
+<p>Thus <span class="math inline">\(\|x(t, x_0)\| \to 0\)</span> when
+<span class="math inline">\(t \to \infty\)</span>, uniformly w.r.t.
+<span class="math inline">\(x_0 \in X_0\)</span>. In other words, the
+origin is globally asymptotically stable.</p>
+</section>
+<section id="eigenvalue-eigenvector" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Eigenvalue &amp; Eigenvector</h2>
+<p>Let <span class="math inline">\(A \in \mathbb{C}^n\)</span>. If <span
+class="math inline">\(x \neq 0 \in \mathbb{C}^n\)</span>, <span
+class="math inline">\(s\in \mathbb{C}\)</span> and</p>
+<p><span class="math display">\[
+A x = s x
+\]</span></p>
+<p><span class="math inline">\(x\)</span> is an <strong>eigenvector of
+<span class="math inline">\(A\)</span></strong>, <span
+class="math inline">\(s\)</span> is an <strong>eigenvalue</strong> of
+<span class="math inline">\(A\)</span>.</p>
+<p>The <strong>spectrum</strong> of <span
+class="math inline">\(A\)</span> is the set of its eigenvalues.<br />
+It is characterized by:</p>
+<p><span class="math display">\[
+\sigma(A) := \{s \in \mathbb{C} \; | \; \det (sI -A) = 0\}.
+\]</span></p>
+</section>
+<section id="modes-poles" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">🏷️ Modes &amp; Poles</h2>
+<p>Consider the system <span class="math inline">\(\dot{x} =
+Ax\)</span>.</p>
+<ul>
+<li><p>a <strong>mode</strong> of the system is an eigenvector of <span
+class="math inline">\(A\)</span>,</p></li>
+<li><p>a <strong>pole</strong> of the system is an eigenvalue of <span
+class="math inline">\(A\)</span>.</p></li>
+</ul>
+</section>
+<section id="stability-criteria" class="slide level2"
+data-background-color="None">
+<h2 data-background-color="None">💎 Stability Criteria</h2>
+<p>Let <span class="math inline">\(A \in \mathbb{C}^{n \times
+n}\)</span>.</p>
+<p>The origin of <span class="math inline">\(\dot{x} = A x\)</span> is
+globally asymptotically stable</p>
+<p><span class="math display">\[\Longleftrightarrow\]</span></p>
+<p>all eigenvalues of <span class="math inline">\(A\)</span> have a
+negative real part.</p>
+<p><span class="math display">\[\Longleftrightarrow\]</span></p>
+<p><span class="math display">\[
+\max \{\Re \, s \; | \; s \in \sigma(A)\} &lt; 0.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<h3 id="why-does-this-criteria-work">Why does this criteria work?</h3>
+<p>Assume that:</p>
+<ul>
+<li><strong><span class="math inline">\(A\)</span> is
+diagonalizable.</strong></li>
+</ul>
+<p>(📝 very likely unless <span class="math inline">\(A\)</span> has
+some special structure.)</p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Let <span class="math inline">\(\sigma(A) = \{\lambda_1, \dots,
+\lambda_n\}.\)</span></p>
+<p>There is an invertible matrix <span class="math inline">\(P \in
+\mathbb{C}^{n \times n}\)</span> such that</p>
+<p><span class="math display">\[
+P^{-1} A P = \mathrm{diag}(\lambda_1, \dots, \lambda_n) =
+\left[
+\begin{array}{cccc}
+\lambda_1 &amp; 0         &amp; \cdots &amp; 0 \\
+0         &amp; \lambda_2 &amp; \cdots &amp; 0 \\
+\vdots    &amp; \vdots    &amp; \vdots &amp; \vdots \\
+0         &amp; \cdots    &amp; \cdots &amp; \lambda_n
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="None">
+<h2 data-background-color="None"></h2>
+<p>Thus, if <span class="math inline">\(y = P^{-1} x\)</span>, <span
+class="math inline">\(\dot{x} = A x\)</span> is equivalent to</p>
+<p><span class="math display">\[
+\left|
+\begin{array}{ccc}
+\dot{y}_1 &amp;=&amp; \lambda_1 y_1 \\
+\dot{y}_2 &amp;=&amp; \lambda_2 y_2 \\
+\vdots &amp;=&amp; \vdots \\
+\dot{y}_n &amp;=&amp; \lambda_n y_n \\
+\end{array}
+\right.
+\]</span></p>
+<p>The system is G.A.S. iff each component of the system is, which holds
+iff <span class="math inline">\(\Re \lambda_i &lt; 0\)</span> for each
+<span class="math inline">\(i\)</span>.</p>
+</section>
+<section id="spring-mass-system" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Spring-Mass System</h2>
+<p>Consider the scalar ODE</p>
+<p><span class="math display">\[
+\ddot{x} + k x = 0, \; \mbox{ with } k &gt; 0
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-49">1. 🧮</h3>
+<p>Represent this system as a first-order ODE.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-50">2. 🧠 🧮</h3>
+<p>Is this system asymptotically stable?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-51">3. 🧠 🧮</h3>
+<p>Do the solutions have oscillatory components?</p>
+<p>Find the set of associated rotational frequencies.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-52">4. 🧠 🧮</h3>
+<p>Same set of questions (1., 2., 3.) for</p>
+<p><span class="math display">\[
+\ddot{x} + b \dot{x} + k x = 0
+\]</span></p>
+<p>when <span class="math inline">\(b&gt;0\)</span>.</p>
+</section>
+<section id="spring-mass-system-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Spring-Mass System</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-53">1. 🔓</h3>
+<p><span class="math display">\[
+\frac{d}{dt}
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{rr}
+  0  &amp; 1 \\
+  -k &amp; 0
+  \end{array}
+\right]
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+= A
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-54">2. 🔓</h3>
+<p>We have</p>
+<p><span class="math display">\[
+\max \{\Re \, s \; | \; s \in \sigma(A)\} = 0,
+\]</span></p>
+<p>hence the system is not globally asymptotically stable.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-55">3. 🔓</h3>
+<p>Since</p>
+<p><span class="math display">\[
+\det (sI -A)
+=
+\det
+  \left(
+    \begin{array}{rr}
+    s  &amp; -1 \\
+    k &amp; s
+  \end{array}
+  \right)
+=s^2 +k,
+\]</span></p>
+<p>the spectrum of <span class="math inline">\(A\)</span> is</p>
+<p><span class="math display">\[
+\sigma (A)
+= \{s \in \mathbb{C} \; | \; \det (sI -A) = 0\}
+= \left\{ i\sqrt{k}, -i \sqrt{k} \right\}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>The system poles are <span class="math inline">\(\pm
+i\sqrt{k}\)</span>.</p>
+<p>The general solution <span class="math inline">\(x(t)\)</span> can be
+decomposed as <span class="math display">\[
+x(t) = x_+ e^{i\sqrt{k} t} + x_- e^{-i\sqrt{k}t}.
+\]</span></p>
+<p>Thus the components of <span class="math inline">\(x(t)\)</span>
+oscillate at the rotational frequency</p>
+<p><span class="math display">\[
+\omega = \sqrt{k}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-56">4. 🔓</h3>
+<p><span class="math display">\[
+\frac{d}{dt}
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+=
+\left[
+  \begin{array}{rr}
+  0  &amp; 1 \\
+  -k &amp; -b
+  \end{array}
+\right]
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+= A
+\left[
+  \begin{array}{c}
+  x \\
+  \dot{x}
+  \end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+\det (sI -A)
+=
+\det
+  \left(
+    \begin{array}{rr}
+    s  &amp; -1 \\
+    k &amp; s +b
+  \end{array}
+  \right)
+=s^2 + bs+ k,
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Let <span class="math inline">\(\Delta := b^2 - 4k\)</span>. If <span
+class="math inline">\(b \geq 2\sqrt{k}\)</span>, then <span
+class="math inline">\(\Delta \geq 0\)</span> and</p>
+<p><span class="math display">\[
+\sigma(A) = \left\{ \frac{-b +\sqrt{\Delta}}{2}, \frac{-b -
+\sqrt{\Delta}}{2} \right\}.
+\]</span></p>
+<p>Otherwise,</p>
+<p><span class="math display">\[
+\sigma(A) = \left\{ \frac{-b + i \sqrt{-\Delta}}{2}, \frac{-b - i
+\sqrt{-\Delta}}{2} \right\}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Thus, if <span class="math inline">\(b \geq 2\sqrt{k}\)</span>,</p>
+<p><span class="math display">\[
+\max \{\Re \, s \; | \; s \in \sigma(A)\}
+= \frac{-b +\sqrt{b^2 - 4k}}{2}
+&lt; 0
+\]</span></p>
+<p>and otherwise</p>
+<p><span class="math display">\[
+\max \{\Re \, s \; | \; s \in \sigma(A)\}
+= -\frac{b}{2} &lt; 0.
+\]</span></p>
+<p>In each case, the system is globally asymptotically stable.</p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>If <span class="math inline">\(b \geq 2\sqrt{k}\)</span>, the poles
+are real-valued; the components of the solution do not oscillate.</p>
+<p>If <span class="math inline">\(0 &lt; b &lt; 2\sqrt{k}\)</span>, the
+imaginary part of the poles is</p>
+<p><span class="math display">\[
+\pm \frac{\sqrt{4k - b^2}}2 = \pm \sqrt{k - (b/2)^2},
+\]</span></p>
+<p>thus the solution components oscillate at the rotational
+frequency</p>
+<p><span class="math display">\[
+\omega = \sqrt{k - (b/2)^2}.
+\]</span></p>
+</section>
+<section id="integrator-chain" class="slide level2"
+data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee">🧩 Integrator Chain</h2>
+<p>Consider the system</p>
+<p><span class="math display">\[
+\dot{x} = J x
+\; \mbox{ with } \;
+J =
+\left[
+\begin{array}{cccc}
+0 &amp; 1 &amp; 0 &amp; \cdots &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; \cdots &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; 1 \\
+0 &amp; 0 &amp; 0 &amp; \cdots &amp; 0
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-57">1. 🧮</h3>
+<p>Compute the solution <span class="math inline">\(x(t)\)</span>
+when</p>
+<p><span class="math display">\[
+x(0) =
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+0 \\
+1
+\end{array}
+\right].
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-58">2. 🦊 🧮</h3>
+<p>Compute the solution for an arbitrary <span
+class="math inline">\(x(0)\)</span></p>
+<p><span class="math display">\[
+x(0) =
+\left[
+\begin{array}{c}
+x_{1}(0) \\
+\vdots \\
+\vdots \\
+x_{n}(0)
+\end{array}
+\right].\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-59">3. 🧮</h3>
+<p>Same questions for the system</p>
+<p><span class="math display">\[
+\dot{x} = (\lambda I + J)x
+\]</span></p>
+<p>for some <span class="math inline">\(\lambda \in
+\mathbb{C}\)</span>.</p>
+<p>🗝️ <strong>Hint:</strong> Find the ODE satisfied by <span
+class="math inline">\(y(t):= x(t)e^{-\lambda t}\)</span>.</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-60">4. 🧮</h3>
+<p>Is the system asymptotically stable ?</p>
+</section>
+<section class="slide level2" data-background-color="#ebfbee">
+<h2 data-background-color="#ebfbee"></h2>
+<h3 id="section-61">5. 🧠</h3>
+<p>Why does the stability analysis of this system matter ?</p>
+</section>
+<section id="integrator-chain-1" class="slide level2"
+data-background-color="#fff9db">
+<h2 data-background-color="#fff9db">🔓 Integrator Chain</h2>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-62">1. 🔓</h3>
+<p>Let <span class="math inline">\(x=(x_1, \dots, x_n)\)</span>.</p>
+<p>The ODE <span class="math inline">\(\dot{x} = J x\)</span> is
+equivalent to: <span class="math display">\[
+\begin{array}{lcl}
+\dot{x}_1 &amp;=&amp; x_2 \\
+\dot{x}_2 &amp;=&amp; x_3 \\
+\vdots &amp;\vdots &amp; \vdots \\
+\dot{x}_{n-1} &amp;=&amp; x_n \\
+\dot{x}_n &amp;=&amp; 0.
+\end{array}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>When <span class="math inline">\(x(0) = (0, \dots, 0,
+1)\)</span>,</p>
+<ul>
+<li><p><span class="math inline">\(\dot{x}_n=0\)</span> yields <span
+class="math inline">\(x_n(t) = 1\)</span>, then</p></li>
+<li><p><span class="math inline">\(\dot{x}_{n-1}=x_n\)</span> yields
+<span class="math inline">\(x_{n-1}(t) = t\)</span>,</p></li>
+<li><p>…</p></li>
+<li><p><span class="math inline">\(\dot{x}_{k} = x_{k+1}\)</span> yields
+<span class="math display">\[
+x_{k}(t) = \frac{t^{n-k}}{(n-k)!}.
+\]</span></p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>To summarize: <span class="math display">\[
+x(t) =
+\left[
+\begin{array}{c}
+t^{n-1} / (n-1)! \\
+\vdots \\
+t^{n-1-k}/(n-1-k)! \\
+\vdots \\
+t \\
+1
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-63">2. 🔓</h3>
+<p>We note that</p>
+<p><span class="math display">\[
+x(0)
+=
+x_1(0)
+\left[
+\begin{array}{c}
+1 \\
+\vdots \\
+0 \\
+0
+\end{array}
+\right]
++
+\dots
++
+x_{n-1}(0)
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+1 \\
+0
+\end{array}
+\right]
++
+x_n(0)
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+0 \\
+1
+\end{array}
+\right].\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Similarly to the previous question, we find that:</p>
+<p><span class="math display">\[
+x(0)
+=
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+0 \\
+1 \\
+0
+\end{array}
+\right]
+\; \to \;
+x(t) =
+\left[
+\begin{array}{c}
+t^{n-2} / (n-2)! \\
+\vdots \\
+t  \\
+1 \\
+0
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p><span class="math display">\[
+x(0)
+=
+\left[
+\begin{array}{c}
+0 \\
+\vdots \\
+1 \\
+0 \\
+0
+\end{array}
+\right]
+\; \to \;
+x(t) =
+\left[
+\begin{array}{c}
+t^{n-3} / (n-3)! \\
+\vdots \\
+1 \\
+0 \\
+0
+\end{array}
+\right]
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>And more generally, by linearity:</p>
+<p><span class="math display">\[
+x(t)
+=
+\left[
+\begin{array}{c}
+\displaystyle x_1(0) + \dots +  x_{n-1}(0) \frac{t^{n-2}}{(n-2)!} +
+x_n(0) \frac{t^{n-1}}{(n-1)!} \\
+\vdots \\
+\displaystyle x_{n-2}(0) + x_{n-1}(0) t + x_{n}(0) \frac{t^2}{2} \\
+x_{n-1}(0) + x_n(0) t \\
+x_n(0)
+\end{array}
+\right].
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-64">3. 🔓</h3>
+<p>If <span class="math inline">\(\dot{x}(t) = (\lambda I + J)
+x(t)\)</span> and <span class="math inline">\(y(t) = x(t)e^{-\lambda
+t}\)</span>, then</p>
+<p><span class="math display">\[
+\begin{split}
+\dot{y}(t)
+  &amp;= \dot{x}(t) e^{-\lambda t} + x(t) (-\lambda e^{-\lambda t}) \\
+  &amp;= (\lambda I + J)x(t)  e^{-\lambda t} - \lambda I
+x(t)  e^{-\lambda t} \\
+  &amp;= J  x(t) e^{-\lambda t} \\
+  &amp;= J y(t).
+\end{split}
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<p>Since <span class="math inline">\(y(0) = x(0) e^{-\lambda 0} =
+x(0)\)</span> we get</p>
+<p><span class="math display">\[
+x(t)
+=
+\left[
+\begin{array}{c}
+\displaystyle x_1(0) + \dots  + x_n(0) \frac{t^{n-1}}{(n-1)!} \\
+\vdots \\
+x_{n-1}(0) + x_n(0) t \\
+x_n(0)
+\end{array}
+\right] e^{\lambda t}.
+\]</span></p>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-65">4. 🔓</h3>
+<p>The structure of <span class="math inline">\(x(t)\)</span> shows
+that</p>
+<ul>
+<li><p>If <span class="math inline">\(\Re \lambda &lt; 0\)</span>, then
+the system is asymptotically stable.</p></li>
+<li><p>If <span class="math inline">\(\Re \lambda \geq 0\)</span>, then
+the system is not.</p>
+<p>For example when <span class="math inline">\(x(0)= (1, 0, \dots,
+0)\)</span>, we have <span class="math display">\[
+x(t) = (1, 0, \dots, 0).
+\]</span></p></li>
+</ul>
+</section>
+<section class="slide level2" data-background-color="#fff9db">
+<h2 data-background-color="#fff9db"></h2>
+<h3 id="section-66">5. 🔓</h3>
+<p>Every square complex matrix <span class="math inline">\(A\)</span>,
+<strong>even if it is not diagonalizable</strong>, can be decomposed
+into a block-diagonal matrix where each block has the structure <span
+class="math inline">\(\lambda I + J\)</span>.</p>
+<p>Thus, the result of the previous question allows to prove the <a
+href="#/stability-criteria">💎 Stability Criteria</a> in the general
+case.</p>
+<style>
+
+.reveal p {
+  text-align: left;
+}
+
+.reveal section img {
+border:0;
+height:50vh;
+width:auto;
+
+}
+
+.reveal section img.medium {
+border:0;
+max-width:50vh;
+}
+
+.reveal section img.icon {
+display:inline;
+border:0;
+width:1em;
+margin:0em;
+box-shadow:none;
+vertical-align:-10%;
+}
+
+.reveal code {
+font-family: Inconsolata, monospace;
+}
+
+.reveal pre code {
+background-color: white;
+font-size: 1.5em;
+line-height: 1.5em;
+/_ max-height: 80wh; won't work, overriden _/
+}
+
+/_
+.reveal .slides .left {
+text-align: left;
+}
+_/
+
+input {
+font-family: "Source Sans Pro", Helvetica, sans-serif;
+font-size: 42px;
+line-height: 54.6px;
+}
+
+code span.kw {
+color: inherit;
+font-weight: normal;
+}
+
+code span.cf { /_ return _/
+color: inherit;
+font-weight: normal;
+}
+
+code span.fl { /_ floats _/
+color: inherit;
+}
+
+code span.dv { /_ ints _/
+color: inherit;
+}
+
+code span.co { /_ comments _/
+font-style: normal;
+color: #adb5bd; /_ gray 5 _/}
+
+code span.st { /_ strings _/
+color: inherit;
+}
+
+code span.op { /_ +, = _/
+color: inherit;
+}
+
+/*** Details ******************************************************************/
+details h1, details h2, details h3{
+  display: inline;
+}
+
+
+details summary {
+  cursor: pointer;
+  list-style: '🔒 ';
+}
+
+details[open] summary {
+  cursor: pointer;
+  list-style: '🔓 ';
+}
+
+summary::-webkit-details-marker {
+  display: none
+}
+
+
+details[open] summary ~ * {
+  animation: sweep .5s ease-in-out;
+}
+@keyframes sweep {
+  0%    {opacity: 0}
+  100%  {opacity: 1}
+}
+
+section p.author {
+  text-align: center;
+  margin: auto;
+}
+
+
+</style>
+<p><link href="https://fonts.googleapis.com/css?family=Inconsolata:400,700" rel="stylesheet"></p>
+<p><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet"></p>
+</section>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js@^4/dist/reveal.js"></script>
+
+  <!-- reveal.js plugins -->
+  <script src="https://unpkg.com/reveal.js@^4/plugin/notes/notes.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/search/search.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/zoom/zoom.js"></script>
+  <script src="https://unpkg.com/reveal.js@^4/plugin/math/math.js"></script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+        // Display controls in the bottom right corner
+        controls: true,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: true,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'bottom-right',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: true,
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: true,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'default',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: true,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'fade',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    </body>
+</html>
