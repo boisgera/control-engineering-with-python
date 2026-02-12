@@ -20,6 +20,9 @@ jobs:
       - name: LaTeX Install
         run: sudo apt-get update && sudo apt-get install texlive-full
   
+      - name: Pixi Config
+        run: pixi config set --local run-post-link-scripts insecure
+
       - name: Slides & Notebooks Build
         run: pixi run build --pdf
 

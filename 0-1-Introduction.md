@@ -217,11 +217,14 @@ $\to$ 🛑 **global 737 MAX groundings.**
 
 ## ADAS & Self-Driving Cars
 
-🏷️ **ADAS:** Advanced Driver-Assistance Systems
+  - 🏷️ **ADAS:** Advanced Driver-Assistance Systems
 
-📆 **2025:** fully autonomous cars are not there yet.
+  - 🏢 [Tesla], [Mercedes-Benz], [Waymo], etc.
 
-Actors: [Tesla], [Mercedes-Benz], [Waymo], etc.
+  - 📆 **2026:** fully autonomous cars are not there yet ... 
+    but we're coming close!
+
+
 
 [Tesla]: https://www.tesla.com
 [Mercedes-Benz]: https://www.mercedes-benz.com

@@ -1,4 +1,4 @@
-[project]
+[workspace]
 authors = ["Sébastien Boisgérault <Sebastien.Boisgerault@gmail.com>"]
 channels = ["conda-forge"]
 description = "Control Engineering with Python"
