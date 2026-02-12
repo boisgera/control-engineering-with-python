@@ -219,7 +219,7 @@ $\to$ 🛑 **global 737 MAX groundings.**
 
   - 🏷️ **ADAS:** Advanced Driver-Assistance Systems
 
-  - 🏢 [Tesla], [Mercedes-Benz], [Waymo], etc.
+  - 🏢 [Tesla], [Mercedes-Benz], [Waymo], [Comma], etc. [🎬](https://youtu.be/werrvv0MVXQ?si=K3iOb2OEJfZD1k15&t=1386)
 
   - 📆 **2026:** 
   
@@ -232,6 +232,8 @@ $\to$ 🛑 **global 737 MAX groundings.**
 [Tesla]: https://www.tesla.com
 [Mercedes-Benz]: https://www.mercedes-benz.com
 [Waymo]: https://waymo.com/
+[Comma]: https://comma.ai/
+[Players]: https://youtu.be/werrvv0MVXQ?si=K3iOb2OEJfZD1k15&t=1386
 
 ## [SAE Automation Levels](https://www.sae.org/blog/sae-j3016-update)
 
