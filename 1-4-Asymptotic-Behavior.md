@@ -147,14 +147,12 @@ href="https://blog.shashanktomar.com/posts/strange-attractors"
 style="display:block;width:100%;">
 <img 
 alt="Strange attractors" 
-src="/images/static/strange-attractors.png" 
+src="./images/static/strange-attractors.png" 
 style="width:100%;height:auto;"
 data-lazy-loaded="">
 </a>
 
-<!-- <div class="YOUPI">
-[![Strange attractors](/images/strange-attractors.png)](https://blog.shashanktomar.com/posts/strange-attractors)
-</div> -->
+
 
 ## Lorenz System
 
