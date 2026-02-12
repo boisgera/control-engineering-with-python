@@ -249,6 +249,12 @@ $\to$ 🛑 **global 737 MAX groundings.**
 
   - **Level 5:** 🤖 fully self-driving $\leftarrow$ 🚀 Not achieved yet
 
+----
+
+  - ADAS Level 3-5 system design is mostly Machine Learning 
+    (see for example [the official Waymo's blog](https://waymo.com/blog/))
+
+  - ADAS Level 0-2 system design is mostly Control Engineering.
 
 ## Level 1 ADAS
 
