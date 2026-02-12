@@ -113,7 +113,7 @@ Consider:
 
 ## Manufacturing
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/s-yne8xTNM0?si=aKT-QZNKTgX1WoSb" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
 
 
 ## {data-background="images/static/jonathan-ridley-UgrU3AlHYo8-unsplash.jpg" .display}
@@ -221,8 +221,11 @@ $\to$ 🛑 **global 737 MAX groundings.**
 
   - 🏢 [Tesla], [Mercedes-Benz], [Waymo], etc.
 
-  - 📆 **2026:** fully autonomous cars are not there yet ... 
-    but we're coming close!
+  - 📆 **2026:** 
+  
+    - We're coming close to fully autonomous cars! [📰](https://waymo.com/blog/2025/11/safe-routine-ready-autonomous-driving-in-new-cities)
+    
+    - Cars can be far safer when autonomous [📰](https://waymo.com/safety/)
 
 
 
